@@ -20,6 +20,7 @@ import ClientProjects from "./pages/ClientProjects";
 import ClientInvoices from "./pages/ClientInvoices";
 import ClientDocuments from "./pages/ClientDocuments";
 import ClientMessages from "./pages/ClientMessages";
+import CustomerPortalDashboard from "./pages/CustomerPortalDashboard";
 import ClientAuthGuard from "./components/ClientAuthGuard";
 import FloatingChatWidget from "./components/FloatingChatWidget";
 
@@ -72,6 +73,11 @@ const App = () =>
           <Route path="/client/messages" element={
           <ClientAuthGuard>
               <ClientMessages />
+            </ClientAuthGuard>
+          } />
+          <Route path="/customer-portal" element={
+          <ClientAuthGuard>
+              <CustomerPortalDashboard />
             </ClientAuthGuard>
           } />
           <Route path="/client-messages" element={<Navigate to="/client/messages" replace />} />
