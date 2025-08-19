@@ -38,10 +38,10 @@ const AdminLogin = () => {
 
 
 
+
+
       // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();
 
     if (!credentials.email || !credentials.password) {
       toast({
@@ -56,7 +56,7 @@ const AdminLogin = () => {
 
     try {
       console.log('Attempting login with:', credentials.email);
-      
+
       const response = await window.ezsite.apis.login({
         email: credentials.email,
         password: credentials.password
@@ -84,16 +84,13 @@ const AdminLogin = () => {
 
     } catch (error: any) {
       console.error('Login error:', error);
-      
+
       let errorMessage = "Invalid email or password";
       if (error.message) {
         errorMessage = error.message;
       }
-      
-      // Provide helpful hints for test credentials
-      if (credentials.email.includes('test.com')) {
-        errorMessage += "\n\nTip: Try clicking 'Create Test Users' button first if this is your first time.";
-      }
+
+
 
       toast({
         title: "Login Failed",
@@ -143,66 +140,7 @@ const AdminLogin = () => {
     }
   };
 
-  const createTestUsers = async () => {
-    setLoading(true);
-    try {
-      // Get test user information
-      const testUserInfo = await window.ezsite.apis.run({
-        path: "ensureTestUsers",
-        param: []
-      });
 
-      if (testUserInfo.error) {
-        throw new Error(testUserInfo.error);
-      }
-
-      console.log('Creating test users:', testUserInfo.data.testUsers);
-
-      // Try to create administrator test user
-      try {
-        const adminResponse = await window.ezsite.apis.register({
-          email: 'administrator@test.com',
-          password: 'admin123'
-        });
-        
-        if (adminResponse.error && !adminResponse.error.includes('already exists')) {
-          console.warn('Admin user creation issue:', adminResponse.error);
-        }
-      } catch (adminError) {
-        console.log('Admin user may already exist:', adminError);
-      }
-
-      // Try to create contractor test user  
-      try {
-        const contractorResponse = await window.ezsite.apis.register({
-          email: 'contractor@test.com',
-          password: 'contractor123'
-        });
-        
-        if (contractorResponse.error && !contractorResponse.error.includes('already exists')) {
-          console.warn('Contractor user creation issue:', contractorResponse.error);
-        }
-      } catch (contractorError) {
-        console.log('Contractor user may already exist:', contractorError);
-      }
-
-      toast({
-        title: "Test Users Ready ✓",
-        description: "You can now login with:\n• administrator@test.com / admin123\n• contractor@test.com / contractor123",
-        variant: "default"
-      });
-
-    } catch (error: any) {
-      console.error('Test user setup error:', error);
-      toast({
-        title: "Test Login Available",
-        description: "Try the test credentials:\n• administrator@test.com / admin123\n• contractor@test.com / contractor123",
-        variant: "default"
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
@@ -335,28 +273,14 @@ const AdminLogin = () => {
               ↑ Click any button above to auto-fill and then click "Sign In"
             </div>
             
-            <div className="pt-3 border-t border-blue-200">
-              <Button
-                type="button"
-                variant="secondary"
-                size="sm"
-                className="w-full bg-blue-600 text-white hover:bg-blue-700"
-                onClick={createTestUsers}
-                disabled={loading}>
-                {loading ? 'Setting up...' : '🚀 Setup Test Users'}
-              </Button>
-              <div className="text-xs text-center text-blue-600 mt-1">
-                Click first if this is your first time using the system
-              </div>
-            </div>
+
           </CardContent>
         </Card>
 
         <div className="mt-4 text-center text-sm text-gray-500 space-y-2">
           <p className="font-medium">🎯 Quick Start Guide:</p>
-          <p>1. Click "🚀 Setup Test Users" (first time only)</p>
-          <p>2. Click on "👤 Administrator" or "🔨 Contractor"</p>
-          <p>3. Click "Sign In" to access the dashboard</p>
+          <p>1. Click on "👤 Administrator" or "🔨 Contractor"</p>
+          <p>2. Click "Sign In" to access the dashboard</p>
         </div>
       </div>
     </div>);
