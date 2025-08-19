@@ -24,7 +24,7 @@ function validateUserPermissions(userId, customerId, requiredPermissions) {
   // Validate each required permission
   for (const permission of requiredPermissions) {
     const [resource, level] = permission.split('.');
-    
+
     if (permissions[resource] && permissions[resource].includes(level)) {
       validation_result.validation_results[permission] = {
         granted: true,

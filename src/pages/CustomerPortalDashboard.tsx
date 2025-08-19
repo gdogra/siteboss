@@ -21,8 +21,8 @@ import {
   Activity,
   TrendingUp,
   UserCheck,
-  Clock
-} from 'lucide-react';
+  Clock } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ClientPortalLayout from '@/components/ClientPortalLayout';
 import CustomerPortalUserManagement from '@/components/CustomerPortalUserManagement';
@@ -35,7 +35,7 @@ interface Widget {
   id: string;
   name: string;
   type: string;
-  position: { x: number; y: number; width: number; height: number };
+  position: {x: number;y: number;width: number;height: number;};
   config: any;
   data?: any;
 }
@@ -87,9 +87,9 @@ const CustomerPortalDashboard: React.FC = () => {
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'user_id', op: 'Equal', value: userInfo.ID },
-          { name: 'is_default', op: 'Equal', value: true }
-        ]
+        { name: 'user_id', op: 'Equal', value: userInfo.ID },
+        { name: 'is_default', op: 'Equal', value: true }]
+
       });
 
       if (!layoutError && layoutData?.List?.length > 0) {
@@ -129,28 +129,28 @@ const CustomerPortalDashboard: React.FC = () => {
 
   const createDefaultLayout = async (userId: number) => {
     const defaultWidgets = [
-      {
-        id: 'usage-stats',
-        name: 'Usage Statistics',
-        type: 'analytics',
-        position: { x: 0, y: 0, width: 6, height: 4 },
-        config: { timeRange: '30d' }
-      },
-      {
-        id: 'feature-status',
-        name: 'Feature Status',
-        type: 'features',
-        position: { x: 6, y: 0, width: 6, height: 4 },
-        config: { showDisabled: false }
-      },
-      {
-        id: 'user-activity',
-        name: 'User Activity',
-        type: 'users',
-        position: { x: 0, y: 4, width: 12, height: 4 },
-        config: { limit: 10 }
-      }
-    ];
+    {
+      id: 'usage-stats',
+      name: 'Usage Statistics',
+      type: 'analytics',
+      position: { x: 0, y: 0, width: 6, height: 4 },
+      config: { timeRange: '30d' }
+    },
+    {
+      id: 'feature-status',
+      name: 'Feature Status',
+      type: 'features',
+      position: { x: 6, y: 0, width: 6, height: 4 },
+      config: { showDisabled: false }
+    },
+    {
+      id: 'user-activity',
+      name: 'User Activity',
+      type: 'users',
+      position: { x: 0, y: 4, width: 12, height: 4 },
+      config: { limit: 10 }
+    }];
+
 
     try {
       await window.ezsite.apis.tableCreate(35462, {
@@ -177,21 +177,21 @@ const CustomerPortalDashboard: React.FC = () => {
         OrderByField: 'timestamp',
         IsAsc: false,
         Filters: [
-          { name: 'timestamp', op: 'GreaterThan', value: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() }
-        ]
+        { name: 'timestamp', op: 'GreaterThan', value: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() }]
+
       });
 
       if (!error && analyticsData?.List) {
         // Process analytics data
         const processed = {
           totalEvents: analyticsData.List.length,
-          uniqueUsers: new Set(analyticsData.List.map(item => item.user_id)).size,
+          uniqueUsers: new Set(analyticsData.List.map((item) => item.user_id)).size,
           topEvents: Object.entries(
             analyticsData.List.reduce((acc, item) => {
               acc[item.event_type] = (acc[item.event_type] || 0) + 1;
               return acc;
             }, {} as Record<string, number>)
-          ).sort(([,a], [,b]) => b - a).slice(0, 5)
+          ).sort(([, a], [, b]) => b - a).slice(0, 5)
         };
         setAnalytics(processed);
       }
@@ -208,8 +208,8 @@ const CustomerPortalDashboard: React.FC = () => {
         updated_at: new Date().toISOString()
       });
 
-      setFeatureFlags(prev => prev.map(flag => 
-        flag.id === flagId ? { ...flag, is_enabled: !currentState } : flag
+      setFeatureFlags((prev) => prev.map((flag) =>
+      flag.id === flagId ? { ...flag, is_enabled: !currentState } : flag
       ));
 
       toast({
@@ -218,9 +218,9 @@ const CustomerPortalDashboard: React.FC = () => {
       });
 
       // Track the change
-      await trackEvent('feature_toggle', { 
-        flag_id: flagId, 
-        new_state: !currentState 
+      await trackEvent('feature_toggle', {
+        flag_id: flagId,
+        new_state: !currentState
       });
 
     } catch (error: any) {
@@ -253,7 +253,7 @@ const CustomerPortalDashboard: React.FC = () => {
   const saveLayout = async () => {
     try {
       const { data: userInfo } = await window.ezsite.apis.getUserInfo();
-      
+
       // Update existing layout
       const { data: layoutData } = await window.ezsite.apis.tablePage(35462, {
         PageNo: 1,
@@ -261,9 +261,9 @@ const CustomerPortalDashboard: React.FC = () => {
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'user_id', op: 'Equal', value: userInfo.ID },
-          { name: 'is_default', op: 'Equal', value: true }
-        ]
+        { name: 'user_id', op: 'Equal', value: userInfo.ID },
+        { name: 'is_default', op: 'Equal', value: true }]
+
       });
 
       if (layoutData?.List?.length > 0) {
@@ -312,8 +312,8 @@ const CustomerPortalDashboard: React.FC = () => {
                 <p className="text-xs text-muted-foreground">Last 30 days</p>
               </div>
             </CardContent>
-          </Card>
-        );
+          </Card>);
+
 
       case 'features':
         return (
@@ -326,18 +326,18 @@ const CustomerPortalDashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {featureFlags.slice(0, 5).map(flag => (
-                  <div key={flag.id} className="flex items-center justify-between">
+                {featureFlags.slice(0, 5).map((flag) =>
+                <div key={flag.id} className="flex items-center justify-between">
                     <span className="text-sm">{flag.flag_name}</span>
                     <Badge variant={flag.is_enabled ? 'default' : 'secondary'}>
                       {flag.is_enabled ? 'On' : 'Off'}
                     </Badge>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
-          </Card>
-        );
+          </Card>);
+
 
       case 'users':
         return (
@@ -366,8 +366,8 @@ const CustomerPortalDashboard: React.FC = () => {
                 </div>
               </div>
             </CardContent>
-          </Card>
-        );
+          </Card>);
+
 
       default:
         return (
@@ -375,8 +375,8 @@ const CustomerPortalDashboard: React.FC = () => {
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">Unknown widget type: {widget.type}</p>
             </CardContent>
-          </Card>
-        );
+          </Card>);
+
     }
   };
 
@@ -386,8 +386,8 @@ const CustomerPortalDashboard: React.FC = () => {
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
         </div>
-      </ClientPortalLayout>
-    );
+      </ClientPortalLayout>);
+
   }
 
   return (
@@ -409,8 +409,8 @@ const CustomerPortalDashboard: React.FC = () => {
                   saveLayout();
                 }
                 setEditMode(!editMode);
-              }}
-            >
+              }}>
+
               {editMode ? 'Save Layout' : 'Edit Layout'}
             </Button>
           </div>
@@ -429,13 +429,13 @@ const CustomerPortalDashboard: React.FC = () => {
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
             <div className="grid grid-cols-12 gap-4 min-h-[600px]">
-              {widgets.map(widget => (
-                <div
-                  key={widget.id}
-                  className={`col-span-${widget.position.width} row-span-${widget.position.height} relative group`}
-                >
-                  {editMode && (
-                    <div className="absolute top-2 right-2 z-10 bg-background rounded-md border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+              {widgets.map((widget) =>
+              <div
+                key={widget.id}
+                className={`col-span-${widget.position.width} row-span-${widget.position.height} relative group`}>
+
+                  {editMode &&
+                <div className="absolute top-2 right-2 z-10 bg-background rounded-md border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button variant="ghost" size="sm">
                         <Move className="h-3 w-3" />
                       </Button>
@@ -446,19 +446,19 @@ const CustomerPortalDashboard: React.FC = () => {
                         <Trash2 className="h-3 w-3" />
                       </Button>
                     </div>
-                  )}
+                }
                   {renderWidget(widget)}
                 </div>
-              ))}
+              )}
               
-              {editMode && (
-                <div className="col-span-12 flex justify-center">
+              {editMode &&
+              <div className="col-span-12 flex justify-center">
                   <Button variant="dashed" className="w-full h-32 border-2 border-dashed">
                     <Plus className="h-6 w-6 mr-2" />
                     Add Widget
                   </Button>
                 </div>
-              )}
+              }
             </div>
           </TabsContent>
 
@@ -504,7 +504,7 @@ const CustomerPortalDashboard: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {featureFlags.filter(f => f.is_enabled).length}
+                    {featureFlags.filter((f) => f.is_enabled).length}
                   </div>
                   <p className="text-xs text-muted-foreground">Features enabled</p>
                 </CardContent>
@@ -549,8 +549,8 @@ const CustomerPortalDashboard: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </ClientPortalLayout>
-  );
+    </ClientPortalLayout>);
+
 };
 
 export default CustomerPortalDashboard;

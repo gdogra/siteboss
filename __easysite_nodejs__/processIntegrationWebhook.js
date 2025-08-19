@@ -1,7 +1,7 @@
 
 function processIntegrationWebhook(integrationType, webhookData, customerId) {
   const dayjs = require('dayjs');
-  
+
   // Process incoming webhook from external integration
   const webhook_event = {
     integration_type: integrationType,
@@ -15,7 +15,7 @@ function processIntegrationWebhook(integrationType, webhookData, customerId) {
   try {
     // Route webhook to appropriate handler based on integration type
     let processing_result;
-    
+
     switch (integrationType) {
       case 'stripe':
         processing_result = processStripeWebhook(webhookData);
@@ -67,7 +67,7 @@ function processIntegrationWebhook(integrationType, webhookData, customerId) {
 function processStripeWebhook(data) {
   // Handle Stripe webhook events
   const event_type = data.type || 'unknown';
-  
+
   switch (event_type) {
     case 'payment_intent.succeeded':
       return {

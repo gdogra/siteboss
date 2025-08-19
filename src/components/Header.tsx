@@ -27,7 +27,8 @@ const Header = () => {
   { name: 'Dashboard', href: '/admin-dashboard', icon: Home },
   { name: 'Lead Management', href: '/leads', icon: User },
   { name: 'Invoice Submission', href: '/invoice-submission', icon: Settings },
-  { name: 'Payments', href: '/payments', icon: Settings }];
+  { name: 'Payments', href: '/payments', icon: Settings },
+  { name: 'Inventory', href: '/inventory', icon: Settings }];
 
 
   useEffect(() => {

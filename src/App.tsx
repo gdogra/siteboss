@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -21,6 +22,9 @@ import ClientInvoices from "./pages/ClientInvoices";
 import ClientDocuments from "./pages/ClientDocuments";
 import ClientMessages from "./pages/ClientMessages";
 import CustomerPortalDashboard from "./pages/CustomerPortalDashboard";
+
+const PlatformAdminDashboard = React.lazy(() => import("./pages/PlatformAdminDashboard"));
+const InventoryManagementPage = React.lazy(() => import("./pages/InventoryManagementPage"));
 import ClientAuthGuard from "./components/ClientAuthGuard";
 import FloatingChatWidget from "./components/FloatingChatWidget";
 
@@ -79,6 +83,16 @@ const App = () =>
           <ClientAuthGuard>
               <CustomerPortalDashboard />
             </ClientAuthGuard>
+          } />
+          <Route path="/platform-admin" element={
+          <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
+              <PlatformAdminDashboard />
+            </React.Suspense>
+          } />
+          <Route path="/inventory" element={
+          <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
+              <InventoryManagementPage />
+            </React.Suspense>
           } />
           <Route path="/client-messages" element={<Navigate to="/client/messages" replace />} />
           

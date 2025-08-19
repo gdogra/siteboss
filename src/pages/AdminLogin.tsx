@@ -57,9 +57,9 @@ const AdminLogin = () => {
 
 
 
+
       // User is not logged in, stay on login page
     }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {toast({ title: "Error", description: "Please enter both email and password", variant: "destructive" });return;}setLoading(true);try {console.log('Attempting login with:', credentials.email);const response = await window.ezsite.apis.login({ email: credentials.email, password: credentials.password });console.log('Login response:', response);
-
       if (response.error) {
         throw new Error(response.error);
       }

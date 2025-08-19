@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import DataTable from  '@/components/DataTable';
+import DataTable from '@/components/DataTable';
 import {
   ToggleLeft,
   ToggleRight,
@@ -25,8 +25,8 @@ import {
   XCircle,
   Target,
   Zap,
-  Settings
-} from 'lucide-react';
+  Settings } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface FeatureFlag {
@@ -100,7 +100,7 @@ const CustomerPortalFeatureFlags: React.FC = () => {
   const createFeatureFlag = async () => {
     try {
       const { data: userInfo } = await window.ezsite.apis.getUserInfo();
-      
+
       const flagToCreate = {
         ...newFlag,
         flag_key: newFlag.flag_key.toLowerCase().replace(/\s+/g, '_'),
@@ -126,7 +126,7 @@ const CustomerPortalFeatureFlags: React.FC = () => {
         rollout_percentage: 100,
         environment: 'production'
       });
-      
+
       await loadFeatureFlags();
       await trackFlagEvent('flag_created', newFlag.flag_key);
 
@@ -171,8 +171,8 @@ const CustomerPortalFeatureFlags: React.FC = () => {
   const toggleFeatureFlag = async (flag: FeatureFlag) => {
     const updatedFlag = { ...flag, is_enabled: !flag.is_enabled };
     await updateFeatureFlag(updatedFlag);
-    await trackFlagEvent('flag_toggled', flag.flag_key, { 
-      new_state: !flag.is_enabled 
+    await trackFlagEvent('flag_toggled', flag.flag_key, {
+      new_state: !flag.is_enabled
     });
   };
 
@@ -204,9 +204,9 @@ const CustomerPortalFeatureFlags: React.FC = () => {
         customer_id: 1,
         user_id: userInfo?.ID,
         event_type: eventType,
-        event_data: JSON.stringify({ 
-          flag_key: flagKey, 
-          ...additionalData 
+        event_data: JSON.stringify({
+          flag_key: flagKey,
+          ...additionalData
         }),
         timestamp: new Date().toISOString(),
         session_id: `session_${Date.now()}`,
@@ -224,15 +224,15 @@ const CustomerPortalFeatureFlags: React.FC = () => {
         <Badge className="bg-green-100 text-green-800">
           <CheckCircle className="h-3 w-3 mr-1" />
           Enabled
-        </Badge>
-      );
+        </Badge>);
+
     } else {
       return (
         <Badge variant="secondary">
           <XCircle className="h-3 w-3 mr-1" />
           Disabled
-        </Badge>
-      );
+        </Badge>);
+
     }
   };
 
@@ -242,12 +242,12 @@ const CustomerPortalFeatureFlags: React.FC = () => {
       staging: 'bg-yellow-100 text-yellow-800',
       production: 'bg-red-100 text-red-800'
     };
-    
+
     return (
       <Badge className={colors[environment as keyof typeof colors] || 'bg-gray-100 text-gray-800'}>
         {environment}
-      </Badge>
-    );
+      </Badge>);
+
   };
 
   const getTargetAudienceBadge = (audience: string) => {
@@ -255,117 +255,117 @@ const CustomerPortalFeatureFlags: React.FC = () => {
       <Badge variant="outline" className="flex items-center gap-1">
         <Target className="h-3 w-3" />
         {audience.replace('_', ' ')}
-      </Badge>
-    );
+      </Badge>);
+
   };
 
-  const filteredFlags = featureFlags.filter(flag => {
+  const filteredFlags = featureFlags.filter((flag) => {
     const matchesSearch = flag.flag_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         flag.flag_key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         flag.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    flag.flag_key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    flag.description.toLowerCase().includes(searchTerm.toLowerCase());
+
     const matchesEnvironment = filterEnvironment === 'all' || flag.environment === filterEnvironment;
-    const matchesStatus = filterStatus === 'all' || 
-                         (filterStatus === 'enabled' && flag.is_enabled) ||
-                         (filterStatus === 'disabled' && !flag.is_enabled);
-    
+    const matchesStatus = filterStatus === 'all' ||
+    filterStatus === 'enabled' && flag.is_enabled ||
+    filterStatus === 'disabled' && !flag.is_enabled;
+
     return matchesSearch && matchesEnvironment && matchesStatus;
   });
 
   const flagColumns = [
-    {
-      header: 'Feature',
-      accessor: 'feature',
-      render: (flag: FeatureFlag) => (
-        <div className="space-y-1">
+  {
+    header: 'Feature',
+    accessor: 'feature',
+    render: (flag: FeatureFlag) =>
+    <div className="space-y-1">
           <div className="font-medium">{flag.flag_name}</div>
           <div className="text-xs text-muted-foreground font-mono">{flag.flag_key}</div>
           <div className="text-sm text-muted-foreground line-clamp-2">{flag.description}</div>
         </div>
-      )
-    },
-    {
-      header: 'Status',
-      accessor: 'status',
-      render: (flag: FeatureFlag) => (
-        <div className="space-y-2">
+
+  },
+  {
+    header: 'Status',
+    accessor: 'status',
+    render: (flag: FeatureFlag) =>
+    <div className="space-y-2">
           {getStatusBadge(flag)}
           <div className="flex items-center gap-2">
             <Switch
-              checked={flag.is_enabled}
-              onCheckedChange={() => toggleFeatureFlag(flag)}
-              className="scale-75"
-            />
+          checked={flag.is_enabled}
+          onCheckedChange={() => toggleFeatureFlag(flag)}
+          className="scale-75" />
+
             <span className="text-xs text-muted-foreground">
               {flag.rollout_percentage}% rollout
             </span>
           </div>
         </div>
-      )
-    },
-    {
-      header: 'Environment',
-      accessor: 'environment',
-      render: (flag: FeatureFlag) => getEnvironmentBadge(flag.environment)
-    },
-    {
-      header: 'Target',
-      accessor: 'target',
-      render: (flag: FeatureFlag) => getTargetAudienceBadge(flag.target_audience)
-    },
-    {
-      header: 'Updated',
-      accessor: 'updated',
-      render: (flag: FeatureFlag) => (
-        <div className="text-sm text-muted-foreground">
+
+  },
+  {
+    header: 'Environment',
+    accessor: 'environment',
+    render: (flag: FeatureFlag) => getEnvironmentBadge(flag.environment)
+  },
+  {
+    header: 'Target',
+    accessor: 'target',
+    render: (flag: FeatureFlag) => getTargetAudienceBadge(flag.target_audience)
+  },
+  {
+    header: 'Updated',
+    accessor: 'updated',
+    render: (flag: FeatureFlag) =>
+    <div className="text-sm text-muted-foreground">
           {flag.updated_at ? new Date(flag.updated_at).toLocaleDateString() : 'N/A'}
         </div>
-      )
-    },
-    {
-      header: 'Actions',
-      accessor: 'actions',
-      render: (flag: FeatureFlag) => (
-        <div className="flex gap-2">
+
+  },
+  {
+    header: 'Actions',
+    accessor: 'actions',
+    render: (flag: FeatureFlag) =>
+    <div className="flex gap-2">
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setSelectedFlag(flag);
-              setShowEditDialog(true);
-            }}
-          >
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          setSelectedFlag(flag);
+          setShowEditDialog(true);
+        }}>
+
             <Edit className="h-4 w-4" />
           </Button>
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              if (confirm(`Are you sure you want to delete "${flag.flag_name}"?`)) {
-                deleteFeatureFlag(flag.id!, flag.flag_key);
-              }
-            }}
-          >
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          if (confirm(`Are you sure you want to delete "${flag.flag_name}"?`)) {
+            deleteFeatureFlag(flag.id!, flag.flag_key);
+          }
+        }}>
+
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
-      )
-    }
-  ];
+
+  }];
+
 
   const stats = {
     total: featureFlags.length,
-    enabled: featureFlags.filter(f => f.is_enabled).length,
-    disabled: featureFlags.filter(f => f.is_enabled === false).length,
-    production: featureFlags.filter(f => f.environment === 'production').length
+    enabled: featureFlags.filter((f) => f.is_enabled).length,
+    disabled: featureFlags.filter((f) => f.is_enabled === false).length,
+    production: featureFlags.filter((f) => f.environment === 'production').length
   };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -396,12 +396,12 @@ const CustomerPortalFeatureFlags: React.FC = () => {
                   id="flag-name"
                   placeholder="New Feature"
                   value={newFlag.flag_name}
-                  onChange={(e) => setNewFlag(prev => ({ 
-                    ...prev, 
+                  onChange={(e) => setNewFlag((prev) => ({
+                    ...prev,
                     flag_name: e.target.value,
                     flag_key: e.target.value.toLowerCase().replace(/\s+/g, '_')
-                  }))}
-                />
+                  }))} />
+
               </div>
               
               <div className="space-y-2">
@@ -410,9 +410,9 @@ const CustomerPortalFeatureFlags: React.FC = () => {
                   id="flag-key"
                   placeholder="new_feature"
                   value={newFlag.flag_key}
-                  onChange={(e) => setNewFlag(prev => ({ ...prev, flag_key: e.target.value }))}
-                  className="font-mono text-sm"
-                />
+                  onChange={(e) => setNewFlag((prev) => ({ ...prev, flag_key: e.target.value }))}
+                  className="font-mono text-sm" />
+
               </div>
 
               <div className="space-y-2">
@@ -421,40 +421,40 @@ const CustomerPortalFeatureFlags: React.FC = () => {
                   id="description"
                   placeholder="Describe what this feature flag controls..."
                   value={newFlag.description}
-                  onChange={(e) => setNewFlag(prev => ({ ...prev, description: e.target.value }))}
-                  rows={3}
-                />
+                  onChange={(e) => setNewFlag((prev) => ({ ...prev, description: e.target.value }))}
+                  rows={3} />
+
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Environment</Label>
-                  <Select value={newFlag.environment} onValueChange={(value) => setNewFlag(prev => ({ ...prev, environment: value }))}>
+                  <Select value={newFlag.environment} onValueChange={(value) => setNewFlag((prev) => ({ ...prev, environment: value }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {environments.map(env => (
-                        <SelectItem key={env} value={env}>
+                      {environments.map((env) =>
+                      <SelectItem key={env} value={env}>
                           {env}
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
                   <Label>Target Audience</Label>
-                  <Select value={newFlag.target_audience} onValueChange={(value) => setNewFlag(prev => ({ ...prev, target_audience: value }))}>
+                  <Select value={newFlag.target_audience} onValueChange={(value) => setNewFlag((prev) => ({ ...prev, target_audience: value }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {targetAudiences.map(audience => (
-                        <SelectItem key={audience} value={audience}>
+                      {targetAudiences.map((audience) =>
+                      <SelectItem key={audience} value={audience}>
                           {audience.replace('_', ' ')}
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -467,17 +467,17 @@ const CustomerPortalFeatureFlags: React.FC = () => {
                   min="0"
                   max="100"
                   value={newFlag.rollout_percentage}
-                  onChange={(e) => setNewFlag(prev => ({ ...prev, rollout_percentage: parseInt(e.target.value) }))}
-                  className="w-full"
-                />
+                  onChange={(e) => setNewFlag((prev) => ({ ...prev, rollout_percentage: parseInt(e.target.value) }))}
+                  className="w-full" />
+
               </div>
 
               <div className="flex items-center space-x-2">
                 <Switch
                   id="enabled"
                   checked={newFlag.is_enabled}
-                  onCheckedChange={(checked) => setNewFlag(prev => ({ ...prev, is_enabled: checked }))}
-                />
+                  onCheckedChange={(checked) => setNewFlag((prev) => ({ ...prev, is_enabled: checked }))} />
+
                 <Label htmlFor="enabled">Enable immediately</Label>
               </div>
 
@@ -546,8 +546,8 @@ const CustomerPortalFeatureFlags: React.FC = () => {
                 placeholder="Search feature flags..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="max-w-sm"
-              />
+                className="max-w-sm" />
+
             </div>
             <Select value={filterEnvironment} onValueChange={setFilterEnvironment}>
               <SelectTrigger className="w-32">
@@ -555,9 +555,9 @@ const CustomerPortalFeatureFlags: React.FC = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Envs</SelectItem>
-                {environments.map(env => (
-                  <SelectItem key={env} value={env}>{env}</SelectItem>
-                ))}
+                {environments.map((env) =>
+                <SelectItem key={env} value={env}>{env}</SelectItem>
+                )}
               </SelectContent>
             </Select>
             <Select value={filterStatus} onValueChange={setFilterStatus}>
@@ -583,8 +583,8 @@ const CustomerPortalFeatureFlags: React.FC = () => {
           <DataTable
             data={filteredFlags}
             columns={flagColumns}
-            searchKey="flag_name"
-          />
+            searchKey="flag_name" />
+
         </CardContent>
       </Card>
 
@@ -594,42 +594,42 @@ const CustomerPortalFeatureFlags: React.FC = () => {
           <DialogHeader>
             <DialogTitle>Edit Feature Flag</DialogTitle>
           </DialogHeader>
-          {selectedFlag && (
-            <div className="space-y-4">
+          {selectedFlag &&
+          <div className="space-y-4">
               <div className="space-y-2">
                 <Label>Flag Name</Label>
                 <Input
-                  value={selectedFlag.flag_name}
-                  onChange={(e) => setSelectedFlag(prev => prev ? ({ ...prev, flag_name: e.target.value }) : null)}
-                />
+                value={selectedFlag.flag_name}
+                onChange={(e) => setSelectedFlag((prev) => prev ? { ...prev, flag_name: e.target.value } : null)} />
+
               </div>
               
               <div className="space-y-2">
                 <Label>Description</Label>
                 <Textarea
-                  value={selectedFlag.description}
-                  onChange={(e) => setSelectedFlag(prev => prev ? ({ ...prev, description: e.target.value }) : null)}
-                  rows={3}
-                />
+                value={selectedFlag.description}
+                onChange={(e) => setSelectedFlag((prev) => prev ? { ...prev, description: e.target.value } : null)}
+                rows={3} />
+
               </div>
 
               <div className="space-y-2">
                 <Label>Rollout Percentage: {selectedFlag.rollout_percentage}%</Label>
                 <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={selectedFlag.rollout_percentage}
-                  onChange={(e) => setSelectedFlag(prev => prev ? ({ ...prev, rollout_percentage: parseInt(e.target.value) }) : null)}
-                  className="w-full"
-                />
+                type="range"
+                min="0"
+                max="100"
+                value={selectedFlag.rollout_percentage}
+                onChange={(e) => setSelectedFlag((prev) => prev ? { ...prev, rollout_percentage: parseInt(e.target.value) } : null)}
+                className="w-full" />
+
               </div>
 
               <div className="flex items-center space-x-2">
                 <Switch
-                  checked={selectedFlag.is_enabled}
-                  onCheckedChange={(checked) => setSelectedFlag(prev => prev ? ({ ...prev, is_enabled: checked }) : null)}
-                />
+                checked={selectedFlag.is_enabled}
+                onCheckedChange={(checked) => setSelectedFlag((prev) => prev ? { ...prev, is_enabled: checked } : null)} />
+
                 <Label>Enabled</Label>
               </div>
 
@@ -637,24 +637,24 @@ const CustomerPortalFeatureFlags: React.FC = () => {
                 <Button variant="outline" onClick={() => setShowEditDialog(false)} className="flex-1">
                   Cancel
                 </Button>
-                <Button 
-                  onClick={() => {
-                    if (selectedFlag) {
-                      updateFeatureFlag(selectedFlag);
-                      setShowEditDialog(false);
-                    }
-                  }} 
-                  className="flex-1"
-                >
+                <Button
+                onClick={() => {
+                  if (selectedFlag) {
+                    updateFeatureFlag(selectedFlag);
+                    setShowEditDialog(false);
+                  }
+                }}
+                className="flex-1">
+
                   Update Flag
                 </Button>
               </div>
             </div>
-          )}
+          }
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CustomerPortalFeatureFlags;

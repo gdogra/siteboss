@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import DataTable from  '@/components/DataTable';
+import DataTable from '@/components/DataTable';
 import {
   Users,
   Plus,
@@ -21,8 +21,8 @@ import {
   UserPlus,
   UserCheck,
   UserX,
-  Settings
-} from 'lucide-react';
+  Settings } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface User {
@@ -58,7 +58,7 @@ const CustomerPortalUserManagement: React.FC = () => {
 
   const permissionCategories = {
     dashboard: 'Dashboard Access',
-    features: 'Feature Management', 
+    features: 'Feature Management',
     users: 'User Management',
     analytics: 'Analytics & Reports',
     branding: 'Branding & Customization',
@@ -112,8 +112,8 @@ const CustomerPortalUserManagement: React.FC = () => {
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'user_id', op: 'Equal', value: userId }
-        ]
+        { name: 'user_id', op: 'Equal', value: userId }]
+
       });
 
       if (!error && permissionsData?.List) {
@@ -246,11 +246,11 @@ const CustomerPortalUserManagement: React.FC = () => {
   };
 
   const userColumns = [
-    {
-      header: 'User',
-      accessor: 'user',
-      render: (user: User) => (
-        <div className="flex items-center gap-3">
+  {
+    header: 'User',
+    accessor: 'user',
+    render: (user: User) =>
+    <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8">
             <AvatarFallback>
               <User className="h-4 w-4" />
@@ -261,59 +261,59 @@ const CustomerPortalUserManagement: React.FC = () => {
             <div className="text-sm text-muted-foreground">{user.Email}</div>
           </div>
         </div>
-      )
-    },
-    {
-      header: 'Role',
-      accessor: 'role',
-      render: (user: User) => getUserStatusBadge(user)
-    },
-    {
-      header: 'Created',
-      accessor: 'created',
-      render: (user: User) => (
-        <span className="text-sm text-muted-foreground">
+
+  },
+  {
+    header: 'Role',
+    accessor: 'role',
+    render: (user: User) => getUserStatusBadge(user)
+  },
+  {
+    header: 'Created',
+    accessor: 'created',
+    render: (user: User) =>
+    <span className="text-sm text-muted-foreground">
           {new Date(user.CreateTime).toLocaleDateString()}
         </span>
-      )
-    },
-    {
-      header: 'Actions',
-      accessor: 'actions',
-      render: (user: User) => (
-        <div className="flex gap-2">
+
+  },
+  {
+    header: 'Actions',
+    accessor: 'actions',
+    render: (user: User) =>
+    <div className="flex gap-2">
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setSelectedUser(user);
-              loadUserPermissions(user.ID);
-              setShowPermissions(true);
-            }}
-          >
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          setSelectedUser(user);
+          loadUserPermissions(user.ID);
+          setShowPermissions(true);
+        }}>
+
             <Shield className="h-4 w-4" />
           </Button>
           <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setSelectedUser(user);
-              // Open edit user dialog
-            }}
-          >
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          setSelectedUser(user);
+          // Open edit user dialog
+        }}>
+
             <Edit className="h-4 w-4" />
           </Button>
         </div>
-      )
-    }
-  ];
+
+  }];
+
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -344,8 +344,8 @@ const CustomerPortalUserManagement: React.FC = () => {
                       type="email"
                       placeholder="user@example.com"
                       value={newUser.email}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, email: e.target.value }))}
-                    />
+                      onChange={(e) => setNewUser((prev) => ({ ...prev, email: e.target.value }))} />
+
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
@@ -353,12 +353,12 @@ const CustomerPortalUserManagement: React.FC = () => {
                       id="name"
                       placeholder="User Name"
                       value={newUser.name}
-                      onChange={(e) => setNewUser(prev => ({ ...prev, name: e.target.value }))}
-                    />
+                      onChange={(e) => setNewUser((prev) => ({ ...prev, name: e.target.value }))} />
+
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="role">Role</Label>
-                    <Select value={newUser.role} onValueChange={(value) => setNewUser(prev => ({ ...prev, role: value }))}>
+                    <Select value={newUser.role} onValueChange={(value) => setNewUser((prev) => ({ ...prev, role: value }))}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -385,8 +385,8 @@ const CustomerPortalUserManagement: React.FC = () => {
           <DataTable
             data={users}
             columns={userColumns}
-            searchKey="Email"
-          />
+            searchKey="Email" />
+
         </CardContent>
       </Card>
 
@@ -400,41 +400,41 @@ const CustomerPortalUserManagement: React.FC = () => {
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-6">
-            {Object.entries(permissionCategories).map(([category, label]) => (
-              <div key={category} className="space-y-2">
+            {Object.entries(permissionCategories).map(([category, label]) =>
+            <div key={category} className="space-y-2">
                 <Label className="text-sm font-medium">{label}</Label>
                 <Select
-                  value={userPermissions.find(p => p.permission_key === category)?.permission_value || 'none'}
-                  onValueChange={(value) => {
-                    const updatedPermissions = userPermissions.filter(p => p.permission_key !== category);
-                    if (value !== 'none') {
-                      updatedPermissions.push({
-                        permission_key: category,
-                        permission_value: value
-                      });
-                    }
-                    setUserPermissions(updatedPermissions);
-                  }}
-                >
+                value={userPermissions.find((p) => p.permission_key === category)?.permission_value || 'none'}
+                onValueChange={(value) => {
+                  const updatedPermissions = userPermissions.filter((p) => p.permission_key !== category);
+                  if (value !== 'none') {
+                    updatedPermissions.push({
+                      permission_key: category,
+                      permission_value: value
+                    });
+                  }
+                  setUserPermissions(updatedPermissions);
+                }}>
+
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(permissionLevels).map(([level, levelLabel]) => (
-                      <SelectItem key={level} value={level}>
+                    {Object.entries(permissionLevels).map(([level, levelLabel]) =>
+                  <SelectItem key={level} value={level}>
                         {levelLabel}
                       </SelectItem>
-                    ))}
+                  )}
                   </SelectContent>
                 </Select>
               </div>
-            ))}
+            )}
             <div className="flex gap-2">
               <Button
                 variant="outline"
                 onClick={() => setShowPermissions(false)}
-                className="flex-1"
-              >
+                className="flex-1">
+
                 Cancel
               </Button>
               <Button
@@ -444,8 +444,8 @@ const CustomerPortalUserManagement: React.FC = () => {
                     setShowPermissions(false);
                   }
                 }}
-                className="flex-1"
-              >
+                className="flex-1">
+
                 Update Permissions
               </Button>
             </div>
@@ -472,7 +472,7 @@ const CustomerPortalUserManagement: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {users.filter(u => u.Roles?.includes('Administrator')).length}
+              {users.filter((u) => u.Roles?.includes('Administrator')).length}
             </div>
           </CardContent>
         </Card>
@@ -484,7 +484,7 @@ const CustomerPortalUserManagement: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {users.filter(u => u.Roles?.includes('GeneralUser')).length}
+              {users.filter((u) => u.Roles?.includes('GeneralUser')).length}
             </div>
           </CardContent>
         </Card>
@@ -499,8 +499,8 @@ const CustomerPortalUserManagement: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CustomerPortalUserManagement;

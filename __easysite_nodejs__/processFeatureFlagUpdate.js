@@ -1,7 +1,7 @@
 
 function processFeatureFlagUpdate(flagKey, isEnabled, userId, customerId) {
   const dayjs = require('dayjs');
-  
+
   // Process real-time feature flag update
   const eventData = {
     flag_key: flagKey,
@@ -18,7 +18,7 @@ function processFeatureFlagUpdate(flagKey, isEnabled, userId, customerId) {
   // 2. Broadcast to connected clients via WebSocket
   // 3. Log the change for audit purposes
   // 4. Trigger any automation rules
-  
+
   const processing_result = {
     success: true,
     event_id: eventData.event_id,

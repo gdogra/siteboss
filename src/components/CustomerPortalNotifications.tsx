@@ -22,8 +22,8 @@ import {
   Settings,
   Volume2,
   VolumeX,
-  Smartphone
-} from 'lucide-react';
+  Smartphone } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface NotificationPreference {
@@ -54,74 +54,74 @@ const CustomerPortalNotifications: React.FC = () => {
   const { toast } = useToast();
 
   const notificationTypes = [
-    { key: 'email', name: 'Email', icon: <Mail className="h-4 w-4" /> },
-    { key: 'sms', name: 'SMS', icon: <Phone className="h-4 w-4" /> },
-    { key: 'push', name: 'Push', icon: <Smartphone className="h-4 w-4" /> },
-    { key: 'in_app', name: 'In-App', icon: <Bell className="h-4 w-4" /> }
-  ];
+  { key: 'email', name: 'Email', icon: <Mail className="h-4 w-4" /> },
+  { key: 'sms', name: 'SMS', icon: <Phone className="h-4 w-4" /> },
+  { key: 'push', name: 'Push', icon: <Smartphone className="h-4 w-4" /> },
+  { key: 'in_app', name: 'In-App', icon: <Bell className="h-4 w-4" /> }];
+
 
   const categories: NotificationCategory[] = [
-    {
-      key: 'system',
-      name: 'System Notifications',
-      description: 'Important system updates and maintenance notifications',
-      icon: <Monitor className="h-5 w-5" />,
-      defaultEnabled: true,
-      types: ['email', 'in_app']
-    },
-    {
-      key: 'billing',
-      name: 'Billing & Payments',
-      description: 'Invoice notifications, payment confirmations, and billing updates',
-      icon: <CreditCard className="h-5 w-5" />,
-      defaultEnabled: true,
-      types: ['email', 'sms', 'in_app']
-    },
-    {
-      key: 'feature_updates',
-      name: 'Feature Updates',
-      description: 'New features, improvements, and product announcements',
-      icon: <CheckCircle className="h-5 w-5" />,
-      defaultEnabled: true,
-      types: ['email', 'in_app']
-    },
-    {
-      key: 'security',
-      name: 'Security Alerts',
-      description: 'Login alerts, password changes, and security notifications',
-      icon: <AlertTriangle className="h-5 w-5" />,
-      defaultEnabled: true,
-      types: ['email', 'sms']
-    },
-    {
-      key: 'user_activity',
-      name: 'User Activity',
-      description: 'User invitations, role changes, and team notifications',
-      icon: <Users className="h-5 w-5" />,
-      defaultEnabled: false,
-      types: ['email', 'in_app']
-    },
-    {
-      key: 'marketing',
-      name: 'Marketing Communications',
-      description: 'Promotional emails, newsletters, and marketing content',
-      icon: <MessageSquare className="h-5 w-5" />,
-      defaultEnabled: false,
-      types: ['email']
-    }
-  ];
+  {
+    key: 'system',
+    name: 'System Notifications',
+    description: 'Important system updates and maintenance notifications',
+    icon: <Monitor className="h-5 w-5" />,
+    defaultEnabled: true,
+    types: ['email', 'in_app']
+  },
+  {
+    key: 'billing',
+    name: 'Billing & Payments',
+    description: 'Invoice notifications, payment confirmations, and billing updates',
+    icon: <CreditCard className="h-5 w-5" />,
+    defaultEnabled: true,
+    types: ['email', 'sms', 'in_app']
+  },
+  {
+    key: 'feature_updates',
+    name: 'Feature Updates',
+    description: 'New features, improvements, and product announcements',
+    icon: <CheckCircle className="h-5 w-5" />,
+    defaultEnabled: true,
+    types: ['email', 'in_app']
+  },
+  {
+    key: 'security',
+    name: 'Security Alerts',
+    description: 'Login alerts, password changes, and security notifications',
+    icon: <AlertTriangle className="h-5 w-5" />,
+    defaultEnabled: true,
+    types: ['email', 'sms']
+  },
+  {
+    key: 'user_activity',
+    name: 'User Activity',
+    description: 'User invitations, role changes, and team notifications',
+    icon: <Users className="h-5 w-5" />,
+    defaultEnabled: false,
+    types: ['email', 'in_app']
+  },
+  {
+    key: 'marketing',
+    name: 'Marketing Communications',
+    description: 'Promotional emails, newsletters, and marketing content',
+    icon: <MessageSquare className="h-5 w-5" />,
+    defaultEnabled: false,
+    types: ['email']
+  }];
+
 
   const frequencies = [
-    { key: 'immediate', name: 'Immediately' },
-    { key: 'daily', name: 'Daily Digest' },
-    { key: 'weekly', name: 'Weekly Summary' },
-    { key: 'monthly', name: 'Monthly Report' }
-  ];
+  { key: 'immediate', name: 'Immediately' },
+  { key: 'daily', name: 'Daily Digest' },
+  { key: 'weekly', name: 'Weekly Summary' },
+  { key: 'monthly', name: 'Monthly Report' }];
+
 
   const deliveryTimes = [
-    '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00',
-    '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
-  ];
+  '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00',
+  '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+
 
   useEffect(() => {
     loadNotificationPreferences();
@@ -138,8 +138,8 @@ const CustomerPortalNotifications: React.FC = () => {
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'user_id', op: 'Equal', value: userInfo.ID }
-        ]
+        { name: 'user_id', op: 'Equal', value: userInfo.ID }]
+
       });
 
       if (!error && prefsData?.List) {
@@ -189,18 +189,18 @@ const CustomerPortalNotifications: React.FC = () => {
 
   const updatePreference = async (category: string, type: string, field: string, value: any) => {
     try {
-      const existingPref = preferences.find(p => p.category === category && p.notification_type === type);
-      
+      const existingPref = preferences.find((p) => p.category === category && p.notification_type === type);
+
       if (existingPref) {
         const updatedPref = { ...existingPref, [field]: value, updated_at: new Date().toISOString() };
-        
+
         await window.ezsite.apis.tableUpdate(35463, {
           ID: existingPref.id,
           ...updatedPref
         });
 
-        setPreferences(prev => prev.map(p => 
-          p.id === existingPref.id ? updatedPref : p
+        setPreferences((prev) => prev.map((p) =>
+        p.id === existingPref.id ? updatedPref : p
         ));
       } else {
         // Create new preference
@@ -217,15 +217,15 @@ const CustomerPortalNotifications: React.FC = () => {
         };
 
         await window.ezsite.apis.tableCreate(35463, newPref);
-        setPreferences(prev => [...prev, newPref]);
+        setPreferences((prev) => [...prev, newPref]);
       }
 
       // Track the preference change
-      await trackNotificationEvent('preference_updated', { 
-        category, 
-        type, 
-        field, 
-        value 
+      await trackNotificationEvent('preference_updated', {
+        category,
+        type,
+        field,
+        value
       });
 
     } catch (error: any) {
@@ -239,20 +239,20 @@ const CustomerPortalNotifications: React.FC = () => {
 
   const bulkUpdateCategory = async (category: string, enabled: boolean) => {
     try {
-      const categoryPrefs = preferences.filter(p => p.category === category);
-      
+      const categoryPrefs = preferences.filter((p) => p.category === category);
+
       for (const pref of categoryPrefs) {
         await updatePreference(category, pref.notification_type, 'is_enabled', enabled);
       }
 
       toast({
         title: enabled ? 'Category enabled' : 'Category disabled',
-        description: `All notifications for "${categories.find(c => c.key === category)?.name}" have been ${enabled ? 'enabled' : 'disabled'}.`
+        description: `All notifications for "${categories.find((c) => c.key === category)?.name}" have been ${enabled ? 'enabled' : 'disabled'}.`
       });
 
-      await trackNotificationEvent('bulk_category_update', { 
-        category, 
-        enabled 
+      await trackNotificationEvent('bulk_category_update', {
+        category,
+        enabled
       });
 
     } catch (error: any) {
@@ -304,24 +304,24 @@ const CustomerPortalNotifications: React.FC = () => {
   };
 
   const getPreference = (category: string, type: string): NotificationPreference | null => {
-    return preferences.find(p => p.category === category && p.notification_type === type) || null;
+    return preferences.find((p) => p.category === category && p.notification_type === type) || null;
   };
 
   const isCategoryEnabled = (category: string): boolean => {
-    const categoryPrefs = preferences.filter(p => p.category === category);
-    return categoryPrefs.some(p => p.is_enabled);
+    const categoryPrefs = preferences.filter((p) => p.category === category);
+    return categoryPrefs.some((p) => p.is_enabled);
   };
 
   const getEnabledTypesCount = (category: string): number => {
-    return preferences.filter(p => p.category === category && p.is_enabled).length;
+    return preferences.filter((p) => p.category === category && p.is_enabled).length;
   };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -358,11 +358,11 @@ const CustomerPortalNotifications: React.FC = () => {
             <Button
               variant="outline"
               onClick={() => {
-                categories.forEach(category => {
+                categories.forEach((category) => {
                   bulkUpdateCategory(category.key, true);
                 });
-              }}
-            >
+              }}>
+
               <Volume2 className="h-4 w-4 mr-2" />
               Enable All
             </Button>
@@ -378,11 +378,11 @@ const CustomerPortalNotifications: React.FC = () => {
             <Button
               variant="outline"
               onClick={() => {
-                categories.forEach(category => {
+                categories.forEach((category) => {
                   bulkUpdateCategory(category.key, false);
                 });
-              }}
-            >
+              }}>
+
               <VolumeX className="h-4 w-4 mr-2" />
               Disable All
             </Button>
@@ -392,8 +392,8 @@ const CustomerPortalNotifications: React.FC = () => {
 
       {/* Notification Categories */}
       <div className="space-y-4">
-        {categories.map((category) => (
-          <Card key={category.key}>
+        {categories.map((category) =>
+        <Card key={category.key}>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -410,9 +410,9 @@ const CustomerPortalNotifications: React.FC = () => {
                     {getEnabledTypesCount(category.key)} active
                   </Badge>
                   <Switch
-                    checked={isCategoryEnabled(category.key)}
-                    onCheckedChange={(checked) => bulkUpdateCategory(category.key, checked)}
-                  />
+                  checked={isCategoryEnabled(category.key)}
+                  onCheckedChange={(checked) => bulkUpdateCategory(category.key, checked)} />
+
                 </div>
               </div>
             </CardHeader>
@@ -421,13 +421,13 @@ const CustomerPortalNotifications: React.FC = () => {
                 {/* Notification Types */}
                 <div className="grid gap-4">
                   {category.types.map((typeKey) => {
-                    const type = notificationTypes.find(t => t.key === typeKey);
-                    const pref = getPreference(category.key, typeKey);
-                    
-                    if (!type) return null;
+                  const type = notificationTypes.find((t) => t.key === typeKey);
+                  const pref = getPreference(category.key, typeKey);
 
-                    return (
-                      <div key={typeKey} className="flex items-center justify-between p-3 border rounded-lg">
+                  if (!type) return null;
+
+                  return (
+                    <div key={typeKey} className="flex items-center justify-between p-3 border rounded-lg">
                         <div className="flex items-center gap-3">
                           <div className="text-muted-foreground">
                             {type.icon}
@@ -438,57 +438,57 @@ const CustomerPortalNotifications: React.FC = () => {
                         </div>
                         
                         <div className="flex items-center gap-4">
-                          {pref?.is_enabled && typeKey === 'email' && (
-                            <>
-                              <Select 
-                                value={pref.frequency} 
-                                onValueChange={(value) => updatePreference(category.key, typeKey, 'frequency', value)}
-                              >
+                          {pref?.is_enabled && typeKey === 'email' &&
+                        <>
+                              <Select
+                            value={pref.frequency}
+                            onValueChange={(value) => updatePreference(category.key, typeKey, 'frequency', value)}>
+
                                 <SelectTrigger className="w-32">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  {frequencies.map(freq => (
-                                    <SelectItem key={freq.key} value={freq.key}>
+                                  {frequencies.map((freq) =>
+                              <SelectItem key={freq.key} value={freq.key}>
                                       {freq.name}
                                     </SelectItem>
-                                  ))}
+                              )}
                                 </SelectContent>
                               </Select>
                               
-                              {(pref.frequency === 'daily' || pref.frequency === 'weekly') && (
-                                <Select 
-                                  value={pref.delivery_time} 
-                                  onValueChange={(value) => updatePreference(category.key, typeKey, 'delivery_time', value)}
-                                >
+                              {(pref.frequency === 'daily' || pref.frequency === 'weekly') &&
+                          <Select
+                            value={pref.delivery_time}
+                            onValueChange={(value) => updatePreference(category.key, typeKey, 'delivery_time', value)}>
+
                                   <SelectTrigger className="w-20">
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    {deliveryTimes.map(time => (
-                                      <SelectItem key={time} value={time}>
+                                    {deliveryTimes.map((time) =>
+                              <SelectItem key={time} value={time}>
                                         {time}
                                       </SelectItem>
-                                    ))}
+                              )}
                                   </SelectContent>
                                 </Select>
-                              )}
+                          }
                             </>
-                          )}
+                        }
                           
                           <Switch
-                            checked={pref?.is_enabled || false}
-                            onCheckedChange={(checked) => updatePreference(category.key, typeKey, 'is_enabled', checked)}
-                          />
+                          checked={pref?.is_enabled || false}
+                          onCheckedChange={(checked) => updatePreference(category.key, typeKey, 'is_enabled', checked)} />
+
                         </div>
-                      </div>
-                    );
-                  })}
+                      </div>);
+
+                })}
                 </div>
               </div>
             </CardContent>
           </Card>
-        ))}
+        )}
       </div>
 
       {/* Global Settings */}
@@ -508,11 +508,11 @@ const CustomerPortalNotifications: React.FC = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {deliveryTimes.map(time => (
-                    <SelectItem key={time} value={time}>
+                  {deliveryTimes.map((time) =>
+                  <SelectItem key={time} value={time}>
                       {time}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -558,8 +558,8 @@ const CustomerPortalNotifications: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CustomerPortalNotifications;

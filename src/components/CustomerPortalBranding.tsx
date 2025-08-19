@@ -18,8 +18,8 @@ import {
   Code,
   Monitor,
   Smartphone,
-  Tablet
-} from 'lucide-react';
+  Tablet } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface BrandingConfig {
@@ -47,7 +47,7 @@ const CustomerPortalBranding: React.FC = () => {
     font_family: 'Inter',
     custom_css: ''
   });
-  
+
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [showPreview, setShowPreview] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string>('');
@@ -57,18 +57,18 @@ const CustomerPortalBranding: React.FC = () => {
   const { toast } = useToast();
 
   const fontOptions = [
-    'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Source Sans Pro',
-    'Poppins', 'Raleway', 'Nunito', 'Playfair Display', 'Merriweather'
-  ];
+  'Inter', 'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Source Sans Pro',
+  'Poppins', 'Raleway', 'Nunito', 'Playfair Display', 'Merriweather'];
+
 
   const colorPresets = [
-    { name: 'Blue Ocean', primary: '#3B82F6', secondary: '#64748B', accent: '#10B981' },
-    { name: 'Purple Magic', primary: '#8B5CF6', secondary: '#6B7280', accent: '#F59E0B' },
-    { name: 'Green Forest', primary: '#10B981', secondary: '#6B7280', accent: '#3B82F6' },
-    { name: 'Orange Sunset', primary: '#F97316', secondary: '#71717A', accent: '#EF4444' },
-    { name: 'Pink Blossom', primary: '#EC4899', secondary: '#6B7280', accent: '#8B5CF6' },
-    { name: 'Dark Professional', primary: '#1F2937', secondary: '#6B7280', accent: '#3B82F6' }
-  ];
+  { name: 'Blue Ocean', primary: '#3B82F6', secondary: '#64748B', accent: '#10B981' },
+  { name: 'Purple Magic', primary: '#8B5CF6', secondary: '#6B7280', accent: '#F59E0B' },
+  { name: 'Green Forest', primary: '#10B981', secondary: '#6B7280', accent: '#3B82F6' },
+  { name: 'Orange Sunset', primary: '#F97316', secondary: '#71717A', accent: '#EF4444' },
+  { name: 'Pink Blossom', primary: '#EC4899', secondary: '#6B7280', accent: '#8B5CF6' },
+  { name: 'Dark Professional', primary: '#1F2937', secondary: '#6B7280', accent: '#3B82F6' }];
+
 
   useEffect(() => {
     loadBrandingConfig();
@@ -82,8 +82,8 @@ const CustomerPortalBranding: React.FC = () => {
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'customer_id', op: 'Equal', value: 1 }
-        ]
+        { name: 'customer_id', op: 'Equal', value: 1 }]
+
       });
 
       if (!error && configData?.List?.length > 0) {
@@ -132,7 +132,7 @@ const CustomerPortalBranding: React.FC = () => {
           ...configToSave,
           created_at: new Date().toISOString()
         });
-        setBrandingConfig(prev => ({ ...prev, id: result.data?.ID }));
+        setBrandingConfig((prev) => ({ ...prev, id: result.data?.ID }));
       }
 
       toast({
@@ -166,10 +166,10 @@ const CustomerPortalBranding: React.FC = () => {
       const { data: fileUrl } = await window.ezsite.apis.getUploadUrl(fileId);
 
       if (type === 'logo') {
-        setBrandingConfig(prev => ({ ...prev, logo_file_id: fileId }));
+        setBrandingConfig((prev) => ({ ...prev, logo_file_id: fileId }));
         setLogoUrl(fileUrl);
       } else {
-        setBrandingConfig(prev => ({ ...prev, favicon_file_id: fileId }));
+        setBrandingConfig((prev) => ({ ...prev, favicon_file_id: fileId }));
         setFaviconUrl(fileUrl);
       }
 
@@ -193,10 +193,10 @@ const CustomerPortalBranding: React.FC = () => {
     root.style.setProperty('--primary', brandingConfig.primary_color);
     root.style.setProperty('--secondary', brandingConfig.secondary_color);
     root.style.setProperty('--accent', brandingConfig.accent_color);
-    
+
     // Apply font family
     root.style.setProperty('--font-family', brandingConfig.font_family);
-    
+
     // Apply custom CSS
     let customStyleElement = document.getElementById('custom-branding-css');
     if (!customStyleElement) {
@@ -208,7 +208,7 @@ const CustomerPortalBranding: React.FC = () => {
   };
 
   const applyColorPreset = (preset: typeof colorPresets[0]) => {
-    setBrandingConfig(prev => ({
+    setBrandingConfig((prev) => ({
       ...prev,
       primary_color: preset.primary,
       secondary_color: preset.secondary,
@@ -222,52 +222,52 @@ const CustomerPortalBranding: React.FC = () => {
       logo_url: logoUrl,
       favicon_url: faviconUrl
     };
-    
+
     const dataStr = JSON.stringify(exportData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
     const exportFileDefaultName = `branding-config-${Date.now()}.json`;
-    
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
   };
 
-  const PreviewFrame = () => (
-    <div className={`
+  const PreviewFrame = () =>
+  <div className={`
       border rounded-lg overflow-hidden transition-all duration-300
       ${previewMode === 'desktop' ? 'w-full h-[600px]' : ''}
       ${previewMode === 'tablet' ? 'w-[768px] h-[600px] mx-auto' : ''}
       ${previewMode === 'mobile' ? 'w-[375px] h-[600px] mx-auto' : ''}
     `}>
-      <div 
-        className="h-full bg-white"
-        style={{
-          '--primary': brandingConfig.primary_color,
-          '--secondary': brandingConfig.secondary_color,
-          '--accent': brandingConfig.accent_color,
-          fontFamily: brandingConfig.font_family
-        } as React.CSSProperties}
-      >
+      <div
+      className="h-full bg-white"
+      style={{
+        '--primary': brandingConfig.primary_color,
+        '--secondary': brandingConfig.secondary_color,
+        '--accent': brandingConfig.accent_color,
+        fontFamily: brandingConfig.font_family
+      } as React.CSSProperties}>
+
         {/* Preview Header */}
-        <div 
-          className="h-16 px-4 flex items-center justify-between border-b"
-          style={{ backgroundColor: brandingConfig.primary_color, color: 'white' }}
-        >
+        <div
+        className="h-16 px-4 flex items-center justify-between border-b"
+        style={{ backgroundColor: brandingConfig.primary_color, color: 'white' }}>
+
           <div className="flex items-center gap-3">
-            {logoUrl && (
-              <img src={logoUrl} alt="Logo" className="h-8 w-auto" />
-            )}
+            {logoUrl &&
+          <img src={logoUrl} alt="Logo" className="h-8 w-auto" />
+          }
             <span className="text-lg font-semibold">
               {brandingConfig.company_name || 'Your Company'}
             </span>
           </div>
-          <Button 
-            size="sm" 
-            variant="ghost" 
-            className="text-white hover:bg-white/20"
-          >
+          <Button
+          size="sm"
+          variant="ghost"
+          className="text-white hover:bg-white/20">
+
             Menu
           </Button>
         </div>
@@ -306,27 +306,27 @@ const CustomerPortalBranding: React.FC = () => {
             <Button style={{ backgroundColor: brandingConfig.primary_color, color: 'white' }}>
               Primary Button
             </Button>
-            <Button 
-              variant="outline" 
-              style={{ 
-                borderColor: brandingConfig.accent_color, 
-                color: brandingConfig.accent_color 
-              }}
-            >
+            <Button
+            variant="outline"
+            style={{
+              borderColor: brandingConfig.accent_color,
+              color: brandingConfig.accent_color
+            }}>
+
               Accent Button
             </Button>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
+
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -359,22 +359,22 @@ const CustomerPortalBranding: React.FC = () => {
                     <Button
                       variant={previewMode === 'desktop' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setPreviewMode('desktop')}
-                    >
+                      onClick={() => setPreviewMode('desktop')}>
+
                       <Monitor className="h-4 w-4" />
                     </Button>
                     <Button
                       variant={previewMode === 'tablet' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setPreviewMode('tablet')}
-                    >
+                      onClick={() => setPreviewMode('tablet')}>
+
                       <Tablet className="h-4 w-4" />
                     </Button>
                     <Button
                       variant={previewMode === 'mobile' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setPreviewMode('mobile')}
-                    >
+                      onClick={() => setPreviewMode('mobile')}>
+
                       <Smartphone className="h-4 w-4" />
                     </Button>
                   </div>
@@ -403,121 +403,121 @@ const CustomerPortalBranding: React.FC = () => {
               <Label>Company Name</Label>
               <Input
                 value={brandingConfig.company_name}
-                onChange={(e) => setBrandingConfig(prev => ({ ...prev, company_name: e.target.value }))}
-                placeholder="Your Company Name"
-              />
+                onChange={(e) => setBrandingConfig((prev) => ({ ...prev, company_name: e.target.value }))}
+                placeholder="Your Company Name" />
+
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Logo</Label>
                 <div className="border-2 border-dashed rounded-lg p-4 text-center">
-                  {logoUrl ? (
-                    <div className="space-y-2">
+                  {logoUrl ?
+                  <div className="space-y-2">
                       <img src={logoUrl} alt="Logo" className="h-12 mx-auto" />
                       <div className="flex gap-2">
                         <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            const input = document.createElement('input');
-                            input.type = 'file';
-                            input.accept = 'image/*';
-                            input.onchange = (e) => {
-                              const file = (e.target as HTMLInputElement).files?.[0];
-                              if (file) uploadFile(file, 'logo');
-                            };
-                            input.click();
-                          }}
-                        >
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = 'image/*';
+                          input.onchange = (e) => {
+                            const file = (e.target as HTMLInputElement).files?.[0];
+                            if (file) uploadFile(file, 'logo');
+                          };
+                          input.click();
+                        }}>
+
                           Replace
                         </Button>
                         <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => {
-                            setLogoUrl('');
-                            setBrandingConfig(prev => ({ ...prev, logo_file_id: undefined }));
-                          }}
-                        >
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setLogoUrl('');
+                          setBrandingConfig((prev) => ({ ...prev, logo_file_id: undefined }));
+                        }}>
+
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
-                    </div>
-                  ) : (
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
-                        input.onchange = (e) => {
-                          const file = (e.target as HTMLInputElement).files?.[0];
-                          if (file) uploadFile(file, 'logo');
-                        };
-                        input.click();
-                      }}
-                    >
+                    </div> :
+
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = 'image/*';
+                      input.onchange = (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0];
+                        if (file) uploadFile(file, 'logo');
+                      };
+                      input.click();
+                    }}>
+
                       <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
                       <p className="text-sm text-muted-foreground">Upload Logo</p>
                     </div>
-                  )}
+                  }
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label>Favicon</Label>
                 <div className="border-2 border-dashed rounded-lg p-4 text-center">
-                  {faviconUrl ? (
-                    <div className="space-y-2">
+                  {faviconUrl ?
+                  <div className="space-y-2">
                       <img src={faviconUrl} alt="Favicon" className="h-8 mx-auto" />
                       <div className="flex gap-2">
                         <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {
-                            const input = document.createElement('input');
-                            input.type = 'file';
-                            input.accept = 'image/*';
-                            input.onchange = (e) => {
-                              const file = (e.target as HTMLInputElement).files?.[0];
-                              if (file) uploadFile(file, 'favicon');
-                            };
-                            input.click();
-                          }}
-                        >
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = 'image/*';
+                          input.onchange = (e) => {
+                            const file = (e.target as HTMLInputElement).files?.[0];
+                            if (file) uploadFile(file, 'favicon');
+                          };
+                          input.click();
+                        }}>
+
                           Replace
                         </Button>
                         <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => {
-                            setFaviconUrl('');
-                            setBrandingConfig(prev => ({ ...prev, favicon_file_id: undefined }));
-                          }}
-                        >
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          setFaviconUrl('');
+                          setBrandingConfig((prev) => ({ ...prev, favicon_file_id: undefined }));
+                        }}>
+
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
-                    </div>
-                  ) : (
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/x-icon,image/png';
-                        input.onchange = (e) => {
-                          const file = (e.target as HTMLInputElement).files?.[0];
-                          if (file) uploadFile(file, 'favicon');
-                        };
-                        input.click();
-                      }}
-                    >
+                    </div> :
+
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = 'image/x-icon,image/png';
+                      input.onchange = (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0];
+                        if (file) uploadFile(file, 'favicon');
+                      };
+                      input.click();
+                    }}>
+
                       <Upload className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
                       <p className="text-xs text-muted-foreground">Upload Favicon</p>
                     </div>
-                  )}
+                  }
                 </div>
               </div>
             </div>
@@ -537,32 +537,32 @@ const CustomerPortalBranding: React.FC = () => {
             <div className="space-y-2">
               <Label>Quick Presets</Label>
               <div className="grid grid-cols-2 gap-2">
-                {colorPresets.map((preset) => (
-                  <Button
-                    key={preset.name}
-                    variant="outline"
-                    className="justify-start h-auto p-3"
-                    onClick={() => applyColorPreset(preset)}
-                  >
+                {colorPresets.map((preset) =>
+                <Button
+                  key={preset.name}
+                  variant="outline"
+                  className="justify-start h-auto p-3"
+                  onClick={() => applyColorPreset(preset)}>
+
                     <div className="flex items-center gap-2">
                       <div className="flex gap-1">
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: preset.primary }}
-                        />
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: preset.secondary }}
-                        />
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: preset.accent }}
-                        />
+                        <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: preset.primary }} />
+
+                        <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: preset.secondary }} />
+
+                        <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: preset.accent }} />
+
                       </div>
                       <span className="text-xs">{preset.name}</span>
                     </div>
                   </Button>
-                ))}
+                )}
               </div>
             </div>
 
@@ -574,15 +574,15 @@ const CustomerPortalBranding: React.FC = () => {
                   <Input
                     type="color"
                     value={brandingConfig.primary_color}
-                    onChange={(e) => setBrandingConfig(prev => ({ ...prev, primary_color: e.target.value }))}
-                    className="w-12 h-10 p-1"
-                  />
+                    onChange={(e) => setBrandingConfig((prev) => ({ ...prev, primary_color: e.target.value }))}
+                    className="w-12 h-10 p-1" />
+
                   <Input
                     value={brandingConfig.primary_color}
-                    onChange={(e) => setBrandingConfig(prev => ({ ...prev, primary_color: e.target.value }))}
+                    onChange={(e) => setBrandingConfig((prev) => ({ ...prev, primary_color: e.target.value }))}
                     placeholder="#3B82F6"
-                    className="flex-1"
-                  />
+                    className="flex-1" />
+
                 </div>
               </div>
 
@@ -592,15 +592,15 @@ const CustomerPortalBranding: React.FC = () => {
                   <Input
                     type="color"
                     value={brandingConfig.secondary_color}
-                    onChange={(e) => setBrandingConfig(prev => ({ ...prev, secondary_color: e.target.value }))}
-                    className="w-12 h-10 p-1"
-                  />
+                    onChange={(e) => setBrandingConfig((prev) => ({ ...prev, secondary_color: e.target.value }))}
+                    className="w-12 h-10 p-1" />
+
                   <Input
                     value={brandingConfig.secondary_color}
-                    onChange={(e) => setBrandingConfig(prev => ({ ...prev, secondary_color: e.target.value }))}
+                    onChange={(e) => setBrandingConfig((prev) => ({ ...prev, secondary_color: e.target.value }))}
                     placeholder="#64748B"
-                    className="flex-1"
-                  />
+                    className="flex-1" />
+
                 </div>
               </div>
 
@@ -610,15 +610,15 @@ const CustomerPortalBranding: React.FC = () => {
                   <Input
                     type="color"
                     value={brandingConfig.accent_color}
-                    onChange={(e) => setBrandingConfig(prev => ({ ...prev, accent_color: e.target.value }))}
-                    className="w-12 h-10 p-1"
-                  />
+                    onChange={(e) => setBrandingConfig((prev) => ({ ...prev, accent_color: e.target.value }))}
+                    className="w-12 h-10 p-1" />
+
                   <Input
                     value={brandingConfig.accent_color}
-                    onChange={(e) => setBrandingConfig(prev => ({ ...prev, accent_color: e.target.value }))}
+                    onChange={(e) => setBrandingConfig((prev) => ({ ...prev, accent_color: e.target.value }))}
                     placeholder="#10B981"
-                    className="flex-1"
-                  />
+                    className="flex-1" />
+
                 </div>
               </div>
             </div>
@@ -638,14 +638,14 @@ const CustomerPortalBranding: React.FC = () => {
               <Label>Font Family</Label>
               <select
                 value={brandingConfig.font_family}
-                onChange={(e) => setBrandingConfig(prev => ({ ...prev, font_family: e.target.value }))}
-                className="w-full px-3 py-2 border rounded-md"
-              >
-                {fontOptions.map(font => (
-                  <option key={font} value={font} style={{ fontFamily: font }}>
+                onChange={(e) => setBrandingConfig((prev) => ({ ...prev, font_family: e.target.value }))}
+                className="w-full px-3 py-2 border rounded-md">
+
+                {fontOptions.map((font) =>
+                <option key={font} value={font} style={{ fontFamily: font }}>
                     {font}
                   </option>
-                ))}
+                )}
               </select>
             </div>
 
@@ -674,11 +674,11 @@ const CustomerPortalBranding: React.FC = () => {
               <Label>Additional Styles</Label>
               <Textarea
                 value={brandingConfig.custom_css}
-                onChange={(e) => setBrandingConfig(prev => ({ ...prev, custom_css: e.target.value }))}
+                onChange={(e) => setBrandingConfig((prev) => ({ ...prev, custom_css: e.target.value }))}
                 placeholder="/* Your custom CSS here */"
                 className="font-mono text-sm"
-                rows={8}
-              />
+                rows={8} />
+
               <p className="text-xs text-muted-foreground">
                 Add custom CSS to further customize your portal's appearance. 
                 Use CSS variables like --primary, --secondary, and --accent for consistent theming.
@@ -699,8 +699,8 @@ const CustomerPortalBranding: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CustomerPortalBranding;

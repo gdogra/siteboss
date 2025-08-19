@@ -33,8 +33,8 @@ import {
   Users,
   Lock,
   AlertCircle,
-  CheckCircle
-} from 'lucide-react';
+  CheckCircle } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Integration {
@@ -68,7 +68,7 @@ interface ConfigField {
   type: 'text' | 'password' | 'url' | 'email' | 'textarea' | 'select';
   placeholder?: string;
   required: boolean;
-  options?: { value: string; label: string }[];
+  options?: {value: string;label: string;}[];
 }
 
 const CustomerPortalIntegrations: React.FC = () => {
@@ -90,104 +90,104 @@ const CustomerPortalIntegrations: React.FC = () => {
   });
 
   const integrationTypes: IntegrationType[] = [
-    {
-      key: 'stripe',
-      name: 'Stripe',
-      description: 'Payment processing and billing integration',
-      icon: <CreditCard className="h-6 w-6" />,
-      category: 'payments',
-      webhookSupport: true,
-      authType: 'api_key',
-      configFields: [
-        { key: 'publishable_key', label: 'Publishable Key', type: 'text', required: true },
-        { key: 'secret_key', label: 'Secret Key', type: 'password', required: true },
-        { key: 'webhook_endpoint_secret', label: 'Webhook Endpoint Secret', type: 'password', required: false }
-      ]
-    },
-    {
-      key: 'mailgun',
-      name: 'Mailgun',
-      description: 'Email delivery and automation',
-      icon: <Mail className="h-6 w-6" />,
-      category: 'email',
-      webhookSupport: true,
-      authType: 'api_key',
-      configFields: [
-        { key: 'api_key', label: 'API Key', type: 'password', required: true },
-        { key: 'domain', label: 'Domain', type: 'text', required: true },
-        { key: 'region', label: 'Region', type: 'select', required: true, options: [
-          { value: 'us', label: 'US' },
-          { value: 'eu', label: 'EU' }
-        ]}
-      ]
-    },
-    {
-      key: 'slack',
-      name: 'Slack',
-      description: 'Team communication and notifications',
-      icon: <MessageSquare className="h-6 w-6" />,
-      category: 'communication',
-      webhookSupport: true,
-      authType: 'webhook',
-      configFields: [
-        { key: 'webhook_url', label: 'Webhook URL', type: 'url', required: true },
-        { key: 'channel', label: 'Default Channel', type: 'text', required: false, placeholder: '#general' }
-      ]
-    },
-    {
-      key: 'google_calendar',
-      name: 'Google Calendar',
-      description: 'Calendar integration and scheduling',
-      icon: <Calendar className="h-6 w-6" />,
-      category: 'productivity',
-      webhookSupport: false,
-      authType: 'oauth',
-      configFields: [
-        { key: 'calendar_id', label: 'Calendar ID', type: 'text', required: true },
-        { key: 'time_zone', label: 'Time Zone', type: 'select', required: true, options: [
-          { value: 'America/New_York', label: 'Eastern Time' },
-          { value: 'America/Chicago', label: 'Central Time' },
-          { value: 'America/Denver', label: 'Mountain Time' },
-          { value: 'America/Los_Angeles', label: 'Pacific Time' }
-        ]}
-      ]
-    },
-    {
-      key: 'zapier',
-      name: 'Zapier',
-      description: 'Workflow automation and app connections',
-      icon: <Plug className="h-6 w-6" />,
-      category: 'automation',
-      webhookSupport: true,
-      authType: 'webhook',
-      configFields: [
-        { key: 'webhook_url', label: 'Zapier Webhook URL', type: 'url', required: true }
-      ]
-    },
-    {
-      key: 'analytics',
-      name: 'Google Analytics',
-      description: 'Website and app analytics tracking',
-      icon: <BarChart className="h-6 w-6" />,
-      category: 'analytics',
-      webhookSupport: false,
-      authType: 'api_key',
-      configFields: [
-        { key: 'tracking_id', label: 'Tracking ID', type: 'text', required: true, placeholder: 'GA-XXXXXXXXX-X' },
-        { key: 'property_id', label: 'Property ID', type: 'text', required: true }
-      ]
-    }
-  ];
+  {
+    key: 'stripe',
+    name: 'Stripe',
+    description: 'Payment processing and billing integration',
+    icon: <CreditCard className="h-6 w-6" />,
+    category: 'payments',
+    webhookSupport: true,
+    authType: 'api_key',
+    configFields: [
+    { key: 'publishable_key', label: 'Publishable Key', type: 'text', required: true },
+    { key: 'secret_key', label: 'Secret Key', type: 'password', required: true },
+    { key: 'webhook_endpoint_secret', label: 'Webhook Endpoint Secret', type: 'password', required: false }]
+
+  },
+  {
+    key: 'mailgun',
+    name: 'Mailgun',
+    description: 'Email delivery and automation',
+    icon: <Mail className="h-6 w-6" />,
+    category: 'email',
+    webhookSupport: true,
+    authType: 'api_key',
+    configFields: [
+    { key: 'api_key', label: 'API Key', type: 'password', required: true },
+    { key: 'domain', label: 'Domain', type: 'text', required: true },
+    { key: 'region', label: 'Region', type: 'select', required: true, options: [
+      { value: 'us', label: 'US' },
+      { value: 'eu', label: 'EU' }]
+    }]
+
+  },
+  {
+    key: 'slack',
+    name: 'Slack',
+    description: 'Team communication and notifications',
+    icon: <MessageSquare className="h-6 w-6" />,
+    category: 'communication',
+    webhookSupport: true,
+    authType: 'webhook',
+    configFields: [
+    { key: 'webhook_url', label: 'Webhook URL', type: 'url', required: true },
+    { key: 'channel', label: 'Default Channel', type: 'text', required: false, placeholder: '#general' }]
+
+  },
+  {
+    key: 'google_calendar',
+    name: 'Google Calendar',
+    description: 'Calendar integration and scheduling',
+    icon: <Calendar className="h-6 w-6" />,
+    category: 'productivity',
+    webhookSupport: false,
+    authType: 'oauth',
+    configFields: [
+    { key: 'calendar_id', label: 'Calendar ID', type: 'text', required: true },
+    { key: 'time_zone', label: 'Time Zone', type: 'select', required: true, options: [
+      { value: 'America/New_York', label: 'Eastern Time' },
+      { value: 'America/Chicago', label: 'Central Time' },
+      { value: 'America/Denver', label: 'Mountain Time' },
+      { value: 'America/Los_Angeles', label: 'Pacific Time' }]
+    }]
+
+  },
+  {
+    key: 'zapier',
+    name: 'Zapier',
+    description: 'Workflow automation and app connections',
+    icon: <Plug className="h-6 w-6" />,
+    category: 'automation',
+    webhookSupport: true,
+    authType: 'webhook',
+    configFields: [
+    { key: 'webhook_url', label: 'Zapier Webhook URL', type: 'url', required: true }]
+
+  },
+  {
+    key: 'analytics',
+    name: 'Google Analytics',
+    description: 'Website and app analytics tracking',
+    icon: <BarChart className="h-6 w-6" />,
+    category: 'analytics',
+    webhookSupport: false,
+    authType: 'api_key',
+    configFields: [
+    { key: 'tracking_id', label: 'Tracking ID', type: 'text', required: true, placeholder: 'GA-XXXXXXXXX-X' },
+    { key: 'property_id', label: 'Property ID', type: 'text', required: true }]
+
+  }];
+
 
   const categories = [
-    { key: 'all', name: 'All Integrations', count: integrationTypes.length },
-    { key: 'payments', name: 'Payments', count: integrationTypes.filter(t => t.category === 'payments').length },
-    { key: 'email', name: 'Email', count: integrationTypes.filter(t => t.category === 'email').length },
-    { key: 'communication', name: 'Communication', count: integrationTypes.filter(t => t.category === 'communication').length },
-    { key: 'productivity', name: 'Productivity', count: integrationTypes.filter(t => t.category === 'productivity').length },
-    { key: 'automation', name: 'Automation', count: integrationTypes.filter(t => t.category === 'automation').length },
-    { key: 'analytics', name: 'Analytics', count: integrationTypes.filter(t => t.category === 'analytics').length }
-  ];
+  { key: 'all', name: 'All Integrations', count: integrationTypes.length },
+  { key: 'payments', name: 'Payments', count: integrationTypes.filter((t) => t.category === 'payments').length },
+  { key: 'email', name: 'Email', count: integrationTypes.filter((t) => t.category === 'email').length },
+  { key: 'communication', name: 'Communication', count: integrationTypes.filter((t) => t.category === 'communication').length },
+  { key: 'productivity', name: 'Productivity', count: integrationTypes.filter((t) => t.category === 'productivity').length },
+  { key: 'automation', name: 'Automation', count: integrationTypes.filter((t) => t.category === 'automation').length },
+  { key: 'analytics', name: 'Analytics', count: integrationTypes.filter((t) => t.category === 'analytics').length }];
+
 
   const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -289,19 +289,19 @@ const CustomerPortalIntegrations: React.FC = () => {
 
   const testConnection = async (integration: Integration) => {
     setTestingConnection(integration.id?.toString() || '');
-    
+
     try {
       // Simulate connection test
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const updatedIntegration = { 
-        ...integration, 
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const updatedIntegration = {
+        ...integration,
         sync_status: 'connected',
         last_sync: new Date().toISOString()
       };
-      
+
       await updateIntegration(updatedIntegration);
-      
+
       toast({
         title: 'Connection successful',
         description: `Successfully connected to ${integration.integration_name}.`
@@ -312,11 +312,11 @@ const CustomerPortalIntegrations: React.FC = () => {
       });
 
     } catch (error: any) {
-      const updatedIntegration = { 
-        ...integration, 
+      const updatedIntegration = {
+        ...integration,
         sync_status: 'error'
       };
-      
+
       await updateIntegration(updatedIntegration);
 
       toast({
@@ -342,9 +342,9 @@ const CustomerPortalIntegrations: React.FC = () => {
         customer_id: 1,
         user_id: userInfo?.ID,
         event_type: eventType,
-        event_data: JSON.stringify({ 
-          integration_type: integrationType, 
-          ...additionalData 
+        event_data: JSON.stringify({
+          integration_type: integrationType,
+          ...additionalData
         }),
         timestamp: new Date().toISOString(),
         session_id: `session_${Date.now()}`,
@@ -363,23 +363,23 @@ const CustomerPortalIntegrations: React.FC = () => {
           <Badge className="bg-green-100 text-green-800">
             <CheckCircle className="h-3 w-3 mr-1" />
             Connected
-          </Badge>
-        );
+          </Badge>);
+
       case 'error':
         return (
           <Badge variant="destructive">
             <AlertCircle className="h-3 w-3 mr-1" />
             Error
-          </Badge>
-        );
+          </Badge>);
+
       case 'pending':
       default:
         return (
           <Badge variant="secondary">
             <RefreshCw className="h-3 w-3 mr-1" />
             Pending
-          </Badge>
-        );
+          </Badge>);
+
     }
   };
 
@@ -391,19 +391,19 @@ const CustomerPortalIntegrations: React.FC = () => {
     });
   };
 
-  const filteredIntegrationTypes = selectedCategory === 'all' 
-    ? integrationTypes 
-    : integrationTypes.filter(t => t.category === selectedCategory);
+  const filteredIntegrationTypes = selectedCategory === 'all' ?
+  integrationTypes :
+  integrationTypes.filter((t) => t.category === selectedCategory);
 
-  const activeIntegrations = integrations.filter(i => i.is_active);
-  const connectedIntegrations = integrations.filter(i => i.sync_status === 'connected');
+  const activeIntegrations = integrations.filter((i) => i.is_active);
+  const connectedIntegrations = integrations.filter((i) => i.sync_status === 'connected');
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -464,31 +464,31 @@ const CustomerPortalIntegrations: React.FC = () => {
       <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
         <div className="flex items-center justify-between">
           <TabsList className="grid w-full max-w-3xl grid-cols-7">
-            {categories.map(category => (
-              <TabsTrigger key={category.key} value={category.key} className="text-xs">
+            {categories.map((category) =>
+            <TabsTrigger key={category.key} value={category.key} className="text-xs">
                 {category.name}
                 <Badge variant="secondary" className="ml-1 text-xs">
                   {category.count}
                 </Badge>
               </TabsTrigger>
-            ))}
+            )}
           </TabsList>
         </div>
 
         <TabsContent value={selectedCategory} className="space-y-6">
           {/* Current Integrations */}
-          {integrations.length > 0 && (
-            <Card>
+          {integrations.length > 0 &&
+          <Card>
               <CardHeader>
                 <CardTitle>Active Integrations</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
-                  {integrations.map(integration => {
-                    const integrationType = integrationTypes.find(t => t.key === integration.integration_type);
-                    
-                    return (
-                      <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  {integrations.map((integration) => {
+                  const integrationType = integrationTypes.find((t) => t.key === integration.integration_type);
+
+                  return (
+                    <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div className="flex items-center gap-4">
                           <div className="p-2 rounded-lg bg-primary/10 text-primary">
                             {integrationType?.icon}
@@ -505,41 +505,41 @@ const CustomerPortalIntegrations: React.FC = () => {
                           {getStatusBadge(integration.sync_status)}
                           
                           <Switch
-                            checked={integration.is_active}
-                            onCheckedChange={() => toggleIntegration(integration)}
-                          />
+                          checked={integration.is_active}
+                          onCheckedChange={() => toggleIntegration(integration)} />
+
                           
                           <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => testConnection(integration)}
-                            disabled={testingConnection === integration.id?.toString()}
-                          >
-                            {testingConnection === integration.id?.toString() ? (
-                              <RefreshCw className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <Plug className="h-4 w-4" />
-                            )}
+                          variant="outline"
+                          size="sm"
+                          onClick={() => testConnection(integration)}
+                          disabled={testingConnection === integration.id?.toString()}>
+
+                            {testingConnection === integration.id?.toString() ?
+                          <RefreshCw className="h-4 w-4 animate-spin" /> :
+
+                          <Plug className="h-4 w-4" />
+                          }
                           </Button>
                           
                           <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedIntegration(integration);
-                              setShowConfigDialog(true);
-                            }}
-                          >
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedIntegration(integration);
+                            setShowConfigDialog(true);
+                          }}>
+
                             <Settings className="h-4 w-4" />
                           </Button>
                         </div>
-                      </div>
-                    );
-                  })}
+                      </div>);
+
+                })}
                 </div>
               </CardContent>
             </Card>
-          )}
+          }
 
           {/* Available Integrations */}
           <Card>
@@ -548,9 +548,9 @@ const CustomerPortalIntegrations: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {filteredIntegrationTypes.map(integrationType => {
-                  const existingIntegration = integrations.find(i => i.integration_type === integrationType.key);
-                  
+                {filteredIntegrationTypes.map((integrationType) => {
+                  const existingIntegration = integrations.find((i) => i.integration_type === integrationType.key);
+
                   return (
                     <div key={integrationType.key} className="border rounded-lg p-4">
                       <div className="flex items-start justify-between mb-3">
@@ -572,18 +572,18 @@ const CustomerPortalIntegrations: React.FC = () => {
                       </p>
                       
                       <div className="flex items-center gap-2 mb-4">
-                        {integrationType.authType === 'api_key' && (
-                          <Badge variant="secondary">
+                        {integrationType.authType === 'api_key' &&
+                        <Badge variant="secondary">
                             <Key className="h-3 w-3 mr-1" />
                             API Key
                           </Badge>
-                        )}
-                        {integrationType.webhookSupport && (
-                          <Badge variant="secondary">
+                        }
+                        {integrationType.webhookSupport &&
+                        <Badge variant="secondary">
                             <Webhook className="h-3 w-3 mr-1" />
                             Webhooks
                           </Badge>
-                        )}
+                        }
                       </div>
                       
                       <Button
@@ -596,22 +596,22 @@ const CustomerPortalIntegrations: React.FC = () => {
                           } else {
                             createIntegration(integrationType);
                           }
-                        }}
-                      >
-                        {existingIntegration ? (
-                          <>
+                        }}>
+
+                        {existingIntegration ?
+                        <>
                             <Settings className="h-4 w-4 mr-2" />
                             Configure
-                          </>
-                        ) : (
-                          <>
+                          </> :
+
+                        <>
                             <Plus className="h-4 w-4 mr-2" />
                             Add Integration
                           </>
-                        )}
+                        }
                       </Button>
-                    </div>
-                  );
+                    </div>);
+
                 })}
               </div>
             </CardContent>
@@ -626,8 +626,8 @@ const CustomerPortalIntegrations: React.FC = () => {
             <DialogTitle>Configure {selectedIntegration?.integration_name}</DialogTitle>
           </DialogHeader>
           
-          {selectedIntegration && (
-            <div className="space-y-6">
+          {selectedIntegration &&
+          <div className="space-y-6">
               {/* Integration Status */}
               <Card>
                 <CardContent className="pt-6">
@@ -653,23 +653,23 @@ const CustomerPortalIntegrations: React.FC = () => {
                     <Label>API Key</Label>
                     <div className="flex gap-2">
                       <Input
-                        type={showApiKey[selectedIntegration.id?.toString() || ''] ? 'text' : 'password'}
-                        placeholder="Enter your API key"
-                        className="flex-1"
-                      />
+                      type={showApiKey[selectedIntegration.id?.toString() || ''] ? 'text' : 'password'}
+                      placeholder="Enter your API key"
+                      className="flex-1" />
+
                       <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setShowApiKey(prev => ({
-                          ...prev,
-                          [selectedIntegration.id?.toString() || '']: !prev[selectedIntegration.id?.toString() || '']
-                        }))}
-                      >
-                        {showApiKey[selectedIntegration.id?.toString() || ''] ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowApiKey((prev) => ({
+                        ...prev,
+                        [selectedIntegration.id?.toString() || '']: !prev[selectedIntegration.id?.toString() || '']
+                      }))}>
+
+                        {showApiKey[selectedIntegration.id?.toString() || ''] ?
+                      <EyeOff className="h-4 w-4" /> :
+
+                      <Eye className="h-4 w-4" />
+                      }
                       </Button>
                     </div>
                   </div>
@@ -678,15 +678,15 @@ const CustomerPortalIntegrations: React.FC = () => {
                     <Label>Webhook URL</Label>
                     <div className="flex gap-2">
                       <Input
-                        value={`${window.location.origin}/webhooks/${selectedIntegration.integration_type}`}
-                        readOnly
-                        className="flex-1 font-mono text-sm"
-                      />
+                      value={`${window.location.origin}/webhooks/${selectedIntegration.integration_type}`}
+                      readOnly
+                      className="flex-1 font-mono text-sm" />
+
                       <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => copyToClipboard(`${window.location.origin}/webhooks/${selectedIntegration.integration_type}`)}
-                      >
+                      variant="outline"
+                      size="sm"
+                      onClick={() => copyToClipboard(`${window.location.origin}/webhooks/${selectedIntegration.integration_type}`)}>
+
                         <Copy className="h-4 w-4" />
                       </Button>
                     </div>
@@ -700,28 +700,28 @@ const CustomerPortalIntegrations: React.FC = () => {
               {/* Actions */}
               <div className="flex gap-3">
                 <Button
-                  variant="outline"
-                  onClick={() => setShowConfigDialog(false)}
-                  className="flex-1"
-                >
+                variant="outline"
+                onClick={() => setShowConfigDialog(false)}
+                className="flex-1">
+
                   Cancel
                 </Button>
                 <Button
-                  onClick={() => {
-                    updateIntegration(selectedIntegration);
-                    setShowConfigDialog(false);
-                  }}
-                  className="flex-1"
-                >
+                onClick={() => {
+                  updateIntegration(selectedIntegration);
+                  setShowConfigDialog(false);
+                }}
+                className="flex-1">
+
                   Save Configuration
                 </Button>
               </div>
             </div>
-          )}
+          }
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CustomerPortalIntegrations;
