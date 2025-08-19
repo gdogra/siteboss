@@ -244,7 +244,10 @@ const AdminDashboard = () => {
         variant: 'destructive'
       });
     } finally {
-      setLoading(false);
+      // Add a small delay to ensure UI updates properly
+      setTimeout(() => {
+        setLoading(false);
+      }, 100);
     }
   };
 
@@ -386,13 +389,16 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <Clock className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p>Loading dashboard...</p>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="pt-16 flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <Clock className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
+            <p className="text-gray-600">Loading dashboard...</p>
+          </div>
         </div>
-      </div>);
-
+      </div>
+    );
   }
 
   return (
