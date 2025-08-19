@@ -49,10 +49,10 @@ const AdminLogin = () => {
 
 
 
-      // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {toast({ title: "Error", description: "Please enter both email and password", variant: "destructive" });return;}
 
-    setLoading(true);
+
+      // User is not logged in, stay on login page
+    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {toast({ title: "Error", description: "Please enter both email and password", variant: "destructive" });return;}setLoading(true);
 
     try {
       console.log('Attempting login with:', credentials.email);
@@ -115,6 +115,7 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
+      // Register the user
       const response = await window.ezsite.apis.register({
         email: credentials.email,
         password: credentials.password
@@ -126,8 +127,11 @@ const AdminLogin = () => {
 
       toast({
         title: "Registration Successful",
-        description: "Please check your email to verify your account"
+        description: "Account created with General User access. Please check your email to verify your account."
       });
+
+      // Clear the form
+      setCredentials({ email: '', password: '' });
     } catch (error: any) {
       console.error('Registration error:', error);
       toast({
@@ -217,7 +221,7 @@ const AdminLogin = () => {
                   disabled={loading}
                   className="w-full">
 
-                  Create Admin Account
+                  Create General User Account
                 </Button>
               </div>
             </form>

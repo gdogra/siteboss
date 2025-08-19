@@ -48,7 +48,7 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
     estimated_hours: 0,
     actual_hours: 0
   });
-  
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
@@ -74,7 +74,7 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
   // Update form data when date range changes
   useEffect(() => {
     if (dateRange?.from && dateRange?.to) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         start_date: dateRange.from?.toISOString().split('T')[0] || '',
         end_date: dateRange.to?.toISOString().split('T')[0] || ''
@@ -90,14 +90,14 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
         OrderByField: 'name',
         IsAsc: true,
         Filters: [
-          {
-            name: 'status',
-            op: 'Equal',
-            value: 'In Progress'
-          }
-        ]
+        {
+          name: 'status',
+          op: 'Equal',
+          value: 'In Progress'
+        }]
+
       });
-      
+
       if (response.error) throw response.error;
       setProjects(response.data?.List || []);
     } catch (error) {
@@ -112,7 +112,7 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.project_id) {
       toast({
         title: 'Validation Error',
@@ -179,7 +179,7 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
   };
 
   const handleInputChange = (field: keyof WorkPeriod, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -221,17 +221,17 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
               <Label htmlFor="project_id">Project *</Label>
               <Select
                 value={formData.project_id?.toString() || ''}
-                onValueChange={(value) => handleInputChange('project_id', parseInt(value))}
-              >
+                onValueChange={(value) => handleInputChange('project_id', parseInt(value))}>
+
                 <SelectTrigger>
                   <SelectValue placeholder="Select a project" />
                 </SelectTrigger>
                 <SelectContent>
-                  {projects.map((project) => (
-                    <SelectItem key={project.id} value={project.id.toString()}>
+                  {projects.map((project) =>
+                  <SelectItem key={project.id} value={project.id.toString()}>
                       {project.name} - {project.client_name}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -241,10 +241,10 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
               <Label>Work Period Date Range *</Label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start text-left font-normal"
-                  >
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal">
+
                     <CalendarRange className="mr-2 h-4 w-4" />
                     {getDateRangeText()}
                   </Button>
@@ -256,15 +256,15 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
                     defaultMonth={dateRange?.from}
                     selected={dateRange}
                     onSelect={setDateRange}
-                    numberOfMonths={2}
-                  />
+                    numberOfMonths={2} />
+
                 </PopoverContent>
               </Popover>
-              {dateRange?.from && dateRange?.to && (
-                <p className="text-sm text-muted-foreground">
+              {dateRange?.from && dateRange?.to &&
+              <p className="text-sm text-muted-foreground">
                   Duration: {getDaysBetween()} days
                 </p>
-              )}
+              }
             </div>
 
             {/* Description */}
@@ -275,8 +275,8 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
                 placeholder="Describe the work activities planned for this period..."
                 rows={3}
                 value={formData.description || ''}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-              />
+                onChange={(e) => handleInputChange('description', e.target.value)} />
+
             </div>
 
             {/* Status */}
@@ -284,8 +284,8 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
               <Label htmlFor="status">Status</Label>
               <Select
                 value={formData.status || 'Planned'}
-                onValueChange={(value) => handleInputChange('status', value)}
-              >
+                onValueChange={(value) => handleInputChange('status', value)}>
+
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -309,8 +309,8 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
                 placeholder="List team members assigned to this work period (one per line or comma-separated)"
                 rows={2}
                 value={formData.team_members || ''}
-                onChange={(e) => handleInputChange('team_members', e.target.value)}
-              />
+                onChange={(e) => handleInputChange('team_members', e.target.value)} />
+
             </div>
 
             {/* Hours Section */}
@@ -327,8 +327,8 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
                   step="0.5"
                   placeholder="0"
                   value={formData.estimated_hours || ''}
-                  onChange={(e) => handleInputChange('estimated_hours', parseFloat(e.target.value) || 0)}
-                />
+                  onChange={(e) => handleInputChange('estimated_hours', parseFloat(e.target.value) || 0)} />
+
               </div>
               
               <div className="space-y-2">
@@ -343,8 +343,8 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
                   step="0.5"
                   placeholder="0"
                   value={formData.actual_hours || ''}
-                  onChange={(e) => handleInputChange('actual_hours', parseFloat(e.target.value) || 0)}
-                />
+                  onChange={(e) => handleInputChange('actual_hours', parseFloat(e.target.value) || 0)} />
+
               </div>
             </div>
 
@@ -360,8 +360,8 @@ const WorkPeriodForm: React.FC<WorkPeriodFormProps> = ({ workPeriod, onClose, on
           </form>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default WorkPeriodForm;

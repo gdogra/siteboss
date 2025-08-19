@@ -27,6 +27,7 @@ import PaymentForm from '@/components/PaymentForm';
 import SubcontractorForm from '@/components/SubcontractorForm';
 import DocumentForm from '@/components/DocumentForm';
 import WorkPeriodForm from '@/components/WorkPeriodForm';
+import UserManagement from '@/components/UserManagement';
 
 interface Project {
   id: number;
@@ -468,13 +469,16 @@ const AdminDashboard = () => {
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="projects" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-7">
               <TabsTrigger value="projects">Projects</TabsTrigger>
               <TabsTrigger value="workperiods">Work Periods</TabsTrigger>
               <TabsTrigger value="logs">Daily Logs</TabsTrigger>
               <TabsTrigger value="payments">Payments</TabsTrigger>
               <TabsTrigger value="subcontractors">Subcontractors</TabsTrigger>
               <TabsTrigger value="documents">Documents</TabsTrigger>
+              {userInfo && userInfo.Roles?.split(',').includes('Administrator') && (
+                <TabsTrigger value="users">Users</TabsTrigger>
+              )}
             </TabsList>
 
             {/* Projects Tab */}
@@ -586,11 +590,11 @@ const AdminDashboard = () => {
                 workPeriods.map((workPeriod) => {
                   const getStatusColor = (status: string) => {
                     switch (status) {
-                      case 'Planned': return 'bg-blue-100 text-blue-800';
-                      case 'Active': return 'bg-green-100 text-green-800';
-                      case 'Completed': return 'bg-gray-100 text-gray-800';
-                      case 'Cancelled': return 'bg-red-100 text-red-800';
-                      default: return 'bg-gray-100 text-gray-800';
+                      case 'Planned':return 'bg-blue-100 text-blue-800';
+                      case 'Active':return 'bg-green-100 text-green-800';
+                      case 'Completed':return 'bg-gray-100 text-gray-800';
+                      case 'Cancelled':return 'bg-red-100 text-red-800';
+                      default:return 'bg-gray-100 text-gray-800';
                     }
                   };
 
@@ -635,20 +639,20 @@ const AdminDashboard = () => {
                         </div>
                       </CardHeader>
                       <CardContent>
-                        {workPeriod.description && (
-                          <div className="mb-4">
+                        {workPeriod.description &&
+                        <div className="mb-4">
                             <p className="text-sm text-gray-600 mb-1">Description</p>
                             <p className="text-sm">{workPeriod.description}</p>
                           </div>
-                        )}
+                        }
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {workPeriod.team_members && (
-                            <div>
+                          {workPeriod.team_members &&
+                          <div>
                               <p className="text-sm text-gray-600">Team Members</p>
                               <p className="font-medium text-sm">{workPeriod.team_members}</p>
                             </div>
-                          )}
+                          }
                           <div>
                             <p className="text-sm text-gray-600">Estimated Hours</p>
                             <p className="font-medium">{workPeriod.estimated_hours || 0}h</p>
@@ -656,16 +660,16 @@ const AdminDashboard = () => {
                           <div>
                             <p className="text-sm text-gray-600">Actual Hours</p>
                             <p className="font-medium">{workPeriod.actual_hours || 0}h</p>
-                            {workPeriod.estimated_hours > 0 && (
-                              <p className="text-xs text-gray-500">
+                            {workPeriod.estimated_hours > 0 &&
+                            <p className="text-xs text-gray-500">
                                 {((workPeriod.actual_hours || 0) / workPeriod.estimated_hours * 100).toFixed(1)}% of estimate
                               </p>
-                            )}
+                            }
                           </div>
                         </div>
                       </CardContent>
-                    </Card>
-                  );
+                    </Card>);
+
                 })
                 }
               </div>
@@ -938,6 +942,13 @@ const AdminDashboard = () => {
                 }
               </div>
             </TabsContent>
+
+            {/* Users Tab - Admin Only */}
+            {userInfo && userInfo.Roles?.split(',').includes('Administrator') && (
+              <TabsContent value="users" className="space-y-6">
+                <UserManagement />
+              </TabsContent>
+            )}
           </Tabs>
 
           {/* Form Modals */}
