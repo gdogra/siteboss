@@ -147,9 +147,9 @@ const ProposalAnalytics: React.FC = () => {
 
 
 
+
     // This is handled in fetchAnalytics
   };const calculateAnalytics = () => {if (!proposals.length) return;
-
     // Filter proposals based on time range
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - parseInt(timeRange));
