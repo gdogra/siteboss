@@ -94,7 +94,7 @@ export const useSubscriptionManager = () => {
 
   const loadSubscriptionData = async () => {
     let timeoutHandle: NodeJS.Timeout | null = null;
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -135,9 +135,9 @@ export const useSubscriptionManager = () => {
         if (!plansError && plansData?.List) {
           setPlans(plansData.List.map((plan: any) => ({
             ...plan,
-            features: typeof plan.features === 'string' ? 
-              (plan.features ? JSON.parse(plan.features) : []) : 
-              (Array.isArray(plan.features) ? plan.features : [])
+            features: typeof plan.features === 'string' ?
+            plan.features ? JSON.parse(plan.features) : [] :
+            Array.isArray(plan.features) ? plan.features : []
           })));
         } else {
           console.warn('Plans loading error:', plansError);
@@ -191,7 +191,7 @@ export const useSubscriptionManager = () => {
     } catch (error: any) {
       console.error('Error loading subscription data:', error);
       setError(error.message || 'Failed to load subscription information');
-      
+
       // Set fallback state
       setSubscription(null);
       setTrial(null);

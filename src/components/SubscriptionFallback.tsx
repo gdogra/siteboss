@@ -33,8 +33,8 @@ const SubscriptionFallback: React.FC<SubscriptionFallbackProps> = ({
             </Button>
           </div>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -51,11 +51,11 @@ const SubscriptionFallback: React.FC<SubscriptionFallbackProps> = ({
           This doesn't affect your access to the platform.
         </p>
         
-        {error && (
-          <div className="bg-white bg-opacity-50 p-3 rounded text-sm text-amber-800">
+        {error &&
+        <div className="bg-white bg-opacity-50 p-3 rounded text-sm text-amber-800">
             <strong>Technical details:</strong> {error}
           </div>
-        )}
+        }
         
         <div className="flex space-x-3">
           <Button variant="outline" onClick={onRetry} className="flex-1">
@@ -72,8 +72,8 @@ const SubscriptionFallback: React.FC<SubscriptionFallbackProps> = ({
           If this issue persists, please contact support.
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default SubscriptionFallback;

@@ -18,7 +18,7 @@ const CustomerLogin: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       setError('Please enter both email and password');
       return;
@@ -80,11 +80,11 @@ const CustomerLogin: React.FC = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
-              {error && (
-                <Alert variant="destructive">
+              {error &&
+              <Alert variant="destructive">
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
-              )}
+              }
 
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
@@ -97,8 +97,8 @@ const CustomerLogin: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
-                    required
-                  />
+                    required />
+
                 </div>
               </div>
 
@@ -113,34 +113,34 @@ const CustomerLogin: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="pl-10"
-                    required
-                  />
+                    required />
+
                 </div>
               </div>
 
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
+                disabled={isLoading}>
+
+                {isLoading ?
+                <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                     Signing in...
-                  </>
-                ) : (
-                  <>
+                  </> :
+
+                <>
                     <LogIn className="w-4 h-4 mr-2" />
                     Sign In
                   </>
-                )}
+                }
               </Button>
 
               <div className="text-center space-y-4">
                 <Link
                   to="/reset-password"
-                  className="text-sm text-blue-600 hover:text-blue-800"
-                >
+                  className="text-sm text-blue-600 hover:text-blue-800">
+
                   Forgot your password?
                 </Link>
                 
@@ -161,15 +161,15 @@ const CustomerLogin: React.FC = () => {
         <div className="text-center">
           <Link
             to="/"
-            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800"
-          >
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800">
+
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default CustomerLogin;
