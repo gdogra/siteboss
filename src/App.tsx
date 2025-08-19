@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { TenantProvider } from "@/contexts/TenantContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import SubscriptionProvider from "@/components/SubscriptionProvider";
 import HomePage from "./pages/HomePage";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -25,6 +26,7 @@ import ClientDocuments from "./pages/ClientDocuments";
 import ClientMessages from "./pages/ClientMessages";
 import CustomerPortalDashboard from "./pages/CustomerPortalDashboard";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import CustomerPortal from "./pages/CustomerPortal";
 
 const PlatformAdminDashboard = React.lazy(() => import("./pages/PlatformAdminDashboard"));
 const InventoryManagementPage = React.lazy(() => import("./pages/InventoryManagementPage"));
@@ -47,7 +49,8 @@ const App = () =>
     <TooltipProvider>
       <ThemeProvider>
         <TenantProvider>
-        <Toaster />
+          <SubscriptionProvider>
+            <Toaster />
         <BrowserRouter>
           <Routes>
           <Route path="/" element={<HomePage />} />
@@ -67,74 +70,92 @@ const App = () =>
           <Route path="/client/login" element={<ClientLogin />} />
           <Route path="/client-login" element={<Navigate to="/client/login" replace />} />
           <Route path="/client/dashboard" element={
-              <ClientAuthGuard>
+                <ClientAuthGuard>
               <ClientDashboard />
             </ClientAuthGuard>
-              } />
+                } />
           <Route path="/client-dashboard" element={<Navigate to="/client/dashboard" replace />} />
           <Route path="/client/projects" element={
-              <ClientAuthGuard>
+                <ClientAuthGuard>
               <ClientProjects />
             </ClientAuthGuard>
-              } />
+                } />
           <Route path="/client-projects" element={<Navigate to="/client/projects" replace />} />
           <Route path="/client/invoices" element={
-              <ClientAuthGuard>
+                <ClientAuthGuard>
               <ClientInvoices />
             </ClientAuthGuard>
-              } />
+                } />
           <Route path="/client-invoices" element={<Navigate to="/client/invoices" replace />} />
           <Route path="/client/documents" element={
-              <ClientAuthGuard>
+                <ClientAuthGuard>
               <ClientDocuments />
             </ClientAuthGuard>
-              } />
+                } />
           <Route path="/client-documents" element={<Navigate to="/client/documents" replace />} />
           <Route path="/client/messages" element={
-              <ClientAuthGuard>
+                <ClientAuthGuard>
               <ClientMessages />
             </ClientAuthGuard>
-              } />
+                } />
           <Route path="/customer-portal" element={
-              <ClientAuthGuard>
+                <ClientAuthGuard>
               <CustomerPortalDashboard />
             </ClientAuthGuard>
-              } />
+                } />
           <Route path="/platform-admin" element={
-              <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
               <PlatformAdminDashboard />
             </React.Suspense>
-              } />
+                } />
           <Route path="/inventory" element={
-              <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
               <InventoryManagementPage />
             </React.Suspense>
-              } />
+                } />
           <Route path="/proposals" element={
-              <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div></div>}>
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div></div>}>
               <ProposalManagementPage />
             </React.Suspense>
-              } />
+                } />
           <Route path="/proposal/:id/view" element={
-              <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div></div>}>
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div></div>}>
               <ProposalViewPage />
             </React.Suspense>
-              } />
+                } />
           <Route path="/permit-management" element={
-              <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div></div>}>
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div></div>}>
               <PermitManagementPage />
             </React.Suspense>
-              } />
+                } />
+          <Route path="/time-tracking" element={
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
+              <AdvancedTimeTrackingPage />
+            </React.Suspense>
+                } />
           <Route path="/advanced-time-tracking" element={<AdvancedTimeTrackingPage />} />
+          <Route path="/permits" element={
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div></div>}>
+              <PermitManagementPage />
+            </React.Suspense>
+                } />
+          <Route path="/subscriptions" element={
+                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div></div>}>
+              <SubscriptionManagementPage />
+            </React.Suspense>
+                } />
           <Route path="/subscription-management" element={<SubscriptionManagementPage />} />
+          <Route path="/tenant-management" element={<TenantManagementPage />} />
+          <Route path="/customer-portal-new" element={<CustomerPortal />} />
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/client-messages" element={<Navigate to="/client/messages" replace />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <FloatingChatWidget />
-      </TenantProvider>
+            <FloatingChatWidget />
+          </SubscriptionProvider>
+        </TenantProvider>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>

@@ -52,6 +52,7 @@ interface SubscriptionContextType {
   trial: TrialData | null;
   plans: SubscriptionPlan[];
   loading: boolean;
+  error: string | null;
   refreshSubscription: () => Promise<void>;
   hasFeatureAccess: (featureKey: string) => boolean;
   isTrialActive: () => boolean;
@@ -66,6 +67,7 @@ const SubscriptionContext = createContext<SubscriptionContextType>({
   trial: null,
   plans: [],
   loading: true,
+  error: null,
   refreshSubscription: async () => {},
   hasFeatureAccess: () => false,
   isTrialActive: () => false,
@@ -88,79 +90,122 @@ export const useSubscriptionManager = () => {
   const [trial, setTrial] = useState<TrialData | null>(null);
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const loadSubscriptionData = async () => {
+    let timeoutHandle: NodeJS.Timeout | null = null;
+    
     try {
       setLoading(true);
+      setError(null);
 
-      // Load user info to get user ID
+      // Set a timeout to prevent infinite loading
+      timeoutHandle = setTimeout(() => {
+        setLoading(false);
+        setError('Request timed out - check your connection');
+        console.warn('Subscription data loading timed out after 15 seconds');
+      }, 15000);
+
+      // Load user info first
       const { data: userInfo, error: userError } = await window.ezsite.apis.getUserInfo();
-      if (userError) throw userError;
+      if (userError) {
+        throw new Error(`Authentication failed: ${userError}`);
+      }
 
-      // Load subscription plans using correct table ID
-      const { data: plansData, error: plansError } = await window.ezsite.apis.tablePage('35510', {
-        PageNo: 1,
-        PageSize: 50,
-        OrderByField: 'sort_order',
-        IsAsc: true,
-        Filters: [{ name: 'is_active', op: 'Equal', value: true }]
-      });
-      if (plansError) throw plansError;
+      if (!userInfo?.ID) {
+        // User not logged in - set default state
+        setSubscription(null);
+        setTrial(null);
+        setPlans([]);
+        if (timeoutHandle) clearTimeout(timeoutHandle);
+        setLoading(false);
+        return;
+      }
 
-      setPlans(plansData.List.map((plan: any) => ({
-        ...plan,
-        features: typeof plan.features === 'string' ? JSON.parse(plan.features || '[]') : plan.features || []
-      })));
+      // Load subscription plans (graceful failure)
+      try {
+        const { data: plansData, error: plansError } = await window.ezsite.apis.tablePage('35510', {
+          PageNo: 1,
+          PageSize: 50,
+          OrderByField: 'id',
+          IsAsc: true,
+          Filters: []
+        });
 
-      // Load user subscription using correct table ID and field names
-      if (userInfo?.ID) {
+        if (!plansError && plansData?.List) {
+          setPlans(plansData.List.map((plan: any) => ({
+            ...plan,
+            features: typeof plan.features === 'string' ? 
+              (plan.features ? JSON.parse(plan.features) : []) : 
+              (Array.isArray(plan.features) ? plan.features : [])
+          })));
+        } else {
+          console.warn('Plans loading error:', plansError);
+          setPlans([]);
+        }
+      } catch (planError) {
+        console.warn('Plans loading failed:', planError);
+        setPlans([]);
+      }
+
+      // Load user subscription (graceful failure)
+      try {
         const { data: subscriptionData, error: subscriptionError } = await window.ezsite.apis.tablePage('35511', {
           PageNo: 1,
           PageSize: 1,
-          OrderByField: 'created_at',
+          OrderByField: 'id',
           IsAsc: false,
-          Filters: [
-          { name: 'user_id', op: 'Equal', value: userInfo.ID },
-          { name: 'status', op: 'StringContains', value: 'active,trial,paused' }]
-
+          Filters: [{ name: 'user_id', op: 'Equal', value: userInfo.ID }]
         });
 
-        if (subscriptionError) throw subscriptionError;
-        if (subscriptionData.List.length > 0) {
+        if (!subscriptionError && subscriptionData?.List?.length > 0) {
           setSubscription(subscriptionData.List[0]);
+        } else {
+          setSubscription(null);
         }
+      } catch (subError) {
+        console.warn('Subscription loading failed:', subError);
+        setSubscription(null);
+      }
 
-        // Load trial data using correct table ID  
+      // Load trial data (graceful failure)
+      try {
         const { data: trialData, error: trialError } = await window.ezsite.apis.tablePage('35515', {
           PageNo: 1,
           PageSize: 1,
-          OrderByField: 'created_at',
+          OrderByField: 'id',
           IsAsc: false,
-          Filters: [
-          { name: 'user_id', op: 'Equal', value: userInfo.ID },
-          { name: 'status', op: 'Equal', value: 'active' }]
-
+          Filters: [{ name: 'user_id', op: 'Equal', value: userInfo.ID }]
         });
 
-        if (trialError) throw trialError;
-        if (trialData.List.length > 0) {
+        if (!trialError && trialData?.List?.length > 0) {
           setTrial(trialData.List[0]);
+        } else {
+          setTrial(null);
         }
+      } catch (trialLoadError) {
+        console.warn('Trial loading failed:', trialLoadError);
+        setTrial(null);
       }
-    } catch (error) {
+
+    } catch (error: any) {
       console.error('Error loading subscription data:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load subscription information',
-        variant: 'destructive'
-      });
+      setError(error.message || 'Failed to load subscription information');
+      
+      // Set fallback state
+      setSubscription(null);
+      setTrial(null);
+      setPlans([]);
     } finally {
+      if (timeoutHandle) {
+        clearTimeout(timeoutHandle);
+      }
       setLoading(false);
     }
   };
 
   const getCurrentPlan = (): SubscriptionPlan | null => {
-    if (!subscription) return null;
+    if (!subscription || !plans.length) return null;
     return plans.find((p) => p.id === subscription.plan_id) || null;
   };
 
@@ -197,7 +242,7 @@ export const useSubscriptionManager = () => {
   };
 
   const canUpgrade = (): boolean => {
-    if (!subscription) return true;
+    if (!subscription || !plans.length) return true;
 
     const currentPlan = getCurrentPlan();
     if (!currentPlan) return true;
@@ -207,7 +252,7 @@ export const useSubscriptionManager = () => {
   };
 
   const canDowngrade = (): boolean => {
-    if (!subscription) return false;
+    if (!subscription || !plans.length) return false;
 
     const currentPlan = getCurrentPlan();
     if (!currentPlan) return false;
@@ -225,6 +270,7 @@ export const useSubscriptionManager = () => {
     trial,
     plans,
     loading,
+    error,
     refreshSubscription: loadSubscriptionData,
     hasFeatureAccess,
     isTrialActive,

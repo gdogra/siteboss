@@ -1,6 +1,6 @@
 import React from 'react';
-import { AuthGuard } from '@/components/AuthGuard';
-import { Header } from '@/components/Header';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 import TenantManagement from '@/components/TenantManagement';
 
 const TenantManagementPage: React.FC = () => {

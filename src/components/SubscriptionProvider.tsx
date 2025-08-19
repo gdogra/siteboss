@@ -1,18 +1,18 @@
-import React from 'react';
-import { SubscriptionContext, useSubscriptionManager } from '@/hooks/useSubscription';
+import React, { ReactNode } from 'react';
+import { useSubscriptionManager, SubscriptionContext } from '@/hooks/useSubscription';
 
 interface SubscriptionProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ children }) => {
-  const subscriptionData = useSubscriptionManager();
+  const subscriptionManager = useSubscriptionManager();
 
   return (
-    <SubscriptionContext.Provider value={subscriptionData}>
+    <SubscriptionContext.Provider value={subscriptionManager}>
       {children}
-    </SubscriptionContext.Provider>);
-
+    </SubscriptionContext.Provider>
+  );
 };
 
 export default SubscriptionProvider;

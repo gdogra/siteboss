@@ -15,11 +15,15 @@ import {
   ChevronDown,
   Palette,
   Globe,
-  TrendingUp } from
+  TrendingUp,
+  Clock,
+  Crown,
+  AlertTriangle } from
 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useTenant } from '@/contexts/TenantContext';
+import { useSubscription } from '@/hooks/useSubscription';
 import ThemeToggle from '@/components/ThemeToggle';
 
 const Header: React.FC = () => {
@@ -30,6 +34,16 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { tenant } = useTenant();
+
+  // Use subscription hook
+  const {
+    loading: subscriptionLoading,
+    error: subscriptionError,
+    trial,
+    isTrialActive,
+    daysLeftInTrial,
+    refreshSubscription
+  } = useSubscription();
 
   useEffect(() => {
     checkUserAuth();
@@ -135,6 +149,43 @@ const Header: React.FC = () => {
 
         {/* Right Side Actions */}
         <div className="flex items-center space-x-3">
+          
+          {/* Subscription Status - only show if user is logged in */}
+          {user &&
+          <div className="hidden sm:flex items-center">
+              {subscriptionLoading ?
+            <div className="flex items-center space-x-2 px-3 py-1 bg-blue-50 rounded-full">
+                  <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600"></div>
+                  <span className="text-xs text-blue-700">Loading...</span>
+                </div> :
+            subscriptionError ?
+            <button
+              onClick={refreshSubscription}
+              className="flex items-center space-x-2 px-3 py-1 bg-red-50 hover:bg-red-100 rounded-full cursor-pointer transition-colors"
+              title="Click to retry loading subscription data">
+
+                  <AlertTriangle className="w-3 h-3 text-red-600" />
+                  <span className="text-xs text-red-700">Error</span>
+                </button> :
+            trial && isTrialActive() ?
+            <div className="flex items-center space-x-2 px-3 py-1 bg-orange-50 rounded-full">
+                  <Clock className="w-3 h-3 text-orange-600" />
+                  <span className="text-xs text-orange-700">
+                    {daysLeftInTrial()} days trial
+                  </span>
+                </div> :
+
+            <Link
+              to="/subscriptions"
+              className="flex items-center space-x-2 px-3 py-1 bg-green-50 hover:bg-green-100 rounded-full transition-colors">
+
+                  <Crown className="w-3 h-3 text-green-600" />
+                  <span className="text-xs text-green-700">Pro</span>
+                </Link>
+            }
+            </div>
+          }
+          
           <ThemeToggle />
           {/* Notifications */}
           <Button variant="ghost" size="icon" className="relative">
