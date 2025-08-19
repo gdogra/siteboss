@@ -35,19 +35,19 @@ const ProjectDetailsModal = ({ project, children }: ProjectDetailsModalProps) =>
   };
 
   const additionalImages = [
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  ];
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"];
+
 
   const amenities = [
-    { icon: Waves, text: "Private Beach Access" },
-    { icon: Car, text: "Valet Parking" },
-    { icon: Users, text: "24/7 Concierge" },
-    { icon: Shield, text: "Security System" },
-    { icon: Home, text: "Smart Home Technology" },
-    { icon: Calendar, text: "Clubhouse & Spa" }
-  ];
+  { icon: Waves, text: "Private Beach Access" },
+  { icon: Car, text: "Valet Parking" },
+  { icon: Users, text: "24/7 Concierge" },
+  { icon: Shield, text: "Security System" },
+  { icon: Home, text: "Smart Home Technology" },
+  { icon: Calendar, text: "Clubhouse & Spa" }];
+
 
   const specifications = {
     "Unit Types": "2, 3, 4 Bedroom Residences",
@@ -79,9 +79,9 @@ const ProjectDetailsModal = ({ project, children }: ProjectDetailsModalProps) =>
                 </div>
               </div>
             </div>
-            <Badge className={project.status === 'Available' ? 'bg-green-100 text-green-800' : 
-                             project.status === 'Pre-Launch' ? 'bg-blue-100 text-blue-800' : 
-                             'bg-red-100 text-red-800'}>
+            <Badge className={project.status === 'Available' ? 'bg-green-100 text-green-800' :
+            project.status === 'Pre-Launch' ? 'bg-blue-100 text-blue-800' :
+            'bg-red-100 text-red-800'}>
               {project.status}
             </Badge>
           </div>
@@ -100,8 +100,8 @@ const ProjectDetailsModal = ({ project, children }: ProjectDetailsModalProps) =>
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-full object-cover"
-              />
+                className="w-full h-full object-cover" />
+
             </div>
             
             <div>
@@ -117,12 +117,12 @@ const ProjectDetailsModal = ({ project, children }: ProjectDetailsModalProps) =>
             <div>
               <h3 className="font-heading text-xl font-semibold mb-3">Key Features</h3>
               <div className="grid grid-cols-2 gap-3">
-                {project.features.map((feature, index) => (
-                  <div key={index} className="flex items-center">
+                {project.features.map((feature, index) =>
+                <div key={index} className="flex items-center">
                     <Home className="h-4 w-4 text-primary mr-2" />
                     <span className="text-gray-700">{feature}</span>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </TabsContent>
@@ -133,42 +133,42 @@ const ProjectDetailsModal = ({ project, children }: ProjectDetailsModalProps) =>
                 <img
                   src={project.image}
                   alt={`${project.title} - Main`}
-                  className="w-full h-full object-cover"
-                />
+                  className="w-full h-full object-cover" />
+
               </div>
-              {additionalImages.map((image, index) => (
-                <div key={index} className="aspect-square rounded-lg overflow-hidden">
+              {additionalImages.map((image, index) =>
+              <div key={index} className="aspect-square rounded-lg overflow-hidden">
                   <img
-                    src={image}
-                    alt={`${project.title} - ${index + 2}`}
-                    className="w-full h-full object-cover"
-                  />
+                  src={image}
+                  alt={`${project.title} - ${index + 2}`}
+                  className="w-full h-full object-cover" />
+
                 </div>
-              ))}
+              )}
             </div>
           </TabsContent>
 
           <TabsContent value="amenities" className="space-y-4">
             <div className="grid grid-cols-2 gap-6">
-              {amenities.map((amenity, index) => (
-                <div key={index} className="flex items-center p-4 border rounded-lg">
+              {amenities.map((amenity, index) =>
+              <div key={index} className="flex items-center p-4 border rounded-lg">
                   <div className="w-12 h-12 luxury-gradient rounded-lg flex items-center justify-center mr-4">
                     <amenity.icon className="h-6 w-6 text-white" />
                   </div>
                   <span className="font-medium text-gray-900">{amenity.text}</span>
                 </div>
-              ))}
+              )}
             </div>
           </TabsContent>
 
           <TabsContent value="specs" className="space-y-4">
             <div className="space-y-4">
-              {Object.entries(specifications).map(([key, value]) => (
-                <div key={key} className="flex justify-between items-center p-4 border rounded-lg">
+              {Object.entries(specifications).map(([key, value]) =>
+              <div key={key} className="flex justify-between items-center p-4 border rounded-lg">
                   <span className="font-medium text-gray-900">{key}</span>
                   <span className="text-gray-600">{value}</span>
                 </div>
-              ))}
+              )}
             </div>
           </TabsContent>
         </Tabs>
@@ -177,8 +177,8 @@ const ProjectDetailsModal = ({ project, children }: ProjectDetailsModalProps) =>
           <Button
             onClick={handleInquiry}
             className="flex-1 luxury-gradient text-white hover:opacity-90"
-            disabled={project.status === 'Sold Out'}
-          >
+            disabled={project.status === 'Sold Out'}>
+
             {project.status === 'Sold Out' ? 'Sold Out' : 'Request Information'}
           </Button>
           <Button variant="outline" onClick={() => setIsOpen(false)}>
@@ -186,8 +186,8 @@ const ProjectDetailsModal = ({ project, children }: ProjectDetailsModalProps) =>
           </Button>
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>);
+
 };
 
 export default ProjectDetailsModal;

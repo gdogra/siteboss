@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Home, DollarSign } from 'lucide-react';
+import { MapPin, Home, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProjectDetailsModal from '@/components/ProjectDetailsModal';
 
@@ -10,41 +10,41 @@ const Projects = () => {
   const projects = [
   {
     id: 1,
-    title: "Oceanview Residences",
-    location: "Laguna Beach, CA",
-    price: "From $2.5M",
-    status: "Available",
-    image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    description: "Luxury waterfront condominiums with panoramic ocean views and world-class amenities.",
-    features: ["3-4 Bedrooms", "Ocean Views", "Private Beach Access", "Concierge Service"]
+    title: "Modern Kitchen Renovation",
+    location: "Newport Beach, CA",
+    timeline: "3 months",
+    status: "Completed",
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    description: "Complete kitchen transformation with custom cabinetry, quartz countertops, and modern appliances.",
+    features: ["Custom Cabinetry", "Quartz Countertops", "Smart Appliances", "LED Lighting"]
   },
   {
     id: 2,
-    title: "Sunset Villas",
-    location: "Newport Coast, CA",
-    price: "From $3.2M",
-    status: "Pre-Launch",
-    image: "https://images.unsplash.com/photo-1660361339492-05c07e2e0a50?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MTg3MTl8MHwxfHNlYXJjaHwxfHxBJTIwbW9kZXJuJTIwdmlsbGElMjB3aXRoJTIwYSUyMHBvb2wlMjBhbmQlMjBjb250ZW1wb3JhcnklMjBkZXNpZ24lMkMlMjBzdXJyb3VuZGVkJTIwYnklMjBncmVlbmVyeS58ZW58MHx8fHwxNzUzOTE0NDc4fDA&ixlib=rb-4.1.0&q=80&w=200$w=800",
-    description: "Exclusive collection of modern villas featuring contemporary design and luxury finishes.",
-    features: ["4-5 Bedrooms", "Private Pool", "Smart Home Tech", "Gourmet Kitchen"]
+    title: "Luxury Bathroom Remodel",
+    location: "Laguna Beach, CA",
+    timeline: "6 weeks",
+    status: "In Progress",
+    image: "https://images.unsplash.com/photo-1620626011761-996317b8d101?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    description: "Spa-like master bathroom renovation featuring marble tiles, rainfall shower, and custom vanity.",
+    features: ["Marble Finishes", "Rainfall Shower", "Heated Floors", "Custom Vanity"]
   },
   {
     id: 3,
-    title: "Marina Heights",
+    title: "Custom Home Build",
     location: "Huntington Beach, CA",
-    price: "From $1.8M",
-    status: "Sold Out",
+    timeline: "8 months",
+    status: "Planning",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    description: "High-rise luxury living with marina views and premium amenities in the heart of the city.",
-    features: ["2-3 Bedrooms", "Marina Views", "Fitness Center", "Rooftop Deck"]
+    description: "Ground-up custom home construction with modern design and sustainable building practices.",
+    features: ["Sustainable Design", "Open Floor Plan", "Smart Home Tech", "Energy Efficient"]
   }];
 
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Available':return 'bg-green-100 text-green-800';
-      case 'Pre-Launch':return 'bg-blue-100 text-blue-800';
-      case 'Sold Out':return 'bg-red-100 text-red-800';
+      case 'Completed':return 'bg-green-100 text-green-800';
+      case 'In Progress':return 'bg-blue-100 text-blue-800';
+      case 'Planning':return 'bg-yellow-100 text-yellow-800';
       default:return 'bg-gray-100 text-gray-800';
     }
   };
@@ -65,8 +65,8 @@ const Projects = () => {
             <span className="text-transparent bg-clip-text luxury-gradient"> Projects</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover our portfolio of exceptional developments, each designed to offer 
-            the finest in luxury coastal living.
+            Explore our portfolio of exceptional renovations and custom builds, 
+            each showcasing our commitment to quality craftsmanship.
           </p>
         </motion.div>
 
@@ -104,8 +104,8 @@ const Projects = () => {
                     </div>
                     
                     <div className="flex items-center text-primary mb-3">
-                      <DollarSign className="h-4 w-4 mr-1" />
-                      <span className="font-semibold">{project.price}</span>
+                      <Calendar className="h-4 w-4 mr-1" />
+                      <span className="font-semibold">{project.timeline}</span>
                     </div>
                   </div>
                   
@@ -126,9 +126,8 @@ const Projects = () => {
                   
                   <ProjectDetailsModal project={project}>
                     <Button
-                      className="w-full luxury-gradient text-white hover:opacity-90"
-                      disabled={project.status === 'Sold Out'}>
-                      {project.status === 'Sold Out' ? 'Sold Out' : 'Learn More'}
+                    className="w-full luxury-gradient text-white hover:opacity-90">
+                      View Details
                     </Button>
                   </ProjectDetailsModal>
                 </CardContent>

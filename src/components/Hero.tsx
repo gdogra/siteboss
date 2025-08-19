@@ -12,7 +12,7 @@ const Hero = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80)'
+          backgroundImage: 'url(https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80)'
         }} />
 
       
@@ -27,15 +27,15 @@ const Hero = () => {
           transition={{ duration: 0.8 }}>
 
           <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 text-shadow">
-            Luxury Living
+            Transform Your
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
-              Redefined
+              Dream Home
             </span>
           </h1>
           
           <p className="text-xl sm:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Experience unparalleled elegance in our exclusive waterfront developments 
-            at Laguna Bay - where luxury meets coastal living.
+            Expert home renovations, custom builds, and construction services 
+            bringing your vision to life with quality craftsmanship.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -43,7 +43,7 @@ const Hero = () => {
               <Button
                 size="lg"
                 className="luxury-gradient text-white hover:opacity-90 px-8 py-4 text-lg font-medium group">
-                Explore Properties
+                View Our Work
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>

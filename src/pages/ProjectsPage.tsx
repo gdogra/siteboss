@@ -10,8 +10,8 @@ const ProjectsPage = () => {
         <Projects />
       </main>
       <Footer />
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProjectsPage;

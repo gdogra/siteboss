@@ -10,8 +10,8 @@ const ContactPage = () => {
         <Contact />
       </main>
       <Footer />
-    </div>
-  );
+    </div>);
+
 };
 
 export default ContactPage;

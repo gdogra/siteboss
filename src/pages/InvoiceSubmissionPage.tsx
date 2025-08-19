@@ -9,8 +9,8 @@ const InvoiceSubmissionPage = () => {
         {/* Back Navigation */}
         <Link
           to="/admin/dashboard"
-          className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8 group"
-        >
+          className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8 group">
+
           <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Dashboard
         </Link>
@@ -32,8 +32,8 @@ const InvoiceSubmissionPage = () => {
         {/* Form */}
         <InvoiceSubmissionForm />
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default InvoiceSubmissionPage;

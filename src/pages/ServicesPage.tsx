@@ -10,8 +10,8 @@ const ServicesPage = () => {
         <Services />
       </main>
       <Footer />
-    </div>
-  );
+    </div>);
+
 };
 
 export default ServicesPage;

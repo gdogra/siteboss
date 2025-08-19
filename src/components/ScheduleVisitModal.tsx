@@ -30,16 +30,16 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
   const { toast } = useToast();
 
   const timeSlots = [
-    '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
-    '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'
-  ];
+  '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
+  '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'];
+
 
   const properties = [
-    'Oceanview Residences',
-    'Sunset Villas',
-    'Marina Heights',
-    'Coastal Gardens'
-  ];
+  'Oceanview Residences',
+  'Sunset Villas',
+  'Marina Heights',
+  'Coastal Gardens'];
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -50,7 +50,7 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     toast({
       title: "Visit Scheduled!",
       description: `Thank you ${formData.name}! We'll contact you shortly to confirm your visit for ${format(date || new Date(), 'PPP')} at ${formData.time}.`
@@ -90,8 +90,8 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
                 onChange={handleInputChange}
                 required
                 className="mt-2"
-                placeholder="Your full name"
-              />
+                placeholder="Your full name" />
+
             </div>
             <div>
               <Label htmlFor="email">Email Address *</Label>
@@ -103,8 +103,8 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
                 onChange={handleInputChange}
                 required
                 className="mt-2"
-                placeholder="your.email@example.com"
-              />
+                placeholder="your.email@example.com" />
+
             </div>
           </div>
 
@@ -119,24 +119,24 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
                 onChange={handleInputChange}
                 required
                 className="mt-2"
-                placeholder="(123) 456-7890"
-              />
+                placeholder="(123) 456-7890" />
+
             </div>
             <div>
               <Label>Property Interest</Label>
               <Select
                 value={formData.property}
-                onValueChange={(value) => setFormData({ ...formData, property: value })}
-              >
+                onValueChange={(value) => setFormData({ ...formData, property: value })}>
+
                 <SelectTrigger className="mt-2">
                   <SelectValue placeholder="Select property" />
                 </SelectTrigger>
                 <SelectContent>
-                  {properties.map((property) => (
-                    <SelectItem key={property} value={property}>
+                  {properties.map((property) =>
+                  <SelectItem key={property} value={property}>
                       {property}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -149,8 +149,8 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-left font-normal mt-2"
-                  >
+                    className="w-full justify-start text-left font-normal mt-2">
+
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {date ? format(date, 'PPP') : 'Pick a date'}
                   </Button>
@@ -161,8 +161,8 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
                     selected={date}
                     onSelect={setDate}
                     disabled={(date) => date < new Date() || date.getDay() === 0}
-                    initialFocus
-                  />
+                    initialFocus />
+
                 </PopoverContent>
               </Popover>
             </div>
@@ -170,20 +170,20 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
               <Label>Preferred Time *</Label>
               <Select
                 value={formData.time}
-                onValueChange={(value) => setFormData({ ...formData, time: value })}
-              >
+                onValueChange={(value) => setFormData({ ...formData, time: value })}>
+
                 <SelectTrigger className="mt-2">
                   <SelectValue placeholder="Select time" />
                 </SelectTrigger>
                 <SelectContent>
-                  {timeSlots.map((time) => (
-                    <SelectItem key={time} value={time}>
+                  {timeSlots.map((time) =>
+                  <SelectItem key={time} value={time}>
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-2" />
                         {time}
                       </div>
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -198,30 +198,30 @@ const ScheduleVisitModal = ({ children }: ScheduleVisitModalProps) => {
               onChange={handleInputChange}
               className="mt-2"
               placeholder="Any specific requirements or questions..."
-              rows={3}
-            />
+              rows={3} />
+
           </div>
 
           <div className="flex gap-3">
             <Button
               type="submit"
               className="flex-1 luxury-gradient text-white hover:opacity-90"
-              disabled={!date || !formData.time || !formData.name || !formData.email || !formData.phone}
-            >
+              disabled={!date || !formData.time || !formData.name || !formData.email || !formData.phone}>
+
               Schedule Visit
             </Button>
             <Button
               type="button"
               variant="outline"
-              onClick={() => setIsOpen(false)}
-            >
+              onClick={() => setIsOpen(false)}>
+
               Cancel
             </Button>
           </div>
         </form>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>);
+
 };
 
 export default ScheduleVisitModal;

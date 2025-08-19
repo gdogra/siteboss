@@ -1,40 +1,40 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Building2, Compass, Palette, Shield, Users, Wrench } from 'lucide-react';
+import { Hammer, Home, Paintbrush, Wrench, Building2, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ScheduleVisitModal from '@/components/ScheduleVisitModal';
 
 const Services = () => {
   const services = [
   {
+    icon: Home,
+    title: "Home Renovations",
+    description: "Complete home makeovers from kitchens and bathrooms to whole-house renovations with expert craftsmanship."
+  },
+  {
     icon: Building2,
-    title: "Luxury Development",
-    description: "Premium residential and commercial development projects with uncompromising attention to detail and quality."
+    title: "Custom New Builds",
+    description: "Build your dream home from the ground up with our experienced construction team and custom design services."
   },
   {
-    icon: Compass,
-    title: "Site Selection",
-    description: "Expert analysis and selection of prime waterfront and coastal locations for maximum investment potential."
+    icon: Hammer,
+    title: "Remodeling & Additions",
+    description: "Expand your living space with room additions, basement finishing, and comprehensive remodeling projects."
   },
   {
-    icon: Palette,
-    title: "Custom Design",
-    description: "Bespoke architectural design and interior styling services tailored to your vision and lifestyle."
-  },
-  {
-    icon: Shield,
-    title: "Project Management",
-    description: "Comprehensive project oversight ensuring timely delivery, budget control, and quality assurance."
+    icon: Paintbrush,
+    title: "Design & Planning",
+    description: "Professional architectural design, 3D visualization, and project planning to bring your vision to life."
   },
   {
     icon: Users,
-    title: "Investment Advisory",
-    description: "Strategic guidance for real estate investments with focus on luxury coastal properties and developments."
+    title: "Project Management",
+    description: "Comprehensive project oversight ensuring timely delivery, budget control, and quality assurance throughout."
   },
   {
     icon: Wrench,
-    title: "Property Services",
-    description: "Ongoing maintenance, concierge services, and property management for our luxury developments."
+    title: "Maintenance & Repairs",
+    description: "Ongoing maintenance services, emergency repairs, and property improvements to keep your home in perfect condition."
   }];
 
 
@@ -54,8 +54,8 @@ const Services = () => {
             <span className="text-transparent bg-clip-text luxury-gradient"> Services</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From concept to completion, we provide comprehensive services to bring your 
-            luxury development vision to life.
+            From concept to completion, we provide comprehensive construction and renovation 
+            services to transform your space into something extraordinary.
           </p>
         </motion.div>
 
@@ -101,8 +101,8 @@ const Services = () => {
               Ready to Start Your Project?
             </h3>
             <p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-              Let's discuss how we can bring your luxury development vision to life 
-              with our expertise and commitment to excellence.
+              Let's discuss how we can transform your space with our expertise 
+              and commitment to quality craftsmanship.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <ScheduleVisitModal>
@@ -112,7 +112,7 @@ const Services = () => {
               </ScheduleVisitModal>
               <Link to="/projects">
                 <button className="border border-white/30 text-white hover:bg-white/10 px-8 py-3 rounded-lg font-medium transition-colors">
-                  View Portfolio
+                  View Our Work
                 </button>
               </Link>
             </div>

@@ -226,7 +226,7 @@ const AdminDashboard = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Recent Invoices</CardTitle>
-                <Button 
+                <Button
                   className="luxury-gradient text-white hover:opacity-90"
                   onClick={() => {
                     if (userType === 'contractor') {
@@ -237,8 +237,8 @@ const AdminDashboard = () => {
                         description: "Invoice creation form will open here."
                       });
                     }
-                  }}
-                >
+                  }}>
+
                   <Plus className="h-4 w-4 mr-2" />
                   {userType === 'admin' ? 'Add Invoice' : 'Submit Invoice'}
                 </Button>
@@ -265,29 +265,29 @@ const AdminDashboard = () => {
                           {invoice.status}
                         </Badge>
                         <div className="flex space-x-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => handleViewInvoice(invoice.id)}
-                          >
+                          <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleViewInvoice(invoice.id)}>
+
                             <Eye className="h-4 w-4" />
                           </Button>
                           {userType === 'admin' && invoice.status === 'pending' &&
                         <>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="text-green-600 hover:text-green-700"
-                                onClick={() => handleApproveInvoice(invoice.id)}
-                              >
+                              <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-green-600 hover:text-green-700"
+                            onClick={() => handleApproveInvoice(invoice.id)}>
+
                                 <CheckCircle className="h-4 w-4" />
                               </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="text-red-600 hover:text-red-700"
-                                onClick={() => handleRejectInvoice(invoice.id)}
-                              >
+                              <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-600 hover:text-red-700"
+                            onClick={() => handleRejectInvoice(invoice.id)}>
+
                                 <XCircle className="h-4 w-4" />
                               </Button>
                             </>
@@ -333,10 +333,10 @@ const AdminDashboard = () => {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Monthly Reports</CardTitle>
-                <Button 
+                <Button
                   variant="outline"
-                  onClick={handleGenerateReport}
-                >
+                  onClick={handleGenerateReport}>
+
                   <Download className="h-4 w-4 mr-2" />
                   Generate Report
                 </Button>
@@ -348,11 +348,11 @@ const AdminDashboard = () => {
                       <h3 className="font-medium text-gray-900">January 2024 Report</h3>
                       <p className="text-sm text-gray-600">Financial summary and project status</p>
                     </div>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="sm"
-                      onClick={() => handleDownloadReport("January 2024 Report")}
-                    >
+                      onClick={() => handleDownloadReport("January 2024 Report")}>
+
                       <Download className="h-4 w-4" />
                     </Button>
                   </div>
@@ -361,11 +361,11 @@ const AdminDashboard = () => {
                       <h3 className="font-medium text-gray-900">December 2023 Report</h3>
                       <p className="text-sm text-gray-600">Year-end summary and analytics</p>
                     </div>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="sm"
-                      onClick={() => handleDownloadReport("January 2024 Report")}
-                    >
+                      onClick={() => handleDownloadReport("January 2024 Report")}>
+
                       <Download className="h-4 w-4" />
                     </Button>
                   </div>
