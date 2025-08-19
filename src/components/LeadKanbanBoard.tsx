@@ -33,14 +33,14 @@ interface Lead {
 }
 
 const PIPELINE_STAGES = [
-  { key: 'NEW', label: 'New', color: 'bg-blue-100 text-blue-800' },
-  { key: 'QUALIFYING', label: 'Qualifying', color: 'bg-yellow-100 text-yellow-800' },
-  { key: 'CONTACTED', label: 'Contacted', color: 'bg-purple-100 text-purple-800' },
-  { key: 'ESTIMATE_SENT', label: 'Estimate Sent', color: 'bg-indigo-100 text-indigo-800' },
-  { key: 'NEGOTIATING', label: 'Negotiating', color: 'bg-orange-100 text-orange-800' },
-  { key: 'WON', label: 'Won', color: 'bg-green-100 text-green-800' },
-  { key: 'LOST', label: 'Lost', color: 'bg-red-100 text-red-800' }
-];
+{ key: 'NEW', label: 'New', color: 'bg-blue-100 text-blue-800' },
+{ key: 'QUALIFYING', label: 'Qualifying', color: 'bg-yellow-100 text-yellow-800' },
+{ key: 'CONTACTED', label: 'Contacted', color: 'bg-purple-100 text-purple-800' },
+{ key: 'ESTIMATE_SENT', label: 'Estimate Sent', color: 'bg-indigo-100 text-indigo-800' },
+{ key: 'NEGOTIATING', label: 'Negotiating', color: 'bg-orange-100 text-orange-800' },
+{ key: 'WON', label: 'Won', color: 'bg-green-100 text-green-800' },
+{ key: 'LOST', label: 'Lost', color: 'bg-red-100 text-red-800' }];
+
 
 const LeadKanbanBoard: React.FC = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -77,18 +77,18 @@ const LeadKanbanBoard: React.FC = () => {
         IsAsc: false,
         Filters: []
       });
-      
+
       if (error) throw error;
-      
+
       // Filter leads based on user permissions
       let filteredLeads = data.List;
       if (currentUser?.Roles?.includes('Sales') && !currentUser?.Roles?.includes('Administrator')) {
         // Sales can see their own leads + read others
         filteredLeads = data.List; // For now, show all for read access
-      } else if (currentUser?.Roles?.includes('r-QpoZrh')) { // Contractor
+      } else if (currentUser?.Roles?.includes('r-QpoZrh')) {// Contractor
         filteredLeads = []; // Contractors have no access
       }
-      
+
       setLeads(filteredLeads);
     } catch (error) {
       console.error('Failed to fetch leads:', error);
@@ -104,7 +104,7 @@ const LeadKanbanBoard: React.FC = () => {
 
   const handleStatusChange = async (leadId: number, newStatus: string) => {
     try {
-      const lead = leads.find(l => l.ID === leadId);
+      const lead = leads.find((l) => l.ID === leadId);
       if (!lead) return;
 
       // Calculate next action date
@@ -170,11 +170,11 @@ const LeadKanbanBoard: React.FC = () => {
 
   const getSLAStatus = (lead: Lead) => {
     if (!lead.next_action_at || lead.status === 'WON' || lead.status === 'LOST') return null;
-    
+
     const now = new Date();
     const nextAction = new Date(lead.next_action_at);
     const hoursUntilDue = (nextAction.getTime() - now.getTime()) / (1000 * 60 * 60);
-    
+
     if (hoursUntilDue < 0) return 'overdue';
     if (hoursUntilDue < 6) return 'critical';
     if (hoursUntilDue < 12) return 'warning';
@@ -183,25 +183,25 @@ const LeadKanbanBoard: React.FC = () => {
 
   const getSLABadge = (slaStatus: string | null) => {
     if (!slaStatus) return null;
-    
+
     const badges = {
       overdue: <Badge variant="destructive" className="text-xs"><AlertTriangle className="w-3 h-3 mr-1" />Overdue</Badge>,
       critical: <Badge variant="destructive" className="text-xs"><Clock className="w-3 h-3 mr-1" />Due Soon</Badge>,
       warning: <Badge variant="outline" className="text-xs text-orange-600"><Clock className="w-3 h-3 mr-1" />Due Today</Badge>,
       good: null
     };
-    
+
     return badges[slaStatus];
   };
 
-  const filteredLeads = leads.filter(lead => {
+  const filteredLeads = leads.filter((lead) => {
     const matchesSearch = lead.contact_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lead.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         lead.project_type.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    lead.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    lead.project_type.toLowerCase().includes(searchTerm.toLowerCase());
+
     const matchesSource = sourceFilter === 'all' || lead.lead_source === sourceFilter;
     const matchesOwner = ownerFilter === 'all' || lead.owner_id.toString() === ownerFilter;
-    
+
     return matchesSearch && matchesSource && matchesOwner;
   });
 
@@ -218,15 +218,15 @@ const LeadKanbanBoard: React.FC = () => {
   }
 
   // Check permissions
-  if (currentUser?.Roles?.includes('r-QpoZrh')) { // Contractor
+  if (currentUser?.Roles?.includes('r-QpoZrh')) {// Contractor
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <h3 className="text-lg font-medium text-gray-900">Access Denied</h3>
           <p className="text-gray-500">You don't have permission to view leads.</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -248,8 +248,8 @@ const LeadKanbanBoard: React.FC = () => {
             placeholder="Search leads..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+            className="pl-10" />
+
         </div>
         
         <Select value={sourceFilter} onValueChange={setSourceFilter}>
@@ -276,16 +276,16 @@ const LeadKanbanBoard: React.FC = () => {
       {/* Kanban Board */}
       <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 min-h-screen">
         {PIPELINE_STAGES.map((stage) => {
-          const stageLeads = filteredLeads.filter(lead => lead.status === stage.key);
+          const stageLeads = filteredLeads.filter((lead) => lead.status === stage.key);
           const totalValue = stageLeads.reduce((sum, lead) => sum + (lead.budget_max || 0), 0);
-          
+
           return (
             <div
               key={stage.key}
               className="bg-gray-50 rounded-lg p-4"
               onDrop={(e) => handleDrop(e, stage.key)}
-              onDragOver={handleDragOver}
-            >
+              onDragOver={handleDragOver}>
+
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-medium text-gray-900">{stage.label}</h3>
@@ -293,53 +293,53 @@ const LeadKanbanBoard: React.FC = () => {
                     {stageLeads.length}
                   </Badge>
                 </div>
-                {totalValue > 0 && (
-                  <p className="text-sm text-gray-500">
+                {totalValue > 0 &&
+                <p className="text-sm text-gray-500">
                     {formatCurrency(totalValue)}
                   </p>
-                )}
+                }
               </div>
               
               <div className="space-y-3">
                 {stageLeads.map((lead) => {
                   const slaStatus = getSLAStatus(lead);
                   const slaDisplay = getSLABadge(slaStatus);
-                  
+
                   return (
                     <Card
                       key={lead.ID}
                       className="cursor-pointer hover:shadow-md transition-shadow"
                       draggable
                       onDragStart={(e) => handleDragStart(e, lead)}
-                      onClick={() => setSelectedLead(lead)}
-                    >
+                      onClick={() => setSelectedLead(lead)}>
+
                       <CardContent className="p-4">
                         <div className="space-y-2">
                           <div className="flex justify-between items-start">
                             <h4 className="font-medium text-sm">{lead.contact_name}</h4>
-                            {lead.score > 0 && (
-                              <Badge variant="outline" className="text-xs">
+                            {lead.score > 0 &&
+                            <Badge variant="outline" className="text-xs">
                                 {lead.score}
                               </Badge>
-                            )}
+                            }
                           </div>
                           
-                          {lead.company && (
-                            <p className="text-xs text-gray-500">{lead.company}</p>
-                          )}
+                          {lead.company &&
+                          <p className="text-xs text-gray-500">{lead.company}</p>
+                          }
                           
                           <p className="text-xs text-gray-600 line-clamp-2">
                             {lead.project_type}
                           </p>
                           
-                          {(lead.budget_min > 0 || lead.budget_max > 0) && (
-                            <p className="text-xs font-medium text-green-600">
-                              {lead.budget_min > 0 && lead.budget_max > 0
-                                ? `${formatCurrency(lead.budget_min)} - ${formatCurrency(lead.budget_max)}`
-                                : formatCurrency(lead.budget_max || lead.budget_min)
-                              }
+                          {(lead.budget_min > 0 || lead.budget_max > 0) &&
+                          <p className="text-xs font-medium text-green-600">
+                              {lead.budget_min > 0 && lead.budget_max > 0 ?
+                            `${formatCurrency(lead.budget_min)} - ${formatCurrency(lead.budget_max)}` :
+                            formatCurrency(lead.budget_max || lead.budget_min)
+                            }
                             </p>
-                          )}
+                          }
                           
                           <div className="flex justify-between items-center pt-2">
                             <span className="text-xs text-gray-400">
@@ -349,37 +349,37 @@ const LeadKanbanBoard: React.FC = () => {
                           </div>
                         </div>
                       </CardContent>
-                    </Card>
-                  );
+                    </Card>);
+
                 })}
               </div>
-            </div>
-          );
+            </div>);
+
         })}
       </div>
 
       {/* Lead Drawer */}
-      {selectedLead && (
-        <LeadDrawer
-          lead={selectedLead}
-          isOpen={!!selectedLead}
-          onClose={() => setSelectedLead(null)}
-          onUpdate={fetchLeads}
-          currentUser={currentUser}
-        />
-      )}
+      {selectedLead &&
+      <LeadDrawer
+        lead={selectedLead}
+        isOpen={!!selectedLead}
+        onClose={() => setSelectedLead(null)}
+        onUpdate={fetchLeads}
+        currentUser={currentUser} />
+
+      }
 
       {/* New Lead Form */}
-      {showLeadForm && (
-        <LeadForm
-          isOpen={showLeadForm}
-          onClose={() => setShowLeadForm(false)}
-          onSuccess={fetchLeads}
-          currentUser={currentUser}
-        />
-      )}
-    </div>
-  );
+      {showLeadForm &&
+      <LeadForm
+        isOpen={showLeadForm}
+        onClose={() => setShowLeadForm(false)}
+        onSuccess={fetchLeads}
+        currentUser={currentUser} />
+
+      }
+    </div>);
+
 };
 
 export default LeadKanbanBoard;

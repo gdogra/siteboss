@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Users, 
-  TrendingUp, 
-  DollarSign, 
-  Clock, 
+import {
+  Users,
+  TrendingUp,
+  DollarSign,
+  Clock,
   AlertTriangle,
   CheckCircle,
-  XCircle
-} from 'lucide-react';
+  XCircle } from
+'lucide-react';
 
 interface LeadSummaryProps {
   currentUser: any;
@@ -37,7 +37,7 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
   const fetchLeadSummary = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch all leads
       const { data, error } = await window.ezsite.apis.tablePage(33726, {
         PageNo: 1,
@@ -46,42 +46,42 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
         IsAsc: false,
         Filters: []
       });
-      
+
       if (error) throw error;
-      
+
       const leads = data.List || [];
-      
+
       // Calculate summary statistics
       const byStatus = leads.reduce((acc: any, lead: any) => {
         acc[lead.status] = (acc[lead.status] || 0) + 1;
         return acc;
       }, {});
-      
+
       const totalValue = leads.reduce((sum: number, lead: any) => {
         return sum + (lead.budget_max || lead.budget_min || 0);
       }, 0);
-      
-      const averageScore = leads.length > 0 
-        ? leads.reduce((sum: number, lead: any) => sum + (lead.score || 0), 0) / leads.length
-        : 0;
-      
+
+      const averageScore = leads.length > 0 ?
+      leads.reduce((sum: number, lead: any) => sum + (lead.score || 0), 0) / leads.length :
+      0;
+
       // Calculate SLA alerts
       const now = new Date();
       const slaAlerts = leads.reduce((acc: any, lead: any) => {
         if (!lead.next_action_at || lead.status === 'WON' || lead.status === 'LOST') {
           return acc;
         }
-        
+
         const nextAction = new Date(lead.next_action_at);
         const hoursUntilDue = (nextAction.getTime() - now.getTime()) / (1000 * 60 * 60);
-        
-        if (hoursUntilDue < 0) acc.overdue++;
-        else if (hoursUntilDue < 6) acc.dueToday++;
-        else if (hoursUntilDue < 24) acc.dueSoon++;
-        
+
+        if (hoursUntilDue < 0) acc.overdue++;else
+        if (hoursUntilDue < 6) acc.dueToday++;else
+        if (hoursUntilDue < 24) acc.dueSoon++;
+
         return acc;
       }, { overdue: 0, dueToday: 0, dueSoon: 0 });
-      
+
       setSummary({
         total: leads.length,
         byStatus,
@@ -106,7 +106,7 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
   };
 
   const getStatusColor = (status: string) => {
-    const colors: { [key: string]: string } = {
+    const colors: {[key: string]: string;} = {
       'NEW': 'bg-blue-100 text-blue-800',
       'QUALIFYING': 'bg-yellow-100 text-yellow-800',
       'CONTACTED': 'bg-purple-100 text-purple-800',
@@ -120,17 +120,17 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'WON': return <CheckCircle className="w-4 h-4" />;
-      case 'LOST': return <XCircle className="w-4 h-4" />;
-      default: return <Users className="w-4 h-4" />;
+      case 'WON':return <CheckCircle className="w-4 h-4" />;
+      case 'LOST':return <XCircle className="w-4 h-4" />;
+      default:return <Users className="w-4 h-4" />;
     }
   };
 
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[1, 2, 3, 4].map((i) => (
-          <Card key={i}>
+        {[1, 2, 3, 4].map((i) =>
+        <Card key={i}>
             <CardContent className="p-6">
               <div className="animate-pulse">
                 <div className="h-4 bg-gray-200 rounded mb-2"></div>
@@ -138,9 +138,9 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
-    );
+        )}
+      </div>);
+
   }
 
   return (
@@ -210,8 +210,8 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {Object.entries(summary.byStatus).map(([status, count]) => (
-                <div key={status} className="flex items-center justify-between">
+              {Object.entries(summary.byStatus).map(([status, count]) =>
+              <div key={status} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {getStatusIcon(status)}
                     <span className="capitalize">{status.toLowerCase().replace('_', ' ')}</span>
@@ -220,7 +220,7 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
                     {count as number}
                   </Badge>
                 </div>
-              ))}
+              )}
             </div>
           </CardContent>
         </Card>
@@ -264,8 +264,8 @@ const LeadSummary: React.FC<LeadSummaryProps> = ({ currentUser }) => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default LeadSummary;

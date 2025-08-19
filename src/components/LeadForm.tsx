@@ -72,7 +72,7 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.contact_name.trim()) {
       toast({
         title: "Error",
@@ -154,7 +154,7 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -176,8 +176,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                   id="contact_name"
                   value={formData.contact_name}
                   onChange={(e) => handleChange('contact_name', e.target.value)}
-                  required
-                />
+                  required />
+
               </div>
               
               <div>
@@ -186,8 +186,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                   id="contact_email"
                   type="email"
                   value={formData.contact_email}
-                  onChange={(e) => handleChange('contact_email', e.target.value)}
-                />
+                  onChange={(e) => handleChange('contact_email', e.target.value)} />
+
               </div>
             </div>
             
@@ -197,8 +197,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                 <Input
                   id="contact_phone"
                   value={formData.contact_phone}
-                  onChange={(e) => handleChange('contact_phone', e.target.value)}
-                />
+                  onChange={(e) => handleChange('contact_phone', e.target.value)} />
+
               </div>
               
               <div>
@@ -206,8 +206,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                 <Input
                   id="company"
                   value={formData.company}
-                  onChange={(e) => handleChange('company', e.target.value)}
-                />
+                  onChange={(e) => handleChange('company', e.target.value)} />
+
               </div>
             </div>
             
@@ -216,8 +216,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
               <Input
                 id="address"
                 value={formData.address}
-                onChange={(e) => handleChange('address', e.target.value)}
-              />
+                onChange={(e) => handleChange('address', e.target.value)} />
+
             </div>
           </div>
 
@@ -248,8 +248,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                 id="project_description"
                 value={formData.project_description}
                 onChange={(e) => handleChange('project_description', e.target.value)}
-                rows={3}
-              />
+                rows={3} />
+
             </div>
             
             <div className="grid grid-cols-2 gap-4">
@@ -260,8 +260,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                   type="number"
                   min="0"
                   value={formData.budget_min}
-                  onChange={(e) => handleChange('budget_min', e.target.value)}
-                />
+                  onChange={(e) => handleChange('budget_min', e.target.value)} />
+
               </div>
               
               <div>
@@ -271,8 +271,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                   type="number"
                   min="0"
                   value={formData.budget_max}
-                  onChange={(e) => handleChange('budget_max', e.target.value)}
-                />
+                  onChange={(e) => handleChange('budget_max', e.target.value)} />
+
               </div>
             </div>
           </div>
@@ -327,8 +327,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
                 value={formData.notes}
                 onChange={(e) => handleChange('notes', e.target.value)}
                 rows={3}
-                placeholder="Any additional notes about this lead..."
-              />
+                placeholder="Any additional notes about this lead..." />
+
             </div>
           </div>
 
@@ -338,13 +338,13 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, onSuccess, current
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? 'Saving...' : (lead ? 'Update Lead' : 'Create Lead')}
+              {loading ? 'Saving...' : lead ? 'Update Lead' : 'Create Lead'}
             </Button>
           </div>
         </form>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>);
+
 };
 
 export default LeadForm;

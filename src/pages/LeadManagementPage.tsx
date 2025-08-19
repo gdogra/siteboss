@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Header from  '@/components/Header';
+import Header from '@/components/Header';
 import LeadKanbanBoard from '@/components/LeadKanbanBoard';
 import AuthGuard from '@/components/AuthGuard';
 
@@ -13,8 +13,8 @@ const LeadManagementPage: React.FC = () => {
           <LeadKanbanBoard />
         </main>
       </div>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default LeadManagementPage;

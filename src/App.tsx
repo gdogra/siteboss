@@ -9,6 +9,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import InvoiceSubmissionPage from "./pages/InvoiceSubmissionPage";
 import LeadManagementPage from "./pages/LeadManagementPage";
 import LeadIntakePage from "./pages/LeadIntakePage";
+import PaymentsPage from "./pages/PaymentsPage";
 import OnAuthSuccess from "./pages/OnAuthSuccess";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
@@ -28,6 +29,7 @@ const App = () =>
           <Route path="/invoice-submission" element={<InvoiceSubmissionPage />} />
           <Route path="/leads" element={<LeadManagementPage />} />
           <Route path="/get-quote" element={<LeadIntakePage />} />
+          <Route path="/payments" element={<PaymentsPage />} />
           <Route path="/onauthsuccess" element={<OnAuthSuccess />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />

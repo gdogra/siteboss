@@ -45,8 +45,8 @@ const LeadIntakePage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default LeadIntakePage;

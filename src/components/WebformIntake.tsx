@@ -26,7 +26,7 @@ const WebformIntake: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name.trim() || !formData.email.trim()) {
       alert('Name and email are required fields.');
       return;
@@ -38,11 +38,11 @@ const WebformIntake: React.FC = () => {
       const { data, error } = await window.ezsite.apis.run({
         path: "processWebformLead",
         param: [
-          {
-            ...formData,
-            source: 'website'
-          },
-          null // signature - not implemented for demo
+        {
+          ...formData,
+          source: 'website'
+        },
+        null // signature - not implemented for demo
         ]
       });
 
@@ -58,7 +58,7 @@ const WebformIntake: React.FC = () => {
   };
 
   const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   if (submitted) {
@@ -88,8 +88,8 @@ const WebformIntake: React.FC = () => {
             Submit Another Request
           </Button>
         </CardContent>
-      </Card>
-    );
+      </Card>);
+
   }
 
   return (
@@ -114,8 +114,8 @@ const WebformIntake: React.FC = () => {
                   id="name"
                   value={formData.name}
                   onChange={(e) => handleChange('name', e.target.value)}
-                  required
-                />
+                  required />
+
               </div>
               
               <div>
@@ -125,8 +125,8 @@ const WebformIntake: React.FC = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
-                  required
-                />
+                  required />
+
               </div>
             </div>
             
@@ -137,8 +137,8 @@ const WebformIntake: React.FC = () => {
                   id="phone"
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => handleChange('phone', e.target.value)}
-                />
+                  onChange={(e) => handleChange('phone', e.target.value)} />
+
               </div>
               
               <div>
@@ -146,8 +146,8 @@ const WebformIntake: React.FC = () => {
                 <Input
                   id="company"
                   value={formData.company}
-                  onChange={(e) => handleChange('company', e.target.value)}
-                />
+                  onChange={(e) => handleChange('company', e.target.value)} />
+
               </div>
             </div>
             
@@ -157,8 +157,8 @@ const WebformIntake: React.FC = () => {
                 id="address"
                 value={formData.address}
                 onChange={(e) => handleChange('address', e.target.value)}
-                placeholder="Street address, city, state, zip"
-              />
+                placeholder="Street address, city, state, zip" />
+
             </div>
           </div>
 
@@ -190,8 +190,8 @@ const WebformIntake: React.FC = () => {
                 value={formData.description}
                 onChange={(e) => handleChange('description', e.target.value)}
                 rows={4}
-                placeholder="Please describe your project in detail..."
-              />
+                placeholder="Please describe your project in detail..." />
+
             </div>
             
             <div>
@@ -205,8 +205,8 @@ const WebformIntake: React.FC = () => {
                     min="0"
                     value={formData.budgetMin}
                     onChange={(e) => handleChange('budgetMin', e.target.value)}
-                    placeholder="0"
-                  />
+                    placeholder="0" />
+
                 </div>
                 
                 <div>
@@ -217,8 +217,8 @@ const WebformIntake: React.FC = () => {
                     min="0"
                     value={formData.budgetMax}
                     onChange={(e) => handleChange('budgetMax', e.target.value)}
-                    placeholder="0"
-                  />
+                    placeholder="0" />
+
                 </div>
               </div>
             </div>
@@ -230,8 +230,8 @@ const WebformIntake: React.FC = () => {
                 value={formData.notes}
                 onChange={(e) => handleChange('notes', e.target.value)}
                 rows={3}
-                placeholder="Any specific requirements, timeline, or questions?"
-              />
+                placeholder="Any specific requirements, timeline, or questions?" />
+
             </div>
           </div>
 
@@ -246,8 +246,8 @@ const WebformIntake: React.FC = () => {
           </div>
         </form>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default WebformIntake;

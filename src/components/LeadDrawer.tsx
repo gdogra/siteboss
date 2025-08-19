@@ -7,20 +7,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  Building, 
-  MapPin, 
-  DollarSign, 
+import {
+  User,
+  Mail,
+  Phone,
+  Building,
+  MapPin,
+  DollarSign,
   Calendar,
   Star,
   MessageSquare,
   ArrowRight,
   Plus,
-  CheckCircle
-} from 'lucide-react';
+  CheckCircle } from
+'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface Lead {
@@ -95,10 +95,10 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
         OrderByField: 'created_at',
         IsAsc: false,
         Filters: [
-          { name: 'lead_id', op: 'Equal', value: lead.ID }
-        ]
+        { name: 'lead_id', op: 'Equal', value: lead.ID }]
+
       });
-      
+
       if (error) throw error;
       setActivities(data.List);
     } catch (error) {
@@ -114,12 +114,12 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
         OrderByField: 'created_at',
         IsAsc: false,
         Filters: [
-          { name: 'lead_id', op: 'Equal', value: lead.ID }
-        ]
+        { name: 'lead_id', op: 'Equal', value: lead.ID }]
+
       });
-      
+
       if (error) throw error;
-      
+
       // Fetch tag details for each association
       const tagPromises = data.List.map(async (assoc: any) => {
         const tagResponse = await window.ezsite.apis.tablePage(33728, {
@@ -129,7 +129,7 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
         });
         return tagResponse.data?.List[0];
       });
-      
+
       const tagResults = await Promise.all(tagPromises);
       setTags(tagResults.filter(Boolean));
     } catch (error) {
@@ -142,7 +142,7 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
 
     try {
       setLoading(true);
-      
+
       const activityData = {
         lead_id: lead.ID,
         user_id: currentUser?.ID || 0,
@@ -158,7 +158,7 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
 
       setNewNote('');
       fetchActivities();
-      
+
       toast({
         title: "Success",
         description: "Activity added successfully"
@@ -178,19 +178,19 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
   const convertToProject = async () => {
     try {
       setLoading(true);
-      
+
       const { data, error } = await window.ezsite.apis.run({
         path: "convertLeadToProject",
         param: [lead.ID, currentUser?.ID || 0]
       });
-      
+
       if (error) throw error;
-      
+
       toast({
         title: "Success",
         description: `Lead converted to project: ${data.projectName}`
       });
-      
+
       onUpdate();
       onClose();
     } catch (error) {
@@ -225,8 +225,8 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
   };
 
   const canConvert = lead.status !== 'WON' && lead.status !== 'LOST' && lead.converted_project_id === 0;
-  const canEdit = currentUser?.Roles?.includes('Administrator') || 
-                 (currentUser?.Roles?.includes('Sales') && lead.owner_id === currentUser.ID);
+  const canEdit = currentUser?.Roles?.includes('Administrator') ||
+  currentUser?.Roles?.includes('Sales') && lead.owner_id === currentUser.ID;
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -263,37 +263,37 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
                 <span>{lead.contact_name}</span>
               </div>
               
-              {lead.contact_email && (
-                <div className="flex items-center gap-2">
+              {lead.contact_email &&
+              <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-gray-400" />
                   <a href={`mailto:${lead.contact_email}`} className="text-blue-600 hover:underline">
                     {lead.contact_email}
                   </a>
                 </div>
-              )}
+              }
               
-              {lead.contact_phone && (
-                <div className="flex items-center gap-2">
+              {lead.contact_phone &&
+              <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-gray-400" />
                   <a href={`tel:${lead.contact_phone}`} className="text-blue-600 hover:underline">
                     {lead.contact_phone}
                   </a>
                 </div>
-              )}
+              }
               
-              {lead.company && (
-                <div className="flex items-center gap-2">
+              {lead.company &&
+              <div className="flex items-center gap-2">
                   <Building className="w-4 h-4 text-gray-400" />
                   <span>{lead.company}</span>
                 </div>
-              )}
+              }
               
-              {lead.address && (
-                <div className="flex items-center gap-2">
+              {lead.address &&
+              <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-gray-400" />
                   <span>{lead.address}</span>
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
 
@@ -303,32 +303,32 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
               <CardTitle className="text-lg">Project Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {lead.project_type && (
-                <div>
+              {lead.project_type &&
+              <div>
                   <span className="font-medium">Type: </span>
                   <span>{lead.project_type}</span>
                 </div>
-              )}
+              }
               
-              {lead.project_description && (
-                <div>
+              {lead.project_description &&
+              <div>
                   <span className="font-medium">Description: </span>
                   <p className="text-gray-600">{lead.project_description}</p>
                 </div>
-              )}
+              }
               
-              {(lead.budget_min > 0 || lead.budget_max > 0) && (
-                <div className="flex items-center gap-2">
+              {(lead.budget_min > 0 || lead.budget_max > 0) &&
+              <div className="flex items-center gap-2">
                   <DollarSign className="w-4 h-4 text-gray-400" />
                   <span className="font-medium">Budget: </span>
                   <span>
-                    {lead.budget_min > 0 && lead.budget_max > 0
-                      ? `${formatCurrency(lead.budget_min)} - ${formatCurrency(lead.budget_max)}`
-                      : formatCurrency(lead.budget_max || lead.budget_min)
-                    }
+                    {lead.budget_min > 0 && lead.budget_max > 0 ?
+                  `${formatCurrency(lead.budget_min)} - ${formatCurrency(lead.budget_max)}` :
+                  formatCurrency(lead.budget_max || lead.budget_min)
+                  }
                   </span>
                 </div>
-              )}
+              }
               
               <div>
                 <span className="font-medium">Source: </span>
@@ -340,29 +340,29 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
           </Card>
 
           {/* Tags */}
-          {tags.length > 0 && (
-            <Card>
+          {tags.length > 0 &&
+          <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Tags</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <Badge 
-                      key={tag.ID} 
-                      style={{ backgroundColor: tag.color + '20', color: tag.color }}
-                    >
+                  {tags.map((tag) =>
+                <Badge
+                  key={tag.ID}
+                  style={{ backgroundColor: tag.color + '20', color: tag.color }}>
+
                       {tag.name}
                     </Badge>
-                  ))}
+                )}
                 </div>
               </CardContent>
             </Card>
-          )}
+          }
 
           {/* Notes */}
-          {lead.notes && (
-            <Card>
+          {lead.notes &&
+          <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Notes</CardTitle>
               </CardHeader>
@@ -370,11 +370,11 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
                 <p className="text-gray-600">{lead.notes}</p>
               </CardContent>
             </Card>
-          )}
+          }
 
           {/* Add Activity */}
-          {canEdit && (
-            <Card>
+          {canEdit &&
+          <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Add Activity</CardTitle>
               </CardHeader>
@@ -392,10 +392,10 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
                 </Select>
                 
                 <Textarea
-                  placeholder="Add your activity details..."
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
-                />
+                placeholder="Add your activity details..."
+                value={newNote}
+                onChange={(e) => setNewNote(e.target.value)} />
+
                 
                 <Button onClick={addActivity} disabled={loading || !newNote.trim()}>
                   <Plus className="w-4 h-4 mr-2" />
@@ -403,7 +403,7 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
                 </Button>
               </CardContent>
             </Card>
-          )}
+          }
 
           {/* Activity Timeline */}
           <Card>
@@ -411,12 +411,12 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
               <CardTitle className="text-lg">Activity Timeline</CardTitle>
             </CardHeader>
             <CardContent>
-              {activities.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">No activities yet</p>
-              ) : (
-                <div className="space-y-4">
-                  {activities.map((activity) => (
-                    <div key={activity.ID} className="flex gap-3 p-3 bg-gray-50 rounded-lg">
+              {activities.length === 0 ?
+              <p className="text-gray-500 text-center py-4">No activities yet</p> :
+
+              <div className="space-y-4">
+                  {activities.map((activity) =>
+                <div key={activity.ID} className="flex gap-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex-shrink-0">
                         {getActivityIcon(activity.activity_type)}
                       </div>
@@ -428,22 +428,22 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
                           </span>
                         </div>
                         <p className="text-gray-600 text-sm mt-1">{activity.description}</p>
-                        {activity.old_value && activity.new_value && (
-                          <p className="text-xs text-gray-500 mt-1">
+                        {activity.old_value && activity.new_value &&
+                    <p className="text-xs text-gray-500 mt-1">
                             Changed from "{activity.old_value}" to "{activity.new_value}"
                           </p>
-                        )}
+                    }
                       </div>
                     </div>
-                  ))}
+                )}
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
 
           {/* Convert to Project */}
-          {canConvert && canEdit && (
-            <Card>
+          {canConvert && canEdit &&
+          <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Convert to Project</CardTitle>
               </CardHeader>
@@ -457,7 +457,7 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
                 </Button>
               </CardContent>
             </Card>
-          )}
+          }
 
           {/* Lead Info */}
           <Card>
@@ -470,15 +470,15 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
                 <span>{new Date(lead.created_at).toLocaleString()}</span>
               </div>
               
-              {lead.next_action_at && (
-                <div className="flex justify-between">
+              {lead.next_action_at &&
+              <div className="flex justify-between">
                   <span>Next Action:</span>
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
                     {new Date(lead.next_action_at).toLocaleString()}
                   </span>
                 </div>
-              )}
+              }
               
               <div className="flex justify-between">
                 <span>Score:</span>
@@ -491,8 +491,8 @@ const LeadDrawer: React.FC<LeadDrawerProps> = ({ lead, isOpen, onClose, onUpdate
           </Card>
         </div>
       </SheetContent>
-    </Sheet>
-  );
+    </Sheet>);
+
 };
 
 export default LeadDrawer;

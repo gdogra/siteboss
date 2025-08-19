@@ -103,6 +103,16 @@ const HomePage = () => {
                   Submit Invoice
                 </Button>
               </Link>
+              <Link to="/payments">
+                <Button size="lg" className="px-8 py-3 text-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600">
+                  Payment Engine
+                </Button>
+              </Link>
+              <Link to="/lead-management">
+                <Button size="lg" variant="outline" className="px-8 py-3 text-lg border-blue-200 hover:bg-blue-50">
+                  Lead Management
+                </Button>
+              </Link>
               <Link to="/admin-login">
                 <Button size="lg" variant="outline" className="px-8 py-3 text-lg border-blue-200 hover:bg-blue-50">
                   Admin Portal
