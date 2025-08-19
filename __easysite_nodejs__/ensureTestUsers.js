@@ -1,31 +1,81 @@
-function ensureTestUsers() {
-  // This function provides information about the test users that should exist
-  // The actual user creation will be handled by the frontend using the registration API
-
-  return {
-    success: true,
-    message: 'Test user information ready',
-    testUsers: [
+// This function ensures test users exist in the system with proper roles
+async function ensureTestUsers() {
+  const testUsers = [
     {
-      email: 'administrator@test.com',
+      email: 'admin',
       password: 'admin123',
-      name: 'Test Administrator',
-      expectedRole: 'Administrator',
-      roleId: 434
+      name: 'Administrator',
+      roleCode: 'Administrator'
     },
     {
-      email: 'contractor@test.com',
-      password: 'contractor123',
-      name: 'Test Contractor',
-      expectedRole: 'General User',
-      roleId: 433
-    }],
+      email: 'manager',
+      password: 'manager123',
+      name: 'Project Manager',
+      roleCode: 'Administrator'
+    },
+    {
+      email: 'sales',
+      password: 'sales123',
+      name: 'Sales Representative',
+      roleCode: 'r-QpoZrh'
+    },
+    {
+      email: 'accountant',
+      password: 'account123',
+      name: 'Accountant',
+      roleCode: 'r-QpoZrh'
+    },
+    {
+      email: 'viewer',
+      password: 'viewer123',
+      name: 'Viewer',
+      roleCode: 'GeneralUser'
+    }
+  ];
 
-    instructions: [
-    '1. Use the registration API to create these users',
-    '2. Administrator role should have full access to admin dashboard',
-    '3. Contractor role should have limited access',
-    '4. If users already exist, they can login with these credentials']
+  const results = [];
+  
+  for (const user of testUsers) {
+    try {
+      // Try to register each user (this will fail if they already exist)
+      const response = await fetch('${window.location.origin}/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: user.email,
+          password: user.password,
+          name: user.name
+        })
+      });
+      
+      if (response.ok) {
+        results.push({
+          email: user.email,
+          status: 'created',
+          roleCode: user.roleCode
+        });
+      } else {
+        results.push({
+          email: user.email,
+          status: 'already_exists',
+          roleCode: user.roleCode
+        });
+      }
+    } catch (error) {
+      results.push({
+        email: user.email,
+        status: 'error',
+        error: error.message,
+        roleCode: user.roleCode
+      });
+    }
+  }
 
+  return {
+    message: 'Demo users processed',
+    results: results,
+    instructions: 'These are the demo login credentials for testing different roles in the system'
   };
 }

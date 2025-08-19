@@ -13,9 +13,9 @@ interface DatePickerProps {
   className?: string;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ 
-  selected, 
-  onSelect, 
+const DatePicker: React.FC<DatePickerProps> = ({
+  selected,
+  onSelect,
   placeholder = "Pick a date",
   disabled = false,
   className = ""
@@ -26,8 +26,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <Button
           variant="outline"
           className={`w-full justify-start text-left font-normal ${className}`}
-          disabled={disabled}
-        >
+          disabled={disabled}>
+
           <CalendarIcon className="mr-2 h-4 w-4" />
           {selected ? format(selected, "PPP") : placeholder}
         </Button>
@@ -37,11 +37,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
           mode="single"
           selected={selected}
           onSelect={onSelect}
-          initialFocus
-        />
+          initialFocus />
+
       </PopoverContent>
-    </Popover>
-  );
+    </Popover>);
+
 };
 
 export default DatePicker;

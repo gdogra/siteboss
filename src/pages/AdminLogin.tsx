@@ -37,10 +37,10 @@ const AdminLogin = () => {
 
 
 
+
+
       // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!credentials.email || !credentials.password) {
+    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {
       toast({
         title: "Error",
         description: "Please enter both email and password",
@@ -233,51 +233,88 @@ const AdminLogin = () => {
           </CardContent>
         </Card>
 
-        {/* Test Login Credentials Section */}
+        {/* Demo Login Credentials Section */}
         <Card className="mt-6 border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/50 shadow-lg">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg text-center text-blue-900">🔑 Test Login Credentials</CardTitle>
+            <CardTitle className="text-lg text-center text-blue-900">🔑 Demo Login Credentials</CardTitle>
             <CardDescription className="text-center text-blue-700">
-              Ready-to-use accounts for testing Laguna Bay Development
+              Role-based accounts for testing Laguna Bay Development
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="space-y-2">
+          <CardContent className="space-y-2">
+            <div className="grid grid-cols-1 gap-2">
               <Button
                 type="button"
                 variant="outline"
-                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80"
-                onClick={() => setCredentials({ email: 'administrator@test.com', password: 'admin123' })}>
-
+                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
+                onClick={() => setCredentials({ email: 'admin', password: 'admin123' })}>
                 <div className="text-left">
-                  <div className="font-medium text-blue-900">👑 Administrator</div>
-                  <div className="text-sm text-blue-700">administrator@test.com / admin123</div>
+                  <div className="font-medium text-blue-900">👑 Admin</div>
+                  <div className="text-sm text-blue-700">admin / admin123</div>
                 </div>
               </Button>
               
               <Button
                 type="button"
                 variant="outline"
-                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80"
-                onClick={() => setCredentials({ email: 'contractor@test.com', password: 'contractor123' })}>
-
+                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
+                onClick={() => setCredentials({ email: 'manager', password: 'manager123' })}>
                 <div className="text-left">
-                  <div className="font-medium text-blue-900">🏗️ Contractor</div>
-                  <div className="text-sm text-blue-700">contractor@test.com / contractor123</div>
+                  <div className="font-medium text-blue-900">📊 Manager</div>
+                  <div className="text-sm text-blue-700">manager / manager123</div>
+                </div>
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
+                onClick={() => setCredentials({ email: 'sales', password: 'sales123' })}>
+                <div className="text-left">
+                  <div className="font-medium text-blue-900">🎯 Sales</div>
+                  <div className="text-sm text-blue-700">sales / sales123</div>
+                </div>
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
+                onClick={() => setCredentials({ email: 'accountant', password: 'account123' })}>
+                <div className="text-left">
+                  <div className="font-medium text-blue-900">💰 Accountant</div>
+                  <div className="text-sm text-blue-700">accountant / account123</div>
+                </div>
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
+                onClick={() => setCredentials({ email: 'viewer', password: 'viewer123' })}>
+                <div className="text-left">
+                  <div className="font-medium text-blue-900">👀 Viewer</div>
+                  <div className="text-sm text-blue-700">viewer / viewer123</div>
                 </div>
               </Button>
             </div>
             
             <div className="text-xs text-center text-blue-600 pt-2 font-medium">
-              ↑ Click any button above to auto-fill and then click "Sign In"
+              ↑ Click any role above to auto-fill credentials, then click "Sign In"
             </div>
           </CardContent>
         </Card>
 
         <div className="mt-4 text-center text-sm text-gray-500 space-y-2">
           <p className="font-medium">🎯 Quick Start Guide:</p>
-          <p>1. Click on "👑 Administrator" or "🏗️ Contractor"</p>
-          <p>2. Click "Sign In" to access the dashboard</p>
+          <p>1. Click any role button above to auto-fill credentials</p>
+          <p>2. Click "Sign In" to access role-based dashboard</p>
+          <div className="mt-3 pt-2 border-t border-blue-200">
+            <p className="text-xs text-blue-600 font-medium">Role Access Levels:</p>
+            <p className="text-xs">👑 Admin/Manager: Full system access</p>
+            <p className="text-xs">🎯 Sales/💰 Accountant: Projects, leads, payments</p>
+            <p className="text-xs">👀 Viewer: Read-only access to reports</p>
+          </div>
         </div>
       </div>
     </div>);

@@ -29,6 +29,7 @@ import DocumentForm from '@/components/DocumentForm';
 import WorkPeriodForm from '@/components/WorkPeriodForm';
 import UserManagement from '@/components/UserManagement';
 import LeadSummary from '@/components/LeadSummary';
+import RoleBasedDashboard from '@/components/RoleBasedDashboard';
 
 interface Project {
   id: number;
@@ -358,9 +359,9 @@ const AdminDashboard = () => {
     if (!roles) return 'User';
 
     const roleArray = roles.split(',');
-    if (roleArray.includes('Administrator')) return 'Administrator';
-    if (roleArray.includes('r-QpoZrh')) return 'Contractor';
-    if (roleArray.includes('GeneralUser')) return 'General User';
+    if (roleArray.includes('Administrator')) return 'Admin/Manager';
+    if (roleArray.includes('r-QpoZrh')) return 'Sales/Accountant';
+    if (roleArray.includes('GeneralUser')) return 'Viewer';
     return 'User';
   };
 
@@ -372,6 +373,16 @@ const AdminDashboard = () => {
     if (roleArray.includes('r-QpoZrh')) return 'bg-blue-100 text-blue-800';
     return 'bg-green-100 text-green-800';
   };
+
+  const hasRole = (requiredRole: string) => {
+    if (!userInfo?.Roles) return false;
+    const userRoles = userInfo.Roles.split(',');
+    return userRoles.includes(requiredRole);
+  };
+
+  const isAdmin = () => hasRole('Administrator');
+  const isSalesOrAccountant = () => hasRole('r-QpoZrh');
+  const isViewer = () => hasRole('GeneralUser');
 
   if (loading) {
     return (
@@ -415,39 +426,57 @@ const AdminDashboard = () => {
             <p className="text-gray-600">Manage your construction projects and operations</p>
           </div>
 
-          {/* Quick Navigation Cards */}
+          {/* Quick Navigation Cards - Role Based */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/leads')}>
-              <CardContent className="p-6 text-center">
-                <Users className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                <h3 className="font-medium">Lead Management</h3>
-                <p className="text-sm text-gray-600 mt-1">Manage leads & pipeline</p>
-              </CardContent>
-            </Card>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/leads')}>
+                <CardContent className="p-6 text-center">
+                  <Users className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                  <h3 className="font-medium">Lead Management</h3>
+                  <p className="text-sm text-gray-600 mt-1">Manage leads & pipeline</p>
+                </CardContent>
+              </Card>
+            )}
             
-            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/payments')}>
-              <CardContent className="p-6 text-center">
-                <DollarSign className="h-8 w-8 mx-auto mb-2 text-green-600" />
-                <h3 className="font-medium">Payments</h3>
-                <p className="text-sm text-gray-600 mt-1">Financial management</p>
-              </CardContent>
-            </Card>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/payments')}>
+                <CardContent className="p-6 text-center">
+                  <DollarSign className="h-8 w-8 mx-auto mb-2 text-green-600" />
+                  <h3 className="font-medium">Payments</h3>
+                  <p className="text-sm text-gray-600 mt-1">Financial management</p>
+                </CardContent>
+              </Card>
+            )}
             
-            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/invoice-submission')}>
-              <CardContent className="p-6 text-center">
-                <FileText className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-                <h3 className="font-medium">Invoices</h3>
-                <p className="text-sm text-gray-600 mt-1">Invoice management</p>
-              </CardContent>
-            </Card>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/invoice-submission')}>
+                <CardContent className="p-6 text-center">
+                  <FileText className="h-8 w-8 mx-auto mb-2 text-purple-600" />
+                  <h3 className="font-medium">Invoices</h3>
+                  <p className="text-sm text-gray-600 mt-1">Invoice management</p>
+                </CardContent>
+              </Card>
+            )}
             
-            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setShowProjectForm(true)}>
-              <CardContent className="p-6 text-center">
-                <Building2 className="h-8 w-8 mx-auto mb-2 text-orange-600" />
-                <h3 className="font-medium">New Project</h3>
-                <p className="text-sm text-gray-600 mt-1">Create project</p>
-              </CardContent>
-            </Card>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setShowProjectForm(true)}>
+                <CardContent className="p-6 text-center">
+                  <Building2 className="h-8 w-8 mx-auto mb-2 text-orange-600" />
+                  <h3 className="font-medium">New Project</h3>
+                  <p className="text-sm text-gray-600 mt-1">Create project</p>
+                </CardContent>
+              </Card>
+            )}
+            
+            {isViewer() && (
+              <Card className="cursor-pointer hover:shadow-md transition-shadow">
+                <CardContent className="p-6 text-center">
+                  <Eye className="h-8 w-8 mx-auto mb-2 text-gray-600" />
+                  <h3 className="font-medium">View Only Access</h3>
+                  <p className="text-sm text-gray-600 mt-1">Read-only dashboard</p>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Stats Overview */}
@@ -503,32 +532,36 @@ const AdminDashboard = () => {
             </Card>
           </div>
 
-          {/* Main Content Tabs */}
+          {/* Main Content Tabs - Role Based */}
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-8">
+            <TabsList className="grid w-full grid-cols-auto">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="projects">Projects</TabsTrigger>
-              <TabsTrigger value="logs">Logs</TabsTrigger>
-              <TabsTrigger value="payments">Payments</TabsTrigger>
-              <TabsTrigger value="subcontractors">Subcontractors</TabsTrigger>
-              <TabsTrigger value="documents">Documents</TabsTrigger>
-              <TabsTrigger value="workperiods">Work Periods</TabsTrigger>
-              <TabsTrigger value="users">Users</TabsTrigger>
+              {(isAdmin() || isSalesOrAccountant()) && <TabsTrigger value="projects">Projects</TabsTrigger>}
+              {(isAdmin() || isSalesOrAccountant()) && <TabsTrigger value="logs">Logs</TabsTrigger>}
+              {(isAdmin() || isSalesOrAccountant()) && <TabsTrigger value="payments">Payments</TabsTrigger>}
+              {isAdmin() && <TabsTrigger value="subcontractors">Subcontractors</TabsTrigger>}
+              {(isAdmin() || isSalesOrAccountant()) && <TabsTrigger value="documents">Documents</TabsTrigger>}
+              {isAdmin() && <TabsTrigger value="workperiods">Work Periods</TabsTrigger>}
+              {isAdmin() && <TabsTrigger value="users">Users</TabsTrigger>}
             </TabsList>
 
-            {/* Projects Tab */}
+            {/* Overview Tab - Role Based */}
             <TabsContent value="overview" className="space-y-6">
-              <LeadSummary currentUser={userInfo} />
+              <RoleBasedDashboard userInfo={userInfo} stats={stats} />
+              {(isAdmin() || isSalesOrAccountant()) && <LeadSummary currentUser={userInfo} />}
             </TabsContent>
             
-            <TabsContent value="projects" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Projects</h2>
-                <Button onClick={() => setShowProjectForm(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Project
-                </Button>
-              </div>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <TabsContent value="projects" className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Projects</h2>
+                  {(isAdmin() || isSalesOrAccountant()) && (
+                    <Button onClick={() => setShowProjectForm(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Project
+                    </Button>
+                  )}
+                </div>
 
               <div className="grid gap-6">
                 {projects.length === 0 ?
@@ -598,17 +631,19 @@ const AdminDashboard = () => {
                 )
                 }
               </div>
-            </TabsContent>
+              </TabsContent>
+            )}
 
-            {/* Work Periods Tab */}
-            <TabsContent value="workperiods" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Work Periods</h2>
-                <Button onClick={() => setShowWorkPeriodForm(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Work Period
-                </Button>
-              </div>
+            {/* Work Periods Tab - Admin Only */}
+            {isAdmin() && (
+              <TabsContent value="workperiods" className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Work Periods</h2>
+                  <Button onClick={() => setShowWorkPeriodForm(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    New Work Period
+                  </Button>
+                </div>
 
               <div className="grid gap-4">
                 {workPeriods.length === 0 ?
@@ -712,17 +747,19 @@ const AdminDashboard = () => {
                 })
                 }
               </div>
-            </TabsContent>
+              </TabsContent>
+            )}
 
             {/* Daily Logs Tab */}
-            <TabsContent value="logs" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Recent Daily Logs</h2>
-                <Button onClick={() => setShowLogForm(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Log Entry
-                </Button>
-              </div>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <TabsContent value="logs" className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Recent Daily Logs</h2>
+                  <Button onClick={() => setShowLogForm(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    New Log Entry
+                  </Button>
+                </div>
 
               <div className="grid gap-4">
                 {recentLogs.length === 0 ?
@@ -788,17 +825,19 @@ const AdminDashboard = () => {
                 )
                 }
               </div>
-            </TabsContent>
+              </TabsContent>
+            )}
 
             {/* Payments Tab */}
-            <TabsContent value="payments" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Recent Payments</h2>
-                <Button onClick={() => setShowPaymentForm(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Payment
-                </Button>
-              </div>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <TabsContent value="payments" className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Recent Payments</h2>
+                  <Button onClick={() => setShowPaymentForm(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    New Payment
+                  </Button>
+                </div>
 
               <div className="grid gap-4">
                 {recentPayments.length === 0 ?
@@ -848,17 +887,19 @@ const AdminDashboard = () => {
                 )
                 }
               </div>
-            </TabsContent>
+              </TabsContent>
+            )}
 
-            {/* Subcontractors Tab */}
-            <TabsContent value="subcontractors" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Subcontractors</h2>
-                <Button onClick={() => setShowSubcontractorForm(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Subcontractor
-                </Button>
-              </div>
+            {/* Subcontractors Tab - Admin Only */}
+            {isAdmin() && (
+              <TabsContent value="subcontractors" className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Subcontractors</h2>
+                  <Button onClick={() => setShowSubcontractorForm(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Subcontractor
+                  </Button>
+                </div>
 
               <div className="grid gap-4">
                 {subcontractors.length === 0 ?
@@ -913,17 +954,19 @@ const AdminDashboard = () => {
                 )
                 }
               </div>
-            </TabsContent>
+              </TabsContent>
+            )}
 
             {/* Documents Tab */}
-            <TabsContent value="documents" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Documents</h2>
-                <Button onClick={() => setShowDocumentForm(true)}>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Upload Document
-                </Button>
-              </div>
+            {(isAdmin() || isSalesOrAccountant()) && (
+              <TabsContent value="documents" className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Documents</h2>
+                  <Button onClick={() => setShowDocumentForm(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Upload Document
+                  </Button>
+                </div>
 
               <div className="grid gap-4">
                 {documents.length === 0 ?
@@ -981,13 +1024,14 @@ const AdminDashboard = () => {
                 }
               </div>
             </TabsContent>
+            )}
 
             {/* Users Tab - Admin Only */}
-            {userInfo && userInfo.Roles?.split(',').includes('Administrator') &&
-            <TabsContent value="users" className="space-y-6">
+            {isAdmin() && (
+              <TabsContent value="users" className="space-y-6">
                 <UserManagement />
               </TabsContent>
-            }
+            )}
           </Tabs>
 
           {/* Form Modals */}

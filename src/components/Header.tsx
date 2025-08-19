@@ -69,9 +69,9 @@ const Header = () => {
     if (!roles) return 'User';
 
     const roleArray = roles.split(',');
-    if (roleArray.includes('Administrator')) return 'Administrator';
-    if (roleArray.includes('r-QpoZrh')) return 'Contractor';
-    if (roleArray.includes('GeneralUser')) return 'General User';
+    if (roleArray.includes('Administrator')) return 'Admin';
+    if (roleArray.includes('r-QpoZrh')) return 'Sales/Accountant';
+    if (roleArray.includes('GeneralUser')) return 'Viewer';
     return 'User';
   };
 
