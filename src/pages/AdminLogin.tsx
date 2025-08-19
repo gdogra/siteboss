@@ -32,12 +32,12 @@ const AdminLogin = () => {
     } catch (error) {
 
 
+
+
       // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {
-    setCredentials((prev) => ({
-      ...prev,
-      [field]: value
-    }));
+    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev,
+        [field]: value
+      }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -212,8 +212,49 @@ const AdminLogin = () => {
           </CardContent>
         </Card>
 
-        <div className="mt-6 text-center text-sm text-gray-500">
-          <p>For demo purposes, you can create an admin account or login with existing credentials.</p>
+        {/* Test Login Credentials Section */}
+        <Card className="mt-6">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg text-center">Test Login Credentials</CardTitle>
+            <CardDescription className="text-center">
+              For easy testing and development
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="space-y-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => setCredentials({ email: 'administrator@test.com', password: 'admin123' })}
+              >
+                <div className="text-left">
+                  <div className="font-medium">Administrator</div>
+                  <div className="text-sm text-gray-500">administrator@test.com / admin123</div>
+                </div>
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => setCredentials({ email: 'contractor@test.com', password: 'contractor123' })}
+              >
+                <div className="text-left">
+                  <div className="font-medium">Contractor</div>
+                  <div className="text-sm text-gray-500">contractor@test.com / contractor123</div>
+                </div>
+              </Button>
+            </div>
+            
+            <div className="text-xs text-center text-gray-400 pt-2">
+              Click any button above to auto-fill login credentials
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="mt-4 text-center text-sm text-gray-500">
+          <p>For demo purposes, you can use test credentials above or create your own admin account.</p>
         </div>
       </div>
     </div>);
