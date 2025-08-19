@@ -8,21 +8,21 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Rocket, 
-  CheckCircle, 
-  Building2, 
-  Mail, 
-  User, 
-  Phone, 
+import {
+  Rocket,
+  CheckCircle,
+  Building2,
+  Mail,
+  User,
+  Phone,
   MapPin,
   Star,
   Shield,
   Zap,
   Clock,
   ArrowRight,
-  Sparkles
-} from 'lucide-react';
+  Sparkles } from
+'lucide-react';
 
 const TrialSignup = () => {
   const [formData, setFormData] = useState({
@@ -43,35 +43,35 @@ const TrialSignup = () => {
   const { toast } = useToast();
 
   const companySizes = [
-    '1-5 employees',
-    '6-20 employees', 
-    '21-50 employees',
-    '51-100 employees',
-    '100+ employees'
-  ];
+  '1-5 employees',
+  '6-20 employees',
+  '21-50 employees',
+  '51-100 employees',
+  '100+ employees'];
+
 
   const primaryChallenges = [
-    'Project management and tracking',
-    'Invoice and payment processing',
-    'Team communication',
-    'Document management',
-    'Cost tracking and budgeting',
-    'Client communication',
-    'Scheduling and timelines',
-    'Quality control'
-  ];
+  'Project management and tracking',
+  'Invoice and payment processing',
+  'Team communication',
+  'Document management',
+  'Cost tracking and budgeting',
+  'Client communication',
+  'Scheduling and timelines',
+  'Quality control'];
+
 
   const trialBenefits = [
-    { icon: CheckCircle, text: 'Full access to all features for 30 days' },
-    { icon: Shield, text: 'No credit card required' },
-    { icon: Zap, text: 'Setup completed in under 5 minutes' },
-    { icon: Clock, text: 'Cancel anytime with one click' },
-    { icon: Star, text: 'Dedicated onboarding support' },
-    { icon: Mail, text: 'Personalized training resources' }
-  ];
+  { icon: CheckCircle, text: 'Full access to all features for 30 days' },
+  { icon: Shield, text: 'No credit card required' },
+  { icon: Zap, text: 'Setup completed in under 5 minutes' },
+  { icon: Clock, text: 'Cancel anytime with one click' },
+  { icon: Star, text: 'Dedicated onboarding support' },
+  { icon: Mail, text: 'Personalized training resources' }];
+
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -237,55 +237,55 @@ const TrialSignup = () => {
   const scheduleTrialEmails = async (userId: number) => {
     try {
       const emailSequences = [
-        {
-          user_id: userId,
-          sequence_name: 'trial_onboarding',
-          email_type: 'onboarding_tips',
-          scheduled_date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Day 1
-          subject: 'Quick Setup Tips - Get the Most from ContractPro',
-          status: 'scheduled'
-        },
-        {
-          user_id: userId,
-          sequence_name: 'trial_onboarding',
-          email_type: 'feature_highlight',
-          scheduled_date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // Day 3
-          subject: 'Discover: AI-Powered Project Insights',
-          status: 'scheduled'
-        },
-        {
-          user_id: userId,
-          sequence_name: 'trial_onboarding',
-          email_type: 'success_story',
-          scheduled_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Day 7
-          subject: 'How Metro Construction Saved $50K in 3 Months',
-          status: 'scheduled'
-        },
-        {
-          user_id: userId,
-          sequence_name: 'trial_onboarding',
-          email_type: 'mid_trial_check',
-          scheduled_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // Day 14
-          subject: 'How\'s your trial going? Let\'s optimize your setup',
-          status: 'scheduled'
-        },
-        {
-          user_id: userId,
-          sequence_name: 'trial_onboarding',
-          email_type: 'upgrade_reminder',
-          scheduled_date: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000).toISOString(), // Day 23
-          subject: '7 Days Left - Secure Your ContractPro Discount',
-          status: 'scheduled'
-        },
-        {
-          user_id: userId,
-          sequence_name: 'trial_onboarding',
-          email_type: 'final_reminder',
-          scheduled_date: new Date(Date.now() + 29 * 24 * 60 * 60 * 1000).toISOString(), // Day 29
-          subject: 'Last Chance - Your Trial Expires Tomorrow',
-          status: 'scheduled'
-        }
-      ];
+      {
+        user_id: userId,
+        sequence_name: 'trial_onboarding',
+        email_type: 'onboarding_tips',
+        scheduled_date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Day 1
+        subject: 'Quick Setup Tips - Get the Most from ContractPro',
+        status: 'scheduled'
+      },
+      {
+        user_id: userId,
+        sequence_name: 'trial_onboarding',
+        email_type: 'feature_highlight',
+        scheduled_date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // Day 3
+        subject: 'Discover: AI-Powered Project Insights',
+        status: 'scheduled'
+      },
+      {
+        user_id: userId,
+        sequence_name: 'trial_onboarding',
+        email_type: 'success_story',
+        scheduled_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // Day 7
+        subject: 'How Metro Construction Saved $50K in 3 Months',
+        status: 'scheduled'
+      },
+      {
+        user_id: userId,
+        sequence_name: 'trial_onboarding',
+        email_type: 'mid_trial_check',
+        scheduled_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // Day 14
+        subject: 'How\'s your trial going? Let\'s optimize your setup',
+        status: 'scheduled'
+      },
+      {
+        user_id: userId,
+        sequence_name: 'trial_onboarding',
+        email_type: 'upgrade_reminder',
+        scheduled_date: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000).toISOString(), // Day 23
+        subject: '7 Days Left - Secure Your ContractPro Discount',
+        status: 'scheduled'
+      },
+      {
+        user_id: userId,
+        sequence_name: 'trial_onboarding',
+        email_type: 'final_reminder',
+        scheduled_date: new Date(Date.now() + 29 * 24 * 60 * 60 * 1000).toISOString(), // Day 29
+        subject: 'Last Chance - Your Trial Expires Tomorrow',
+        status: 'scheduled'
+      }];
+
 
       for (const email of emailSequences) {
         await window.ezsite.apis.tableCreate(35525, email);
@@ -297,7 +297,7 @@ const TrialSignup = () => {
 
   const nextStep = () => {
     if (validateStep(step)) {
-      setStep(prev => Math.min(prev + 1, 3));
+      setStep((prev) => Math.min(prev + 1, 3));
     } else {
       toast({
         title: "Please complete all fields",
@@ -308,7 +308,7 @@ const TrialSignup = () => {
   };
 
   const prevStep = () => {
-    setStep(prev => Math.max(prev - 1, 1));
+    setStep((prev) => Math.max(prev - 1, 1));
   };
 
   return (
@@ -337,22 +337,22 @@ const TrialSignup = () => {
           <div className="mb-8">
             <div className="flex items-center justify-center mb-4">
               <div className="flex items-center">
-                {[1, 2, 3].map((i) => (
-                  <React.Fragment key={i}>
+                {[1, 2, 3].map((i) =>
+                <React.Fragment key={i}>
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                      i <= step 
-                        ? 'bg-blue-600 text-white' 
-                        : 'bg-gray-200 text-gray-600'
-                    }`}>
+                  i <= step ?
+                  'bg-blue-600 text-white' :
+                  'bg-gray-200 text-gray-600'}`
+                  }>
                       {i < step ? <CheckCircle className="w-5 h-5" /> : i}
                     </div>
-                    {i < 3 && (
-                      <div className={`w-16 h-2 mx-2 rounded-full ${
-                        i < step ? 'bg-blue-600' : 'bg-gray-200'
-                      }`} />
-                    )}
+                    {i < 3 &&
+                  <div className={`w-16 h-2 mx-2 rounded-full ${
+                  i < step ? 'bg-blue-600' : 'bg-gray-200'}`
+                  } />
+                  }
                   </React.Fragment>
-                ))}
+                )}
               </div>
             </div>
             <div className="text-center">
@@ -379,94 +379,94 @@ const TrialSignup = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {step === 1 && (
-                    <>
+                  {step === 1 &&
+                  <>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="name" className="text-base font-medium">Full Name *</Label>
                           <Input
-                            id="name"
-                            value={formData.name}
-                            onChange={(e) => handleInputChange('name', e.target.value)}
-                            className="mt-2 h-12"
-                            placeholder="John Smith"
-                          />
+                          id="name"
+                          value={formData.name}
+                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          className="mt-2 h-12"
+                          placeholder="John Smith" />
+
                         </div>
                         <div>
                           <Label htmlFor="email" className="text-base font-medium">Work Email *</Label>
                           <Input
-                            id="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={(e) => handleInputChange('email', e.target.value)}
-                            className="mt-2 h-12"
-                            placeholder="john@company.com"
-                          />
+                          id="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          className="mt-2 h-12"
+                          placeholder="john@company.com" />
+
                         </div>
                       </div>
                       <div>
                         <Label htmlFor="company" className="text-base font-medium">Company Name *</Label>
                         <Input
-                          id="company"
-                          value={formData.company}
-                          onChange={(e) => handleInputChange('company', e.target.value)}
-                          className="mt-2 h-12"
-                          placeholder="Acme Construction Co."
-                        />
+                        id="company"
+                        value={formData.company}
+                        onChange={(e) => handleInputChange('company', e.target.value)}
+                        className="mt-2 h-12"
+                        placeholder="Acme Construction Co." />
+
                       </div>
                       <div>
                         <Label htmlFor="phone" className="text-base font-medium">Phone Number (Optional)</Label>
                         <Input
-                          id="phone"
-                          value={formData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="mt-2 h-12"
-                          placeholder="(555) 123-4567"
-                        />
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        className="mt-2 h-12"
+                        placeholder="(555) 123-4567" />
+
                       </div>
                     </>
-                  )}
+                  }
 
-                  {step === 2 && (
-                    <>
+                  {step === 2 &&
+                  <>
                       <div>
                         <Label className="text-base font-medium">Company Size *</Label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                          {companySizes.map((size) => (
-                            <Button
-                              key={size}
-                              variant={formData.companySize === size ? "default" : "outline"}
-                              className={`justify-start h-12 ${
-                                formData.companySize === size 
-                                  ? "bg-blue-600 hover:bg-blue-700" 
-                                  : "hover:bg-blue-50"
-                              }`}
-                              onClick={() => handleInputChange('companySize', size)}
-                            >
+                          {companySizes.map((size) =>
+                        <Button
+                          key={size}
+                          variant={formData.companySize === size ? "default" : "outline"}
+                          className={`justify-start h-12 ${
+                          formData.companySize === size ?
+                          "bg-blue-600 hover:bg-blue-700" :
+                          "hover:bg-blue-50"}`
+                          }
+                          onClick={() => handleInputChange('companySize', size)}>
+
                               <User className="w-4 h-4 mr-2" />
                               {size}
                             </Button>
-                          ))}
+                        )}
                         </div>
                       </div>
 
                       <div>
                         <Label className="text-base font-medium">What's your biggest challenge right now? *</Label>
                         <div className="space-y-2 mt-3">
-                          {primaryChallenges.map((challenge) => (
-                            <Button
-                              key={challenge}
-                              variant={formData.primaryChallenge === challenge ? "default" : "outline"}
-                              className={`w-full justify-start h-auto p-4 ${
-                                formData.primaryChallenge === challenge 
-                                  ? "bg-blue-600 hover:bg-blue-700" 
-                                  : "hover:bg-blue-50"
-                              }`}
-                              onClick={() => handleInputChange('primaryChallenge', challenge)}
-                            >
+                          {primaryChallenges.map((challenge) =>
+                        <Button
+                          key={challenge}
+                          variant={formData.primaryChallenge === challenge ? "default" : "outline"}
+                          className={`w-full justify-start h-auto p-4 ${
+                          formData.primaryChallenge === challenge ?
+                          "bg-blue-600 hover:bg-blue-700" :
+                          "hover:bg-blue-50"}`
+                          }
+                          onClick={() => handleInputChange('primaryChallenge', challenge)}>
+
                               {challenge}
                             </Button>
-                          ))}
+                        )}
                         </div>
                       </div>
 
@@ -475,43 +475,43 @@ const TrialSignup = () => {
                           Current Software (Optional)
                         </Label>
                         <Input
-                          id="currentSoftware"
-                          value={formData.currentSoftware}
-                          onChange={(e) => handleInputChange('currentSoftware', e.target.value)}
-                          className="mt-2 h-12"
-                          placeholder="Excel, QuickBooks, etc."
-                        />
+                        id="currentSoftware"
+                        value={formData.currentSoftware}
+                        onChange={(e) => handleInputChange('currentSoftware', e.target.value)}
+                        className="mt-2 h-12"
+                        placeholder="Excel, QuickBooks, etc." />
+
                       </div>
                     </>
-                  )}
+                  }
 
-                  {step === 3 && (
-                    <div className="space-y-6">
+                  {step === 3 &&
+                  <div className="space-y-6">
                       <div className="bg-blue-50 p-6 rounded-lg">
                         <h3 className="font-bold text-lg mb-4 text-blue-900">
                           Your 30-Day Free Trial Includes:
                         </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {trialBenefits.map((benefit, index) => {
-                            const IconComponent = benefit.icon;
-                            return (
-                              <div key={index} className="flex items-center gap-3">
+                          const IconComponent = benefit.icon;
+                          return (
+                            <div key={index} className="flex items-center gap-3">
                                 <IconComponent className="w-5 h-5 text-green-600 flex-shrink-0" />
                                 <span className="text-sm text-gray-700">{benefit.text}</span>
-                              </div>
-                            );
-                          })}
+                              </div>);
+
+                        })}
                         </div>
                       </div>
 
                       <div className="space-y-4">
                         <div className="flex items-start gap-3">
                           <Checkbox
-                            id="terms"
-                            checked={formData.agreeToTerms}
-                            onCheckedChange={(checked) => handleInputChange('agreeToTerms', checked)}
-                            className="mt-1"
-                          />
+                          id="terms"
+                          checked={formData.agreeToTerms}
+                          onCheckedChange={(checked) => handleInputChange('agreeToTerms', checked)}
+                          className="mt-1" />
+
                           <Label htmlFor="terms" className="text-sm leading-5">
                             I agree to the <a href="/terms" className="text-blue-600 hover:underline">Terms of Service</a> and{' '}
                             <a href="/privacy" className="text-blue-600 hover:underline">Privacy Policy</a>
@@ -520,18 +520,18 @@ const TrialSignup = () => {
 
                         <div className="flex items-start gap-3">
                           <Checkbox
-                            id="updates"
-                            checked={formData.subscribeToUpdates}
-                            onCheckedChange={(checked) => handleInputChange('subscribeToUpdates', checked)}
-                            className="mt-1"
-                          />
+                          id="updates"
+                          checked={formData.subscribeToUpdates}
+                          onCheckedChange={(checked) => handleInputChange('subscribeToUpdates', checked)}
+                          className="mt-1" />
+
                           <Label htmlFor="updates" className="text-sm leading-5">
                             Send me helpful tips, best practices, and product updates (recommended)
                           </Label>
                         </div>
                       </div>
                     </div>
-                  )}
+                  }
 
                   {/* Navigation Buttons */}
                   <div className="flex justify-between pt-6">
@@ -539,39 +539,39 @@ const TrialSignup = () => {
                       variant="outline"
                       onClick={prevStep}
                       disabled={step === 1}
-                      className="px-8"
-                    >
+                      className="px-8">
+
                       Previous
                     </Button>
 
-                    {step < 3 ? (
-                      <Button
-                        onClick={nextStep}
-                        disabled={!validateStep(step)}
-                        className="px-8 bg-blue-600 hover:bg-blue-700"
-                      >
+                    {step < 3 ?
+                    <Button
+                      onClick={nextStep}
+                      disabled={!validateStep(step)}
+                      className="px-8 bg-blue-600 hover:bg-blue-700">
+
                         Next
                         <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={activateFreeTrial}
-                        disabled={!validateStep(step) || isLoading}
-                        className="px-8 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-                      >
-                        {isLoading ? (
-                          <>
+                      </Button> :
+
+                    <Button
+                      onClick={activateFreeTrial}
+                      disabled={!validateStep(step) || isLoading}
+                      className="px-8 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700">
+
+                        {isLoading ?
+                      <>
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                             Activating Trial...
-                          </>
-                        ) : (
-                          <>
+                          </> :
+
+                      <>
                             <Rocket className="w-4 h-4 mr-2" />
                             Start My Free Trial
                           </>
-                        )}
+                      }
                       </Button>
-                    )}
+                    }
                   </div>
                 </CardContent>
               </Card>
@@ -630,8 +630,8 @@ const TrialSignup = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TrialSignup;

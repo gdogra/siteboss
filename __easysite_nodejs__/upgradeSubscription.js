@@ -10,6 +10,6 @@ function upgradeSubscription(subscriptionId, newPlanId, prorationBehavior = 'cre
     next_billing_amount: newPlanId === 2 ? 29900 : 59900, // Professional $299 or Enterprise $599
     status: 'active'
   };
-  
+
   return upgradeResponse;
 }

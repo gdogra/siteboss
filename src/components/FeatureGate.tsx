@@ -43,14 +43,14 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
   }
 
   // Find the required plan
-  const currentPlan = subscription ? plans.find(p => p.id === subscription.subscription_plan_id) : null;
-  const requiredPlanObj = requiredPlan ? plans.find(p => p.plan_code.toLowerCase() === requiredPlan.toLowerCase()) : null;
+  const currentPlan = subscription ? plans.find((p) => p.id === subscription.subscription_plan_id) : null;
+  const requiredPlanObj = requiredPlan ? plans.find((p) => p.plan_code.toLowerCase() === requiredPlan.toLowerCase()) : null;
 
   const getPlanIcon = (planCode: string) => {
     switch (planCode?.toLowerCase()) {
-      case 'professional': return <Zap className="h-4 w-4" />;
-      case 'enterprise': return <Crown className="h-4 w-4" />;
-      default: return <Lock className="h-4 w-4" />;
+      case 'professional':return <Zap className="h-4 w-4" />;
+      case 'enterprise':return <Crown className="h-4 w-4" />;
+      default:return <Lock className="h-4 w-4" />;
     }
   };
 
@@ -68,9 +68,9 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
           {featureName} - Premium Feature
         </CardTitle>
         <CardDescription>
-          {requiredPlan 
-            ? `This feature requires the ${requiredPlan} plan or higher`
-            : 'This feature is not available in your current plan'
+          {requiredPlan ?
+          `This feature requires the ${requiredPlan} plan or higher` :
+          'This feature is not available in your current plan'
           }
         </CardDescription>
       </CardHeader>
@@ -78,17 +78,17 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
       <CardContent className="space-y-4">
         {/* Current vs Required Plan */}
         <div className="flex items-center justify-center space-x-4">
-          {currentPlan && (
-            <>
+          {currentPlan &&
+          <>
               <Badge variant="outline">{currentPlan.plan_name}</Badge>
               <ArrowRight className="h-4 w-4 text-muted-foreground" />
             </>
-          )}
-          {requiredPlanObj && (
-            <Badge variant="default" className="bg-primary">
+          }
+          {requiredPlanObj &&
+          <Badge variant="default" className="bg-primary">
               {requiredPlanObj.plan_name}
             </Badge>
-          )}
+          }
         </div>
 
         {/* Feature Benefits */}
@@ -100,18 +100,18 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
         </Alert>
 
         {/* Upgrade Button */}
-        {showUpgrade && (
-          <div className="text-center">
+        {showUpgrade &&
+        <div className="text-center">
             <Button onClick={onUpgrade} className="w-full">
               <Crown className="h-4 w-4 mr-2" />
               Upgrade Plan
             </Button>
           </div>
-        )}
+        }
 
         {/* Trial CTA */}
-        {!subscription && (
-          <div className="text-center">
+        {!subscription &&
+        <div className="text-center">
             <p className="text-sm text-muted-foreground mb-2">
               Try all premium features free for 30 days
             </p>
@@ -119,10 +119,10 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
               Start Free Trial
             </Button>
           </div>
-        )}
+        }
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default FeatureGate;

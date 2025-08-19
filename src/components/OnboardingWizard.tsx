@@ -9,11 +9,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  CheckCircle, 
-  Users, 
-  Building, 
-  Settings, 
+import {
+  CheckCircle,
+  Users,
+  Building,
+  Settings,
   Rocket,
   ArrowRight,
   ArrowLeft,
@@ -25,8 +25,8 @@ import {
   Brain,
   Shield,
   Award,
-  PlayCircle
-} from 'lucide-react';
+  PlayCircle } from
+'lucide-react';
 
 interface OnboardingStep {
   id: number;
@@ -40,7 +40,7 @@ const OnboardingWizard = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
-  
+
   const [currentStep, setCurrentStep] = useState(1);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [onboardingData, setOnboardingData] = useState({
@@ -70,52 +70,52 @@ const OnboardingWizard = () => {
   const [isTrialUser, setIsTrialUser] = useState(false);
 
   const steps: OnboardingStep[] = [
-    {
-      id: 1,
-      title: 'Company Profile',
-      description: 'Tell us about your construction business',
-      icon: Building,
-      completed: completedSteps.includes(1)
-    },
-    {
-      id: 2,
-      title: 'First Project',
-      description: 'Create your first project to get started',
-      icon: Target,
-      completed: completedSteps.includes(2)
-    },
-    {
-      id: 3,
-      title: 'Invite Team',
-      description: 'Add team members and set permissions',
-      icon: Users,
-      completed: completedSteps.includes(3)
-    },
-    {
-      id: 4,
-      title: 'Connect Tools',
-      description: 'Integrate with your existing software',
-      icon: Zap,
-      completed: completedSteps.includes(4)
-    },
-    {
-      id: 5,
-      title: 'Preferences',
-      description: 'Customize your experience',
-      icon: Settings,
-      completed: completedSteps.includes(5)
-    }
-  ];
+  {
+    id: 1,
+    title: 'Company Profile',
+    description: 'Tell us about your construction business',
+    icon: Building,
+    completed: completedSteps.includes(1)
+  },
+  {
+    id: 2,
+    title: 'First Project',
+    description: 'Create your first project to get started',
+    icon: Target,
+    completed: completedSteps.includes(2)
+  },
+  {
+    id: 3,
+    title: 'Invite Team',
+    description: 'Add team members and set permissions',
+    icon: Users,
+    completed: completedSteps.includes(3)
+  },
+  {
+    id: 4,
+    title: 'Connect Tools',
+    description: 'Integrate with your existing software',
+    icon: Zap,
+    completed: completedSteps.includes(4)
+  },
+  {
+    id: 5,
+    title: 'Preferences',
+    description: 'Customize your experience',
+    icon: Settings,
+    completed: completedSteps.includes(5)
+  }];
+
 
   useEffect(() => {
     loadUserInfo();
     const stepParam = searchParams.get('step');
     const trialParam = searchParams.get('trial');
-    
+
     if (stepParam) {
       setCurrentStep(parseInt(stepParam));
     }
-    
+
     if (trialParam === 'true') {
       setIsTrialUser(true);
     }
@@ -155,16 +155,16 @@ const OnboardingWizard = () => {
     if (!userInfo) return;
 
     try {
-      const newCompletedSteps = completed && !completedSteps.includes(step) 
-        ? [...completedSteps, step]
-        : completedSteps;
+      const newCompletedSteps = completed && !completedSteps.includes(step) ?
+      [...completedSteps, step] :
+      completedSteps;
 
       const progressData = {
         user_id: userInfo.ID,
         current_step: step,
         total_steps: 5,
         completed_steps: JSON.stringify(newCompletedSteps),
-        progress_percentage: Math.round((newCompletedSteps.length / 5) * 100),
+        progress_percentage: Math.round(newCompletedSteps.length / 5 * 100),
         onboarding_status: newCompletedSteps.length === 5 ? 'completed' : 'in_progress',
         last_updated: new Date().toISOString()
       };
@@ -187,7 +187,7 @@ const OnboardingWizard = () => {
 
       if (completed) {
         setCompletedSteps(newCompletedSteps);
-        
+
         // Show celebration for completed step
         setShowCelebration(true);
         setTimeout(() => setShowCelebration(false), 3000);
@@ -206,7 +206,7 @@ const OnboardingWizard = () => {
 
   const handleStepComplete = async () => {
     await updateProgress(currentStep, true);
-    
+
     if (currentStep < 5) {
       const nextStep = currentStep + 1;
       setCurrentStep(nextStep);
@@ -331,14 +331,14 @@ const OnboardingWizard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <Label className="text-base font-medium">Industry Focus</Label>
-                <select 
+                <select
                   className="w-full mt-2 p-3 border rounded-lg"
                   value={onboardingData.companyProfile.industry}
-                  onChange={(e) => setOnboardingData(prev => ({
+                  onChange={(e) => setOnboardingData((prev) => ({
                     ...prev,
                     companyProfile: { ...prev.companyProfile, industry: e.target.value }
-                  }))}
-                >
+                  }))}>
+
                   <option value="">Select your industry</option>
                   <option value="residential">Residential Construction</option>
                   <option value="commercial">Commercial Construction</option>
@@ -350,14 +350,14 @@ const OnboardingWizard = () => {
               
               <div>
                 <Label className="text-base font-medium">Team Size</Label>
-                <select 
+                <select
                   className="w-full mt-2 p-3 border rounded-lg"
                   value={onboardingData.companyProfile.employeeCount}
-                  onChange={(e) => setOnboardingData(prev => ({
+                  onChange={(e) => setOnboardingData((prev) => ({
                     ...prev,
                     companyProfile: { ...prev.companyProfile, employeeCount: e.target.value }
-                  }))}
-                >
+                  }))}>
+
                   <option value="">Select team size</option>
                   <option value="1-5">1-5 employees</option>
                   <option value="6-20">6-20 employees</option>
@@ -373,11 +373,11 @@ const OnboardingWizard = () => {
                 className="mt-2 h-12"
                 placeholder="Excel, QuickBooks, BuilderTrend, etc."
                 value={onboardingData.companyProfile.currentSoftware}
-                onChange={(e) => setOnboardingData(prev => ({
+                onChange={(e) => setOnboardingData((prev) => ({
                   ...prev,
                   companyProfile: { ...prev.companyProfile, currentSoftware: e.target.value }
-                }))}
-              />
+                }))} />
+
             </div>
 
             <div>
@@ -386,14 +386,14 @@ const OnboardingWizard = () => {
                 className="mt-2"
                 placeholder="What do you hope to achieve? (e.g., better project tracking, faster invoicing, improved team communication)"
                 value={onboardingData.companyProfile.mainGoal}
-                onChange={(e) => setOnboardingData(prev => ({
+                onChange={(e) => setOnboardingData((prev) => ({
                   ...prev,
                   companyProfile: { ...prev.companyProfile, mainGoal: e.target.value }
-                }))}
-              />
+                }))} />
+
             </div>
-          </div>
-        );
+          </div>);
+
 
       case 2:
         return (
@@ -432,11 +432,11 @@ const OnboardingWizard = () => {
                   className="mt-2 h-12"
                   placeholder="Kitchen Renovation - Smith House"
                   value={onboardingData.firstProject.name}
-                  onChange={(e) => setOnboardingData(prev => ({
+                  onChange={(e) => setOnboardingData((prev) => ({
                     ...prev,
                     firstProject: { ...prev.firstProject, name: e.target.value }
-                  }))}
-                />
+                  }))} />
+
               </div>
               
               <div>
@@ -445,11 +445,11 @@ const OnboardingWizard = () => {
                   className="mt-2"
                   placeholder="Brief description of the project scope and objectives"
                   value={onboardingData.firstProject.description}
-                  onChange={(e) => setOnboardingData(prev => ({
+                  onChange={(e) => setOnboardingData((prev) => ({
                     ...prev,
                     firstProject: { ...prev.firstProject, description: e.target.value }
-                  }))}
-                />
+                  }))} />
+
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -459,11 +459,11 @@ const OnboardingWizard = () => {
                     className="mt-2 h-12"
                     placeholder="$50,000"
                     value={onboardingData.firstProject.budget}
-                    onChange={(e) => setOnboardingData(prev => ({
+                    onChange={(e) => setOnboardingData((prev) => ({
                       ...prev,
                       firstProject: { ...prev.firstProject, budget: e.target.value }
-                    }))}
-                  />
+                    }))} />
+
                 </div>
                 
                 <div>
@@ -472,16 +472,16 @@ const OnboardingWizard = () => {
                     type="date"
                     className="mt-2 h-12"
                     value={onboardingData.firstProject.startDate}
-                    onChange={(e) => setOnboardingData(prev => ({
+                    onChange={(e) => setOnboardingData((prev) => ({
                       ...prev,
                       firstProject: { ...prev.firstProject, startDate: e.target.value }
-                    }))}
-                  />
+                    }))} />
+
                 </div>
               </div>
             </div>
-          </div>
-        );
+          </div>);
+
 
       case 3:
         return (
@@ -516,8 +516,8 @@ const OnboardingWizard = () => {
                 <div className="flex gap-2 mt-2">
                   <Input
                     className="h-12 flex-1"
-                    placeholder="teammate@company.com"
-                  />
+                    placeholder="teammate@company.com" />
+
                   <Button className="px-8">
                     <Mail className="w-4 h-4 mr-2" />
                     Invite
@@ -531,8 +531,8 @@ const OnboardingWizard = () => {
                 </Button>
               </div>
             </div>
-          </div>
-        );
+          </div>);
+
 
       case 4:
         return (
@@ -545,12 +545,12 @@ const OnboardingWizard = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { name: 'QuickBooks', description: 'Sync invoices and expenses', icon: '📊' },
-                { name: 'Google Calendar', description: 'Schedule and track appointments', icon: '📅' },
-                { name: 'Dropbox', description: 'Store and share documents', icon: '📁' },
-                { name: 'Slack', description: 'Team communication', icon: '💬' }
-              ].map((integration) => (
-                <div key={integration.name} className="border-2 border-gray-200 rounded-lg p-4 hover:border-blue-300 cursor-pointer">
+              { name: 'QuickBooks', description: 'Sync invoices and expenses', icon: '📊' },
+              { name: 'Google Calendar', description: 'Schedule and track appointments', icon: '📅' },
+              { name: 'Dropbox', description: 'Store and share documents', icon: '📁' },
+              { name: 'Slack', description: 'Team communication', icon: '💬' }].
+              map((integration) =>
+              <div key={integration.name} className="border-2 border-gray-200 rounded-lg p-4 hover:border-blue-300 cursor-pointer">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">{integration.icon}</span>
                     <h3 className="font-semibold">{integration.name}</h3>
@@ -560,7 +560,7 @@ const OnboardingWizard = () => {
                     Connect
                   </Button>
                 </div>
-              ))}
+              )}
             </div>
 
             <div className="text-center py-4">
@@ -568,8 +568,8 @@ const OnboardingWizard = () => {
                 Skip integrations - I'll set these up later
               </Button>
             </div>
-          </div>
-        );
+          </div>);
+
 
       case 5:
         return (
@@ -630,8 +630,8 @@ const OnboardingWizard = () => {
                 </div>
               </div>
             </div>
-          </div>
-        );
+          </div>);
+
 
       default:
         return null;
@@ -655,19 +655,19 @@ const OnboardingWizard = () => {
     }
   };
 
-  const progressPercentage = ((currentStep - 1) / 4) * 100;
+  const progressPercentage = (currentStep - 1) / 4 * 100;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {showCelebration && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      {showCelebration &&
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-2xl text-center shadow-2xl">
             <div className="text-6xl mb-4">🎉</div>
             <h3 className="text-2xl font-bold text-green-600 mb-2">Step Complete!</h3>
             <p className="text-gray-600">Great job! Keep going!</p>
           </div>
         </div>
-      )}
+      }
 
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200">
@@ -680,12 +680,12 @@ const OnboardingWizard = () => {
               <span className="font-bold text-lg text-gray-900">ContractPro Setup</span>
             </div>
             <div className="flex items-center gap-4">
-              {isTrialUser && (
-                <Badge className="bg-green-100 text-green-800 px-3 py-1">
+              {isTrialUser &&
+              <Badge className="bg-green-100 text-green-800 px-3 py-1">
                   <Sparkles className="w-3 h-3 mr-1" />
                   Free Trial Active
                 </Badge>
-              )}
+              }
               <Badge variant="outline" className="px-3 py-1">
                 Step {currentStep} of 5
               </Badge>
@@ -699,22 +699,22 @@ const OnboardingWizard = () => {
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              {steps.map((step) => (
-                <div key={step.id} className="flex flex-col items-center">
+              {steps.map((step) =>
+              <div key={step.id} className="flex flex-col items-center">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold transition-all ${
-                    step.id < currentStep 
-                      ? 'bg-green-500 text-white' 
-                      : step.id === currentStep 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-gray-200 text-gray-600'
-                  }`}>
+                step.id < currentStep ?
+                'bg-green-500 text-white' :
+                step.id === currentStep ?
+                'bg-blue-600 text-white' :
+                'bg-gray-200 text-gray-600'}`
+                }>
                     {step.id < currentStep ? <CheckCircle className="w-6 h-6" /> : <step.icon className="w-6 h-6" />}
                   </div>
                   <span className="text-sm font-medium text-gray-600 mt-2 text-center max-w-20">
                     {step.title}
                   </span>
                 </div>
-              ))}
+              )}
             </div>
             <Progress value={progressPercentage} className="h-3" />
             <p className="text-center text-gray-600 mt-2">
@@ -731,10 +731,10 @@ const OnboardingWizard = () => {
               <div className="flex justify-between mt-8">
                 <Button
                   variant="outline"
-                  onClick={() => setCurrentStep(prev => Math.max(prev - 1, 1))}
+                  onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 1))}
                   disabled={currentStep === 1}
-                  className="px-8"
-                >
+                  className="px-8">
+
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Previous
                 </Button>
@@ -743,22 +743,22 @@ const OnboardingWizard = () => {
                   onClick={handleStepComplete}
                   disabled={!canProceed()}
                   className={`px-8 ${
-                    currentStep === 5 
-                      ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700' 
-                      : 'bg-blue-600 hover:bg-blue-700'
-                  }`}
-                >
-                  {currentStep === 5 ? (
-                    <>
+                  currentStep === 5 ?
+                  'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700' :
+                  'bg-blue-600 hover:bg-blue-700'}`
+                  }>
+
+                  {currentStep === 5 ?
+                  <>
                       <Rocket className="w-4 h-4 mr-2" />
                       Complete Setup
-                    </>
-                  ) : (
-                    <>
+                    </> :
+
+                  <>
                       Next
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </>
-                  )}
+                  }
                 </Button>
               </div>
             </CardContent>
@@ -780,8 +780,8 @@ const OnboardingWizard = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default OnboardingWizard;

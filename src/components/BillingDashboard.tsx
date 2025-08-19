@@ -6,16 +6,16 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  CreditCard, 
-  Receipt, 
-  Download, 
-  Settings, 
-  AlertCircle, 
+import {
+  CreditCard,
+  Receipt,
+  Download,
+  Settings,
+  AlertCircle,
   Calendar,
   DollarSign,
-  TrendingUp
-} from 'lucide-react';
+  TrendingUp } from
+'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useSubscription } from '@/hooks/useSubscription';
 import SubscriptionPlanSelector from '@/components/SubscriptionPlanSelector';
@@ -88,13 +88,13 @@ const BillingDashboard: React.FC = () => {
 
         toast({
           title: 'Subscription Created',
-          description: 'Your subscription has been created successfully',
+          description: 'Your subscription has been created successfully'
         });
       } else {
         // Upgrade/downgrade existing subscription
-        const currentPlan = plans.find(p => p.id === subscription.subscription_plan_id);
-        const newPlan = plans.find(p => p.id === planId);
-        
+        const currentPlan = plans.find((p) => p.id === subscription.subscription_plan_id);
+        const newPlan = plans.find((p) => p.id === planId);
+
         if (newPlan && currentPlan) {
           if (newPlan.price_monthly > currentPlan.price_monthly) {
             // Upgrade
@@ -103,10 +103,10 @@ const BillingDashboard: React.FC = () => {
               param: [subscription.stripe_subscription_id, planId, 'create_prorations']
             });
             if (error) throw error;
-            
+
             toast({
               title: 'Subscription Upgraded',
-              description: `Upgraded to ${newPlan.plan_name} plan`,
+              description: `Upgraded to ${newPlan.plan_name} plan`
             });
           } else {
             // Downgrade
@@ -115,10 +115,10 @@ const BillingDashboard: React.FC = () => {
               param: [subscription.stripe_subscription_id, planId, 'period_end']
             });
             if (error) throw error;
-            
+
             toast({
               title: 'Subscription Scheduled for Downgrade',
-              description: `Will downgrade to ${newPlan.plan_name} at the end of current billing period`,
+              description: `Will downgrade to ${newPlan.plan_name} at the end of current billing period`
             });
           }
         }
@@ -144,13 +144,13 @@ const BillingDashboard: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'active': return 'default';
-      case 'trial': return 'secondary';
-      case 'cancelled': return 'destructive';
-      case 'paused': return 'warning';
-      case 'paid': return 'default';
-      case 'overdue': return 'destructive';
-      default: return 'secondary';
+      case 'active':return 'default';
+      case 'trial':return 'secondary';
+      case 'cancelled':return 'destructive';
+      case 'paused':return 'warning';
+      case 'paid':return 'default';
+      case 'overdue':return 'destructive';
+      default:return 'secondary';
     }
   };
 
@@ -166,11 +166,11 @@ const BillingDashboard: React.FC = () => {
             <div className="h-20 bg-gray-200 rounded"></div>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>);
+
   }
 
-  const currentPlan = subscription ? plans.find(p => p.id === subscription.subscription_plan_id) : null;
+  const currentPlan = subscription ? plans.find((p) => p.id === subscription.subscription_plan_id) : null;
 
   return (
     <div className="space-y-6">
@@ -187,17 +187,17 @@ const BillingDashboard: React.FC = () => {
                 Manage your subscription and billing preferences
               </CardDescription>
             </div>
-            {subscription && (
-              <Badge variant={getStatusColor(subscription.status) as any}>
+            {subscription &&
+            <Badge variant={getStatusColor(subscription.status) as any}>
                 {subscription.status}
               </Badge>
-            )}
+            }
           </div>
         </CardHeader>
         
         <CardContent className="space-y-4">
-          {subscription && currentPlan ? (
-            <>
+          {subscription && currentPlan ?
+          <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Plan</p>
@@ -207,41 +207,41 @@ const BillingDashboard: React.FC = () => {
                   <p className="text-sm text-muted-foreground">Billing</p>
                   <p className="font-semibold">
                     {formatCurrency(
-                      subscription.billing_cycle === 'yearly' 
-                        ? currentPlan.price_yearly 
-                        : currentPlan.price_monthly
-                    )}
+                    subscription.billing_cycle === 'yearly' ?
+                    currentPlan.price_yearly :
+                    currentPlan.price_monthly
+                  )}
                     /{subscription.billing_cycle === 'yearly' ? 'year' : 'month'}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Next Billing</p>
                   <p className="font-semibold">
-                    {subscription.next_billing_date 
-                      ? new Date(subscription.next_billing_date).toLocaleDateString()
-                      : 'N/A'
-                    }
+                    {subscription.next_billing_date ?
+                  new Date(subscription.next_billing_date).toLocaleDateString() :
+                  'N/A'
+                  }
                   </p>
                 </div>
               </div>
               
-              {subscription.is_trial && (
-                <Alert>
+              {subscription.is_trial &&
+            <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>
                     You're currently on a free trial. Your subscription will begin after the trial ends.
                   </AlertDescription>
                 </Alert>
-              )}
-            </>
-          ) : (
-            <Alert>
+            }
+            </> :
+
+          <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 No active subscription found. Choose a plan to get started.
               </AlertDescription>
             </Alert>
-          )}
+          }
         </CardContent>
       </Card>
 
@@ -267,9 +267,9 @@ const BillingDashboard: React.FC = () => {
                 </div>
                 <div className="text-2xl font-bold">
                   {formatCurrency(
-                    billingHistory
-                      .filter(b => b.status === 'paid')
-                      .reduce((sum, b) => sum + b.total_amount, 0)
+                    billingHistory.
+                    filter((b) => b.status === 'paid').
+                    reduce((sum, b) => sum + b.total_amount, 0)
                   )}
                 </div>
               </CardContent>
@@ -292,9 +292,9 @@ const BillingDashboard: React.FC = () => {
                   <span className="text-sm font-medium">Member Since</span>
                 </div>
                 <div className="text-2xl font-bold">
-                  {subscription?.started_at 
-                    ? new Date(subscription.started_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
-                    : 'N/A'
+                  {subscription?.started_at ?
+                  new Date(subscription.started_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) :
+                  'N/A'
                   }
                 </div>
               </CardContent>
@@ -303,10 +303,10 @@ const BillingDashboard: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="plans">
-          <SubscriptionPlanSelector 
+          <SubscriptionPlanSelector
             onSelectPlan={handleSubscriptionChange}
-            showCurrentPlan={true}
-          />
+            showCurrentPlan={true} />
+
         </TabsContent>
 
         <TabsContent value="billing" className="space-y-4">
@@ -318,10 +318,10 @@ const BillingDashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {billingHistory.length > 0 ? (
-                <div className="space-y-4">
-                  {billingHistory.map((bill) => (
-                    <div key={bill.id} className="flex items-center justify-between p-4 border rounded-lg">
+              {billingHistory.length > 0 ?
+              <div className="space-y-4">
+                  {billingHistory.map((bill) =>
+                <div key={bill.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <p className="font-medium">Invoice #{bill.invoice_id}</p>
@@ -341,13 +341,13 @@ const BillingDashboard: React.FC = () => {
                         </Button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-center py-8">
+                )}
+                </div> :
+
+              <p className="text-muted-foreground text-center py-8">
                   No billing history found
                 </p>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -361,10 +361,10 @@ const BillingDashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {paymentMethods.length > 0 ? (
-                <div className="space-y-4">
-                  {paymentMethods.map((method) => (
-                    <div key={method.id} className="flex items-center justify-between p-4 border rounded-lg">
+              {paymentMethods.length > 0 ?
+              <div className="space-y-4">
+                  {paymentMethods.map((method) =>
+                <div key={method.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex items-center gap-3">
                         <CreditCard className="h-5 w-5 text-muted-foreground" />
                         <div>
@@ -377,31 +377,31 @@ const BillingDashboard: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        {method.is_default && (
-                          <Badge variant="secondary">Default</Badge>
-                        )}
+                        {method.is_default &&
+                    <Badge variant="secondary">Default</Badge>
+                    }
                         <Button size="sm" variant="outline">
                           <Settings className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
+                )}
+                </div> :
+
+              <div className="text-center py-8">
                   <p className="text-muted-foreground mb-4">No payment methods found</p>
                   <Button>
                     <CreditCard className="h-4 w-4 mr-2" />
                     Add Payment Method
                   </Button>
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default BillingDashboard;

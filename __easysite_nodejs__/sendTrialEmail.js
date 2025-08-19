@@ -1,14 +1,14 @@
 
 function sendTrialEmail(userId, emailType, customData = {}) {
-    if (!userId || !emailType) {
-        throw new Error('User ID and email type are required');
-    }
+  if (!userId || !emailType) {
+    throw new Error('User ID and email type are required');
+  }
 
-    // Email templates based on trial stage
-    const emailTemplates = {
-        welcome: {
-            subject: 'Welcome to your 30-day free trial! 🚀',
-            content: `
+  // Email templates based on trial stage
+  const emailTemplates = {
+    welcome: {
+      subject: 'Welcome to your 30-day free trial! 🚀',
+      content: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h1 style="color: #2563eb;">Welcome to ContractPro!</h1>
                     <p>Your 30-day free trial has started. Here's what you can do next:</p>
@@ -29,10 +29,10 @@ function sendTrialEmail(userId, emailType, customData = {}) {
                     </p>
                 </div>
             `
-        },
-        feature_highlight: {
-            subject: `Master ${customData.featureName} in 5 minutes`,
-            content: `
+    },
+    feature_highlight: {
+      subject: `Master ${customData.featureName} in 5 minutes`,
+      content: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h1 style="color: #2563eb;">Feature Spotlight: ${customData.featureName}</h1>
                     <p>${customData.featureDescription}</p>
@@ -45,10 +45,10 @@ function sendTrialEmail(userId, emailType, customData = {}) {
                     </a>
                 </div>
             `
-        },
-        trial_ending: {
-            subject: '⏰ Your trial ends in 3 days - Choose your plan',
-            content: `
+    },
+    trial_ending: {
+      subject: '⏰ Your trial ends in 3 days - Choose your plan',
+      content: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h1 style="color: #dc2626;">Don't lose your progress!</h1>
                     <p>Your trial ends in <strong>3 days</strong>. Choose a plan to continue using ContractPro and keep all your data.</p>
@@ -73,22 +73,22 @@ function sendTrialEmail(userId, emailType, customData = {}) {
                     </p>
                 </div>
             `
-        }
-    };
-
-    const template = emailTemplates[emailType];
-    if (!template) {
-        throw new Error(`Unknown email type: ${emailType}`);
     }
+  };
 
-    return {
-        emailData: {
-            userId,
-            emailType,
-            subject: template.subject,
-            content: template.content,
-            sentAt: new Date().toISOString()
-        },
-        success: true
-    };
+  const template = emailTemplates[emailType];
+  if (!template) {
+    throw new Error(`Unknown email type: ${emailType}`);
+  }
+
+  return {
+    emailData: {
+      userId,
+      emailType,
+      subject: template.subject,
+      content: template.content,
+      sentAt: new Date().toISOString()
+    },
+    success: true
+  };
 }

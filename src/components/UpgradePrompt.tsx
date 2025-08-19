@@ -12,8 +12,8 @@ import {
   CheckCircle,
   X,
   Sparkles,
-  TrendingUp
-} from 'lucide-react';
+  TrendingUp } from
+'lucide-react';
 
 interface UpgradePromptProps {
   urgency?: 'low' | 'medium' | 'high';
@@ -95,15 +95,15 @@ const UpgradePrompt: React.FC<UpgradePromptProps> = ({
             <Button size="sm" className="text-xs">
               <Link to="/subscription-management">Upgrade</Link>
             </Button>
-            {onDismiss && (
-              <Button size="sm" variant="ghost" onClick={handleDismiss}>
+            {onDismiss &&
+            <Button size="sm" variant="ghost" onClick={handleDismiss}>
                 <X className="h-3 w-3" />
               </Button>
-            )}
+            }
           </div>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -124,11 +124,11 @@ const UpgradePrompt: React.FC<UpgradePromptProps> = ({
             </div>
           </div>
           
-          {onDismiss && (
-            <Button size="sm" variant="ghost" onClick={handleDismiss}>
+          {onDismiss &&
+          <Button size="sm" variant="ghost" onClick={handleDismiss}>
               <X className="h-4 w-4" />
             </Button>
-          )}
+          }
         </div>
       </CardHeader>
       
@@ -169,13 +169,13 @@ const UpgradePrompt: React.FC<UpgradePromptProps> = ({
             </div>
           </div>
           
-          {urgency === 'high' && (
-            <div className="mb-3">
+          {urgency === 'high' &&
+          <div className="mb-3">
               <Badge className="bg-red-100 text-red-700 text-xs">
                 🎯 Save 20% if you upgrade today!
               </Badge>
             </div>
-          )}
+          }
         </div>
 
         {/* Action Buttons */}
@@ -188,11 +188,11 @@ const UpgradePrompt: React.FC<UpgradePromptProps> = ({
             </Link>
           </Button>
           
-          {urgency !== 'high' && (
-            <Button variant="outline" onClick={handleDismiss}>
+          {urgency !== 'high' &&
+          <Button variant="outline" onClick={handleDismiss}>
               Maybe Later
             </Button>
-          )}
+          }
         </div>
 
         {/* Social Proof */}
@@ -203,8 +203,8 @@ const UpgradePrompt: React.FC<UpgradePromptProps> = ({
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default UpgradePrompt;

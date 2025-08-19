@@ -11,6 +11,6 @@ function downgradeSubscription(subscriptionId, newPlanId, effectiveAt = 'period_
     status: 'active',
     scheduled_change: effectiveAt !== 'immediately'
   };
-  
+
   return downgradeResponse;
 }

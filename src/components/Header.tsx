@@ -105,8 +105,8 @@ const Header = () => {
                 <span className="text-white font-bold text-sm">LBD</span>
               </div>
               <div>
-                <h1 className="font-semibold text-lg text-gray-900">Laguna Bay Development</h1>
-                <p className="text-xs text-gray-600 -mt-1">Construction Management</p>
+                <h1 className="font-semibold text-lg text-gray-900">SiteBoss</h1>
+                <p className="text-xs text-gray-600 -mt-1">Site Management Platform</p>
               </div>
             </Link>
             <Link

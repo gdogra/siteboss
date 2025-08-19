@@ -2,11 +2,11 @@
 // Process trial expiration and convert to paid or cancel
 function processTrialExpiration(userSubscriptionId, shouldConvert = false, planId = null) {
   const now = new Date();
-  
+
   if (shouldConvert && planId) {
     // Convert trial to paid subscription
-    const nextBilling = new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000));
-    
+    const nextBilling = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
     return {
       action: 'converted',
       status: 'active',

@@ -12,8 +12,8 @@ const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ children })
   return (
     <SubscriptionContext.Provider value={subscriptionData}>
       {children}
-    </SubscriptionContext.Provider>
-  );
+    </SubscriptionContext.Provider>);
+
 };
 
 export default SubscriptionProvider;

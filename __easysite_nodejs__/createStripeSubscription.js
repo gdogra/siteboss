@@ -4,11 +4,11 @@ function createStripeSubscription(userId, planId, paymentMethodId = null, trialD
   // This is a mock implementation - in production you would integrate with Stripe API
   const subscriptionId = `sub_${Date.now()}_${userId}`;
   const customerId = `cus_${userId}`;
-  
+
   const now = new Date();
-  const trialEnd = new Date(now.getTime() + (trialDays * 24 * 60 * 60 * 1000));
-  const nextBilling = new Date(trialEnd.getTime() + (30 * 24 * 60 * 60 * 1000));
-  
+  const trialEnd = new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000);
+  const nextBilling = new Date(trialEnd.getTime() + 30 * 24 * 60 * 60 * 1000);
+
   return {
     subscription_id: subscriptionId,
     customer_id: customerId,

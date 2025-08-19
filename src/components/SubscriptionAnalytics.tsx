@@ -6,30 +6,30 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
   LineChart,
-  Line
-} from 'recharts';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Users, 
+  Line } from
+'recharts';
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Users,
   Crown,
   AlertTriangle,
   Download,
-  RefreshCw
-} from 'lucide-react';
+  RefreshCw } from
+'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const SubscriptionAnalytics: React.FC = () => {
@@ -97,71 +97,71 @@ const SubscriptionAnalytics: React.FC = () => {
       '90d': 90,
       '365d': 365
     };
-    
+
     const daysBack = timeRanges[timeRange as keyof typeof timeRanges] || 30;
-    const cutoffDate = new Date(now.getTime() - (daysBack * 24 * 60 * 60 * 1000));
+    const cutoffDate = new Date(now.getTime() - daysBack * 24 * 60 * 60 * 1000);
 
     // Filter data by time range
-    const recentSubscriptions = subscriptions.filter(s => 
-      new Date(s.created_at) >= cutoffDate
+    const recentSubscriptions = subscriptions.filter((s) =>
+    new Date(s.created_at) >= cutoffDate
     );
-    const recentBilling = billingData.filter(b => 
-      new Date(b.created_at) >= cutoffDate
+    const recentBilling = billingData.filter((b) =>
+    new Date(b.created_at) >= cutoffDate
     );
 
     // Total metrics
     const totalSubscriptions = subscriptions.length;
-    const activeSubscriptions = subscriptions.filter(s => s.status === 'active').length;
-    const trialSubscriptions = subscriptions.filter(s => s.is_trial).length;
-    const cancelledSubscriptions = subscriptions.filter(s => s.status === 'cancelled').length;
+    const activeSubscriptions = subscriptions.filter((s) => s.status === 'active').length;
+    const trialSubscriptions = subscriptions.filter((s) => s.is_trial).length;
+    const cancelledSubscriptions = subscriptions.filter((s) => s.status === 'cancelled').length;
 
     // Revenue metrics
-    const totalRevenue = billingData
-      .filter(b => b.status === 'paid')
-      .reduce((sum, b) => sum + b.total_amount, 0);
-    const recentRevenue = recentBilling
-      .filter(b => b.status === 'paid')
-      .reduce((sum, b) => sum + b.total_amount, 0);
+    const totalRevenue = billingData.
+    filter((b) => b.status === 'paid').
+    reduce((sum, b) => sum + b.total_amount, 0);
+    const recentRevenue = recentBilling.
+    filter((b) => b.status === 'paid').
+    reduce((sum, b) => sum + b.total_amount, 0);
 
     // MRR calculation (Monthly Recurring Revenue)
-    const monthlyRevenue = subscriptions
-      .filter(s => s.status === 'active' && !s.is_trial)
-      .reduce((sum, s) => {
-        const plan = plans.find(p => p.id === s.subscription_plan_id);
-        if (plan) {
-          const monthlyAmount = s.billing_cycle === 'yearly' 
-            ? plan.price_yearly / 12 
-            : plan.price_monthly;
-          return sum + monthlyAmount;
-        }
-        return sum;
-      }, 0);
+    const monthlyRevenue = subscriptions.
+    filter((s) => s.status === 'active' && !s.is_trial).
+    reduce((sum, s) => {
+      const plan = plans.find((p) => p.id === s.subscription_plan_id);
+      if (plan) {
+        const monthlyAmount = s.billing_cycle === 'yearly' ?
+        plan.price_yearly / 12 :
+        plan.price_monthly;
+        return sum + monthlyAmount;
+      }
+      return sum;
+    }, 0);
 
     // Conversion rate
-    const totalTrials = subscriptions.filter(s => s.is_trial).length;
-    const convertedTrials = subscriptions.filter(s => 
-      s.is_trial && s.status === 'active'
+    const totalTrials = subscriptions.filter((s) => s.is_trial).length;
+    const convertedTrials = subscriptions.filter((s) =>
+    s.is_trial && s.status === 'active'
     ).length;
-    const conversionRate = totalTrials > 0 ? (convertedTrials / totalTrials) * 100 : 0;
+    const conversionRate = totalTrials > 0 ? convertedTrials / totalTrials * 100 : 0;
 
     // Churn rate (simplified)
-    const churnRate = totalSubscriptions > 0 
-      ? (cancelledSubscriptions / totalSubscriptions) * 100 
-      : 0;
+    const churnRate = totalSubscriptions > 0 ?
+    cancelledSubscriptions / totalSubscriptions * 100 :
+    0;
 
     // Plan distribution
-    const planDistribution = plans.map(plan => {
-      const count = subscriptions.filter(s => s.subscription_plan_id === plan.id).length;
+    const planDistribution = plans.map((plan) => {
+      const count = subscriptions.filter((s) => s.subscription_plan_id === plan.id).length;
       return {
         name: plan.plan_name,
         value: count,
-        percentage: totalSubscriptions > 0 ? (count / totalSubscriptions) * 100 : 0
+        percentage: totalSubscriptions > 0 ? count / totalSubscriptions * 100 : 0
       };
     });
 
     // Growth data (mock for demonstration)
     const growthData = Array.from({ length: 30 }, (_, i) => {
-      const date = new Date(now.getTime() - ((29 - i) * 24 * 60 * 60 * 1000));
+      const date = new Date(now.getTime() - (29 - i) * 24 * 60 * 60 * 1000);
       const daySubscriptions = Math.floor(Math.random() * 10) + 1;
       return {
         date: date.toISOString().split('T')[0],
@@ -206,8 +206,8 @@ const SubscriptionAnalytics: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-4">
-        {[1, 2, 3, 4].map((i) => (
-          <Card key={i} className="animate-pulse">
+        {[1, 2, 3, 4].map((i) =>
+        <Card key={i} className="animate-pulse">
             <CardHeader>
               <div className="h-4 bg-gray-200 rounded w-1/3"></div>
               <div className="h-3 bg-gray-200 rounded w-2/3"></div>
@@ -216,9 +216,9 @@ const SubscriptionAnalytics: React.FC = () => {
               <div className="h-32 bg-gray-200 rounded"></div>
             </CardContent>
           </Card>
-        ))}
-      </div>
-    );
+        )}
+      </div>);
+
   }
 
   return (
@@ -366,24 +366,24 @@ const SubscriptionAnalytics: React.FC = () => {
                       labelLine={false}
                       outerRadius={80}
                       fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {analytics.planDistribution.map((entry: any, index: number) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
+                      dataKey="value">
+
+                      {analytics.planDistribution.map((entry: any, index: number) =>
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      )}
                     </Pie>
                     <Tooltip />
                   </PieChart>
                 </ResponsiveContainer>
                 
                 <div className="space-y-3">
-                  {analytics.planDistribution.map((plan: any, index: number) => (
-                    <div key={plan.name} className="flex items-center justify-between">
+                  {analytics.planDistribution.map((plan: any, index: number) =>
+                  <div key={plan.name} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <div 
-                          className="w-4 h-4 rounded-full" 
-                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                        ></div>
+                        <div
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: COLORS[index % COLORS.length] }}>
+                      </div>
                         <span className="font-medium">{plan.name}</span>
                       </div>
                       <div className="text-right">
@@ -392,7 +392,7 @@ const SubscriptionAnalytics: React.FC = () => {
                         </Badge>
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -419,8 +419,8 @@ const SubscriptionAnalytics: React.FC = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SubscriptionAnalytics;

@@ -13,8 +13,8 @@ import {
   CheckCircle,
   ArrowRight,
   Gift,
-  Star
-} from 'lucide-react';
+  Star } from
+'lucide-react';
 
 interface TrialProgressIndicatorProps {
   userId?: number;
@@ -22,10 +22,10 @@ interface TrialProgressIndicatorProps {
   showUpgradePrompt?: boolean;
 }
 
-const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({ 
-  userId, 
+const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
+  userId,
   className = '',
-  showUpgradePrompt = true 
+  showUpgradePrompt = true
 }) => {
   const [trialStatus, setTrialStatus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -59,7 +59,7 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
     try {
       // Get current trial day to show relevant feature highlight
       const trialDay = trialStatus?.totalTrialDays - trialStatus?.daysRemaining || 1;
-      
+
       const { data, error } = await window.ezsite.apis.tablePage(35527, {
         PageNo: 1,
         PageSize: 1,
@@ -76,7 +76,7 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
 
   const getTrialStatusColor = () => {
     if (!trialStatus) return 'blue';
-    
+
     if (trialStatus.daysRemaining > 14) return 'green';
     if (trialStatus.daysRemaining > 7) return 'yellow';
     return 'red';
@@ -84,7 +84,7 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
 
   const getTrialStatusMessage = () => {
     if (!trialStatus) return 'Loading trial status...';
-    
+
     if (trialStatus.daysRemaining > 14) {
       return `${trialStatus.daysRemaining} days left in your trial`;
     } else if (trialStatus.daysRemaining > 7) {
@@ -106,8 +106,8 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
             <div className="h-8 bg-gray-200 rounded"></div>
           </div>
         </CardContent>
-      </Card>
-    );
+      </Card>);
+
   }
 
   if (!trialStatus || !trialStatus.isTrialActive) {
@@ -124,12 +124,12 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
             </Button>
           </div>
         </CardContent>
-      </Card>
-    );
+      </Card>);
+
   }
 
   const statusColor = getTrialStatusColor();
-  
+
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Main Trial Status Card */}
@@ -154,37 +154,37 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
                 Day {trialStatus.totalTrialDays - trialStatus.daysRemaining} of {trialStatus.totalTrialDays}
               </span>
             </div>
-            <Progress 
-              value={trialStatus.progressPercentage} 
-              className="h-2"
-            />
+            <Progress
+              value={trialStatus.progressPercentage}
+              className="h-2" />
+
           </div>
           
           <p className={`text-sm text-${statusColor}-700`}>
             {getTrialStatusMessage()}
           </p>
           
-          {showUpgradePrompt && trialStatus.daysRemaining <= 7 && (
-            <div className="flex gap-2">
+          {showUpgradePrompt && trialStatus.daysRemaining <= 7 &&
+          <div className="flex gap-2">
               <Button size="sm" className="flex-1">
                 <Link to="/subscription-management" className="flex items-center gap-1">
                   <Crown className="h-4 w-4" />
                   Choose Plan
                 </Link>
               </Button>
-              {trialStatus.canExtendTrial && (
-                <Button size="sm" variant="outline">
+              {trialStatus.canExtendTrial &&
+            <Button size="sm" variant="outline">
                   Extend Trial
                 </Button>
-              )}
+            }
             </div>
-          )}
+          }
         </CardContent>
       </Card>
 
       {/* Today's Feature Highlight */}
-      {todayFeature && (
-        <Card className="border-purple-200 bg-purple-50">
+      {todayFeature &&
+      <Card className="border-purple-200 bg-purple-50">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg flex items-center gap-2">
               <Star className="h-5 w-5 text-purple-600" />
@@ -208,7 +208,7 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
             </div>
           </CardContent>
         </Card>
-      )}
+      }
 
       {/* Quick Stats */}
       <Card>
@@ -229,8 +229,8 @@ const TrialProgressIndicator: React.FC<TrialProgressIndicatorProps> = ({
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TrialProgressIndicator;

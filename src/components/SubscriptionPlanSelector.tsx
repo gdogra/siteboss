@@ -25,14 +25,14 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
   const handlePlanSelect = async (planId: number) => {
     try {
       setSelectedPlanId(planId);
-      
+
       if (onSelectPlan) {
         onSelectPlan(planId, billingCycle);
       }
-      
+
       toast({
         title: 'Plan Selected',
-        description: `You selected the ${plans.find(p => p.id === planId)?.plan_name} plan`
+        description: `You selected the ${plans.find((p) => p.id === planId)?.plan_name} plan`
       });
     } catch (error) {
       console.error('Error selecting plan:', error);
@@ -55,7 +55,7 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
   const calculateYearlySavings = (monthlyPrice: number, yearlyPrice: number) => {
     const monthlyCost = monthlyPrice * 12;
     const savings = monthlyCost - yearlyPrice;
-    const percentage = Math.round((savings / monthlyCost) * 100);
+    const percentage = Math.round(savings / monthlyCost * 100);
     return { amount: savings, percentage };
   };
 
@@ -88,8 +88,8 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[1, 2, 3].map((i) => (
-          <Card key={i} className="animate-pulse">
+        {[1, 2, 3].map((i) =>
+        <Card key={i} className="animate-pulse">
             <CardHeader>
               <div className="h-6 bg-gray-200 rounded w-3/4"></div>
               <div className="h-4 bg-gray-200 rounded w-full"></div>
@@ -97,18 +97,18 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
             <CardContent>
               <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
               <div className="space-y-2">
-                {[1, 2, 3].map((j) => (
-                  <div key={j} className="h-4 bg-gray-200 rounded"></div>
-                ))}
+                {[1, 2, 3].map((j) =>
+              <div key={j} className="h-4 bg-gray-200 rounded"></div>
+              )}
               </div>
             </CardContent>
             <CardFooter>
               <div className="h-10 bg-gray-200 rounded w-full"></div>
             </CardFooter>
           </Card>
-        ))}
-      </div>
-    );
+        )}
+      </div>);
+
   }
 
   return (
@@ -121,8 +121,8 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
         <Switch
           id="billing-toggle"
           checked={billingCycle === 'yearly'}
-          onCheckedChange={(checked) => setBillingCycle(checked ? 'yearly' : 'monthly')}
-        />
+          onCheckedChange={(checked) => setBillingCycle(checked ? 'yearly' : 'monthly')} />
+
         <Label htmlFor="billing-toggle" className={billingCycle === 'yearly' ? 'font-semibold' : ''}>
           Yearly
         </Label>
@@ -138,21 +138,21 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
           const isPopular = plan.plan_code.toLowerCase() === 'professional';
 
           return (
-            <Card 
-              key={plan.id} 
-              className={`relative ${getPlanColor(plan.plan_code)} ${isCurrentPlan ? 'ring-2 ring-blue-500' : ''} ${isPopular ? 'scale-105 shadow-lg' : ''}`}
-            >
-              {isPopular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+            <Card
+              key={plan.id}
+              className={`relative ${getPlanColor(plan.plan_code)} ${isCurrentPlan ? 'ring-2 ring-blue-500' : ''} ${isPopular ? 'scale-105 shadow-lg' : ''}`}>
+
+              {isPopular &&
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                   <Badge className="bg-green-500 hover:bg-green-600">Most Popular</Badge>
                 </div>
-              )}
+              }
               
-              {isCurrentPlan && showCurrentPlan && (
-                <div className="absolute -top-3 right-4">
+              {isCurrentPlan && showCurrentPlan &&
+              <div className="absolute -top-3 right-4">
                   <Badge variant="outline" className="bg-blue-500 text-white">Current Plan</Badge>
                 </div>
-              )}
+              }
 
               <CardHeader className="text-center">
                 <div className="flex items-center justify-center mb-2">
@@ -173,16 +173,16 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
                       /{billingCycle === 'yearly' ? 'year' : 'month'}
                     </span>
                   </div>
-                  {billingCycle === 'yearly' && savings.percentage > 0 && (
-                    <p className="text-sm text-green-600 font-medium mt-1">
+                  {billingCycle === 'yearly' && savings.percentage > 0 &&
+                  <p className="text-sm text-green-600 font-medium mt-1">
                       Save {formatPrice(savings.amount)} ({savings.percentage}% off)
                     </p>
-                  )}
-                  {plan.trial_days > 0 && (
-                    <p className="text-sm text-blue-600 font-medium">
+                  }
+                  {plan.trial_days > 0 &&
+                  <p className="text-sm text-blue-600 font-medium">
                       {plan.trial_days}-day free trial
                     </p>
-                  )}
+                  }
                 </div>
 
                 {/* Features */}
@@ -216,12 +216,12 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
                   </div>
 
                   {/* Additional Features */}
-                  {plan.features.map((feature, index) => (
-                    <div key={index} className="flex items-center space-x-3">
+                  {plan.features.map((feature, index) =>
+                  <div key={index} className="flex items-center space-x-3">
                       <Check className="h-4 w-4 text-green-500" />
                       <span className="text-sm">{feature}</span>
                     </div>
-                  ))}
+                  )}
                 </div>
               </CardContent>
 
@@ -230,13 +230,13 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
                   className="w-full"
                   variant={isCurrentPlan ? 'secondary' : 'default'}
                   onClick={() => handlePlanSelect(plan.id)}
-                  disabled={isCurrentPlan}
-                >
+                  disabled={isCurrentPlan}>
+
                   {isCurrentPlan ? 'Current Plan' : 'Select Plan'}
                 </Button>
               </CardFooter>
-            </Card>
-          );
+            </Card>);
+
         })}
       </div>
 
@@ -244,8 +244,8 @@ const SubscriptionPlanSelector: React.FC<SubscriptionPlanSelectorProps> = ({
       <div className="text-center text-sm text-muted-foreground">
         <p>All plans include 24/7 support, 99.9% uptime SLA, and data encryption at rest</p>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SubscriptionPlanSelector;

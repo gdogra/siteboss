@@ -12,16 +12,16 @@ import UsageTracker from '@/components/UsageTracker';
 import AdminSubscriptionPanel from '@/components/AdminSubscriptionPanel';
 import SubscriptionAnalytics from '@/components/SubscriptionAnalytics';
 import FeatureGate from '@/components/FeatureGate';
-import { 
-  CreditCard, 
-  BarChart, 
-  Settings, 
-  Crown, 
+import {
+  CreditCard,
+  BarChart,
+  Settings,
+  Crown,
   Shield,
   Users,
   TrendingUp,
-  Zap
-} from 'lucide-react';
+  Zap } from
+'lucide-react';
 
 const SubscriptionManagementPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('billing');
@@ -177,8 +177,8 @@ const SubscriptionManagementPage: React.FC = () => {
                       featureKey="advanced_analytics"
                       featureName="Advanced Analytics"
                       requiredPlan="Professional"
-                      showUpgrade={true}
-                    >
+                      showUpgrade={true}>
+
                       <Card>
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
@@ -196,8 +196,8 @@ const SubscriptionManagementPage: React.FC = () => {
                       featureKey="priority_support"
                       featureName="Priority Support"
                       requiredPlan="Enterprise"
-                      showUpgrade={true}
-                    >
+                      showUpgrade={true}>
+
                       <Card>
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
@@ -218,8 +218,8 @@ const SubscriptionManagementPage: React.FC = () => {
                     featureKey="admin_panel"
                     featureName="Admin Panel"
                     requiredPlan="Enterprise"
-                    showUpgrade={true}
-                  >
+                    showUpgrade={true}>
+
                     <AdminSubscriptionPanel />
                   </FeatureGate>
                 </TabsContent>
@@ -229,8 +229,8 @@ const SubscriptionManagementPage: React.FC = () => {
                     featureKey="subscription_analytics"
                     featureName="Subscription Analytics"
                     requiredPlan="Professional"
-                    showUpgrade={true}
-                  >
+                    showUpgrade={true}>
+
                     <SubscriptionAnalytics />
                   </FeatureGate>
                 </TabsContent>
@@ -282,8 +282,8 @@ const SubscriptionManagementPage: React.FC = () => {
           </main>
         </div>
       </SubscriptionProvider>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default SubscriptionManagementPage;

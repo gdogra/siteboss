@@ -4,15 +4,15 @@ function generatePersonalizedEmail(userId, emailType, userData) {
     const baseUrl = 'https://contractpro.com'; // Replace with actual domain
     const userName = userData.name || 'there';
     const companyName = userData.company || 'your company';
-    
+
     // Get user's trial progress and personalize accordingly
     const personalizedContent = {
       subject: generatePersonalizedSubject(emailType, userData),
       html: generatePersonalizedHTML(emailType, userData, baseUrl)
     };
-    
+
     return personalizedContent;
-    
+
   } catch (error) {
     throw new Error(`Email personalization failed: ${error.message}`);
   }
@@ -29,7 +29,7 @@ function generatePersonalizedSubject(emailType, userData) {
     final_reminder: `⏰ ${userData.name}, your trial expires tomorrow!`,
     onboarding_complete: `🎉 You're all set, ${userData.name}! Welcome to ContractPro`
   };
-  
+
   return subjects[emailType] || `Update from ContractPro`;
 }
 
@@ -39,7 +39,7 @@ function generatePersonalizedHTML(emailType, userData, baseUrl) {
     onboarding_complete: generateOnboardingCompleteEmail(userData, baseUrl),
     success_story: generateSuccessStoryEmail(userData, baseUrl)
   };
-  
+
   return templates[emailType] || generateDefaultEmail(userData, baseUrl);
 }
 

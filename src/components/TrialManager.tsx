@@ -52,7 +52,7 @@ const TrialManager: React.FC = () => {
 
     try {
       const currentEnd = new Date(trialInfo.ends_at);
-      const newEnd = new Date(currentEnd.getTime() + (days * 24 * 60 * 60 * 1000));
+      const newEnd = new Date(currentEnd.getTime() + days * 24 * 60 * 60 * 1000);
 
       await window.ezsite.apis.tableUpdate('35515', {
         id: trialInfo.id,
@@ -64,7 +64,7 @@ const TrialManager: React.FC = () => {
 
       toast({
         title: 'Trial Extended',
-        description: `Your trial has been extended by ${days} days`,
+        description: `Your trial has been extended by ${days} days`
       });
 
       await loadTrialInfo();
@@ -107,7 +107,7 @@ const TrialManager: React.FC = () => {
 
       toast({
         title: 'Subscription Activated',
-        description: 'Welcome to your paid subscription!',
+        description: 'Welcome to your paid subscription!'
       });
 
       await refreshSubscription();
@@ -134,8 +134,8 @@ const TrialManager: React.FC = () => {
             <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
           </div>
         </CardContent>
-      </Card>
-    );
+      </Card>);
+
   }
 
   if (!subscription?.is_trial || !isTrialActive()) {
@@ -145,7 +145,7 @@ const TrialManager: React.FC = () => {
   const daysLeft = daysLeftInTrial();
   const totalTrialDays = trialInfo?.trial_duration_days || 30;
   const daysUsed = totalTrialDays - daysLeft;
-  const progressPercentage = (daysUsed / totalTrialDays) * 100;
+  const progressPercentage = daysUsed / totalTrialDays * 100;
 
   const getTrialStatus = () => {
     if (daysLeft <= 1) return { color: 'destructive', icon: AlertTriangle, message: 'Trial expires today!' };
@@ -198,54 +198,54 @@ const TrialManager: React.FC = () => {
             </div>
           </div>
 
-          {trialInfo?.extension_days > 0 && (
-            <Alert>
+          {trialInfo?.extension_days > 0 &&
+          <Alert>
               <CheckCircle className="h-4 w-4" />
               <AlertDescription>
                 Trial extended by {trialInfo.extension_days} days
               </AlertDescription>
             </Alert>
-          )}
+          }
         </CardContent>
 
         <CardFooter className="flex gap-3">
           <Button onClick={() => convertToSubscription(subscription.subscription_plan_id)} className="flex-1">
             Subscribe Now
           </Button>
-          {daysLeft <= 7 && (
-            <Button 
-              variant="outline" 
-              onClick={() => extendTrial(7)}
-              className="flex-1"
-            >
+          {daysLeft <= 7 &&
+          <Button
+            variant="outline"
+            onClick={() => extendTrial(7)}
+            className="flex-1">
+
               Extend Trial
             </Button>
-          )}
+          }
         </CardFooter>
       </Card>
 
       {/* Trial Warnings */}
-      {daysLeft <= 3 && (
-        <Alert variant="destructive">
+      {daysLeft <= 3 &&
+      <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
           <AlertDescription>
             Your trial expires in {daysLeft} day{daysLeft !== 1 ? 's' : ''}. 
             Subscribe now to continue using all features without interruption.
           </AlertDescription>
         </Alert>
-      )}
+      }
 
-      {daysLeft <= 7 && daysLeft > 3 && (
-        <Alert>
+      {daysLeft <= 7 && daysLeft > 3 &&
+      <Alert>
           <Clock className="h-4 w-4" />
           <AlertDescription>
             Your trial expires in {daysLeft} days. Consider upgrading to continue 
             enjoying all the premium features.
           </AlertDescription>
         </Alert>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default TrialManager;

@@ -29,8 +29,8 @@ import {
   Sparkles,
   TrendingUp,
   Target,
-  Rocket
-} from 'lucide-react';
+  Rocket } from
+'lucide-react';
 
 const HomePage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -58,69 +58,69 @@ const HomePage = () => {
         IsAsc: true,
         Filters: [{ name: "is_active", op: "Equal", value: true }]
       });
-      
+
       if (!error && data?.List) {
-        setPricingPlans(data.List.map(plan => ({
+        setPricingPlans(data.List.map((plan) => ({
           ...plan,
           features: JSON.parse(plan.features || '[]')
         })));
       } else {
         // Fallback pricing if no plans in database
         setPricingPlans([
-          {
-            id: 1,
-            plan_name: 'Starter',
-            monthly_price: 49,
-            annual_price: 490,
-            is_popular: false,
-            features: [
-              'Up to 5 projects',
-              'Basic invoice management',
-              'Document storage (5GB)',
-              'Email support',
-              'Mobile app access',
-              'Basic reporting'
-            ]
-          },
-          {
-            id: 2,
-            plan_name: 'Professional',
-            monthly_price: 149,
-            annual_price: 1490,
-            is_popular: true,
-            features: [
-              'Unlimited projects',
-              'Advanced invoice automation',
-              'Document storage (100GB)',
-              'Priority support',
-              'Team collaboration',
-              'Advanced reporting & analytics',
-              'AI-powered insights',
-              'GPS time tracking',
-              'Custom workflows',
-              'Integration with QuickBooks'
-            ]
-          },
-          {
-            id: 3,
-            plan_name: 'Enterprise',
-            monthly_price: 299,
-            annual_price: 2990,
-            is_popular: false,
-            features: [
-              'Everything in Professional',
-              'Unlimited storage',
-              'White-label options',
-              'Dedicated account manager',
-              '24/7 phone support',
-              'Custom integrations',
-              'Advanced security features',
-              'Multi-company management',
-              'Custom training',
-              'API access'
-            ]
-          }
-        ]);
+        {
+          id: 1,
+          plan_name: 'Starter',
+          monthly_price: 49,
+          annual_price: 490,
+          is_popular: false,
+          features: [
+          'Up to 5 projects',
+          'Basic invoice management',
+          'Document storage (5GB)',
+          'Email support',
+          'Mobile app access',
+          'Basic reporting']
+
+        },
+        {
+          id: 2,
+          plan_name: 'Professional',
+          monthly_price: 149,
+          annual_price: 1490,
+          is_popular: true,
+          features: [
+          'Unlimited projects',
+          'Advanced invoice automation',
+          'Document storage (100GB)',
+          'Priority support',
+          'Team collaboration',
+          'Advanced reporting & analytics',
+          'AI-powered insights',
+          'GPS time tracking',
+          'Custom workflows',
+          'Integration with QuickBooks']
+
+        },
+        {
+          id: 3,
+          plan_name: 'Enterprise',
+          monthly_price: 299,
+          annual_price: 2990,
+          is_popular: false,
+          features: [
+          'Everything in Professional',
+          'Unlimited storage',
+          'White-label options',
+          'Dedicated account manager',
+          '24/7 phone support',
+          'Custom integrations',
+          'Advanced security features',
+          'Multi-company management',
+          'Custom training',
+          'API access']
+
+        }]
+        );
       }
     } catch (error) {
       console.error('Error loading pricing plans:', error);
@@ -128,98 +128,98 @@ const HomePage = () => {
   };
 
   const features = [
-    {
-      icon: Brain,
-      title: 'AI-Powered Intelligence',
-      description: 'Machine learning algorithms predict project risks, optimize schedules, and identify cost savings automatically.',
-      metric: '$47K average monthly savings',
-      color: 'from-purple-600 to-pink-600',
-      stats: '94% accuracy in predictions'
-    },
-    {
-      icon: Building2,
-      title: 'Project Management',
-      description: 'Complete project lifecycle management with real-time tracking, automated workflows, and team collaboration.',
-      metric: '40% faster completion',
-      color: 'from-blue-600 to-cyan-600',
-      stats: '10K+ projects completed'
-    },
-    {
-      icon: BarChart3,
-      title: 'Advanced Analytics',
-      description: 'Data-driven insights with predictive analytics, cost optimization, and performance benchmarking.',
-      metric: '34% profit increase',
-      color: 'from-green-600 to-emerald-600',
-      stats: 'Real-time dashboards'
-    },
-    {
-      icon: Smartphone,
-      title: 'Mobile-First Design',
-      description: 'Native iOS and Android apps with offline capabilities, GPS tracking, and field data collection.',
-      metric: '24/7 field access',
-      color: 'from-orange-600 to-red-600',
-      stats: '99.9% uptime SLA'
-    },
-    {
-      icon: Shield,
-      title: 'Enterprise Security',
-      description: 'Bank-grade security with SOC 2 compliance, encrypted data, and role-based access controls.',
-      metric: 'SOC 2 Type II certified',
-      color: 'from-indigo-600 to-purple-600',
-      stats: '256-bit encryption'
-    },
-    {
-      icon: Zap,
-      title: 'Automation Engine',
-      description: 'Automate invoicing, approvals, notifications, and workflows to eliminate manual tasks.',
-      metric: '87% time savings',
-      color: 'from-yellow-600 to-orange-600',
-      stats: '500+ automation rules'
-    }
-  ];
+  {
+    icon: Brain,
+    title: 'AI-Powered Intelligence',
+    description: 'Machine learning algorithms predict project risks, optimize schedules, and identify cost savings automatically.',
+    metric: '$47K average monthly savings',
+    color: 'from-purple-600 to-pink-600',
+    stats: '94% accuracy in predictions'
+  },
+  {
+    icon: Building2,
+    title: 'Project Management',
+    description: 'Complete project lifecycle management with real-time tracking, automated workflows, and team collaboration.',
+    metric: '40% faster completion',
+    color: 'from-blue-600 to-cyan-600',
+    stats: '10K+ projects completed'
+  },
+  {
+    icon: BarChart3,
+    title: 'Advanced Analytics',
+    description: 'Data-driven insights with predictive analytics, cost optimization, and performance benchmarking.',
+    metric: '34% profit increase',
+    color: 'from-green-600 to-emerald-600',
+    stats: 'Real-time dashboards'
+  },
+  {
+    icon: Smartphone,
+    title: 'Mobile-First Design',
+    description: 'Native iOS and Android apps with offline capabilities, GPS tracking, and field data collection.',
+    metric: '24/7 field access',
+    color: 'from-orange-600 to-red-600',
+    stats: '99.9% uptime SLA'
+  },
+  {
+    icon: Shield,
+    title: 'Enterprise Security',
+    description: 'Bank-grade security with SOC 2 compliance, encrypted data, and role-based access controls.',
+    metric: 'SOC 2 Type II certified',
+    color: 'from-indigo-600 to-purple-600',
+    stats: '256-bit encryption'
+  },
+  {
+    icon: Zap,
+    title: 'Automation Engine',
+    description: 'Automate invoicing, approvals, notifications, and workflows to eliminate manual tasks.',
+    metric: '87% time savings',
+    color: 'from-yellow-600 to-orange-600',
+    stats: '500+ automation rules'
+  }];
+
 
   const benefits = [
-    { icon: DollarSign, text: 'Save $47,000+ monthly through AI optimization', value: '$47K+' },
-    { icon: Timer, text: '40% faster project completion rates', value: '40%' },
-    { icon: TrendingUp, text: '34% increase in profit margins', value: '34%' },
-    { icon: Shield, text: 'Enterprise-grade security and compliance', value: '100%' },
-    { icon: Globe, text: 'Cloud-native with 99.9% uptime SLA', value: '99.9%' },
-    { icon: Target, text: '24% lead conversion rate (industry-leading)', value: '24%' }
-  ];
+  { icon: DollarSign, text: 'Save $47,000+ monthly through AI optimization', value: '$47K+' },
+  { icon: Timer, text: '40% faster project completion rates', value: '40%' },
+  { icon: TrendingUp, text: '34% increase in profit margins', value: '34%' },
+  { icon: Shield, text: 'Enterprise-grade security and compliance', value: '100%' },
+  { icon: Globe, text: 'Cloud-native with 99.9% uptime SLA', value: '99.9%' },
+  { icon: Target, text: '24% lead conversion rate (industry-leading)', value: '24%' }];
+
 
   const testimonials = [
-    {
-      name: "Sarah Mitchell",
-      role: "Project Manager",
-      company: "Coastal Construction",
-      content: "ContractPro transformed our operations completely. We're completing projects 40% faster and our profit margins have increased by 23%. The AI insights alone save us thousands every month.",
-      rating: 5,
-      avatar: "https://images.unsplash.com/photo-1708962188322-0e9a5e40c101?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MTg3MTl8MHwxfHNlYXJjaHwxfHxBJTIwY3JvcHBlZCUyMGltYWdlJTIwb2YlMjBhJTIwcGVyc29uJTJDJTIwZm9jdXNpbmclMjBvbiUyMHRoZWlyJTIwZmFjZSUyQyUyMHdpdGglMjBhJTIwbmF0dXJhbCUyMGJhY2tncm91bmQufGVufDB8fHx8MTc1NTU0ODUxMXww&ixlib=rb-4.1.0&q=80&w=200$w=150"
-    },
-    {
-      name: "Mike Rodriguez",
-      role: "CEO",
-      company: "Rodriguez Building Group",
-      content: "Best investment we've made in our business. The platform paid for itself within the first month. Our team loves the mobile app and the automation features are incredible.",
-      rating: 5,
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-    },
-    {
-      name: "Jennifer Chen",
-      role: "Operations Director",
-      company: "Metro Contractors",
-      content: "Finally, a construction platform that actually understands our industry. The customer support is phenomenal and the features keep getting better every month.",
-      rating: 5,
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-    }
-  ];
+  {
+    name: "Sarah Mitchell",
+    role: "Project Manager",
+    company: "Coastal Construction",
+    content: "SiteBoss transformed our operations completely. We're completing projects 40% faster and our profit margins have increased by 23%. The AI insights alone save us thousands every month.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1708962188322-0e9a5e40c101?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MTg3MTl8MHwxfHNlYXJjaHwxfHxBJTIwY3JvcHBlZCUyMGltYWdlJTIwb2YlMjBhJTIwcGVyc29uJTJDJTIwZm9jdXNpbmclMjBvbiUyMHRoZWlyJTIwZmFjZSUyQyUyMHdpdGglMjBhJTIwbmF0dXJhbCUyMGJhY2tncm91bmQufGVufDB8fHx8MTc1NTU0ODUxMXww&ixlib=rb-4.1.0&q=80&w=200$w=150"
+  },
+  {
+    name: "Mike Rodriguez",
+    role: "CEO",
+    company: "Rodriguez Building Group",
+    content: "Best investment we've made in our business. The platform paid for itself within the first month. Our team loves the mobile app and the automation features are incredible.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    name: "Jennifer Chen",
+    role: "Operations Director",
+    company: "Metro Contractors",
+    content: "Finally, a construction platform that actually understands our industry. The customer support is phenomenal and the features keep getting better every month.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+  }];
+
 
   const stats = [
-    { value: '10,000+', label: 'Active Contractors', icon: Users },
-    { value: '34%', label: 'Average Profit Increase', icon: TrendingUp },
-    { value: '$47K', label: 'Monthly Savings', icon: DollarSign },
-    { value: '99.9%', label: 'Uptime SLA', icon: Globe }
-  ];
+  { value: '10,000+', label: 'Active Contractors', icon: Users },
+  { value: '34%', label: 'Average Profit Increase', icon: TrendingUp },
+  { value: '$47K', label: 'Monthly Savings', icon: DollarSign },
+  { value: '99.9%', label: 'Uptime SLA', icon: Globe }];
+
 
   const startFreeTrial = () => {
     window.location.href = `/trial-signup?utm_source=homepage&utm_campaign=free_trial`;
@@ -234,8 +234,8 @@ const HomePage = () => {
     <div className="min-h-screen bg-white">
       {/* Sticky Navigation */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm' : 'bg-transparent'
-      }`}>
+      isScrolled ? 'bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm' : 'bg-transparent'}`
+      }>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -243,7 +243,7 @@ const HomePage = () => {
                 <Waves className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h1 className="font-bold text-lg text-gray-900">ContractPro</h1>
+                <h1 className="font-bold text-lg text-gray-900">SiteBoss</h1>
                 <p className="text-xs text-gray-600 -mt-1">Construction Management</p>
               </div>
             </div>
@@ -297,21 +297,21 @@ const HomePage = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-              <Button 
+              <Button
                 onClick={startFreeTrial}
-                size="lg" 
-                className="px-12 py-6 text-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
-              >
+                size="lg"
+                className="px-12 py-6 text-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+
                 <Rocket className="mr-3 h-5 w-5" />
                 Start Your Free 30-Day Trial
                 <ArrowRight className="ml-3 h-5 w-5" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 className="px-12 py-6 text-lg border-2 border-blue-200 hover:bg-blue-50 transition-all duration-200"
-                onClick={watchDemo}
-              >
+                onClick={watchDemo}>
+
                 <PlayCircle className="mr-3 h-5 w-5" />
                 Watch 2-Min Demo
               </Button>
@@ -347,8 +347,8 @@ const HomePage = () => {
                     </div>
                     <div className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
                     <div className="text-sm text-gray-600">{stat.label}</div>
-                  </div>
-                );
+                  </div>);
+
               })}
             </div>
           </div>
@@ -362,14 +362,14 @@ const HomePage = () => {
             <p className="text-gray-600 text-lg">Trusted by industry leaders</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 opacity-60">
-            {['BuildCorp', 'SkyHigh Construction', 'Metro Builders', 'Coastal Contractors'].map((company, index) => (
-              <div key={index} className="text-center">
+            {['BuildCorp', 'SkyHigh Construction', 'Metro Builders', 'Coastal Contractors'].map((company, index) =>
+            <div key={index} className="text-center">
                 <div className="h-16 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
                   <Building2 className="h-8 w-8 text-gray-400" />
                 </div>
                 <p className="text-sm font-medium text-gray-700">{company}</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -412,8 +412,8 @@ const HomePage = () => {
                       {feature.stats}
                     </div>
                   </CardContent>
-                </Card>
-              );
+                </Card>);
+
             })}
           </div>
         </div>
@@ -426,7 +426,7 @@ const HomePage = () => {
             <div className="text-center mb-16">
               <Badge className="mb-6 text-green-700 bg-green-100">Proven Results</Badge>
               <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                Why contractors choose ContractPro
+                Why contractors choose SiteBoss
               </h2>
               <p className="text-xl text-gray-600">
                 Real results from real construction companies
@@ -448,8 +448,8 @@ const HomePage = () => {
                       </div>
                       <p className="text-gray-700 leading-relaxed font-medium">{benefit.text}</p>
                     </div>
-                  </div>
-                );
+                  </div>);
+
               })}
             </div>
           </div>
@@ -468,24 +468,24 @@ const HomePage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden">
+            {testimonials.map((testimonial, index) =>
+            <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 to-orange-400"></div>
                 <CardContent className="p-8">
                   <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
+                    {[...Array(testimonial.rating)].map((_, i) =>
+                  <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  )}
                   </div>
                   <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
                     "{testimonial.content}"
                   </blockquote>
                   <div className="flex items-center">
-                    <img 
-                      src={testimonial.avatar} 
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full mr-4 object-cover"
-                    />
+                    <img
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full mr-4 object-cover" />
+
                     <div>
                       <p className="font-bold text-gray-900">{testimonial.name}</p>
                       <p className="text-sm text-gray-600">{testimonial.role}</p>
@@ -494,7 +494,7 @@ const HomePage = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -515,18 +515,18 @@ const HomePage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {pricingPlans.map((plan, index) => (
-              <Card key={index} className={`relative border-2 ${
-                plan.is_popular ? 'border-blue-500 shadow-2xl scale-110' : 'border-gray-200'
-              } hover:shadow-lg transition-all duration-300 bg-white`}>
-                {plan.is_popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            {pricingPlans.map((plan, index) =>
+            <Card key={index} className={`relative border-2 ${
+            plan.is_popular ? 'border-blue-500 shadow-2xl scale-110' : 'border-gray-200'} hover:shadow-lg transition-all duration-300 bg-white`
+            }>
+                {plan.is_popular &&
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <Badge className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-2 text-sm font-medium">
                       <Star className="w-4 h-4 mr-1" />
                       Most Popular
                     </Badge>
                   </div>
-                )}
+              }
                 <CardHeader className="text-center pb-8 pt-8">
                   <CardTitle className="text-2xl font-bold mb-2">{plan.plan_name}</CardTitle>
                   <div className="mt-6">
@@ -534,28 +534,28 @@ const HomePage = () => {
                     <span className="text-gray-600 text-lg">/month</span>
                   </div>
                   <div className="text-sm text-green-600 mt-3 font-medium">
-                    Save ${(plan.monthly_price * 12 - plan.annual_price)} with annual billing
+                    Save ${plan.monthly_price * 12 - plan.annual_price} with annual billing
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6 pb-8">
                   <ul className="space-y-4">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-3">
+                    {plan.features.map((feature, featureIndex) =>
+                  <li key={featureIndex} className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-1" />
                         <span className="text-gray-700">{feature}</span>
                       </li>
-                    ))}
+                  )}
                   </ul>
                   
                   <div className="pt-6">
-                    <Button 
-                      className={`w-full py-4 text-lg font-medium ${
-                        plan.is_popular 
-                          ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-lg' 
-                          : 'bg-gray-900 hover:bg-gray-800'
-                      } transition-all duration-200`}
-                      onClick={startFreeTrial}
-                    >
+                    <Button
+                    className={`w-full py-4 text-lg font-medium ${
+                    plan.is_popular ?
+                    'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-lg' :
+                    'bg-gray-900 hover:bg-gray-800'} transition-all duration-200`
+                    }
+                    onClick={startFreeTrial}>
+
                       Start 30-Day Free Trial
                     </Button>
                     <p className="text-xs text-gray-500 text-center mt-3">
@@ -564,7 +564,7 @@ const HomePage = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
 
           <div className="text-center mt-16">
@@ -585,16 +585,16 @@ const HomePage = () => {
               Ready to transform your business?
             </h2>
             <p className="text-xl mb-12 text-blue-100">
-              Join thousands of contractors who've increased their profits by 34% with ContractPro.
+              Join thousands of contractors who've increased their profits by 34% with SiteBoss.
               Start your free trial today and see the difference in just 30 days.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
-              <Button 
+              <Button
                 size="lg"
-                onClick={startFreeTrial} 
-                className="px-12 py-6 text-lg bg-white text-blue-600 hover:bg-gray-50 shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105"
-              >
+                onClick={startFreeTrial}
+                className="px-12 py-6 text-lg bg-white text-blue-600 hover:bg-gray-50 shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105">
+
                 <Rocket className="mr-3 h-5 w-5" />
                 Start Your Free 30-Day Trial
                 <ArrowRight className="ml-3 h-5 w-5" />
@@ -633,7 +633,7 @@ const HomePage = () => {
                   <Waves className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <span className="font-bold text-2xl">ContractPro</span>
+                  <span className="font-bold text-2xl">SiteBoss</span>
                   <p className="text-gray-400 text-sm">Construction Management</p>
                 </div>
               </div>
@@ -648,7 +648,7 @@ const HomePage = () => {
                 </div>
                 <div className="flex items-center gap-3 text-gray-400">
                   <Mail className="h-5 w-5" />
-                  <span>hello@contractpro.com</span>
+                  <span>hello@siteboss.com</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-400">
                   <MapPin className="h-5 w-5" />
@@ -683,7 +683,7 @@ const HomePage = () => {
           <div className="border-t border-gray-800 mt-16 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400 mb-4 md:mb-0">
-                © 2024 ContractPro. All rights reserved.
+                © 2024 SiteBoss. All rights reserved.
               </p>
               <div className="flex gap-6">
                 <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">Terms</Link>
@@ -721,8 +721,8 @@ const HomePage = () => {
           background-size: 20px 20px;
         }
       `}</style>
-    </div>
-  );
+    </div>);
+
 };
 
 export default HomePage;

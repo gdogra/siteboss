@@ -10,17 +10,17 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import DataTable from  '@/components/DataTable';
-import { 
-  Plus, 
-  Edit, 
-  Trash, 
-  Settings, 
-  Users, 
+import DataTable from '@/components/DataTable';
+import {
+  Plus,
+  Edit,
+  Trash,
+  Settings,
+  Users,
   DollarSign,
   Crown,
-  AlertTriangle
-} from 'lucide-react';
+  AlertTriangle } from
+'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const AdminSubscriptionPanel: React.FC = () => {
@@ -209,18 +209,18 @@ const AdminSubscriptionPanel: React.FC = () => {
             <Input
               id="plan_name"
               value={formData.plan_name}
-              onChange={(e) => setFormData({...formData, plan_name: e.target.value})}
-              required
-            />
+              onChange={(e) => setFormData({ ...formData, plan_name: e.target.value })}
+              required />
+
           </div>
           <div>
             <Label htmlFor="plan_code">Plan Code</Label>
             <Input
               id="plan_code"
               value={formData.plan_code}
-              onChange={(e) => setFormData({...formData, plan_code: e.target.value})}
-              required
-            />
+              onChange={(e) => setFormData({ ...formData, plan_code: e.target.value })}
+              required />
+
           </div>
         </div>
 
@@ -229,8 +229,8 @@ const AdminSubscriptionPanel: React.FC = () => {
           <Textarea
             id="description"
             value={formData.description}
-            onChange={(e) => setFormData({...formData, description: e.target.value})}
-          />
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -240,8 +240,8 @@ const AdminSubscriptionPanel: React.FC = () => {
               id="price_monthly"
               type="number"
               value={formData.price_monthly}
-              onChange={(e) => setFormData({...formData, price_monthly: parseInt(e.target.value)})}
-            />
+              onChange={(e) => setFormData({ ...formData, price_monthly: parseInt(e.target.value) })} />
+
           </div>
           <div>
             <Label htmlFor="price_yearly">Yearly Price (cents)</Label>
@@ -249,8 +249,8 @@ const AdminSubscriptionPanel: React.FC = () => {
               id="price_yearly"
               type="number"
               value={formData.price_yearly}
-              onChange={(e) => setFormData({...formData, price_yearly: parseInt(e.target.value)})}
-            />
+              onChange={(e) => setFormData({ ...formData, price_yearly: parseInt(e.target.value) })} />
+
           </div>
         </div>
 
@@ -261,8 +261,8 @@ const AdminSubscriptionPanel: React.FC = () => {
               id="trial_days"
               type="number"
               value={formData.trial_days}
-              onChange={(e) => setFormData({...formData, trial_days: parseInt(e.target.value)})}
-            />
+              onChange={(e) => setFormData({ ...formData, trial_days: parseInt(e.target.value) })} />
+
           </div>
           <div>
             <Label htmlFor="sort_order">Sort Order</Label>
@@ -270,8 +270,8 @@ const AdminSubscriptionPanel: React.FC = () => {
               id="sort_order"
               type="number"
               value={formData.sort_order}
-              onChange={(e) => setFormData({...formData, sort_order: parseInt(e.target.value)})}
-            />
+              onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) })} />
+
           </div>
         </div>
 
@@ -282,8 +282,8 @@ const AdminSubscriptionPanel: React.FC = () => {
               id="max_users"
               type="number"
               value={formData.max_users}
-              onChange={(e) => setFormData({...formData, max_users: parseInt(e.target.value)})}
-            />
+              onChange={(e) => setFormData({ ...formData, max_users: parseInt(e.target.value) })} />
+
           </div>
           <div>
             <Label htmlFor="max_projects">Max Projects (-1 for unlimited)</Label>
@@ -291,8 +291,8 @@ const AdminSubscriptionPanel: React.FC = () => {
               id="max_projects"
               type="number"
               value={formData.max_projects}
-              onChange={(e) => setFormData({...formData, max_projects: parseInt(e.target.value)})}
-            />
+              onChange={(e) => setFormData({ ...formData, max_projects: parseInt(e.target.value) })} />
+
           </div>
         </div>
 
@@ -300,8 +300,8 @@ const AdminSubscriptionPanel: React.FC = () => {
           <Switch
             id="is_active"
             checked={formData.is_active}
-            onCheckedChange={(checked) => setFormData({...formData, is_active: checked})}
-          />
+            onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })} />
+
           <Label htmlFor="is_active">Active</Label>
         </div>
 
@@ -310,9 +310,9 @@ const AdminSubscriptionPanel: React.FC = () => {
           <Textarea
             id="features"
             value={formData.features}
-            onChange={(e) => setFormData({...formData, features: e.target.value})}
-            placeholder='["Feature 1", "Feature 2", "Feature 3"]'
-          />
+            onChange={(e) => setFormData({ ...formData, features: e.target.value })}
+            placeholder='["Feature 1", "Feature 2", "Feature 3"]' />
+
         </div>
 
         <DialogFooter>
@@ -323,8 +323,8 @@ const AdminSubscriptionPanel: React.FC = () => {
             {plan ? 'Update Plan' : 'Create Plan'}
           </Button>
         </DialogFooter>
-      </form>
-    );
+      </form>);
+
   };
 
   if (loading) {
@@ -339,8 +339,8 @@ const AdminSubscriptionPanel: React.FC = () => {
             <div className="h-32 bg-gray-200 rounded"></div>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -389,15 +389,15 @@ const AdminSubscriptionPanel: React.FC = () => {
                   onCancel={() => {
                     setShowPlanDialog(false);
                     setEditingPlan(null);
-                  }}
-                />
+                  }} />
+
               </DialogContent>
             </Dialog>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {plans.map((plan) => (
-              <Card key={plan.id} className={!plan.is_active ? 'opacity-60' : ''}>
+            {plans.map((plan) =>
+            <Card key={plan.id} className={!plan.is_active ? 'opacity-60' : ''}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
@@ -425,27 +425,27 @@ const AdminSubscriptionPanel: React.FC = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => {
-                        setEditingPlan(plan);
-                        setShowPlanDialog(true);
-                      }}
-                    >
+                    <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setEditingPlan(plan);
+                      setShowPlanDialog(true);
+                    }}>
+
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      onClick={() => deletePlan(plan.id)}
-                    >
+                    <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => deletePlan(plan.id)}>
+
                       <Trash className="h-4 w-4" />
                     </Button>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </TabsContent>
 
@@ -461,35 +461,35 @@ const AdminSubscriptionPanel: React.FC = () => {
               <DataTable
                 data={subscriptions}
                 columns={[
-                  { key: 'user_id', label: 'User ID' },
-                  { key: 'subscription_plan_id', label: 'Plan ID' },
-                  { 
-                    key: 'status', 
-                    label: 'Status',
-                    render: (value: string) => (
-                      <Badge variant={value === 'active' ? 'default' : 'secondary'}>
+                { key: 'user_id', label: 'User ID' },
+                { key: 'subscription_plan_id', label: 'Plan ID' },
+                {
+                  key: 'status',
+                  label: 'Status',
+                  render: (value: string) =>
+                  <Badge variant={value === 'active' ? 'default' : 'secondary'}>
                         {value}
                       </Badge>
-                    )
-                  },
-                  { 
-                    key: 'is_trial', 
-                    label: 'Trial',
-                    render: (value: boolean) => value ? 'Yes' : 'No'
-                  },
-                  { 
-                    key: 'next_billing_date', 
-                    label: 'Next Billing',
-                    render: (value: string) => 
-                      value ? new Date(value).toLocaleDateString() : 'N/A'
-                  }
-                ]}
-                actions={(row) => (
-                  <div className="flex gap-2">
+
+                },
+                {
+                  key: 'is_trial',
+                  label: 'Trial',
+                  render: (value: boolean) => value ? 'Yes' : 'No'
+                },
+                {
+                  key: 'next_billing_date',
+                  label: 'Next Billing',
+                  render: (value: string) =>
+                  value ? new Date(value).toLocaleDateString() : 'N/A'
+                }]
+                }
+                actions={(row) =>
+                <div className="flex gap-2">
                     <Select
-                      value={row.status}
-                      onValueChange={(value) => updateSubscriptionStatus(row.id, value)}
-                    >
+                    value={row.status}
+                    onValueChange={(value) => updateSubscriptionStatus(row.id, value)}>
+
                       <SelectTrigger className="w-32">
                         <SelectValue />
                       </SelectTrigger>
@@ -501,8 +501,8 @@ const AdminSubscriptionPanel: React.FC = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                )}
-              />
+                } />
+
             </CardContent>
           </Card>
         </TabsContent>
@@ -522,16 +522,16 @@ const AdminSubscriptionPanel: React.FC = () => {
                   <Input
                     id="default_trial"
                     type="number"
-                    defaultValue={30}
-                  />
+                    defaultValue={30} />
+
                 </div>
                 <div>
                   <Label htmlFor="grace_period">Grace Period (days)</Label>
                   <Input
                     id="grace_period"
                     type="number"
-                    defaultValue={3}
-                  />
+                    defaultValue={3} />
+
                 </div>
               </div>
 
@@ -553,8 +553,8 @@ const AdminSubscriptionPanel: React.FC = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminSubscriptionPanel;

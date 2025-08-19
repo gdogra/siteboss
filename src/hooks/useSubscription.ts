@@ -57,7 +57,7 @@ const SubscriptionContext = createContext<SubscriptionContextType>({
   isTrialActive: () => false,
   daysLeftInTrial: () => 0,
   canUpgrade: () => false,
-  canDowngrade: () => false,
+  canDowngrade: () => false
 });
 
 export const useSubscription = () => {
@@ -76,7 +76,7 @@ export const useSubscriptionManager = () => {
   const loadSubscriptionData = async () => {
     try {
       setLoading(true);
-      
+
       // Load user info to get user ID
       const { data: userInfo, error: userError } = await window.ezsite.apis.getUserInfo();
       if (userError) throw userError;
@@ -90,7 +90,7 @@ export const useSubscriptionManager = () => {
         Filters: [{ name: 'is_active', op: 'Equal', value: true }]
       });
       if (plansError) throw plansError;
-      
+
       setPlans(plansData.List.map((plan: any) => ({
         ...plan,
         features: JSON.parse(plan.features || '[]')
@@ -104,11 +104,11 @@ export const useSubscriptionManager = () => {
           OrderByField: 'created_at',
           IsAsc: false,
           Filters: [
-            { name: 'user_id', op: 'Equal', value: userInfo.ID },
-            { name: 'status', op: 'StringContains', value: 'active,trial,paused' }
-          ]
+          { name: 'user_id', op: 'Equal', value: userInfo.ID },
+          { name: 'status', op: 'StringContains', value: 'active,trial,paused' }]
+
         });
-        
+
         if (subscriptionError) throw subscriptionError;
         if (subscriptionData.List.length > 0) {
           setSubscription(subscriptionData.List[0]);
@@ -128,20 +128,20 @@ export const useSubscriptionManager = () => {
 
   const hasFeatureAccess = (featureKey: string): boolean => {
     if (!subscription) return false;
-    
+
     // Always allow access during trial
     if (subscription.is_trial && isTrialActive()) return true;
-    
+
     // Check plan features
-    const currentPlan = plans.find(p => p.id === subscription.subscription_plan_id);
+    const currentPlan = plans.find((p) => p.id === subscription.subscription_plan_id);
     if (!currentPlan) return false;
-    
+
     return currentPlan.features.includes(featureKey);
   };
 
   const isTrialActive = (): boolean => {
     if (!subscription || !subscription.is_trial) return false;
-    
+
     const now = new Date();
     const trialEnd = new Date(subscription.trial_ends_at);
     return now < trialEnd;
@@ -149,33 +149,33 @@ export const useSubscriptionManager = () => {
 
   const daysLeftInTrial = (): number => {
     if (!subscription || !subscription.is_trial) return 0;
-    
+
     const now = new Date();
     const trialEnd = new Date(subscription.trial_ends_at);
     const diffTime = trialEnd.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     return Math.max(0, diffDays);
   };
 
   const canUpgrade = (): boolean => {
     if (!subscription) return true;
-    
-    const currentPlan = plans.find(p => p.id === subscription.subscription_plan_id);
+
+    const currentPlan = plans.find((p) => p.id === subscription.subscription_plan_id);
     if (!currentPlan) return true;
-    
+
     // Can upgrade if there's a higher-priced plan available
-    return plans.some(p => p.price_monthly > currentPlan.price_monthly);
+    return plans.some((p) => p.price_monthly > currentPlan.price_monthly);
   };
 
   const canDowngrade = (): boolean => {
     if (!subscription) return false;
-    
-    const currentPlan = plans.find(p => p.id === subscription.subscription_plan_id);
+
+    const currentPlan = plans.find((p) => p.id === subscription.subscription_plan_id);
     if (!currentPlan) return false;
-    
+
     // Can downgrade if there's a lower-priced plan available
-    return plans.some(p => p.price_monthly < currentPlan.price_monthly);
+    return plans.some((p) => p.price_monthly < currentPlan.price_monthly);
   };
 
   useEffect(() => {
@@ -191,7 +191,7 @@ export const useSubscriptionManager = () => {
     isTrialActive,
     daysLeftInTrial,
     canUpgrade,
-    canDowngrade,
+    canDowngrade
   };
 };
 

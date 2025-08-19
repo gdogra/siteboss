@@ -1,43 +1,43 @@
 
 function processTrialEmails() {
   const axios = require('axios');
-  
+
   try {
     // This function will be called periodically to send scheduled trial emails
     // In a production system, this would be triggered by a cron job or scheduled task
-    
+
     const now = new Date();
     const currentDateISO = now.toISOString();
-    
+
     // Query for emails that are scheduled to be sent now or in the past
     const scheduledEmails = []; // This would be fetched from the email_sequences table
-    
+
     // Process each scheduled email
     scheduledEmails.forEach(async (emailRecord) => {
       try {
         const emailContent = generateEmailContent(emailRecord.email_type, emailRecord);
-        
+
         // Send the email
         await sendEmail({
           to: [emailRecord.user_email],
           subject: emailRecord.subject,
           html: emailContent
         });
-        
+
         // Update the email record as sent
         // This would update the email_sequences table to mark as sent
-        
+
       } catch (error) {
         console.error(`Error sending email ${emailRecord.id}:`, error);
       }
     });
-    
+
     return {
       success: true,
       processed: scheduledEmails.length,
       timestamp: currentDateISO
     };
-    
+
   } catch (error) {
     throw new Error(`Trial email processing failed: ${error.message}`);
   }
@@ -45,7 +45,7 @@ function processTrialEmails() {
 
 function generateEmailContent(emailType, emailRecord) {
   const baseUrl = 'https://contractpro.com'; // Replace with actual domain
-  
+
   const templates = {
     onboarding_tips: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -83,7 +83,7 @@ function generateEmailContent(emailType, emailRecord) {
         </div>
       </div>
     `,
-    
+
     feature_highlight: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #8b5cf6, #3b82f6); color: white; padding: 30px; text-center; border-radius: 10px 10px 0 0;">
@@ -125,7 +125,7 @@ function generateEmailContent(emailType, emailRecord) {
         </div>
       </div>
     `,
-    
+
     mid_trial_check: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; padding: 30px; text-center; border-radius: 10px 10px 0 0;">
@@ -168,7 +168,7 @@ function generateEmailContent(emailType, emailRecord) {
         </div>
       </div>
     `,
-    
+
     upgrade_reminder: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; padding: 30px; text-center; border-radius: 10px 10px 0 0;">
@@ -213,7 +213,7 @@ function generateEmailContent(emailType, emailRecord) {
         </div>
       </div>
     `,
-    
+
     final_reminder: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #7c2d12, #dc2626); color: white; padding: 30px; text-center; border-radius: 10px 10px 0 0;">
@@ -261,7 +261,7 @@ function generateEmailContent(emailType, emailRecord) {
       </div>
     `
   };
-  
+
   return templates[emailType] || templates.onboarding_tips;
 }
 

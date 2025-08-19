@@ -60,9 +60,9 @@ const AdminLogin = () => {
 
 
 
+
       // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {toast({ title: "Error", description: "Please enter both email and password", variant: "destructive" });return;}setLoading(true);try {console.log('Attempting login with:', credentials.email);const response = await window.ezsite.apis.login({ email: credentials.email, password: credentials.password });console.log('Login response:', response);if (response.error) {throw new Error(response.error);
-      }
+    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {toast({ title: "Error", description: "Please enter both email and password", variant: "destructive" });return;}setLoading(true);try {console.log('Attempting login with:', credentials.email);const response = await window.ezsite.apis.login({ email: credentials.email, password: credentials.password });console.log('Login response:', response);if (response.error) {throw new Error(response.error);}
 
       // Check if we can get user info after login
       const userInfo = await window.ezsite.apis.getUserInfo();
@@ -148,7 +148,7 @@ const AdminLogin = () => {
             </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">Admin Portal</h1>
-          <p className="text-gray-600 mt-2">Laguna Bay Development</p>
+          <p className="text-gray-600 mt-2">SiteBoss</p>
           <p className="text-sm text-blue-600 mt-1">Construction Management System</p>
         </div>
 
