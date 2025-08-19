@@ -155,10 +155,10 @@ const ProposalAnalytics: React.FC = () => {
 
 
 
+
     // This is handled in fetchAnalytics
   };const calculateAnalytics = () => {if (!proposals.length) return; // Filter proposals based on time range
     const cutoffDate = new Date();cutoffDate.setDate(cutoffDate.getDate() - parseInt(timeRange));const filteredProposals = proposals.filter((p) => new Date(p.created_at) >= cutoffDate && (selectedProposal === 'all' || p.id.toString() === selectedProposal));
-
     const totalProposals = filteredProposals.length;
     const signedProposals = filteredProposals.filter((p) => p.status === 'signed').length;
     const rejectedProposals = filteredProposals.filter((p) => p.status === 'rejected').length;
