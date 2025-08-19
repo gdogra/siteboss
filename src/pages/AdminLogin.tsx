@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
-import { Building2, Eye, EyeOff } from 'lucide-react';
+import { Building2, Eye, EyeOff, Waves } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const AdminLogin = () => {
@@ -30,33 +30,29 @@ const AdminLogin = () => {
         navigate('/admin-dashboard');
       }
     } catch (error) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {toast({ title: "Error", description: "Please enter both email and password", variant: "destructive" });return;}setLoading(true);try {
-      console.log('Attempting login with:', credentials.email);
+    }
+  };
 
+  const handleInputChange = (field: string, value: string) => {
+    setCredentials((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!credentials.email || !credentials.password) {
+      toast({
+        title: "Error",
+        description: "Please enter both email and password",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      console.log('Attempting login with:', credentials.email);
       const response = await window.ezsite.apis.login({
         email: credentials.email,
         password: credentials.password
@@ -74,7 +70,7 @@ const AdminLogin = () => {
 
       toast({
         title: "Login Successful ✓",
-        description: `Welcome! Redirecting to dashboard...`
+        description: `Welcome to Laguna Bay Development! Redirecting...`
       });
 
       // Small delay to show success message
@@ -89,8 +85,6 @@ const AdminLogin = () => {
       if (error.message) {
         errorMessage = error.message;
       }
-
-
 
       toast({
         title: "Login Failed",
@@ -144,24 +138,25 @@ const AdminLogin = () => {
     }
   };
 
-
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <Building2 className="h-12 w-12 text-blue-600" />
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl">
+              <Waves className="h-8 w-8 text-white" />
+            </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">Admin Portal</h1>
-          <p className="text-gray-600 mt-2">Construction Management System</p>
+          <p className="text-gray-600 mt-2">Laguna Bay Development</p>
+          <p className="text-sm text-blue-600 mt-1">Construction Management System</p>
         </div>
 
-        <Card>
+        <Card className="shadow-xl border-0">
           <CardHeader>
-            <CardTitle>Admin Login</CardTitle>
-            <CardDescription>
-              Sign in to access the construction management dashboard
+            <CardTitle className="text-center">Admin Login</CardTitle>
+            <CardDescription className="text-center">
+              Sign in to access your construction management dashboard
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -173,7 +168,7 @@ const AdminLogin = () => {
                   type="email"
                   value={credentials.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="admin@example.com"
+                  placeholder="admin@lagunabay.dev"
                   required />
 
               </div>
@@ -206,7 +201,7 @@ const AdminLogin = () => {
               </div>
 
               <div className="space-y-3 pt-4">
-                <Button type="submit" disabled={loading} className="w-full">
+                <Button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600">
                   {loading ? 'Signing In...' : 'Sign In'}
                 </Button>
                 
@@ -219,7 +214,7 @@ const AdminLogin = () => {
                   variant="outline"
                   onClick={handleRegister}
                   disabled={loading}
-                  className="w-full">
+                  className="w-full border-blue-200 hover:bg-blue-50">
 
                   Create General User Account
                 </Button>
@@ -230,7 +225,7 @@ const AdminLogin = () => {
               <Button
                 variant="link"
                 onClick={() => navigate('/')}
-                className="text-sm">
+                className="text-sm text-blue-600 hover:text-blue-700">
 
                 ← Back to Main Site
               </Button>
@@ -239,11 +234,11 @@ const AdminLogin = () => {
         </Card>
 
         {/* Test Login Credentials Section */}
-        <Card className="mt-6 border-blue-200 bg-blue-50/50">
+        <Card className="mt-6 border-blue-200 bg-gradient-to-br from-blue-50/50 to-cyan-50/50 shadow-lg">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg text-center text-blue-900">🔑 Test Login Credentials</CardTitle>
             <CardDescription className="text-center text-blue-700">
-              Ready-to-use accounts for testing
+              Ready-to-use accounts for testing Laguna Bay Development
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -251,11 +246,11 @@ const AdminLogin = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full justify-start hover:bg-blue-100 border-blue-300"
+                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80"
                 onClick={() => setCredentials({ email: 'administrator@test.com', password: 'admin123' })}>
 
                 <div className="text-left">
-                  <div className="font-medium text-blue-900">👤 Administrator</div>
+                  <div className="font-medium text-blue-900">👑 Administrator</div>
                   <div className="text-sm text-blue-700">administrator@test.com / admin123</div>
                 </div>
               </Button>
@@ -263,11 +258,11 @@ const AdminLogin = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full justify-start hover:bg-blue-100 border-blue-300"
+                className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80"
                 onClick={() => setCredentials({ email: 'contractor@test.com', password: 'contractor123' })}>
 
                 <div className="text-left">
-                  <div className="font-medium text-blue-900">🔨 Contractor</div>
+                  <div className="font-medium text-blue-900">🏗️ Contractor</div>
                   <div className="text-sm text-blue-700">contractor@test.com / contractor123</div>
                 </div>
               </Button>
@@ -276,14 +271,12 @@ const AdminLogin = () => {
             <div className="text-xs text-center text-blue-600 pt-2 font-medium">
               ↑ Click any button above to auto-fill and then click "Sign In"
             </div>
-            
-
           </CardContent>
         </Card>
 
         <div className="mt-4 text-center text-sm text-gray-500 space-y-2">
           <p className="font-medium">🎯 Quick Start Guide:</p>
-          <p>1. Click on "👤 Administrator" or "🔨 Contractor"</p>
+          <p>1. Click on "👑 Administrator" or "🏗️ Contractor"</p>
           <p>2. Click "Sign In" to access the dashboard</p>
         </div>
       </div>

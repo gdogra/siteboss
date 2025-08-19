@@ -96,18 +96,18 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center gap-6">
             <Link to="/admin-dashboard" className="flex items-center">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-sm">CMS</span>
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center mr-3">
+                <span className="text-white font-bold text-sm">LBD</span>
               </div>
               <div>
-                <h1 className="font-semibold text-lg text-gray-900">Contractor Management</h1>
-                <p className="text-xs text-gray-600 -mt-1">System</p>
+                <h1 className="font-semibold text-lg text-gray-900">Laguna Bay Development</h1>
+                <p className="text-xs text-gray-600 -mt-1">Construction Management</p>
               </div>
             </Link>
-            <Link 
-              to="/" 
-              className="text-sm text-gray-600 hover:text-blue-600 transition-colors hidden md:block"
-            >
+            <Link
+              to="/"
+              className="text-sm text-gray-600 hover:text-blue-600 transition-colors hidden md:block">
+
               ← Back to Main Site
             </Link>
           </div>
