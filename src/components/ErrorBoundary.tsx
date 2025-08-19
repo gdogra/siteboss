@@ -51,14 +51,14 @@ class ErrorBoundary extends Component<Props, State> {
                 An unexpected error occurred. Please try refreshing the page or contact support if the problem persists.
               </p>
               
-              {this.state.error && (
-                <details className="text-left text-sm text-gray-500 bg-gray-100 p-3 rounded">
+              {this.state.error &&
+              <details className="text-left text-sm text-gray-500 bg-gray-100 p-3 rounded">
                   <summary className="cursor-pointer font-medium">Error Details</summary>
                   <pre className="mt-2 whitespace-pre-wrap">
                     {this.state.error.message}
                   </pre>
                 </details>
-              )}
+              }
 
               <div className="flex gap-2 justify-center">
                 <Button onClick={this.handleReset} variant="outline">
@@ -71,8 +71,8 @@ class ErrorBoundary extends Component<Props, State> {
               </div>
             </CardContent>
           </Card>
-        </div>
-      );
+        </div>);
+
     }
 
     return this.props.children;

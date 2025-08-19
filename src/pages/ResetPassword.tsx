@@ -34,7 +34,7 @@ const ResetPassword = () => {
   }, [token, navigate, toast]);
 
   const handleInputChange = (field: string, value: string) => {
-    setPasswords(prev => ({
+    setPasswords((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -42,7 +42,7 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!passwords.password || !passwords.confirmPassword) {
       toast({
         title: "Error",
@@ -126,8 +126,8 @@ const ResetPassword = () => {
             </Button>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -160,20 +160,20 @@ const ResetPassword = () => {
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="Enter new password"
                     required
-                    minLength={6}
-                  />
+                    minLength={6} />
+
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    onClick={() => setShowPassword(!showPassword)}>
+
+                    {showPassword ?
+                    <EyeOff className="h-4 w-4" /> :
+
+                    <Eye className="h-4 w-4" />
+                    }
                   </Button>
                 </div>
               </div>
@@ -188,20 +188,20 @@ const ResetPassword = () => {
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                     placeholder="Confirm new password"
                     required
-                    minLength={6}
-                  />
+                    minLength={6} />
+
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+
+                    {showConfirmPassword ?
+                    <EyeOff className="h-4 w-4" /> :
+
+                    <Eye className="h-4 w-4" />
+                    }
                   </Button>
                 </div>
               </div>
@@ -212,19 +212,19 @@ const ResetPassword = () => {
             </form>
 
             <div className="mt-6 text-center">
-              <Button 
-                variant="link" 
+              <Button
+                variant="link"
                 onClick={() => navigate('/admin-login')}
-                className="text-sm"
-              >
+                className="text-sm">
+
                 ← Back to Login
               </Button>
             </div>
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ResetPassword;

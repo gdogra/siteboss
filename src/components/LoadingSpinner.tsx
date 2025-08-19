@@ -6,9 +6,9 @@ interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
-  message = 'Loading...', 
-  size = 'md' 
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  message = 'Loading...',
+  size = 'md'
 }) => {
   const sizeClasses = {
     sm: 'h-4 w-4',
@@ -20,8 +20,8 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     <div className="flex flex-col items-center justify-center space-y-4">
       <Clock className={`${sizeClasses[size]} animate-spin text-blue-600`} />
       <p className="text-gray-600">{message}</p>
-    </div>
-  );
+    </div>);
+
 };
 
 export default LoadingSpinner;

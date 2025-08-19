@@ -36,8 +36,8 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
           <Clock className="h-8 w-8 animate-spin mx-auto mb-4" />
           <p>Checking authentication...</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   if (!isAuthenticated) {

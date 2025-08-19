@@ -35,7 +35,7 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name.trim()) {
       toast({
         title: "Error",
@@ -107,8 +107,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   placeholder="ABC Plumbing"
-                  required
-                />
+                  required />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="specialty">Specialty *</Label>
@@ -117,8 +117,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                   value={formData.specialty}
                   onChange={(e) => handleInputChange('specialty', e.target.value)}
                   placeholder="Plumbing, Electrical, Drywall..."
-                  required
-                />
+                  required />
+
               </div>
             </div>
 
@@ -130,8 +130,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="contact@abcplumbing.com"
-                />
+                  placeholder="contact@abcplumbing.com" />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
@@ -139,8 +139,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                   id="phone"
                   value={formData.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
-                  placeholder="(555) 123-4567"
-                />
+                  placeholder="(555) 123-4567" />
+
               </div>
             </div>
 
@@ -154,8 +154,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                   onChange={(e) => handleInputChange('hourly_rate', Number(e.target.value))}
                   placeholder="50"
                   min="0"
-                  step="0.01"
-                />
+                  step="0.01" />
+
               </div>
             </div>
 
@@ -165,8 +165,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                 id="address"
                 value={formData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
-                placeholder="123 Business St, City, State 12345"
-              />
+                placeholder="123 Business St, City, State 12345" />
+
             </div>
 
             <div className="space-y-2">
@@ -176,8 +176,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                 value={formData.notes}
                 onChange={(e) => handleInputChange('notes', e.target.value)}
                 placeholder="Additional notes about this subcontractor..."
-                rows={3}
-              />
+                rows={3} />
+
             </div>
 
             <div className="flex justify-end gap-3 pt-4">
@@ -191,8 +191,8 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
           </form>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SubcontractorForm;

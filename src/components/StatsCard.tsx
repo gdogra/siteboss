@@ -40,22 +40,22 @@ const StatsCard: React.FC<StatsCardProps> = ({
         <div className={`text-2xl font-bold ${colorClasses[color]}`}>
           {value}
         </div>
-        {description && (
-          <p className="text-xs text-muted-foreground mt-1">
+        {description &&
+        <p className="text-xs text-muted-foreground mt-1">
             {description}
           </p>
-        )}
-        {trend && (
-          <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-2">
+        }
+        {trend &&
+        <div className="flex items-center space-x-2 text-xs text-muted-foreground mt-2">
             <span className={trend.value > 0 ? 'text-green-600' : 'text-red-600'}>
               {trend.value > 0 ? '+' : ''}{trend.value}%
             </span>
             <span>{trend.label}</span>
           </div>
-        )}
+        }
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default StatsCard;

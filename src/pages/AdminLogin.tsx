@@ -33,9 +33,8 @@ const AdminLogin = () => {
       // User is not logged in, stay on login page
     }
   };
-
   const handleInputChange = (field: string, value: string) => {
-    setCredentials(prev => ({
+    setCredentials((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -43,7 +42,7 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!credentials.email || !credentials.password) {
       toast({
         title: "Error",
@@ -149,8 +148,8 @@ const AdminLogin = () => {
                   value={credentials.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   placeholder="admin@example.com"
-                  required
-                />
+                  required />
+
               </div>
               
               <div className="space-y-2">
@@ -162,20 +161,20 @@ const AdminLogin = () => {
                     value={credentials.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="Enter your password"
-                    required
-                  />
+                    required />
+
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    onClick={() => setShowPassword(!showPassword)}>
+
+                    {showPassword ?
+                    <EyeOff className="h-4 w-4" /> :
+
+                    <Eye className="h-4 w-4" />
+                    }
                   </Button>
                 </div>
               </div>
@@ -189,24 +188,24 @@ const AdminLogin = () => {
                   <span className="text-sm text-gray-500">or</span>
                 </div>
                 
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={handleRegister}
                   disabled={loading}
-                  className="w-full"
-                >
+                  className="w-full">
+
                   Create Admin Account
                 </Button>
               </div>
             </form>
 
             <div className="mt-6 text-center">
-              <Button 
-                variant="link" 
+              <Button
+                variant="link"
                 onClick={() => navigate('/')}
-                className="text-sm"
-              >
+                className="text-sm">
+
                 ← Back to Main Site
               </Button>
             </div>
@@ -217,8 +216,8 @@ const AdminLogin = () => {
           <p>For demo purposes, you can create an admin account or login with existing credentials.</p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminLogin;

@@ -53,8 +53,8 @@ const OnAuthSuccess = () => {
           </Button>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default OnAuthSuccess;
