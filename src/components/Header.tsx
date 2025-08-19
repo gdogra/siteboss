@@ -25,7 +25,8 @@ const Header = () => {
 
   const adminNavItems = [
   { name: 'Dashboard', href: '/admin-dashboard', icon: Home },
-  { name: 'Invoice Submission', href: '/invoice-submission', icon: Settings }];
+  { name: 'Invoice Submission', href: '/invoice-submission', icon: Settings },
+  { name: 'Leads', href: '/leads', icon: User }];
 
 
   useEffect(() => {

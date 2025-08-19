@@ -92,10 +92,15 @@ const HomePage = () => {
               From luxury developments to commercial projects, we've got the expertise you need.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/invoice-submission">
+              <Link to="/get-quote">
                 <Button size="lg" className="px-8 py-3 text-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600">
-                  Submit Invoice
+                  Get Free Quote
                   <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link to="/invoice-submission">
+                <Button size="lg" variant="outline" className="px-8 py-3 text-lg border-blue-200 hover:bg-blue-50">
+                  Submit Invoice
                 </Button>
               </Link>
               <Link to="/admin-login">

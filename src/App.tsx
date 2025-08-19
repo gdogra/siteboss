@@ -7,6 +7,8 @@ import HomePage from "./pages/HomePage";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import InvoiceSubmissionPage from "./pages/InvoiceSubmissionPage";
+import LeadManagementPage from "./pages/LeadManagementPage";
+import LeadIntakePage from "./pages/LeadIntakePage";
 import OnAuthSuccess from "./pages/OnAuthSuccess";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
@@ -24,6 +26,8 @@ const App = () =>
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/invoice-submission" element={<InvoiceSubmissionPage />} />
+          <Route path="/leads" element={<LeadManagementPage />} />
+          <Route path="/get-quote" element={<LeadIntakePage />} />
           <Route path="/onauthsuccess" element={<OnAuthSuccess />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />

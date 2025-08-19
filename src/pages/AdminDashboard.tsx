@@ -28,6 +28,7 @@ import SubcontractorForm from '@/components/SubcontractorForm';
 import DocumentForm from '@/components/DocumentForm';
 import WorkPeriodForm from '@/components/WorkPeriodForm';
 import UserManagement from '@/components/UserManagement';
+import LeadSummary from '@/components/LeadSummary';
 
 interface Project {
   id: number;
@@ -468,20 +469,23 @@ const AdminDashboard = () => {
           </div>
 
           {/* Main Content Tabs */}
-          <Tabs defaultValue="projects" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-7">
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-8">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="projects">Projects</TabsTrigger>
-              <TabsTrigger value="workperiods">Work Periods</TabsTrigger>
-              <TabsTrigger value="logs">Daily Logs</TabsTrigger>
+              <TabsTrigger value="logs">Logs</TabsTrigger>
               <TabsTrigger value="payments">Payments</TabsTrigger>
               <TabsTrigger value="subcontractors">Subcontractors</TabsTrigger>
               <TabsTrigger value="documents">Documents</TabsTrigger>
-              {userInfo && userInfo.Roles?.split(',').includes('Administrator') &&
+              <TabsTrigger value="workperiods">Work Periods</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
-              }
             </TabsList>
 
             {/* Projects Tab */}
+            <TabsContent value="overview" className="space-y-6">
+              <LeadSummary currentUser={userInfo} />
+            </TabsContent>
+            
             <TabsContent value="projects" className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Projects</h2>
