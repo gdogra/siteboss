@@ -93,9 +93,11 @@ const AdminDashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [userInfo, setUserInfo] = useState<any>(null);
 
   // Form modals state
   const [showProjectForm, setShowProjectForm] = useState(false);
+
   const [showLogForm, setShowLogForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showSubcontractorForm, setShowSubcontractorForm] = useState(false);
@@ -115,6 +117,7 @@ const AdminDashboard = () => {
       if (response.error) {
         throw new Error('Not authenticated');
       }
+      setUserInfo(response.data);
       loadDashboardData();
     } catch (error) {
       console.error('Authentication check failed:', error);
@@ -126,6 +129,7 @@ const AdminDashboard = () => {
       navigate('/admin-login');
     }
   };
+
 
   const loadDashboardData = async () => {
     try {
@@ -325,6 +329,26 @@ const AdminDashboard = () => {
     loadDashboardData();
   };
 
+  const getRoleDisplay = (roles: string) => {
+    if (!roles) return 'User';
+    
+    const roleArray = roles.split(',');
+    if (roleArray.includes('Administrator')) return 'Administrator';
+    if (roleArray.includes('r-QpoZrh')) return 'Contractor';
+    if (roleArray.includes('GeneralUser')) return 'General User';
+    return 'User';
+  };
+
+  const getRoleColor = (roles: string) => {
+    if (!roles) return 'bg-gray-100 text-gray-800';
+    
+    const roleArray = roles.split(',');
+    if (roleArray.includes('Administrator')) return 'bg-red-100 text-red-800';
+    if (roleArray.includes('r-QpoZrh')) return 'bg-blue-100 text-blue-800';
+    return 'bg-green-100 text-green-800';
+  };
+
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -342,7 +366,26 @@ const AdminDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+              <div className="flex items-center gap-4 mb-2">
+                <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                {userInfo && (
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback>
+                        {userInfo.Name?.slice(0, 2).toUpperCase() || userInfo.Email?.slice(0, 2).toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {userInfo.Name || userInfo.Email}
+                      </p>
+                      <Badge className={`text-xs ${getRoleColor(userInfo.Roles)}`}>
+                        {getRoleDisplay(userInfo.Roles)}
+                      </Badge>
+                    </div>
+                  </div>
+                )}
+              </div>
               <p className="text-gray-600">Manage your construction projects</p>
             </div>
             <div className="flex gap-3">
@@ -354,6 +397,7 @@ const AdminDashboard = () => {
               </Button>
             </div>
           </div>
+
         </div>
       </div>
 
