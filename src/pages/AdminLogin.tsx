@@ -34,10 +34,10 @@ const AdminLogin = () => {
 
 
 
+
+
       // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev,
-        [field]: value
-      }));
+    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,6 +114,46 @@ const AdminLogin = () => {
         title: "Registration Failed",
         description: error.message || "Failed to create account",
         variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createTestUsers = async () => {
+    setLoading(true);
+    try {
+      // Create administrator test user
+      const adminResponse = await window.ezsite.apis.register({
+        email: 'administrator@test.com',
+        password: 'admin123'
+      });
+
+      // Create contractor test user
+      const contractorResponse = await window.ezsite.apis.register({
+        email: 'contractor@test.com',
+        password: 'contractor123'
+      });
+
+      if (!adminResponse.error && !contractorResponse.error) {
+        toast({
+          title: "Test Users Created",
+          description: "Administrator and Contractor test accounts have been created successfully. You can now use the test login credentials.",
+          variant: "default"
+        });
+      } else {
+        toast({
+          title: "Test Users Already Exist",
+          description: "Test user accounts already exist. You can use the test login credentials.",
+          variant: "default"
+        });
+      }
+    } catch (error: any) {
+      console.error('Test user creation error:', error);
+      toast({
+        title: "Info",
+        description: "Test user accounts may already exist. Try using the test login credentials.",
+        variant: "default"
       });
     } finally {
       setLoading(false);
@@ -226,8 +266,8 @@ const AdminLogin = () => {
                 type="button"
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => setCredentials({ email: 'administrator@test.com', password: 'admin123' })}
-              >
+                onClick={() => setCredentials({ email: 'administrator@test.com', password: 'admin123' })}>
+
                 <div className="text-left">
                   <div className="font-medium">Administrator</div>
                   <div className="text-sm text-gray-500">administrator@test.com / admin123</div>
@@ -238,8 +278,8 @@ const AdminLogin = () => {
                 type="button"
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => setCredentials({ email: 'contractor@test.com', password: 'contractor123' })}
-              >
+                onClick={() => setCredentials({ email: 'contractor@test.com', password: 'contractor123' })}>
+
                 <div className="text-left">
                   <div className="font-medium">Contractor</div>
                   <div className="text-sm text-gray-500">contractor@test.com / contractor123</div>
@@ -249,6 +289,21 @@ const AdminLogin = () => {
             
             <div className="text-xs text-center text-gray-400 pt-2">
               Click any button above to auto-fill login credentials
+            </div>
+            
+            <div className="pt-3 border-t">
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="w-full"
+                onClick={createTestUsers}
+                disabled={loading}>
+                Create Test Users
+              </Button>
+              <div className="text-xs text-center text-gray-400 mt-1">
+                Click if test credentials don't work
+              </div>
             </div>
           </CardContent>
         </Card>
