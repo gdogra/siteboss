@@ -53,7 +53,7 @@ const EnhancedChatBot: React.FC = () => {
     sessionDuration: 0,
     topicsDiscussed: [] as string[]
   });
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -97,12 +97,12 @@ const EnhancedChatBot: React.FC = () => {
         OrderByField: "created_at",
         IsAsc: false,
         Filters: [
-          {
-            name: "user_id",
-            op: "Equal",
-            value: userId
-          }
-        ]
+        {
+          name: "user_id",
+          op: "Equal",
+          value: userId
+        }]
+
       });
 
       if (!error && data?.List) {
@@ -137,20 +137,20 @@ const EnhancedChatBot: React.FC = () => {
         if (!error) {
           const newConversation = { ...conversationData, id: Date.now() }; // Temporary ID
           setCurrentConversation(newConversation);
-          setConversationHistory(prev => [newConversation, ...prev]);
+          setConversationHistory((prev) => [newConversation, ...prev]);
         }
       }
-      
+
       setMessages([{
         id: '1',
-        text: userInfo ? 
-          `Hello ${userInfo.Name}! I'm your Laguna Bay Development assistant. How can I help you today?` :
-          `Hello! I'm your Laguna Bay Development assistant. How can I help you today?`,
+        text: userInfo ?
+        `Hello ${userInfo.Name}! I'm your Laguna Bay Development assistant. How can I help you today?` :
+        `Hello! I'm your Laguna Bay Development assistant. How can I help you today?`,
         isBot: true,
         timestamp: new Date(),
         confidence: 1.0
       }]);
-      
+
       setSessionStartTime(new Date());
       setAnalytics({
         totalMessages: 0,
@@ -182,7 +182,7 @@ const EnhancedChatBot: React.FC = () => {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
 
@@ -205,7 +205,7 @@ const EnhancedChatBot: React.FC = () => {
         userId: userInfo.ID.toString()
       } : {};
 
-      const conversationContext = messages.slice(-5).map(m => ({
+      const conversationContext = messages.slice(-5).map((m) => ({
         text: m.text,
         isBot: m.isBot,
         topics: m.topics || []
@@ -229,7 +229,7 @@ const EnhancedChatBot: React.FC = () => {
         responseTime
       };
 
-      setMessages(prev => [...prev, botResponse]);
+      setMessages((prev) => [...prev, botResponse]);
 
       // Save bot message if authenticated
       if (userInfo && currentConversation) {
@@ -243,8 +243,8 @@ const EnhancedChatBot: React.FC = () => {
       // Update analytics
       const allTopics = [...analytics.topicsDiscussed, ...(responseData.topics || [])];
       const uniqueTopics = [...new Set(allTopics)];
-      
-      setAnalytics(prev => ({
+
+      setAnalytics((prev) => ({
         totalMessages: prev.totalMessages + 2,
         avgResponseTime: (prev.avgResponseTime + responseTime) / 2,
         sessionDuration: sessionStartTime ? (Date.now() - sessionStartTime.getTime()) / 1000 : 0,
@@ -260,7 +260,7 @@ const EnhancedChatBot: React.FC = () => {
         timestamp: new Date(),
         confidence: 0.1
       };
-      setMessages(prev => [...prev, errorResponse]);
+      setMessages((prev) => [...prev, errorResponse]);
     } finally {
       setIsTyping(false);
     }
@@ -274,13 +274,13 @@ const EnhancedChatBot: React.FC = () => {
   };
 
   const rateMessage = async (messageId: string, rating: number) => {
-    setMessages(prev => prev.map(msg => 
-      msg.id === messageId ? { ...msg, rating } : msg
+    setMessages((prev) => prev.map((msg) =>
+    msg.id === messageId ? { ...msg, rating } : msg
     ));
 
     toast({
       title: "Thank you!",
-      description: "Your feedback helps us improve our service.",
+      description: "Your feedback helps us improve our service."
     });
 
     // Update analytics with user satisfaction if authenticated
@@ -289,13 +289,13 @@ const EnhancedChatBot: React.FC = () => {
         const { data: analyticsData } = await window.ezsite.apis.run({
           path: "updateAnalytics",
           param: [
-            currentConversation.session_id,
-            userInfo.ID.toString(),
-            analytics.totalMessages,
-            analytics.sessionDuration,
-            analytics.topicsDiscussed,
-            rating
-          ]
+          currentConversation.session_id,
+          userInfo.ID.toString(),
+          analytics.totalMessages,
+          analytics.sessionDuration,
+          analytics.topicsDiscussed,
+          rating]
+
         });
         await window.ezsite.apis.tableCreate(34881, analyticsData);
       } catch (error) {
@@ -312,12 +312,12 @@ const EnhancedChatBot: React.FC = () => {
         OrderByField: "timestamp",
         IsAsc: true,
         Filters: [
-          {
-            name: "conversation_id",
-            op: "Equal",
-            value: conversation.id
-          }
-        ]
+        {
+          name: "conversation_id",
+          op: "Equal",
+          value: conversation.id
+        }]
+
       });
 
       if (!error && data?.List) {
@@ -329,12 +329,12 @@ const EnhancedChatBot: React.FC = () => {
           confidence: msg.nlp_confidence_score,
           responseTime: msg.response_time
         }));
-        
+
         setMessages(loadedMessages);
         setCurrentConversation(conversation);
         toast({
           title: "Conversation Loaded",
-          description: "Previous conversation has been restored.",
+          description: "Previous conversation has been restored."
         });
       }
     } catch (error) {
@@ -398,8 +398,8 @@ const EnhancedChatBot: React.FC = () => {
               {/* Messages */}
               <ScrollArea className="flex-1 p-4">
                 <div className="space-y-4">
-                  {messages.length === 0 && (
-                    <div className="text-center py-8">
+                  {messages.length === 0 &&
+                  <div className="text-center py-8">
                       <Bot className="h-12 w-12 mx-auto mb-4 text-blue-500" />
                       <p className="text-gray-600 mb-4">
                         {userInfo ? `Welcome back, ${userInfo.Name}!` : 'Welcome to Laguna Bay Development!'}
@@ -408,119 +408,119 @@ const EnhancedChatBot: React.FC = () => {
                         Start New Conversation
                       </Button>
                     </div>
-                  )}
+                  }
                   
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={cn(
-                        "flex items-start space-x-2",
-                        !message.isBot && "flex-row-reverse space-x-reverse"
-                      )}>
+                  {messages.map((message) =>
+                  <div
+                    key={message.id}
+                    className={cn(
+                      "flex items-start space-x-2",
+                      !message.isBot && "flex-row-reverse space-x-reverse"
+                    )}>
                       <div className={cn(
-                        "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
-                        message.isBot ?
-                          "bg-blue-100 text-blue-600" :
-                          "bg-gray-100 text-gray-600"
-                      )}>
+                      "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
+                      message.isBot ?
+                      "bg-blue-100 text-blue-600" :
+                      "bg-gray-100 text-gray-600"
+                    )}>
                         {message.isBot ? <Bot className="h-3 w-3" /> : <User className="h-3 w-3" />}
                       </div>
                       
                       <div className="max-w-[70%]">
                         <div className={cn(
-                          "rounded-lg px-3 py-2 text-sm",
-                          message.isBot ?
-                            "bg-gray-100 text-gray-900" :
-                            "bg-blue-600 text-white"
-                        )}>
+                        "rounded-lg px-3 py-2 text-sm",
+                        message.isBot ?
+                        "bg-gray-100 text-gray-900" :
+                        "bg-blue-600 text-white"
+                      )}>
                           <p className="whitespace-pre-line">{message.text}</p>
                           
                           {/* Message metadata */}
                           <div className={cn(
-                            "flex items-center justify-between mt-2 text-xs opacity-70",
-                            message.isBot ? "text-gray-500" : "text-blue-100"
-                          )}>
+                          "flex items-center justify-between mt-2 text-xs opacity-70",
+                          message.isBot ? "text-gray-500" : "text-blue-100"
+                        )}>
                             <span>{formatTime(message.timestamp)}</span>
-                            {message.isBot && message.confidence && (
-                              <Badge variant="outline" className="text-xs">
+                            {message.isBot && message.confidence &&
+                          <Badge variant="outline" className="text-xs">
                                 {Math.round(message.confidence * 100)}% confidence
                               </Badge>
-                            )}
-                            {message.responseTime && (
-                              <span className="flex items-center space-x-1">
+                          }
+                            {message.responseTime &&
+                          <span className="flex items-center space-x-1">
                                 <Clock className="h-3 w-3" />
                                 <span>{message.responseTime}ms</span>
                               </span>
-                            )}
+                          }
                           </div>
                           
                           {/* Topics */}
-                          {message.topics && message.topics.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mt-2">
-                              {message.topics.map(topic => (
-                                <Badge key={topic} variant="secondary" className="text-xs">
+                          {message.topics && message.topics.length > 0 &&
+                        <div className="flex flex-wrap gap-1 mt-2">
+                              {message.topics.map((topic) =>
+                          <Badge key={topic} variant="secondary" className="text-xs">
                                   {topic}
                                 </Badge>
-                              ))}
-                            </div>
                           )}
+                            </div>
+                        }
                         </div>
                         
                         {/* Suggested Actions */}
-                        {message.suggestedActions && message.suggestedActions.length > 0 && (
-                          <div className="mt-2 space-y-1">
-                            {message.suggestedActions.slice(0, 3).map(action => (
-                              <Button
-                                key={action}
-                                variant="outline"
-                                size="sm"
-                                className="text-xs h-6"
-                                onClick={() => setInputValue(action.replace(/_/g, ' '))}
-                              >
+                        {message.suggestedActions && message.suggestedActions.length > 0 &&
+                      <div className="mt-2 space-y-1">
+                            {message.suggestedActions.slice(0, 3).map((action) =>
+                        <Button
+                          key={action}
+                          variant="outline"
+                          size="sm"
+                          className="text-xs h-6"
+                          onClick={() => setInputValue(action.replace(/_/g, ' '))}>
+
                                 {action.replace(/_/g, ' ')}
                               </Button>
-                            ))}
-                          </div>
                         )}
+                          </div>
+                      }
                         
                         {/* Rating for bot messages */}
-                        {message.isBot && !message.rating && (
-                          <div className="flex items-center space-x-1 mt-2">
+                        {message.isBot && !message.rating &&
+                      <div className="flex items-center space-x-1 mt-2">
                             <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => rateMessage(message.id, 1)}
-                              className="h-6 w-6 p-0 text-green-600 hover:bg-green-50"
-                            >
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => rateMessage(message.id, 1)}
+                          className="h-6 w-6 p-0 text-green-600 hover:bg-green-50">
+
                               <ThumbsUp className="h-3 w-3" />
                             </Button>
                             <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => rateMessage(message.id, -1)}
-                              className="h-6 w-6 p-0 text-red-600 hover:bg-red-50"
-                            >
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => rateMessage(message.id, -1)}
+                          className="h-6 w-6 p-0 text-red-600 hover:bg-red-50">
+
                               <ThumbsDown className="h-3 w-3" />
                             </Button>
                           </div>
-                        )}
+                      }
                         
-                        {message.rating && (
-                          <div className="mt-1 flex items-center space-x-1">
-                            {message.rating > 0 ? (
-                              <ThumbsUp className="h-3 w-3 text-green-600" />
-                            ) : (
-                              <ThumbsDown className="h-3 w-3 text-red-600" />
-                            )}
+                        {message.rating &&
+                      <div className="mt-1 flex items-center space-x-1">
+                            {message.rating > 0 ?
+                        <ThumbsUp className="h-3 w-3 text-green-600" /> :
+
+                        <ThumbsDown className="h-3 w-3 text-red-600" />
+                        }
                             <span className="text-xs text-gray-500">Thank you for your feedback!</span>
                           </div>
-                        )}
+                      }
                       </div>
                     </div>
-                  ))}
+                  )}
                   
-                  {isTyping && (
-                    <div className="flex items-start space-x-2">
+                  {isTyping &&
+                  <div className="flex items-start space-x-2">
                       <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
                         <Bot className="h-3 w-3" />
                       </div>
@@ -532,7 +532,7 @@ const EnhancedChatBot: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  )}
+                  }
                   <div ref={messagesEndRef} />
                 </div>
               </ScrollArea>
@@ -547,8 +547,8 @@ const EnhancedChatBot: React.FC = () => {
                     onKeyPress={handleKeyPress}
                     placeholder="Type your message..."
                     className="flex-1"
-                    disabled={isTyping}
-                  />
+                    disabled={isTyping} />
+
                   <Button
                     onClick={handleSendMessage}
                     size="sm"
@@ -559,15 +559,15 @@ const EnhancedChatBot: React.FC = () => {
                 </div>
                 
                 {/* Session Info */}
-                {currentConversation && (
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
+                {currentConversation &&
+                <div className="flex justify-between text-xs text-gray-500 mt-2">
                     <span>Session: {formatDuration(analytics.sessionDuration)}</span>
                     <span>Messages: {analytics.totalMessages}</span>
-                    {analytics.avgResponseTime > 0 && (
-                      <span>Avg Response: {Math.round(analytics.avgResponseTime)}ms</span>
-                    )}
+                    {analytics.avgResponseTime > 0 &&
+                  <span>Avg Response: {Math.round(analytics.avgResponseTime)}ms</span>
+                  }
                   </div>
-                )}
+                }
                 
                 <p className="text-xs text-gray-500 mt-2 text-center">
                   Powered by Laguna Bay Development AI
@@ -576,41 +576,41 @@ const EnhancedChatBot: React.FC = () => {
             </TabsContent>
 
             {/* History Tab */}
-            {userInfo && (
-              <TabsContent value="history" className="flex-1 flex flex-col m-0">
+            {userInfo &&
+            <TabsContent value="history" className="flex-1 flex flex-col m-0">
                 <div className="p-4 flex-1">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold">Conversation History</h3>
                     <Button
-                      onClick={() => loadConversationHistory(userInfo.ID.toString())}
-                      variant="outline"
-                      size="sm"
-                      disabled={isLoadingHistory}
-                    >
+                    onClick={() => loadConversationHistory(userInfo.ID.toString())}
+                    variant="outline"
+                    size="sm"
+                    disabled={isLoadingHistory}>
+
                       <History className="h-4 w-4 mr-2" />
                       Refresh
                     </Button>
                   </div>
                   
                   <ScrollArea className="h-96">
-                    {isLoadingHistory ? (
-                      <div className="text-center py-8">
+                    {isLoadingHistory ?
+                  <div className="text-center py-8">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
                         <p className="text-sm text-gray-500 mt-2">Loading history...</p>
-                      </div>
-                    ) : conversationHistory.length === 0 ? (
-                      <div className="text-center py-8">
+                      </div> :
+                  conversationHistory.length === 0 ?
+                  <div className="text-center py-8">
                         <History className="h-12 w-12 mx-auto mb-4 text-gray-400" />
                         <p className="text-gray-500">No previous conversations</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {conversationHistory.map((conversation) => (
-                          <Card
-                            key={conversation.session_id}
-                            className="p-3 cursor-pointer hover:bg-gray-50"
-                            onClick={() => loadPreviousConversation(conversation)}
-                          >
+                      </div> :
+
+                  <div className="space-y-2">
+                        {conversationHistory.map((conversation) =>
+                    <Card
+                      key={conversation.session_id}
+                      className="p-3 cursor-pointer hover:bg-gray-50"
+                      onClick={() => loadPreviousConversation(conversation)}>
+
                             <div className="flex items-center justify-between">
                               <div>
                                 <p className="text-sm font-medium">
@@ -623,13 +623,13 @@ const EnhancedChatBot: React.FC = () => {
                               <MessageCircle className="h-4 w-4 text-blue-600" />
                             </div>
                           </Card>
-                        ))}
-                      </div>
                     )}
+                      </div>
+                  }
                   </ScrollArea>
                 </div>
               </TabsContent>
-            )}
+            }
 
             {/* Analytics Tab */}
             <TabsContent value="analytics" className="flex-1 flex flex-col m-0">
@@ -657,8 +657,8 @@ const EnhancedChatBot: React.FC = () => {
                     </div>
                   </Card>
                   
-                  {analytics.avgResponseTime > 0 && (
-                    <Card className="p-3">
+                  {analytics.avgResponseTime > 0 &&
+                  <Card className="p-3">
                       <div className="flex items-center space-x-2">
                         <TrendingUp className="h-4 w-4 text-orange-600" />
                         <div>
@@ -667,20 +667,20 @@ const EnhancedChatBot: React.FC = () => {
                         </div>
                       </div>
                     </Card>
-                  )}
+                  }
                   
-                  {analytics.topicsDiscussed.length > 0 && (
-                    <Card className="p-3">
+                  {analytics.topicsDiscussed.length > 0 &&
+                  <Card className="p-3">
                       <p className="text-sm font-medium mb-2">Topics Discussed</p>
                       <div className="flex flex-wrap gap-1">
-                        {analytics.topicsDiscussed.map(topic => (
-                          <Badge key={topic} variant="outline" className="text-xs">
+                        {analytics.topicsDiscussed.map((topic) =>
+                      <Badge key={topic} variant="outline" className="text-xs">
                             {topic}
                           </Badge>
-                        ))}
+                      )}
                       </div>
                     </Card>
-                  )}
+                  }
                 </div>
               </div>
             </TabsContent>
@@ -696,19 +696,19 @@ const EnhancedChatBot: React.FC = () => {
           "bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600",
           isOpen && "rotate-180 transform"
         )}>
-        {isOpen ? (
-          <X className="h-6 w-6 text-white" />
-        ) : (
-          <div className="relative">
+        {isOpen ?
+        <X className="h-6 w-6 text-white" /> :
+
+        <div className="relative">
             <MessageCircle className="h-6 w-6 text-white" />
             <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 bg-red-500 text-white text-xs flex items-center justify-center animate-pulse">
               AI
             </Badge>
           </div>
-        )}
+        }
       </Button>
-    </>
-  );
+    </>);
+
 };
 
 export default EnhancedChatBot;

@@ -12,10 +12,10 @@ interface ChatBotRatingProps {
   currentRating?: number;
 }
 
-const ChatBotRating: React.FC<ChatBotRatingProps> = ({ 
-  messageId, 
-  onRating, 
-  currentRating 
+const ChatBotRating: React.FC<ChatBotRatingProps> = ({
+  messageId,
+  onRating,
+  currentRating
 }) => {
   const [selectedRating, setSelectedRating] = useState<number>(currentRating || 0);
   const [feedback, setFeedback] = useState('');
@@ -25,13 +25,13 @@ const ChatBotRating: React.FC<ChatBotRatingProps> = ({
   const handleQuickRating = (rating: number) => {
     setSelectedRating(rating);
     onRating(messageId, rating);
-    
+
     if (rating <= 2) {
       setIsDialogOpen(true);
     } else {
       toast({
         title: "Thank you!",
-        description: "Your feedback helps us improve.",
+        description: "Your feedback helps us improve."
       });
     }
   };
@@ -40,53 +40,53 @@ const ChatBotRating: React.FC<ChatBotRatingProps> = ({
     onRating(messageId, selectedRating, feedback);
     setIsDialogOpen(false);
     setFeedback('');
-    
+
     toast({
       title: "Feedback Submitted",
-      description: "Thank you for your detailed feedback!",
+      description: "Thank you for your detailed feedback!"
     });
   };
 
   const renderStars = () => {
     return (
       <div className="flex space-x-1">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Button
-            key={star}
-            variant="ghost"
-            size="sm"
-            className="h-6 w-6 p-0"
-            onClick={() => handleQuickRating(star)}
-          >
+        {[1, 2, 3, 4, 5].map((star) =>
+        <Button
+          key={star}
+          variant="ghost"
+          size="sm"
+          className="h-6 w-6 p-0"
+          onClick={() => handleQuickRating(star)}>
+
             <Star
-              className={`h-3 w-3 ${
-                star <= selectedRating 
-                  ? 'text-yellow-500 fill-current' 
-                  : 'text-gray-300'
-              }`}
-            />
+            className={`h-3 w-3 ${
+            star <= selectedRating ?
+            'text-yellow-500 fill-current' :
+            'text-gray-300'}`
+            } />
+
           </Button>
-        ))}
-      </div>
-    );
+        )}
+      </div>);
+
   };
 
   if (currentRating && currentRating !== 0) {
     return (
       <div className="flex items-center space-x-1">
-        {currentRating > 0 ? (
-          <>
+        {currentRating > 0 ?
+        <>
             <ThumbsUp className="h-3 w-3 text-green-600" />
             <span className="text-xs text-gray-500">Rated {currentRating}/5</span>
-          </>
-        ) : (
-          <>
+          </> :
+
+        <>
             <ThumbsDown className="h-3 w-3 text-red-600" />
             <span className="text-xs text-gray-500">Feedback provided</span>
           </>
-        )}
-      </div>
-    );
+        }
+      </div>);
+
   }
 
   return (
@@ -119,8 +119,8 @@ const ChatBotRating: React.FC<ChatBotRatingProps> = ({
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 placeholder="Tell us what we can do better..."
-                className="mt-1"
-              />
+                className="mt-1" />
+
             </div>
             
             <div className="flex justify-end space-x-2">
@@ -134,8 +134,8 @@ const ChatBotRating: React.FC<ChatBotRatingProps> = ({
           </div>
         </DialogContent>
       </Dialog>
-    </>
-  );
+    </>);
+
 };
 
 export default ChatBotRating;

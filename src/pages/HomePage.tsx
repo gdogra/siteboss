@@ -113,11 +113,18 @@ const HomePage = () => {
                   Lead Management
                 </Button>
               </Link>
-              <Link to="/admin-login">
-                <Button size="lg" variant="outline" className="px-8 py-3 text-lg border-blue-200 hover:bg-blue-50">
-                  Admin Portal
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button asChild size="lg" className="text-lg px-8 py-4">
+                  <Link to="/client/login">
+                    Client Portal
+                  </Link>
                 </Button>
-              </Link>
+                <Button asChild size="lg" variant="outline" className="text-lg px-8 py-4">
+                  <Link to="/admin/login">
+                    Admin Portal
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
