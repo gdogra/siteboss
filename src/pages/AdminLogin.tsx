@@ -30,10 +30,10 @@ const AdminLogin = () => {
         navigate('/admin-dashboard');
       }
     } catch (error) {
+
+
       // User is not logged in, stay on login page
-    }
-  };
-  const handleInputChange = (field: string, value: string) => {
+    }};const handleInputChange = (field: string, value: string) => {
     setCredentials((prev) => ({
       ...prev,
       [field]: value

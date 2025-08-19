@@ -16,8 +16,8 @@ import {
   FileText,
   Clock,
   TrendingUp,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle } from
+'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import ProjectForm from '@/components/ProjectForm';
@@ -190,17 +190,17 @@ const AdminDashboard = () => {
       // Calculate stats
       const activeProjects = projectsData.filter((p: Project) => p.status === 'In Progress').length;
       const completedProjects = projectsData.filter((p: Project) => p.status === 'Completed').length;
-      const totalRevenue = projectsData
-        .filter((p: Project) => p.status === 'Completed')
-        .reduce((sum: number, p: Project) => sum + (p.budget || 0), 0);
+      const totalRevenue = projectsData.
+      filter((p: Project) => p.status === 'Completed').
+      reduce((sum: number, p: Project) => sum + (p.budget || 0), 0);
 
       setStats({
         totalProjects: projectsData.length,
         activeProjects,
         completedProjects,
         totalRevenue,
-        pendingPayments: (paymentsResponse.data?.List || [])
-          .filter((p: Payment) => p.status === 'Pending').length
+        pendingPayments: (paymentsResponse.data?.List || []).
+        filter((p: Payment) => p.status === 'Pending').length
       });
 
     } catch (error) {
@@ -217,11 +217,11 @@ const AdminDashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Planning': return 'bg-blue-100 text-blue-800';
-      case 'In Progress': return 'bg-green-100 text-green-800';
-      case 'Completed': return 'bg-gray-100 text-gray-800';
-      case 'On Hold': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Planning':return 'bg-blue-100 text-blue-800';
+      case 'In Progress':return 'bg-green-100 text-green-800';
+      case 'Completed':return 'bg-gray-100 text-gray-800';
+      case 'On Hold':return 'bg-yellow-100 text-yellow-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -332,8 +332,8 @@ const AdminDashboard = () => {
           <Clock className="h-8 w-8 animate-spin mx-auto mb-4" />
           <p>Loading dashboard...</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -432,8 +432,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-6">
-              {projects.length === 0 ? (
-                <Card>
+              {projects.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -445,10 +445,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                projects.map((project) => (
-                  <Card key={project.id}>
+                </Card> :
+
+              projects.map((project) =>
+              <Card key={project.id}>
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
@@ -496,8 +496,8 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -512,8 +512,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {recentLogs.length === 0 ? (
-                <Card>
+              {recentLogs.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -525,10 +525,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                recentLogs.map((log) => (
-                  <Card key={log.id}>
+                </Card> :
+
+              recentLogs.map((log) =>
+              <Card key={log.id}>
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
@@ -564,16 +564,16 @@ const AdminDashboard = () => {
                           <p className="font-medium">{formatCurrency(log.materials_cost)}</p>
                         </div>
                       </div>
-                      {log.activities && (
-                        <div>
+                      {log.activities &&
+                  <div>
                           <p className="text-sm text-gray-600 mb-1">Activities</p>
                           <p className="text-sm">{log.activities}</p>
                         </div>
-                      )}
+                  }
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -588,8 +588,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {recentPayments.length === 0 ? (
-                <Card>
+              {recentPayments.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <DollarSign className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -601,10 +601,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                recentPayments.map((payment) => (
-                  <Card key={payment.id}>
+                </Card> :
+
+              recentPayments.map((payment) =>
+              <Card key={payment.id}>
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start">
                         <div>
@@ -632,8 +632,8 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -648,8 +648,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {subcontractors.length === 0 ? (
-                <Card>
+              {subcontractors.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -661,10 +661,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                subcontractors.map((subcontractor) => (
-                  <Card key={subcontractor.id}>
+                </Card> :
+
+              subcontractors.map((subcontractor) =>
+              <Card key={subcontractor.id}>
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -697,8 +697,8 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -713,8 +713,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {documents.length === 0 ? (
-                <Card>
+              {documents.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -726,10 +726,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                documents.map((doc) => (
-                  <Card key={doc.id}>
+                </Card> :
+
+              documents.map((doc) =>
+              <Card key={doc.id}>
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
@@ -739,19 +739,19 @@ const AdminDashboard = () => {
                               <Badge className="text-xs">
                                 {doc.category}
                               </Badge>
-                              {doc.is_client_visible && (
-                                <Badge variant="outline" className="text-xs">
+                              {doc.is_client_visible &&
+                          <Badge variant="outline" className="text-xs">
                                   Client Visible
                                 </Badge>
-                              )}
+                          }
                             </div>
                           </div>
                           <p className="text-sm text-gray-600 mb-2">
                             Project ID: {doc.project_id} • Uploaded: {formatDate(doc.upload_date)}
                           </p>
-                          {doc.description && (
-                            <p className="text-sm text-gray-500">{doc.description}</p>
-                          )}
+                          {doc.description &&
+                      <p className="text-sm text-gray-500">{doc.description}</p>
+                      }
                         </div>
                         <div className="flex gap-1 ml-4">
                           <Button size="sm" variant="outline" onClick={() => handleEdit('document', doc)} title="Edit Document">
@@ -764,55 +764,55 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
         </Tabs>
 
         {/* Form Modals */}
-        {showProjectForm && (
-          <ProjectForm
-            project={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        {showProjectForm &&
+        <ProjectForm
+          project={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
 
-        {showLogForm && (
-          <LogForm
-            log={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        }
 
-        {showPaymentForm && (
-          <PaymentForm
-            payment={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        {showLogForm &&
+        <LogForm
+          log={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
 
-        {showSubcontractorForm && (
-          <SubcontractorForm
-            subcontractor={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        }
 
-        {showDocumentForm && (
-          <DocumentForm
-            document={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        {showPaymentForm &&
+        <PaymentForm
+          payment={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
+
+        }
+
+        {showSubcontractorForm &&
+        <SubcontractorForm
+          subcontractor={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
+
+        }
+
+        {showDocumentForm &&
+        <DocumentForm
+          document={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
+
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminDashboard;

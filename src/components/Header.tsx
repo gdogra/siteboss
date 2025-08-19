@@ -51,7 +51,7 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/admin">
+            <Link to="/admin-login">
               <Button variant="outline" size="sm">Admin Portal</Button>
             </Link>
             <ScheduleVisitModal>
@@ -83,7 +83,7 @@ const Header = () => {
                   </Link>
                 )}
                 <div className="pt-6 border-t space-y-4">
-                  <Link to="/admin" onClick={() => setIsOpen(false)}>
+                  <Link to="/admin-login" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full">Admin Portal</Button>
                   </Link>
                   <ScheduleVisitModal>
