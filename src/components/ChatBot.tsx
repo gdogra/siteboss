@@ -17,13 +17,13 @@ interface Message {
 const ChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: "Hello! I'm your Laguna Bay Development assistant. How can I help you today?",
-      isBot: true,
-      timestamp: new Date()
-    }
-  ]);
+  {
+    id: '1',
+    text: "Hello! I'm your Laguna Bay Development assistant. How can I help you today?",
+    isBot: true,
+    timestamp: new Date()
+  }]
+  );
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -45,52 +45,52 @@ const ChatBot: React.FC = () => {
 
   const getAutomatedResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
-    
+
     // Construction and project related responses
     if (message.includes('quote') || message.includes('estimate') || message.includes('price')) {
       return "I'd be happy to help you get a quote! You can request a detailed estimate by visiting our Get Quote page or calling us at (555) 123-4567. Our team will assess your project and provide a comprehensive quote within 24-48 hours.";
     }
-    
+
     if (message.includes('service') || message.includes('what do you do')) {
       return "Laguna Bay Development specializes in residential and commercial construction, renovations, remodeling, and project management. We handle everything from small repairs to large-scale construction projects with professional expertise.";
     }
-    
+
     if (message.includes('contact') || message.includes('phone') || message.includes('email')) {
       return "You can reach us at:\n📞 Phone: (555) 123-4567\n📧 Email: info@lagunabaydev.com\n📍 Office: 123 Construction Way, Laguna Bay, CA\n🕒 Hours: Monday-Friday 8AM-6PM";
     }
-    
+
     if (message.includes('timeline') || message.includes('how long') || message.includes('duration')) {
       return "Project timelines vary depending on scope and complexity. Small renovations typically take 1-2 weeks, while larger construction projects can take 2-6 months. We'll provide a detailed timeline with your project proposal.";
     }
-    
+
     if (message.includes('license') || message.includes('insured') || message.includes('certified')) {
       return "Yes, Laguna Bay Development is fully licensed, bonded, and insured. We maintain all required certifications and our team consists of qualified professionals with years of experience in the construction industry.";
     }
-    
+
     if (message.includes('payment') || message.includes('invoice') || message.includes('billing')) {
       return "We offer flexible payment options and transparent billing. You can submit invoices through our online portal, and we accept various payment methods. Contact our accounting department for specific payment arrangements.";
     }
-    
+
     if (message.includes('emergency') || message.includes('urgent') || message.includes('asap')) {
       return "For emergency construction needs, please call us immediately at (555) 123-4567. We offer 24/7 emergency response for urgent situations. Our team will assess and address critical issues promptly.";
     }
-    
+
     if (message.includes('materials') || message.includes('supply') || message.includes('quality')) {
       return "We use only high-quality materials from trusted suppliers. Our team can source materials directly or work with your preferred suppliers. We ensure all materials meet industry standards and project specifications.";
     }
-    
+
     if (message.includes('thank') || message.includes('thanks')) {
       return "You're very welcome! Is there anything else I can help you with regarding your construction needs?";
     }
-    
+
     if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
       return "Hello! Welcome to Laguna Bay Development. I'm here to assist you with any questions about our construction services, getting quotes, or general inquiries. How can I help you today?";
     }
-    
+
     if (message.includes('bye') || message.includes('goodbye')) {
       return "Thank you for contacting Laguna Bay Development! Feel free to reach out anytime if you have more questions. Have a great day!";
     }
-    
+
     // Default response
     return "I understand you're asking about '" + userMessage + "'. For detailed information about our construction services, quotes, or specific project requirements, I recommend contacting our team directly at (555) 123-4567 or visiting our Get Quote page. Is there a specific service you'd like to know more about?";
   };
@@ -105,7 +105,7 @@ const ChatBot: React.FC = () => {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
 
@@ -117,8 +117,8 @@ const ChatBot: React.FC = () => {
         isBot: true,
         timestamp: new Date()
       };
-      
-      setMessages(prev => [...prev, botResponse]);
+
+      setMessages((prev) => [...prev, botResponse]);
       setIsTyping(false);
     }, 1000 + Math.random() * 1000);
   };
@@ -155,8 +155,8 @@ const ChatBot: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-white/20 h-8 w-8 p-0"
-            >
+              className="text-white hover:bg-white/20 h-8 w-8 p-0">
+
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -164,41 +164,41 @@ const ChatBot: React.FC = () => {
           {/* Messages */}
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={cn(
-                    "flex items-start space-x-2",
-                    !message.isBot && "flex-row-reverse space-x-reverse"
-                  )}
-                >
+              {messages.map((message) =>
+              <div
+                key={message.id}
+                className={cn(
+                  "flex items-start space-x-2",
+                  !message.isBot && "flex-row-reverse space-x-reverse"
+                )}>
+
                   <div className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
-                    message.isBot 
-                      ? "bg-blue-100 text-blue-600" 
-                      : "bg-gray-100 text-gray-600"
-                  )}>
+                  "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
+                  message.isBot ?
+                  "bg-blue-100 text-blue-600" :
+                  "bg-gray-100 text-gray-600"
+                )}>
                     {message.isBot ? <Bot className="h-3 w-3" /> : <User className="h-3 w-3" />}
                   </div>
                   <div className={cn(
-                    "max-w-[70%] rounded-lg px-3 py-2 text-sm",
-                    message.isBot
-                      ? "bg-gray-100 text-gray-900"
-                      : "bg-blue-600 text-white"
-                  )}>
+                  "max-w-[70%] rounded-lg px-3 py-2 text-sm",
+                  message.isBot ?
+                  "bg-gray-100 text-gray-900" :
+                  "bg-blue-600 text-white"
+                )}>
                     <p className="whitespace-pre-line">{message.text}</p>
                     <p className={cn(
-                      "text-xs mt-1 opacity-70",
-                      message.isBot ? "text-gray-500" : "text-blue-100"
-                    )}>
+                    "text-xs mt-1 opacity-70",
+                    message.isBot ? "text-gray-500" : "text-blue-100"
+                  )}>
                       {formatTime(message.timestamp)}
                     </p>
                   </div>
                 </div>
-              ))}
+              )}
               
-              {isTyping && (
-                <div className="flex items-start space-x-2">
+              {isTyping &&
+              <div className="flex items-start space-x-2">
                   <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
                     <Bot className="h-3 w-3" />
                   </div>
@@ -210,7 +210,7 @@ const ChatBot: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              )}
+              }
               <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
@@ -225,14 +225,14 @@ const ChatBot: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
                 className="flex-1"
-                disabled={isTyping}
-              />
+                disabled={isTyping} />
+
               <Button
                 onClick={handleSendMessage}
                 size="sm"
                 disabled={!inputValue.trim() || isTyping}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
+                className="bg-blue-600 hover:bg-blue-700">
+
                 <Send className="h-4 w-4" />
               </Button>
             </div>
@@ -250,21 +250,21 @@ const ChatBot: React.FC = () => {
           "fixed bottom-4 right-4 z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-300",
           "bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600",
           isOpen && "rotate-180 transform"
-        )}
-      >
-        {isOpen ? (
-          <X className="h-6 w-6 text-white" />
-        ) : (
-          <div className="relative">
+        )}>
+
+        {isOpen ?
+        <X className="h-6 w-6 text-white" /> :
+
+        <div className="relative">
             <MessageCircle className="h-6 w-6 text-white" />
             <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 bg-red-500 text-white text-xs flex items-center justify-center">
               !
             </Badge>
           </div>
-        )}
+        }
       </Button>
-    </>
-  );
+    </>);
+
 };
 
 export default ChatBot;

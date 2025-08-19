@@ -13,7 +13,7 @@ import PaymentsPage from "./pages/PaymentsPage";
 import OnAuthSuccess from "./pages/OnAuthSuccess";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
-import ChatBot from "./components/ChatBot";
+import EnhancedChatBot from "./components/EnhancedChatBot";
 
 const queryClient = new QueryClient();
 
@@ -36,7 +36,7 @@ const App = () =>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <ChatBot />
+      <EnhancedChatBot />
     </TooltipProvider>
   </QueryClientProvider>
 </ErrorBoundary>;
