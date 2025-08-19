@@ -17,14 +17,14 @@ const TrialManager: React.FC<TrialManagerProps> = ({
   showUpgradeButton = true,
   compact = false
 }) => {
-  const { 
-    subscription, 
-    trial, 
-    loading, 
-    refreshSubscription, 
-    isTrialActive, 
+  const {
+    subscription,
+    trial,
+    loading,
+    refreshSubscription,
+    isTrialActive,
     daysLeftInTrial,
-    currentPlan 
+    currentPlan
   } = useSubscription();
   const { toast } = useToast();
   const [extending, setExtending] = useState(false);
@@ -73,8 +73,8 @@ const TrialManager: React.FC<TrialManagerProps> = ({
             <span className="text-sm text-slate-600">Loading trial information...</span>
           </div>
         </CardContent>
-      </Card>
-    );
+      </Card>);
+
   }
 
   if (!trial || !isTrialActive()) {
@@ -86,26 +86,26 @@ const TrialManager: React.FC<TrialManagerProps> = ({
             <span>No Active Trial</span>
           </CardTitle>
         </CardHeader>
-        {!compact && (
-          <CardContent>
+        {!compact &&
+        <CardContent>
             <p className="text-slate-600 mb-4">
               Your trial has expired or you don't have an active trial. 
               Upgrade to continue using all features.
             </p>
-            {showUpgradeButton && (
-              <Button onClick={handleUpgrade} className="w-full">
+            {showUpgradeButton &&
+          <Button onClick={handleUpgrade} className="w-full">
                 <Crown className="w-4 h-4 mr-2" />
                 Upgrade Now
               </Button>
-            )}
+          }
           </CardContent>
-        )}
-      </Card>
-    );
+        }
+      </Card>);
+
   }
 
   const daysLeft = daysLeftInTrial();
-  const progressPercentage = Math.max(0, ((trial.days_remaining - daysLeft) / trial.days_remaining) * 100);
+  const progressPercentage = Math.max(0, (trial.days_remaining - daysLeft) / trial.days_remaining * 100);
   const isExpiringSoon = daysLeft <= 5;
 
   if (compact) {
@@ -118,14 +118,14 @@ const TrialManager: React.FC<TrialManagerProps> = ({
               {daysLeft} days left in trial
             </span>
           </div>
-          {showUpgradeButton && (
-            <Button size="sm" onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
+          {showUpgradeButton &&
+          <Button size="sm" onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
               Upgrade
             </Button>
-          )}
+          }
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -151,20 +151,20 @@ const TrialManager: React.FC<TrialManagerProps> = ({
               {daysLeft} of {trial.days_remaining} days left
             </span>
           </div>
-          <Progress 
-            value={progressPercentage} 
-            className={`h-2 ${isExpiringSoon ? 'bg-orange-200' : 'bg-blue-200'}`}
-          />
+          <Progress
+            value={progressPercentage}
+            className={`h-2 ${isExpiringSoon ? 'bg-orange-200' : 'bg-blue-200'}`} />
+
         </div>
 
-        {isExpiringSoon && (
-          <Alert className="border-orange-200 bg-orange-50">
+        {isExpiringSoon &&
+        <Alert className="border-orange-200 bg-orange-50">
             <Clock className="h-4 w-4" />
             <AlertDescription className="text-orange-800">
               Your trial expires soon! Upgrade now to avoid losing access to premium features.
             </AlertDescription>
           </Alert>
-        )}
+        }
 
         <div className="space-y-2">
           <h4 className="font-medium text-slate-900">What's included:</h4>
@@ -189,32 +189,32 @@ const TrialManager: React.FC<TrialManagerProps> = ({
         </div>
 
         <div className="flex space-x-2">
-          {showUpgradeButton && (
-            <Button onClick={handleUpgrade} className="flex-1">
+          {showUpgradeButton &&
+          <Button onClick={handleUpgrade} className="flex-1">
               <Crown className="w-4 h-4 mr-2" />
               Upgrade Now
             </Button>
-          )}
-          {daysLeft <= 7 && !trial.extended_days && (
-            <Button 
-              variant="outline" 
-              onClick={handleExtendTrial}
-              disabled={extending}
-              className="flex-1"
-            >
-              {extending ? (
-                <>
+          }
+          {daysLeft <= 7 && !trial.extended_days &&
+          <Button
+            variant="outline"
+            onClick={handleExtendTrial}
+            disabled={extending}
+            className="flex-1">
+
+              {extending ?
+            <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
                   Extending...
-                </>
-              ) : (
-                <>
+                </> :
+
+            <>
                   <Star className="w-4 h-4 mr-2" />
                   Extend 7 Days
                 </>
-              )}
+            }
             </Button>
-          )}
+          }
         </div>
 
         <div className="text-xs text-slate-500">
@@ -222,8 +222,8 @@ const TrialManager: React.FC<TrialManagerProps> = ({
           <p>Trial ends: {new Date(trial.end_date).toLocaleDateString()}</p>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default TrialManager;

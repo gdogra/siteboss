@@ -254,11 +254,11 @@ const AdminDashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Planning':return 'bg-blue-100 text-blue-800';
-      case 'In Progress':return 'bg-green-100 text-green-800';
-      case 'Completed':return 'bg-gray-100 text-gray-800';
-      case 'On Hold':return 'bg-yellow-100 text-yellow-800';
-      default:return 'bg-gray-100 text-gray-800';
+      case 'Planning':return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'In Progress':return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'Completed':return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
+      case 'On Hold':return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      default:return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
     }
   };
 
@@ -370,12 +370,12 @@ const AdminDashboard = () => {
   };
 
   const getRoleColor = (roles: string) => {
-    if (!roles) return 'bg-gray-100 text-gray-800';
+    if (!roles) return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
 
     const roleArray = roles.split(',');
-    if (roleArray.includes('Administrator')) return 'bg-red-100 text-red-800';
-    if (roleArray.includes('r-QpoZrh')) return 'bg-blue-100 text-blue-800';
-    return 'bg-green-100 text-green-800';
+    if (roleArray.includes('Administrator')) return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+    if (roleArray.includes('r-QpoZrh')) return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+    return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
   };
 
   const hasRole = (requiredRole: string) => {
@@ -390,12 +390,12 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         <div className="pt-16 flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <Clock className="h-8 w-8 animate-spin mx-auto mb-4 text-blue-600" />
-            <p className="text-gray-600">Loading dashboard...</p>
+            <Clock className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
+            <p className="text-muted-foreground">Loading dashboard...</p>
           </div>
         </div>
       </div>);
@@ -403,7 +403,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Header />
       
       <main className="pt-16">
@@ -415,7 +415,7 @@ const AdminDashboard = () => {
               <TrialManager compact={false} />
             </div>
             <div className="flex items-center gap-4 mb-2">
-              <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+              <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
               {userInfo &&
               <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
@@ -424,7 +424,7 @@ const AdminDashboard = () => {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-foreground">
                       {userInfo.Name || userInfo.Email}
                     </p>
                     <Badge className={`text-xs ${getRoleColor(userInfo.Roles)}`}>
@@ -434,7 +434,7 @@ const AdminDashboard = () => {
                 </div>
               }
             </div>
-            <p className="text-gray-600">Manage your construction projects and operations</p>
+            <p className="text-muted-foreground">Manage your construction projects and operations</p>
           </div>
 
           {/* Quick Navigation Cards - Role Based */}
@@ -443,8 +443,8 @@ const AdminDashboard = () => {
             <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/leads')}>
                 <CardContent className="p-6 text-center">
                   <Users className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                  <h3 className="font-medium">Lead Management</h3>
-                  <p className="text-sm text-gray-600 mt-1">Manage leads & pipeline</p>
+                  <h3 className="font-medium text-foreground">Lead Management</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Manage leads & pipeline</p>
                 </CardContent>
               </Card>
             }
@@ -580,8 +580,8 @@ const AdminDashboard = () => {
                     <CardContent className="pt-6">
                       <div className="text-center py-8">
                         <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">No projects yet</h3>
-                        <p className="text-gray-500 mb-4">Get started by creating your first project.</p>
+                        <h3 className="text-lg font-medium text-foreground mb-2">No projects yet</h3>
+                        <p className="text-muted-foreground mb-4">Get started by creating your first project.</p>
                         <Button onClick={() => setShowProjectForm(true)}>
                           <Plus className="h-4 w-4 mr-2" />
                           Create Project
@@ -621,20 +621,20 @@ const AdminDashboard = () => {
                       <CardContent>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <p className="text-sm text-gray-600">Start Date</p>
-                            <p className="font-medium">{formatDate(project.start_date)}</p>
+                            <p className="text-sm text-muted-foreground">Start Date</p>
+                            <p className="font-medium text-foreground">{formatDate(project.start_date)}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">End Date</p>
-                            <p className="font-medium">{formatDate(project.end_date)}</p>
+                            <p className="text-sm text-muted-foreground">End Date</p>
+                            <p className="font-medium text-foreground">{formatDate(project.end_date)}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">Budget</p>
-                            <p className="font-medium">{formatCurrency(project.budget)}</p>
+                            <p className="text-sm text-muted-foreground">Budget</p>
+                            <p className="font-medium text-foreground">{formatCurrency(project.budget)}</p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-600">Client Email</p>
-                            <p className="font-medium text-sm">{project.client_email}</p>
+                            <p className="text-sm text-muted-foreground">Client Email</p>
+                            <p className="font-medium text-sm text-foreground">{project.client_email}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -675,11 +675,11 @@ const AdminDashboard = () => {
                 workPeriods.map((workPeriod) => {
                   const getStatusColor = (status: string) => {
                     switch (status) {
-                      case 'Planned':return 'bg-blue-100 text-blue-800';
-                      case 'Active':return 'bg-green-100 text-green-800';
-                      case 'Completed':return 'bg-gray-100 text-gray-800';
-                      case 'Cancelled':return 'bg-red-100 text-red-800';
-                      default:return 'bg-gray-100 text-gray-800';
+                      case 'Planned':return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+                      case 'Active':return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+                      case 'Completed':return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
+                      case 'Cancelled':return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+                      default:return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200';
                     }
                   };
 
@@ -726,8 +726,8 @@ const AdminDashboard = () => {
                       <CardContent>
                         {workPeriod.description &&
                         <div className="mb-4">
-                            <p className="text-sm text-gray-600 mb-1">Description</p>
-                            <p className="text-sm">{workPeriod.description}</p>
+                            <p className="text-sm text-muted-foreground mb-1">Description</p>
+                            <p className="text-sm text-foreground">{workPeriod.description}</p>
                           </div>
                         }
                         
@@ -879,7 +879,7 @@ const AdminDashboard = () => {
                           <div className="flex items-center gap-2">
                             <div className="text-right">
                               <p className="font-medium text-lg">{formatCurrency(payment.amount)}</p>
-                              <Badge className={payment.status === 'Paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                              <Badge className={payment.status === 'Paid' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'}>
                                 {payment.status}
                               </Badge>
                             </div>

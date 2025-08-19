@@ -2,7 +2,7 @@ async function testTrialSystem() {
   try {
     // This is a test function to verify the trial system works
     const now = new Date().toISOString();
-    
+
     return {
       success: true,
       timestamp: now,

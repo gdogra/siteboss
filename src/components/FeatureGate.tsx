@@ -19,10 +19,10 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
   fallback,
   showUpgradePrompt = true
 }) => {
-  const { 
-    hasFeatureAccess, 
-    isTrialActive, 
-    daysLeftInTrial, 
+  const {
+    hasFeatureAccess,
+    isTrialActive,
+    daysLeftInTrial,
     currentPlan,
     loading
   } = useSubscription();
@@ -33,8 +33,8 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         <span className="ml-2 text-slate-600">Checking access...</span>
-      </div>
-    );
+      </div>);
+
   }
 
   // Check if user has access to this feature
@@ -68,22 +68,22 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
       </CardHeader>
       
       <CardContent className="space-y-4">
-        {trialActive ? (
-          <Alert className="border-blue-200 bg-blue-50">
+        {trialActive ?
+        <Alert className="border-blue-200 bg-blue-50">
             <Sparkles className="h-4 w-4" />
             <AlertDescription className="text-blue-800">
               You have {daysLeft} day{daysLeft !== 1 ? 's' : ''} left in your free trial. 
               Upgrade now to continue using this feature after your trial ends.
             </AlertDescription>
-          </Alert>
-        ) : (
-          <Alert className="border-amber-200 bg-amber-50">
+          </Alert> :
+
+        <Alert className="border-amber-200 bg-amber-50">
             <Lock className="h-4 w-4" />
             <AlertDescription className="text-amber-800">
               This feature requires a premium subscription. Upgrade your plan to access advanced functionality.
             </AlertDescription>
           </Alert>
-        )}
+        }
 
         <div className="space-y-3">
           <h4 className="font-medium text-slate-900">Unlock this feature with a premium plan:</h4>
@@ -114,32 +114,32 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
         </div>
 
         <div className="flex space-x-2">
-          <Button 
+          <Button
             className="flex-1"
-            onClick={() => window.location.href = '/subscription-management'}
-          >
+            onClick={() => window.location.href = '/subscription-management'}>
+
             <Crown className="w-4 h-4 mr-2" />
             Upgrade Now
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
           
-          {!trialActive && (
-            <Button 
-              variant="outline"
-              onClick={() => window.location.href = '/trial-signup'}
-            >
+          {!trialActive &&
+          <Button
+            variant="outline"
+            onClick={() => window.location.href = '/trial-signup'}>
+
               <Sparkles className="w-4 h-4 mr-2" />
               Try Free
             </Button>
-          )}
+          }
         </div>
 
         <div className="text-xs text-slate-500 text-center">
           Questions? <a href="mailto:support@siteboss.app" className="text-blue-600 hover:underline">Contact our sales team</a>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default FeatureGate;

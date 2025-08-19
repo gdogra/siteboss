@@ -3,13 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Building2, 
-  CheckCircle, 
-  Star, 
-  Users, 
-  BarChart3, 
-  Shield, 
+import {
+  Building2,
+  CheckCircle,
+  Star,
+  Users,
+  BarChart3,
+  Shield,
   Smartphone,
   Clock,
   FileText,
@@ -17,8 +17,8 @@ import {
   ArrowRight,
   Sparkles,
   Gift,
-  Zap
-} from 'lucide-react';
+  Zap } from
+'lucide-react';
 import { useTenant } from '@/contexts/TenantContext';
 
 const HomePage: React.FC = () => {
@@ -42,67 +42,67 @@ const HomePage: React.FC = () => {
   }, []);
 
   const features = [
-    {
-      icon: Building2,
-      title: "Project Management",
-      description: "Organize and track all your construction projects in one place"
-    },
-    {
-      icon: Users,
-      title: "Team Collaboration", 
-      description: "Keep your entire team connected and coordinated"
-    },
-    {
-      icon: BarChart3,
-      title: "Advanced Analytics",
-      description: "Get insights into project performance and profitability"
-    },
-    {
-      icon: Clock,
-      title: "Time Tracking",
-      description: "Track work hours and manage labor costs effectively"
-    },
-    {
-      icon: FileText,
-      title: "Document Management",
-      description: "Store and share project documents securely"
-    },
-    {
-      icon: DollarSign,
-      title: "Financial Management",
-      description: "Handle invoicing, payments, and project budgets"
-    }
-  ];
+  {
+    icon: Building2,
+    title: "Project Management",
+    description: "Organize and track all your construction projects in one place"
+  },
+  {
+    icon: Users,
+    title: "Team Collaboration",
+    description: "Keep your entire team connected and coordinated"
+  },
+  {
+    icon: BarChart3,
+    title: "Advanced Analytics",
+    description: "Get insights into project performance and profitability"
+  },
+  {
+    icon: Clock,
+    title: "Time Tracking",
+    description: "Track work hours and manage labor costs effectively"
+  },
+  {
+    icon: FileText,
+    title: "Document Management",
+    description: "Store and share project documents securely"
+  },
+  {
+    icon: DollarSign,
+    title: "Financial Management",
+    description: "Handle invoicing, payments, and project budgets"
+  }];
+
 
   const testimonials = [
-    {
-      name: "Mike Johnson",
-      company: "Johnson Construction",
-      quote: "SiteBoss transformed how we manage our projects. We've increased efficiency by 40%.",
-      rating: 5
-    },
-    {
-      name: "Sarah Davis", 
-      company: "Davis & Associates",
-      quote: "The best investment we've made. The mobile app keeps our field teams connected.",
-      rating: 5
-    },
-    {
-      name: "Tom Wilson",
-      company: "Wilson Builders",
-      quote: "Customer support is exceptional. They helped us migrate all our data seamlessly.",
-      rating: 5
-    }
-  ];
+  {
+    name: "Mike Johnson",
+    company: "Johnson Construction",
+    quote: "SiteBoss transformed how we manage our projects. We've increased efficiency by 40%.",
+    rating: 5
+  },
+  {
+    name: "Sarah Davis",
+    company: "Davis & Associates",
+    quote: "The best investment we've made. The mobile app keeps our field teams connected.",
+    rating: 5
+  },
+  {
+    name: "Tom Wilson",
+    company: "Wilson Builders",
+    quote: "Customer support is exceptional. They helped us migrate all our data seamlessly.",
+    rating: 5
+  }];
+
 
   const handleStartTrial = () => {
     navigate('/trial-signup');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+      <header className="bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -110,16 +110,16 @@ const HomePage: React.FC = () => {
                 <Building2 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-900">
+                <h1 className="text-xl font-bold text-foreground">
                   {tenant?.name || 'SiteBoss'}
                 </h1>
-                <p className="text-xs text-slate-600">Construction Management Made Simple</p>
+                <p className="text-xs text-muted-foreground">Construction Management Made Simple</p>
               </div>
             </div>
             <nav className="hidden md:flex items-center space-x-6">
-              <Link to="#features" className="text-slate-600 hover:text-slate-900">Features</Link>
-              <Link to="#pricing" className="text-slate-600 hover:text-slate-900">Pricing</Link>
-              <Link to="#testimonials" className="text-slate-600 hover:text-slate-900">Reviews</Link>
+              <Link to="#features" className="text-muted-foreground hover:text-foreground">Features</Link>
+              <Link to="#pricing" className="text-muted-foreground hover:text-foreground">Pricing</Link>
+              <Link to="#testimonials" className="text-muted-foreground hover:text-foreground">Reviews</Link>
               <Link to="/admin-login">
                 <Button variant="outline">Sign In</Button>
               </Link>
@@ -135,29 +135,29 @@ const HomePage: React.FC = () => {
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
-          <Badge className="mb-6 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border-blue-200">
+          <Badge className="mb-6 bg-gradient-to-r from-primary/10 to-primary/20 text-primary border-primary/20">
             <Sparkles className="w-4 h-4 mr-2" />
             30-Day Free Trial • No Credit Card Required
           </Badge>
           
-          <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6">
             Construction Management
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 block">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/80 block">
               Made Simple
             </span>
           </h1>
           
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
             Streamline your construction projects with powerful tools for project management, 
             team collaboration, and business growth. Trusted by thousands of construction professionals.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               onClick={handleStartTrial}
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-8 py-3 text-lg"
-            >
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-8 py-3 text-lg">
+
               <Gift className="w-5 h-5 mr-2" />
               Start Free Trial
               <ArrowRight className="w-5 h-5 ml-2" />
@@ -189,13 +189,13 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 bg-white/50">
+      <section id="features" className="py-20 px-4 bg-card/50">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-4xl font-bold text-foreground mb-4">
               Everything You Need to Manage Construction Projects
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Comprehensive tools designed specifically for construction professionals
             </p>
           </div>
@@ -209,13 +209,13 @@ const HomePage: React.FC = () => {
                     <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center mb-4">
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <CardTitle className="text-xl text-slate-900">{feature.title}</CardTitle>
+                    <CardTitle className="text-xl text-foreground">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-slate-600">{feature.description}</p>
+                    <p className="text-muted-foreground">{feature.description}</p>
                   </CardContent>
-                </Card>
-              );
+                </Card>);
+
             })}
           </div>
         </div>
@@ -225,22 +225,22 @@ const HomePage: React.FC = () => {
       <section id="testimonials" className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-4xl font-bold text-foreground mb-4">
               Trusted by Construction Professionals
             </h2>
-            <p className="text-xl text-slate-600">
+            <p className="text-xl text-muted-foreground">
               See what our customers have to say about SiteBoss
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-0 shadow-lg">
+            {testimonials.map((testimonial, index) =>
+            <Card key={index} className="border-0 shadow-lg">
                 <CardHeader>
                   <div className="flex items-center space-x-1 mb-2">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                    ))}
+                    {[...Array(testimonial.rating)].map((_, i) =>
+                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  )}
                   </div>
                   <CardDescription className="text-base italic">
                     "{testimonial.quote}"
@@ -248,12 +248,12 @@ const HomePage: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div>
-                    <p className="font-semibold text-slate-900">{testimonial.name}</p>
-                    <p className="text-sm text-slate-600">{testimonial.company}</p>
+                    <p className="font-semibold text-foreground">{testimonial.name}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.company}</p>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -269,11 +269,11 @@ const HomePage: React.FC = () => {
             to manage their projects more efficiently.
           </p>
           
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             onClick={handleStartTrial}
-            className="bg-white text-blue-600 hover:bg-slate-100 px-8 py-3 text-lg font-semibold"
-          >
+            className="bg-white text-blue-600 hover:bg-slate-100 px-8 py-3 text-lg font-semibold">
+
             <Gift className="w-5 h-5 mr-2" />
             Start Your Free Trial Today
             <ArrowRight className="w-5 h-5 ml-2" />
@@ -347,8 +347,8 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default HomePage;

@@ -19,8 +19,8 @@ import {
   ArrowRight,
   Sparkles,
   Crown,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle } from
+'lucide-react';
 
 const TrialSignup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -79,7 +79,7 @@ const TrialSignup: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateStep(3)) {
       toast({
         title: "Validation Error",
@@ -225,58 +225,58 @@ const TrialSignup: React.FC = () => {
   };
 
   const features = [
-    "30-day free trial",
-    "No credit card required",
-    "Full feature access",
-    "Unlimited projects",
-    "Team collaboration",
-    "Mobile app access",
-    "24/7 support",
-    "Cancel anytime"
-  ];
+  "30-day free trial",
+  "No credit card required",
+  "Full feature access",
+  "Unlimited projects",
+  "Team collaboration",
+  "Mobile app access",
+  "24/7 support",
+  "Cancel anytime"];
+
 
   const plans = [
-    {
-      name: "Starter",
-      price: "$49",
-      originalPrice: "$59",
-      popular: false,
-      features: [
-        "Up to 5 projects",
-        "10 team members",
-        "5GB storage",
-        "Basic support"
-      ]
-    },
-    {
-      name: "Professional",
-      price: "$99",
-      originalPrice: "$119",
-      popular: true,
-      features: [
-        "Unlimited projects",
-        "25 team members",
-        "25GB storage",
-        "Priority support",
-        "Advanced analytics",
-        "Custom branding"
-      ]
-    },
-    {
-      name: "Enterprise",
-      price: "$199",
-      originalPrice: "$239",
-      popular: false,
-      features: [
-        "Unlimited everything",
-        "Unlimited members",
-        "Unlimited storage",
-        "24/7 phone support",
-        "White-label solution",
-        "API access"
-      ]
-    }
-  ];
+  {
+    name: "Starter",
+    price: "$49",
+    originalPrice: "$59",
+    popular: false,
+    features: [
+    "Up to 5 projects",
+    "10 team members",
+    "5GB storage",
+    "Basic support"]
+
+  },
+  {
+    name: "Professional",
+    price: "$99",
+    originalPrice: "$119",
+    popular: true,
+    features: [
+    "Unlimited projects",
+    "25 team members",
+    "25GB storage",
+    "Priority support",
+    "Advanced analytics",
+    "Custom branding"]
+
+  },
+  {
+    name: "Enterprise",
+    price: "$199",
+    originalPrice: "$239",
+    popular: false,
+    features: [
+    "Unlimited everything",
+    "Unlimited members",
+    "Unlimited storage",
+    "24/7 phone support",
+    "White-label solution",
+    "API access"]
+
+  }];
+
 
   const renderError = (fieldName: string) => {
     if (errors[fieldName]) {
@@ -284,16 +284,16 @@ const TrialSignup: React.FC = () => {
         <div className="flex items-center text-red-500 text-sm mt-1">
           <AlertCircle className="w-4 h-4 mr-1" />
           {errors[fieldName]}
-        </div>
-      );
+        </div>);
+
     }
     return null;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <header className="bg-background/80 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-3">
@@ -301,12 +301,12 @@ const TrialSignup: React.FC = () => {
                 <Building2 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-900">SiteBoss</h1>
-                <p className="text-xs text-slate-600">Construction Management Made Simple</p>
+                <h1 className="text-xl font-bold text-foreground">SiteBoss</h1>
+                <p className="text-xs text-muted-foreground">Construction Management Made Simple</p>
               </div>
             </Link>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-slate-600">Already have an account?</span>
+              <span className="text-sm text-muted-foreground">Already have an account?</span>
               <Link to="/admin-login">
                 <Button variant="ghost">Sign In</Button>
               </Link>
@@ -320,18 +320,18 @@ const TrialSignup: React.FC = () => {
           
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <Badge className="mb-4 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border-blue-200">
+            <Badge className="mb-4 bg-gradient-to-r from-primary/10 to-primary/20 text-primary border-primary/20">
               <Gift className="w-4 h-4 mr-2" />
               Free Month Trial • No Credit Card Required
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Start Your
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/80">
                 {" "}Free Month{" "}
               </span>
               Today
             </h1>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Join thousands of construction professionals who trust SiteBoss to manage 
               their projects efficiently and profitably. Get full access for 30 days, completely free.
             </p>
@@ -352,12 +352,12 @@ const TrialSignup: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-3">
-                    {features.map((feature, index) => (
-                      <div key={index} className="flex items-center space-x-2">
+                    {features.map((feature, index) =>
+                    <div key={index} className="flex items-center space-x-2">
                         <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        <span className="text-sm text-slate-600">{feature}</span>
+                        <span className="text-sm text-muted-foreground">{feature}</span>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -375,40 +375,40 @@ const TrialSignup: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {plans.map((plan, index) => (
-                      <div
-                        key={index}
-                        className={`p-4 border rounded-lg ${plan.popular ? 'border-blue-500 bg-blue-50' : 'border-slate-200'}`}
-                      >
+                    {plans.map((plan, index) =>
+                    <div
+                      key={index}
+                      className={`p-4 border rounded-lg ${plan.popular ? 'border-primary bg-primary/5' : 'border-border'}`}>
+
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-2">
-                            <h4 className="font-semibold text-slate-900">{plan.name}</h4>
-                            {plan.popular && (
-                              <Badge className="bg-blue-500 text-white text-xs">Most Popular</Badge>
-                            )}
+                            <h4 className="font-semibold text-foreground">{plan.name}</h4>
+                            {plan.popular &&
+                          <Badge className="bg-blue-500 text-white text-xs">Most Popular</Badge>
+                          }
                           </div>
                           <div className="text-right">
                             <div className="flex items-baseline space-x-1">
-                              <span className="text-lg font-bold text-slate-900">{plan.price}</span>
-                              <span className="text-sm text-slate-500 line-through">{plan.originalPrice}</span>
-                              <span className="text-sm text-slate-600">/month</span>
+                              <span className="text-lg font-bold text-foreground">{plan.price}</span>
+                              <span className="text-sm text-muted-foreground line-through">{plan.originalPrice}</span>
+                              <span className="text-sm text-muted-foreground">/month</span>
                             </div>
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-1">
-                          {plan.features.slice(0, 3).map((feature, fIndex) => (
-                            <span key={fIndex} className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                          {plan.features.slice(0, 3).map((feature, fIndex) =>
+                        <span key={fIndex} className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
                               {feature}
                             </span>
-                          ))}
-                          {plan.features.length > 3 && (
-                            <span className="text-xs text-slate-500">
+                        )}
+                          {plan.features.length > 3 &&
+                        <span className="text-xs text-slate-500">
                               +{plan.features.length - 3} more
                             </span>
-                          )}
+                        }
                         </div>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -425,11 +425,11 @@ const TrialSignup: React.FC = () => {
                 </CardDescription>
                 
                 {/* Progress Bar */}
-                <div className="w-full bg-slate-200 rounded-full h-2 mt-4">
+                <div className="w-full bg-secondary rounded-full h-2 mt-4">
                   <div
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${currentStep / 3 * 100}%` }}
-                  ></div>
+                    className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${currentStep / 3 * 100}%` }}>
+                  </div>
                 </div>
               </CardHeader>
 
@@ -437,33 +437,33 @@ const TrialSignup: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   
                   {/* Step 1: Personal Information */}
-                  {currentStep === 1 && (
-                    <div className="space-y-4">
+                  {currentStep === 1 &&
+                  <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="firstName">First Name *</Label>
                           <div className="relative">
                             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                             <Input
-                              id="firstName"
-                              value={formData.firstName}
-                              onChange={(e) => handleInputChange('firstName', e.target.value)}
-                              placeholder="John"
-                              className="pl-10"
-                              required
-                            />
+                            id="firstName"
+                            value={formData.firstName}
+                            onChange={(e) => handleInputChange('firstName', e.target.value)}
+                            placeholder="John"
+                            className="pl-10"
+                            required />
+
                           </div>
                           {renderError('firstName')}
                         </div>
                         <div>
                           <Label htmlFor="lastName">Last Name *</Label>
                           <Input
-                            id="lastName"
-                            value={formData.lastName}
-                            onChange={(e) => handleInputChange('lastName', e.target.value)}
-                            placeholder="Doe"
-                            required
-                          />
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={(e) => handleInputChange('lastName', e.target.value)}
+                          placeholder="Doe"
+                          required />
+
                           {renderError('lastName')}
                         </div>
                       </div>
@@ -473,14 +473,14 @@ const TrialSignup: React.FC = () => {
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                            id="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={(e) => handleInputChange('email', e.target.value)}
-                            placeholder="john@company.com"
-                            className="pl-10"
-                            required
-                          />
+                          id="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          placeholder="john@company.com"
+                          className="pl-10"
+                          required />
+
                         </div>
                         {renderError('email')}
                       </div>
@@ -490,14 +490,14 @@ const TrialSignup: React.FC = () => {
                         <div className="relative">
                           <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                            id="phone"
-                            type="tel"
-                            value={formData.phone}
-                            onChange={(e) => handleInputChange('phone', e.target.value)}
-                            placeholder="+1 (555) 000-0000"
-                            className="pl-10"
-                            required
-                          />
+                          id="phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                          placeholder="+1 (555) 000-0000"
+                          className="pl-10"
+                          required />
+
                         </div>
                         {renderError('phone')}
                       </div>
@@ -507,23 +507,23 @@ const TrialSignup: React.FC = () => {
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
                     </div>
-                  )}
+                  }
 
                   {/* Step 2: Company Information */}
-                  {currentStep === 2 && (
-                    <div className="space-y-4">
+                  {currentStep === 2 &&
+                  <div className="space-y-4">
                       <div>
                         <Label htmlFor="company">Company Name *</Label>
                         <div className="relative">
                           <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                            id="company"
-                            value={formData.company}
-                            onChange={(e) => handleInputChange('company', e.target.value)}
-                            placeholder="ABC Construction Co."
-                            className="pl-10"
-                            required
-                          />
+                          id="company"
+                          value={formData.company}
+                          onChange={(e) => handleInputChange('company', e.target.value)}
+                          placeholder="ABC Construction Co."
+                          className="pl-10"
+                          required />
+
                         </div>
                         {renderError('company')}
                       </div>
@@ -531,22 +531,22 @@ const TrialSignup: React.FC = () => {
                       <div>
                         <Label htmlFor="jobTitle">Job Title</Label>
                         <Input
-                          id="jobTitle"
-                          value={formData.jobTitle}
-                          onChange={(e) => handleInputChange('jobTitle', e.target.value)}
-                          placeholder="Project Manager"
-                        />
+                        id="jobTitle"
+                        value={formData.jobTitle}
+                        onChange={(e) => handleInputChange('jobTitle', e.target.value)}
+                        placeholder="Project Manager" />
+
                       </div>
 
                       <div>
                         <Label htmlFor="companySize">Company Size *</Label>
                         <select
-                          id="companySize"
-                          value={formData.companySize}
-                          onChange={(e) => handleInputChange('companySize', e.target.value)}
-                          className="w-full p-2 border border-slate-300 rounded-md"
-                          required
-                        >
+                        id="companySize"
+                        value={formData.companySize}
+                        onChange={(e) => handleInputChange('companySize', e.target.value)}
+                        className="w-full p-2 border border-input rounded-md bg-background text-foreground"
+                        required>
+
                           <option value="">Select company size</option>
                           <option value="1-10">1-10 employees</option>
                           <option value="11-50">11-50 employees</option>
@@ -566,25 +566,25 @@ const TrialSignup: React.FC = () => {
                         </Button>
                       </div>
                     </div>
-                  )}
+                  }
 
                   {/* Step 3: Security & Terms */}
-                  {currentStep === 3 && (
-                    <div className="space-y-4">
+                  {currentStep === 3 &&
+                  <div className="space-y-4">
                       <div>
                         <Label htmlFor="password">Create Password *</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                            id="password"
-                            type="password"
-                            value={formData.password}
-                            onChange={(e) => handleInputChange('password', e.target.value)}
-                            placeholder="••••••••"
-                            className="pl-10"
-                            required
-                            minLength={8}
-                          />
+                          id="password"
+                          type="password"
+                          value={formData.password}
+                          onChange={(e) => handleInputChange('password', e.target.value)}
+                          placeholder="••••••••"
+                          className="pl-10"
+                          required
+                          minLength={8} />
+
                         </div>
                         {renderError('password')}
                         <p className="text-xs text-slate-500 mt-1">
@@ -597,14 +597,14 @@ const TrialSignup: React.FC = () => {
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                            id="confirmPassword"
-                            type="password"
-                            value={formData.confirmPassword}
-                            onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                            placeholder="••••••••"
-                            className="pl-10"
-                            required
-                          />
+                          id="confirmPassword"
+                          type="password"
+                          value={formData.confirmPassword}
+                          onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                          placeholder="••••••••"
+                          className="pl-10"
+                          required />
+
                         </div>
                         {renderError('confirmPassword')}
                       </div>
@@ -612,10 +612,10 @@ const TrialSignup: React.FC = () => {
                       <div className="space-y-3">
                         <div className="flex items-start space-x-2">
                           <Checkbox
-                            id="terms"
-                            checked={formData.agreeToTerms}
-                            onCheckedChange={(checked) => handleInputChange('agreeToTerms', !!checked)}
-                          />
+                          id="terms"
+                          checked={formData.agreeToTerms}
+                          onCheckedChange={(checked) => handleInputChange('agreeToTerms', !!checked)} />
+
                           <Label htmlFor="terms" className="text-sm text-slate-600 leading-relaxed">
                             I agree to the{' '}
                             <Link to="/terms" className="text-blue-600 hover:underline">
@@ -631,10 +631,10 @@ const TrialSignup: React.FC = () => {
 
                         <div className="flex items-start space-x-2">
                           <Checkbox
-                            id="newsletter"
-                            checked={formData.subscribeNewsletter}
-                            onCheckedChange={(checked) => handleInputChange('subscribeNewsletter', !!checked)}
-                          />
+                          id="newsletter"
+                          checked={formData.subscribeNewsletter}
+                          onCheckedChange={(checked) => handleInputChange('subscribeNewsletter', !!checked)} />
+
                           <Label htmlFor="newsletter" className="text-sm text-slate-600">
                             Subscribe to SiteBoss updates and construction industry insights
                           </Label>
@@ -646,25 +646,25 @@ const TrialSignup: React.FC = () => {
                           Back
                         </Button>
                         <Button
-                          type="submit"
-                          disabled={loading || !formData.agreeToTerms}
-                          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                        >
-                          {loading ? (
-                            <div className="flex items-center space-x-2">
+                        type="submit"
+                        disabled={loading || !formData.agreeToTerms}
+                        className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+
+                          {loading ?
+                        <div className="flex items-center space-x-2">
                               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                               <span>Creating account...</span>
-                            </div>
-                          ) : (
-                            <>
+                            </div> :
+
+                        <>
                               Start Free Trial
                               <Sparkles className="w-4 h-4 ml-2" />
                             </>
-                          )}
+                        }
                         </Button>
                       </div>
                     </div>
-                  )}
+                  }
                 </form>
 
                 <div className="text-center mt-6 text-xs text-slate-500">
@@ -678,8 +678,8 @@ const TrialSignup: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TrialSignup;

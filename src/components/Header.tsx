@@ -20,6 +20,7 @@ import {
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useTenant } from '@/contexts/TenantContext';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const Header: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -134,6 +135,7 @@ const Header: React.FC = () => {
 
         {/* Right Side Actions */}
         <div className="flex items-center space-x-3">
+          <ThemeToggle />
           {/* Notifications */}
           <Button variant="ghost" size="icon" className="relative">
             <Bell className="w-5 h-5" />

@@ -170,10 +170,10 @@ const PlatformAdminDashboard = () => {
 
   const getHealthStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy':return 'text-green-600 bg-green-100';
-      case 'warning':return 'text-yellow-600 bg-yellow-100';
-      case 'critical':return 'text-red-600 bg-red-100';
-      default:return 'text-gray-600 bg-gray-100';
+      case 'healthy':return 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900';
+      case 'warning':return 'text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900';
+      case 'critical':return 'text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-900';
+      default:return 'text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-800';
     }
   };
 
@@ -187,22 +187,22 @@ const PlatformAdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-card shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Platform Administration</h1>
-                <p className="text-gray-600 mt-1">System monitoring and management dashboard</p>
+                <h1 className="text-3xl font-bold text-foreground">Platform Administration</h1>
+                <p className="text-muted-foreground mt-1">System monitoring and management dashboard</p>
               </div>
               <div className="flex items-center space-x-4">
                 <Badge className={getHealthStatusColor(systemOverview.systemHealth)}>
                   {getHealthIcon(systemOverview.systemHealth)}
                   <span className="ml-1 capitalize">{systemOverview.systemHealth}</span>
                 </Badge>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-muted-foreground">
                   Uptime: {systemOverview.uptime}
                 </div>
               </div>
@@ -221,7 +221,7 @@ const PlatformAdminDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{systemOverview.totalUsers.toLocaleString()}</div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 {systemOverview.activeUsers} active users
               </p>
             </CardContent>
@@ -283,7 +283,7 @@ const PlatformAdminDashboard = () => {
                     <Cpu className="h-4 w-4 mr-2 text-blue-500" />
                     <span className="text-sm font-medium">CPU</span>
                   </div>
-                  <span className="text-sm text-gray-600">{systemOverview.resourceUsage.cpu}%</span>
+                  <span className="text-sm text-muted-foreground">{systemOverview.resourceUsage.cpu}%</span>
                 </div>
                 <Progress value={systemOverview.resourceUsage.cpu} className="h-2" />
               </div>
@@ -294,7 +294,7 @@ const PlatformAdminDashboard = () => {
                     <Database className="h-4 w-4 mr-2 text-green-500" />
                     <span className="text-sm font-medium">Memory</span>
                   </div>
-                  <span className="text-sm text-gray-600">{systemOverview.resourceUsage.memory}%</span>
+                  <span className="text-sm text-muted-foreground">{systemOverview.resourceUsage.memory}%</span>
                 </div>
                 <Progress value={systemOverview.resourceUsage.memory} className="h-2" />
               </div>
@@ -305,7 +305,7 @@ const PlatformAdminDashboard = () => {
                     <HardDrive className="h-4 w-4 mr-2 text-yellow-500" />
                     <span className="text-sm font-medium">Disk</span>
                   </div>
-                  <span className="text-sm text-gray-600">{systemOverview.resourceUsage.disk}%</span>
+                  <span className="text-sm text-muted-foreground">{systemOverview.resourceUsage.disk}%</span>
                 </div>
                 <Progress value={systemOverview.resourceUsage.disk} className="h-2" />
               </div>
@@ -316,7 +316,7 @@ const PlatformAdminDashboard = () => {
                     <Wifi className="h-4 w-4 mr-2 text-purple-500" />
                     <span className="text-sm font-medium">Network</span>
                   </div>
-                  <span className="text-sm text-gray-600">{systemOverview.resourceUsage.network}%</span>
+                  <span className="text-sm text-muted-foreground">{systemOverview.resourceUsage.network}%</span>
                 </div>
                 <Progress value={systemOverview.resourceUsage.network} className="h-2" />
               </div>
@@ -391,21 +391,21 @@ const PlatformAdminDashboard = () => {
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <div className="text-sm">
                         <div className="font-medium">System backup completed</div>
-                        <div className="text-gray-500">2 minutes ago</div>
+                        <div className="text-muted-foreground">2 minutes ago</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                       <div className="text-sm">
                         <div className="font-medium">Database optimization finished</div>
-                        <div className="text-gray-500">15 minutes ago</div>
+                        <div className="text-muted-foreground">15 minutes ago</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
                       <div className="text-sm">
                         <div className="font-medium">High CPU usage detected</div>
-                        <div className="text-gray-500">1 hour ago</div>
+                        <div className="text-muted-foreground">1 hour ago</div>
                       </div>
                     </div>
                   </div>

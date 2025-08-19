@@ -120,9 +120,9 @@ export const useSubscriptionManager = () => {
           OrderByField: 'created_at',
           IsAsc: false,
           Filters: [
-            { name: 'user_id', op: 'Equal', value: userInfo.ID },
-            { name: 'status', op: 'StringContains', value: 'active,trial,paused' }
-          ]
+          { name: 'user_id', op: 'Equal', value: userInfo.ID },
+          { name: 'status', op: 'StringContains', value: 'active,trial,paused' }]
+
         });
 
         if (subscriptionError) throw subscriptionError;
@@ -137,9 +137,9 @@ export const useSubscriptionManager = () => {
           OrderByField: 'created_at',
           IsAsc: false,
           Filters: [
-            { name: 'user_id', op: 'Equal', value: userInfo.ID },
-            { name: 'status', op: 'Equal', value: 'active' }
-          ]
+          { name: 'user_id', op: 'Equal', value: userInfo.ID },
+          { name: 'status', op: 'Equal', value: 'active' }]
+
         });
 
         if (trialError) throw trialError;
