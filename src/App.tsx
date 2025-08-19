@@ -23,6 +23,7 @@ import ClientInvoices from "./pages/ClientInvoices";
 import ClientDocuments from "./pages/ClientDocuments";
 import ClientMessages from "./pages/ClientMessages";
 import CustomerPortalDashboard from "./pages/CustomerPortalDashboard";
+import AnalyticsPage from "./pages/AnalyticsPage";
 
 const PlatformAdminDashboard = React.lazy(() => import("./pages/PlatformAdminDashboard"));
 const InventoryManagementPage = React.lazy(() => import("./pages/InventoryManagementPage"));
@@ -123,6 +124,7 @@ const App = () =>
             } />
           <Route path="/advanced-time-tracking" element={<AdvancedTimeTrackingPage />} />
           <Route path="/subscription-management" element={<SubscriptionManagementPage />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/client-messages" element={<Navigate to="/client/messages" replace />} />
           
           <Route path="*" element={<NotFound />} />

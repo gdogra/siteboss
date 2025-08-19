@@ -14,7 +14,8 @@ import {
   LogOut,
   ChevronDown,
   Palette,
-  Globe } from
+  Globe,
+  TrendingUp } from
 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -75,7 +76,8 @@ const Header: React.FC = () => {
   { label: 'Proposals', path: '/proposals', icon: FileText },
   { label: 'Permits', path: '/permits', icon: FileText },
   { label: 'Time Tracking', path: '/time-tracking', icon: FileText },
-  { label: 'Subscriptions', path: '/subscriptions', icon: Settings }];
+  { label: 'Subscriptions', path: '/subscriptions', icon: Settings },
+  { label: 'Analytics', path: '/analytics', icon: TrendingUp }];
 
 
   const isActivePath = (path: string) => {
