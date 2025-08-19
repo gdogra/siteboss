@@ -9,8 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  MessageSquare, 
+import {
+  MessageSquare,
   Send,
   Plus,
   Search,
@@ -18,8 +18,8 @@ import {
   Clock,
   CheckCircle,
   Reply,
-  Paperclip
-} from 'lucide-react';
+  Paperclip } from
+'lucide-react';
 import ClientPortalLayout from '@/components/ClientPortalLayout';
 import { useToast } from '@/hooks/use-toast';
 
@@ -112,8 +112,8 @@ const ClientMessages: React.FC = () => {
       });
 
       if (!error) {
-        setMessages(prev => prev.map(msg => 
-          msg.id === messageId ? { ...msg, read_status: true } : msg
+        setMessages((prev) => prev.map((msg) =>
+        msg.id === messageId ? { ...msg, read_status: true } : msg
         ));
       }
     } catch (error) {
@@ -142,7 +142,7 @@ const ClientMessages: React.FC = () => {
 
       toast({
         title: "Message sent successfully",
-        description: "Your message has been sent to the project team.",
+        description: "Your message has been sent to the project team."
       });
 
       // Reset form
@@ -150,7 +150,7 @@ const ClientMessages: React.FC = () => {
       setNewMessageContent('');
       setNewMessageProjectId('');
       setIsComposeModalOpen(false);
-      
+
       // Refresh messages
       fetchMessages();
 
@@ -185,7 +185,7 @@ const ClientMessages: React.FC = () => {
 
       toast({
         title: "Reply sent successfully",
-        description: "Your reply has been sent.",
+        description: "Your reply has been sent."
       });
 
       setReplyContent('');
@@ -203,18 +203,18 @@ const ClientMessages: React.FC = () => {
   };
 
   const getProjectName = (projectId: number) => {
-    const project = projects.find(p => p.id === projectId);
+    const project = projects.find((p) => p.id === projectId);
     return project?.name || 'General';
   };
 
   const groupMessagesByConversation = () => {
-    const conversations: { [key: string]: any[] } = {};
-    
-    messages.forEach(message => {
-      const key = message.subject.startsWith('Re: ') 
-        ? message.subject.replace('Re: ', '')
-        : message.subject;
-      
+    const conversations: {[key: string]: any[];} = {};
+
+    messages.forEach((message) => {
+      const key = message.subject.startsWith('Re: ') ?
+      message.subject.replace('Re: ', '') :
+      message.subject;
+
       if (!conversations[key]) {
         conversations[key] = [];
       }
@@ -225,13 +225,13 @@ const ClientMessages: React.FC = () => {
       subject,
       messages: msgs.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()),
       lastMessage: msgs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0],
-      unreadCount: msgs.filter(m => !m.read_status && m.receiver_id === user?.ID).length
+      unreadCount: msgs.filter((m) => !m.read_status && m.receiver_id === user?.ID).length
     }));
   };
 
-  const filteredConversations = groupMessagesByConversation().filter(conv =>
-    conv.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    conv.messages.some(msg => msg.content.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredConversations = groupMessagesByConversation().filter((conv) =>
+  conv.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  conv.messages.some((msg) => msg.content.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleConversationSelect = (conversation: any) => {
@@ -250,8 +250,8 @@ const ClientMessages: React.FC = () => {
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
         </div>
-      </ClientPortalLayout>
-    );
+      </ClientPortalLayout>);
+
   }
 
   return (
@@ -277,55 +277,55 @@ const ClientMessages: React.FC = () => {
                   placeholder="Search conversations..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9"
-                />
+                  className="pl-9" />
+
               </div>
             </CardHeader>
             <CardContent className="flex-1 p-0">
               <ScrollArea className="h-full">
                 <div className="p-4 space-y-2">
-                  {filteredConversations.map((conversation, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleConversationSelect(conversation)}
-                      className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                        selectedConversation?.subject === conversation.subject
-                          ? 'bg-primary/10 border-primary/20 border'
-                          : 'hover:bg-muted'
-                      }`}
-                    >
+                  {filteredConversations.map((conversation, index) =>
+                  <div
+                    key={index}
+                    onClick={() => handleConversationSelect(conversation)}
+                    className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                    selectedConversation?.subject === conversation.subject ?
+                    'bg-primary/10 border-primary/20 border' :
+                    'hover:bg-muted'}`
+                    }>
+
                       <div className="flex items-center justify-between mb-1">
                         <h4 className="font-medium truncate">{conversation.subject}</h4>
-                        {conversation.unreadCount > 0 && (
-                          <Badge variant="destructive" className="text-xs">
+                        {conversation.unreadCount > 0 &&
+                      <Badge variant="destructive" className="text-xs">
                             {conversation.unreadCount}
                           </Badge>
-                        )}
+                      }
                       </div>
                       <p className="text-sm text-muted-foreground truncate">
                         {conversation.lastMessage.content}
                       </p>
                       <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
                         <span>
-                          {conversation.lastMessage.project_id && 
-                            getProjectName(conversation.lastMessage.project_id)
-                          }
+                          {conversation.lastMessage.project_id &&
+                        getProjectName(conversation.lastMessage.project_id)
+                        }
                         </span>
                         <span>
                           {new Date(conversation.lastMessage.created_at).toLocaleDateString()}
                         </span>
                       </div>
                     </div>
-                  ))}
-                  {filteredConversations.length === 0 && (
-                    <div className="text-center py-8">
+                  )}
+                  {filteredConversations.length === 0 &&
+                  <div className="text-center py-8">
                       <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                       <h3 className="font-medium mb-2">No messages</h3>
                       <p className="text-sm text-muted-foreground">
                         Start a conversation with your project team.
                       </p>
                     </div>
-                  )}
+                  }
                 </div>
               </ScrollArea>
             </CardContent>
@@ -333,17 +333,17 @@ const ClientMessages: React.FC = () => {
 
           {/* Conversation View */}
           <Card className="flex-1 flex flex-col">
-            {selectedConversation ? (
-              <>
+            {selectedConversation ?
+            <>
                 <CardHeader className="border-b">
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-lg">{selectedConversation.subject}</CardTitle>
-                      {selectedConversation.messages[0]?.project_id && (
-                        <Badge variant="outline" className="mt-1">
+                      {selectedConversation.messages[0]?.project_id &&
+                    <Badge variant="outline" className="mt-1">
                           {getProjectName(selectedConversation.messages[0].project_id)}
                         </Badge>
-                      )}
+                    }
                     </div>
                   </div>
                 </CardHeader>
@@ -351,33 +351,33 @@ const ClientMessages: React.FC = () => {
                 <CardContent className="flex-1 flex flex-col p-0">
                   <ScrollArea className="flex-1 p-4">
                     <div className="space-y-4">
-                      {selectedConversation.messages.map((message: any) => (
-                        <div
-                          key={message.id}
-                          className={`flex ${message.sender_id === user?.ID ? 'justify-end' : 'justify-start'}`}
-                        >
+                      {selectedConversation.messages.map((message: any) =>
+                    <div
+                      key={message.id}
+                      className={`flex ${message.sender_id === user?.ID ? 'justify-end' : 'justify-start'}`}>
+
                           <div
-                            className={`max-w-[70%] rounded-lg p-3 ${
-                              message.sender_id === user?.ID
-                                ? 'bg-primary text-primary-foreground'
-                                : 'bg-muted'
-                            }`}
-                          >
+                        className={`max-w-[70%] rounded-lg p-3 ${
+                        message.sender_id === user?.ID ?
+                        'bg-primary text-primary-foreground' :
+                        'bg-muted'}`
+                        }>
+
                             <p className="text-sm">{message.content}</p>
                             <div className={`flex items-center gap-2 mt-2 text-xs ${
-                              message.sender_id === user?.ID
-                                ? 'text-primary-foreground/70'
-                                : 'text-muted-foreground'
-                            }`}>
+                        message.sender_id === user?.ID ?
+                        'text-primary-foreground/70' :
+                        'text-muted-foreground'}`
+                        }>
                               <Clock className="h-3 w-3" />
                               <span>{new Date(message.created_at).toLocaleString()}</span>
-                              {message.read_status && message.sender_id === user?.ID && (
-                                <CheckCircle className="h-3 w-3" />
-                              )}
+                              {message.read_status && message.sender_id === user?.ID &&
+                          <CheckCircle className="h-3 w-3" />
+                          }
                             </div>
                           </div>
                         </div>
-                      ))}
+                    )}
                       <div ref={messagesEndRef} />
                     </div>
                   </ScrollArea>
@@ -386,36 +386,36 @@ const ClientMessages: React.FC = () => {
                   <div className="border-t p-4">
                     <div className="flex gap-2">
                       <Textarea
-                        placeholder="Type your reply..."
-                        value={replyContent}
-                        onChange={(e) => setReplyContent(e.target.value)}
-                        className="flex-1"
-                        rows={2}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            sendReply();
-                          }
-                        }}
-                      />
+                      placeholder="Type your reply..."
+                      value={replyContent}
+                      onChange={(e) => setReplyContent(e.target.value)}
+                      className="flex-1"
+                      rows={2}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          sendReply();
+                        }
+                      }} />
+
                       <Button
-                        onClick={sendReply}
-                        disabled={!replyContent.trim() || isSending}
-                        size="sm"
-                        className="self-end"
-                      >
-                        {isSending ? (
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                        ) : (
-                          <Send className="h-4 w-4" />
-                        )}
+                      onClick={sendReply}
+                      disabled={!replyContent.trim() || isSending}
+                      size="sm"
+                      className="self-end">
+
+                        {isSending ?
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div> :
+
+                      <Send className="h-4 w-4" />
+                      }
                       </Button>
                     </div>
                   </div>
                 </CardContent>
-              </>
-            ) : (
-              <CardContent className="flex-1 flex items-center justify-center">
+              </> :
+
+            <CardContent className="flex-1 flex items-center justify-center">
                 <div className="text-center">
                   <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-medium mb-2">Select a conversation</h3>
@@ -424,7 +424,7 @@ const ClientMessages: React.FC = () => {
                   </p>
                 </div>
               </CardContent>
-            )}
+            }
           </Card>
         </div>
 
@@ -442,11 +442,11 @@ const ClientMessages: React.FC = () => {
                     <SelectValue placeholder="Select project" />
                   </SelectTrigger>
                   <SelectContent>
-                    {projects.map((project) => (
-                      <SelectItem key={project.id} value={project.id.toString()}>
+                    {projects.map((project) =>
+                    <SelectItem key={project.id} value={project.id.toString()}>
                         {project.name}
                       </SelectItem>
-                    ))}
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -458,8 +458,8 @@ const ClientMessages: React.FC = () => {
                   value={newMessageSubject}
                   onChange={(e) => setNewMessageSubject(e.target.value)}
                   placeholder="Enter message subject"
-                  required
-                />
+                  required />
+
               </div>
 
               <div>
@@ -470,30 +470,30 @@ const ClientMessages: React.FC = () => {
                   onChange={(e) => setNewMessageContent(e.target.value)}
                   placeholder="Enter your message"
                   rows={4}
-                  required
-                />
+                  required />
+
               </div>
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={isSending} className="flex-1">
-                  {isSending ? (
-                    <>
+                  {isSending ?
+                  <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       Sending...
-                    </>
-                  ) : (
-                    <>
+                    </> :
+
+                  <>
                       <Send className="h-4 w-4 mr-2" />
                       Send Message
                     </>
-                  )}
+                  }
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsComposeModalOpen(false)}
-                  disabled={isSending}
-                >
+                  disabled={isSending}>
+
                   Cancel
                 </Button>
               </div>
@@ -501,8 +501,8 @@ const ClientMessages: React.FC = () => {
           </DialogContent>
         </Dialog>
       </div>
-    </ClientPortalLayout>
-  );
+    </ClientPortalLayout>);
+
 };
 
 export default ClientMessages;

@@ -19,7 +19,7 @@ const ClientAuthGuard: React.FC<ClientAuthGuardProps> = ({ children }) => {
   const checkAuth = async () => {
     try {
       const { data: userInfo, error } = await window.ezsite.apis.getUserInfo();
-      
+
       if (error || !userInfo) {
         setIsAuthenticated(false);
         return;
@@ -27,7 +27,7 @@ const ClientAuthGuard: React.FC<ClientAuthGuardProps> = ({ children }) => {
 
       const roles = userInfo.Roles ? userInfo.Roles.split(',') : [];
       setUserRoles(roles);
-      
+
       // Check if user has client role or general user role
       const hasClientAccess = roles.includes('GeneralUser') || roles.includes('Client');
       setIsAuthenticated(hasClientAccess);
@@ -40,8 +40,8 @@ const ClientAuthGuard: React.FC<ClientAuthGuardProps> = ({ children }) => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+      </div>);
+
   }
 
   if (!isAuthenticated) {

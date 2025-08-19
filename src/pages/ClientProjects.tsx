@@ -5,17 +5,17 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
-import { 
-  FolderOpen, 
-  Calendar, 
-  User, 
+import {
+  FolderOpen,
+  Calendar,
+  User,
   Clock,
   CheckCircle,
   AlertCircle,
   Search,
   Eye,
-  FileText
-} from 'lucide-react';
+  FileText } from
+'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ClientPortalLayout from '@/components/ClientPortalLayout';
 import { useToast } from '@/hooks/use-toast';
@@ -102,12 +102,12 @@ const ClientProjects: React.FC = () => {
   };
 
   const getProjectLogs = (projectId: number) => {
-    return logs.filter(log => log.project_id === projectId).slice(0, 5);
+    return logs.filter((log) => log.project_id === projectId).slice(0, 5);
   };
 
-  const filteredProjects = projects.filter(project =>
-    project.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProjects = projects.filter((project) =>
+  project.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  project.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (isLoading) {
@@ -116,8 +116,8 @@ const ClientProjects: React.FC = () => {
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
         </div>
-      </ClientPortalLayout>
-    );
+      </ClientPortalLayout>);
+
   }
 
   return (
@@ -140,14 +140,14 @@ const ClientProjects: React.FC = () => {
             placeholder="Search projects..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
-          />
+            className="pl-9" />
+
         </div>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredProjects.map((project) => (
-            <Card key={project.id} className="hover:shadow-md transition-shadow">
+          {filteredProjects.map((project) =>
+          <Card key={project.id} className="hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">{project.name}</CardTitle>
@@ -182,65 +182,65 @@ const ClientProjects: React.FC = () => {
                 <div className="space-y-2">
                   <h4 className="font-medium text-sm">Recent Activity</h4>
                   <div className="space-y-1">
-                    {getProjectLogs(project.id).slice(0, 3).map((log) => (
-                      <div key={log.id} className="text-xs text-muted-foreground flex items-center gap-2">
+                    {getProjectLogs(project.id).slice(0, 3).map((log) =>
+                  <div key={log.id} className="text-xs text-muted-foreground flex items-center gap-2">
                         <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                         {log.description} - {new Date(log.created_at).toLocaleDateString()}
                       </div>
-                    ))}
-                    {getProjectLogs(project.id).length === 0 && (
-                      <p className="text-xs text-muted-foreground">No recent activity</p>
-                    )}
+                  )}
+                    {getProjectLogs(project.id).length === 0 &&
+                  <p className="text-xs text-muted-foreground">No recent activity</p>
+                  }
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex gap-2">
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSelectedProject(project)}
-                  >
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSelectedProject(project)}>
+
                     <Eye className="h-4 w-4 mr-1" />
                     View Details
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => navigate('/client/documents', { state: { projectId: project.id } })}
-                  >
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/client/documents', { state: { projectId: project.id } })}>
+
                     <FileText className="h-4 w-4 mr-1" />
                     Documents
                   </Button>
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
 
         {/* No projects message */}
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-12">
+        {filteredProjects.length === 0 &&
+        <div className="text-center py-12">
             <FolderOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No projects found</h3>
             <p className="text-muted-foreground">
               {searchTerm ? 'No projects match your search criteria.' : 'You don\'t have any projects yet.'}
             </p>
           </div>
-        )}
+        }
 
         {/* Project Details Modal */}
-        {selectedProject && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        {selectedProject &&
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <Card className="w-full max-w-2xl max-h-[80vh] overflow-y-auto">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>{selectedProject.name}</CardTitle>
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedProject(null)}
-                  >
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedProject(null)}>
+
                     ×
                   </Button>
                 </div>
@@ -276,23 +276,23 @@ const ClientProjects: React.FC = () => {
                 <div>
                   <h4 className="font-medium mb-2">Activity Log</h4>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
-                    {getProjectLogs(selectedProject.id).map((log) => (
-                      <div key={log.id} className="p-2 bg-muted rounded text-sm">
+                    {getProjectLogs(selectedProject.id).map((log) =>
+                  <div key={log.id} className="p-2 bg-muted rounded text-sm">
                         <p>{log.description}</p>
                         <p className="text-xs text-muted-foreground mt-1">
                           {new Date(log.created_at).toLocaleString()}
                         </p>
                       </div>
-                    ))}
+                  )}
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-        )}
+        }
       </div>
-    </ClientPortalLayout>
-  );
+    </ClientPortalLayout>);
+
 };
 
 export default ClientProjects;

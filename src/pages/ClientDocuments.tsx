@@ -8,9 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Upload, 
-  FileText, 
+import {
+  Upload,
+  FileText,
   Download,
   Eye,
   Trash2,
@@ -19,8 +19,8 @@ import {
   File,
   Image,
   FileSpreadsheet,
-  FileCode
-} from 'lucide-react';
+  FileCode } from
+'lucide-react';
 import { useLocation } from 'react-router-dom';
 import ClientPortalLayout from '@/components/ClientPortalLayout';
 import { useToast } from '@/hooks/use-toast';
@@ -85,8 +85,8 @@ const ClientDocuments: React.FC = () => {
         OrderByField: "id",
         IsAsc: false,
         Filters: initialProjectId ? [
-          { name: "project_id", op: "Equal", value: initialProjectId }
-        ] : []
+        { name: "project_id", op: "Equal", value: initialProjectId }] :
+        []
       });
 
       if (error) throw new Error(error);
@@ -129,7 +129,7 @@ const ClientDocuments: React.FC = () => {
 
   const getFileIcon = (filename: string) => {
     if (!filename) return <File className="h-8 w-8 text-gray-500" />;
-    
+
     const ext = filename.toLowerCase().split('.').pop();
     switch (ext) {
       case 'pdf':
@@ -154,7 +154,7 @@ const ClientDocuments: React.FC = () => {
 
   const handleFileUpload = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!uploadFile || !uploadTitle.trim()) {
       toast({
         title: "Missing required fields",
@@ -191,7 +191,7 @@ const ClientDocuments: React.FC = () => {
 
       toast({
         title: "Document uploaded successfully",
-        description: `${uploadFile.name} has been uploaded.`,
+        description: `${uploadFile.name} has been uploaded.`
       });
 
       // Reset form and close modal
@@ -203,7 +203,7 @@ const ClientDocuments: React.FC = () => {
         setUploadProjectId('');
       }
       setIsUploadModalOpen(false);
-      
+
       // Refresh documents
       await fetchDocuments();
 
@@ -232,7 +232,7 @@ const ClientDocuments: React.FC = () => {
 
       toast({
         title: "Download started",
-        description: `Downloading ${document.file_name}`,
+        description: `Downloading ${document.file_name}`
       });
     } catch (error: any) {
       console.error('Download error:', error);
@@ -253,7 +253,7 @@ const ClientDocuments: React.FC = () => {
 
       toast({
         title: "Document deleted",
-        description: "The document has been removed successfully.",
+        description: "The document has been removed successfully."
       });
 
       await fetchDocuments();
@@ -267,12 +267,12 @@ const ClientDocuments: React.FC = () => {
     }
   };
 
-  const filteredDocuments = documents.filter(doc => {
+  const filteredDocuments = documents.filter((doc) => {
     if (!doc) return false;
-    
-    const matchesSearch = !searchTerm || 
-      (doc.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       doc.file_name?.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const matchesSearch = !searchTerm ||
+    doc.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    doc.file_name?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || doc.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
@@ -287,7 +287,7 @@ const ClientDocuments: React.FC = () => {
 
   const getProjectName = (projectId: number) => {
     if (!projectId) return 'No Project';
-    const project = projects.find(p => p.id === projectId);
+    const project = projects.find((p) => p.id === projectId);
     return project?.name || 'Unknown Project';
   };
 
@@ -297,8 +297,8 @@ const ClientDocuments: React.FC = () => {
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
         </div>
-      </ClientPortalLayout>
-    );
+      </ClientPortalLayout>);
+
   }
 
   return (
@@ -310,11 +310,11 @@ const ClientDocuments: React.FC = () => {
             <h1 className="text-2xl font-bold">Documents</h1>
             <p className="text-muted-foreground">
               Upload and manage your project documents
-              {initialProjectId && (
-                <span className="ml-2">
+              {initialProjectId &&
+              <span className="ml-2">
                   • Filtered for {getProjectName(initialProjectId)}
                 </span>
-              )}
+              }
             </p>
           </div>
           <Button onClick={() => setIsUploadModalOpen(true)}>
@@ -331,8 +331,8 @@ const ClientDocuments: React.FC = () => {
               placeholder="Search documents..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
-            />
+              className="pl-9" />
+
           </div>
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-48">
@@ -350,8 +350,8 @@ const ClientDocuments: React.FC = () => {
 
         {/* Documents Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredDocuments.map((document) => (
-            <Card key={document.id} className="hover:shadow-md transition-shadow">
+          {filteredDocuments.map((document) =>
+          <Card key={document.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0">
@@ -367,65 +367,65 @@ const ClientDocuments: React.FC = () => {
                       <span>•</span>
                       <span>{document.created_at ? new Date(document.created_at).toLocaleDateString() : 'Unknown date'}</span>
                     </div>
-                    {document.category && (
-                      <Badge variant="secondary" className="mt-2 text-xs">
+                    {document.category &&
+                  <Badge variant="secondary" className="mt-2 text-xs">
                         {document.category}
                       </Badge>
-                    )}
-                    {document.project_id && (
-                      <Badge variant="outline" className="mt-2 ml-2 text-xs">
+                  }
+                    {document.project_id &&
+                  <Badge variant="outline" className="mt-2 ml-2 text-xs">
                         {getProjectName(document.project_id)}
                       </Badge>
-                    )}
+                  }
                   </div>
                 </div>
                 
                 <div className="flex gap-1 mt-3">
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDownload(document)}
-                    className="flex-1"
-                  >
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDownload(document)}
+                  className="flex-1">
+
                     <Download className="h-4 w-4 mr-1" />
                     Download
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(document.id)}
-                    className="text-red-600 hover:text-red-700"
-                  >
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(document.id)}
+                  className="text-red-600 hover:text-red-700">
+
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
 
-                {document.description && (
-                  <p className="text-sm text-muted-foreground mt-3">
+                {document.description &&
+              <p className="text-sm text-muted-foreground mt-3">
                     {document.description}
                   </p>
-                )}
+              }
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
 
         {/* No documents message */}
-        {filteredDocuments.length === 0 && (
-          <div className="text-center py-12">
+        {filteredDocuments.length === 0 &&
+        <div className="text-center py-12">
             <Upload className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No documents found</h3>
             <p className="text-muted-foreground mb-4">
-              {searchTerm || categoryFilter !== 'all' 
-                ? 'No documents match your search criteria.' 
-                : 'You haven\'t uploaded any documents yet.'}
+              {searchTerm || categoryFilter !== 'all' ?
+            'No documents match your search criteria.' :
+            'You haven\'t uploaded any documents yet.'}
             </p>
             <Button onClick={() => setIsUploadModalOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Upload Your First Document
             </Button>
           </div>
-        )}
+        }
 
         {/* Upload Modal */}
         <Dialog open={isUploadModalOpen} onOpenChange={setIsUploadModalOpen}>
@@ -440,13 +440,13 @@ const ClientDocuments: React.FC = () => {
                   id="file"
                   type="file"
                   onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                  required
-                />
-                {uploadFile && (
-                  <p className="text-sm text-muted-foreground mt-1">
+                  required />
+
+                {uploadFile &&
+                <p className="text-sm text-muted-foreground mt-1">
                     Selected: {uploadFile.name} ({formatFileSize(uploadFile.size)})
                   </p>
-                )}
+                }
               </div>
 
               <div>
@@ -456,8 +456,8 @@ const ClientDocuments: React.FC = () => {
                   value={uploadTitle}
                   onChange={(e) => setUploadTitle(e.target.value)}
                   placeholder="Enter document title"
-                  required
-                />
+                  required />
+
               </div>
 
               <div>
@@ -466,8 +466,8 @@ const ClientDocuments: React.FC = () => {
                   id="description"
                   value={uploadDescription}
                   onChange={(e) => setUploadDescription(e.target.value)}
-                  placeholder="Optional description"
-                />
+                  placeholder="Optional description" />
+
               </div>
 
               <div>
@@ -485,44 +485,44 @@ const ClientDocuments: React.FC = () => {
                 </Select>
               </div>
 
-              {!initialProjectId && (
-                <div>
+              {!initialProjectId &&
+              <div>
                   <Label htmlFor="project">Project (Optional)</Label>
                   <Select value={uploadProjectId} onValueChange={setUploadProjectId}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select project" />
                     </SelectTrigger>
                     <SelectContent>
-                      {projects.map((project) => (
-                        <SelectItem key={project.id} value={project.id.toString()}>
+                      {projects.map((project) =>
+                    <SelectItem key={project.id} value={project.id.toString()}>
                           {project.name}
                         </SelectItem>
-                      ))}
+                    )}
                     </SelectContent>
                   </Select>
                 </div>
-              )}
+              }
 
               <div className="flex gap-2">
                 <Button type="submit" disabled={isUploading} className="flex-1">
-                  {isUploading ? (
-                    <>
+                  {isUploading ?
+                  <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                       Uploading...
-                    </>
-                  ) : (
-                    <>
+                    </> :
+
+                  <>
                       <Upload className="h-4 w-4 mr-2" />
                       Upload
                     </>
-                  )}
+                  }
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsUploadModalOpen(false)}
-                  disabled={isUploading}
-                >
+                  disabled={isUploading}>
+
                   Cancel
                 </Button>
               </div>
@@ -530,8 +530,8 @@ const ClientDocuments: React.FC = () => {
           </DialogContent>
         </Dialog>
       </div>
-    </ClientPortalLayout>
-  );
+    </ClientPortalLayout>);
+
 };
 
 export default ClientDocuments;

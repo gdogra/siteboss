@@ -4,18 +4,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { 
-  FolderOpen, 
-  FileText, 
-  Upload, 
-  MessageSquare, 
+import {
+  FolderOpen,
+  FileText,
+  Upload,
+  MessageSquare,
   DollarSign,
   Calendar,
   CheckCircle,
   Clock,
   AlertCircle,
-  TrendingUp
-} from 'lucide-react';
+  TrendingUp } from
+'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ClientPortalLayout from '@/components/ClientPortalLayout';
 import { useToast } from '@/hooks/use-toast';
@@ -83,8 +83,8 @@ const ClientDashboard: React.FC = () => {
         OrderByField: "id",
         IsAsc: false,
         Filters: [
-          { name: "receiver_id", op: "Equal", value: userInfo.ID }
-        ]
+        { name: "receiver_id", op: "Equal", value: userInfo.ID }]
+
       });
       if (!messageError && messageData?.List) {
         setMessages(messageData.List);
@@ -129,35 +129,35 @@ const ClientDashboard: React.FC = () => {
   };
 
   const stats = [
-    {
-      title: 'Active Projects',
-      value: projects.filter(p => p.status !== 'completed').length,
-      icon: FolderOpen,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100'
-    },
-    {
-      title: 'Pending Invoices',
-      value: invoices.filter(i => i.status === 'pending').length,
-      icon: FileText,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100'
-    },
-    {
-      title: 'Documents',
-      value: documents.length,
-      icon: Upload,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100'
-    },
-    {
-      title: 'Unread Messages',
-      value: messages.filter(m => !m.read_status).length,
-      icon: MessageSquare,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100'
-    }
-  ];
+  {
+    title: 'Active Projects',
+    value: projects.filter((p) => p.status !== 'completed').length,
+    icon: FolderOpen,
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-100'
+  },
+  {
+    title: 'Pending Invoices',
+    value: invoices.filter((i) => i.status === 'pending').length,
+    icon: FileText,
+    color: 'text-orange-600',
+    bgColor: 'bg-orange-100'
+  },
+  {
+    title: 'Documents',
+    value: documents.length,
+    icon: Upload,
+    color: 'text-green-600',
+    bgColor: 'bg-green-100'
+  },
+  {
+    title: 'Unread Messages',
+    value: messages.filter((m) => !m.read_status).length,
+    icon: MessageSquare,
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-100'
+  }];
+
 
   if (isLoading) {
     return (
@@ -165,8 +165,8 @@ const ClientDashboard: React.FC = () => {
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
         </div>
-      </ClientPortalLayout>
-    );
+      </ClientPortalLayout>);
+
   }
 
   return (
@@ -184,8 +184,8 @@ const ClientDashboard: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((stat, index) => (
-            <Card key={index} className="hover:shadow-md transition-shadow">
+          {stats.map((stat, index) =>
+          <Card key={index} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -200,7 +200,7 @@ const ClientDashboard: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -214,8 +214,8 @@ const ClientDashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {projects.slice(0, 3).map((project) => (
-                  <div key={project.id} className="border rounded-lg p-4">
+                {projects.slice(0, 3).map((project) =>
+                <div key={project.id} className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-medium">{project.name}</h3>
                       {getProjectStatusBadge(project.status)}
@@ -231,16 +231,16 @@ const ClientDashboard: React.FC = () => {
                       <Progress value={calculateProjectProgress(project)} />
                     </div>
                   </div>
-                ))}
-                {projects.length > 3 && (
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => navigate('/client/projects')}
-                  >
+                )}
+                {projects.length > 3 &&
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => navigate('/client/projects')}>
+
                     View All Projects
                   </Button>
-                )}
+                }
               </div>
             </CardContent>
           </Card>
@@ -255,8 +255,8 @@ const ClientDashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {invoices.slice(0, 3).map((invoice) => (
-                  <div key={invoice.id} className="flex items-center justify-between p-3 border rounded-lg">
+                {invoices.slice(0, 3).map((invoice) =>
+                <div key={invoice.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div>
                       <p className="font-medium">Invoice #{invoice.id}</p>
                       <p className="text-sm text-muted-foreground">
@@ -270,16 +270,16 @@ const ClientDashboard: React.FC = () => {
                       </Badge>
                     </div>
                   </div>
-                ))}
-                {invoices.length > 3 && (
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => navigate('/client/invoices')}
-                  >
+                )}
+                {invoices.length > 3 &&
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => navigate('/client/invoices')}>
+
                     View All Invoices
                   </Button>
-                )}
+                }
               </div>
             </CardContent>
           </Card>
@@ -294,13 +294,13 @@ const ClientDashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {messages.slice(0, 3).map((message) => (
-                  <div key={message.id} className="p-3 border rounded-lg">
+                {messages.slice(0, 3).map((message) =>
+                <div key={message.id} className="p-3 border rounded-lg">
                     <div className="flex items-center justify-between mb-1">
                       <p className="font-medium text-sm">{message.subject}</p>
-                      {!message.read_status && (
-                        <Badge variant="destructive" className="text-xs">New</Badge>
-                      )}
+                      {!message.read_status &&
+                    <Badge variant="destructive" className="text-xs">New</Badge>
+                    }
                     </div>
                     <p className="text-sm text-muted-foreground truncate">
                       {message.content}
@@ -309,17 +309,17 @@ const ClientDashboard: React.FC = () => {
                       {new Date(message.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                ))}
-                {messages.length === 0 && (
-                  <p className="text-muted-foreground text-center py-4">
+                )}
+                {messages.length === 0 &&
+                <p className="text-muted-foreground text-center py-4">
                     No messages yet
                   </p>
-                )}
-                <Button 
-                  variant="outline" 
+                }
+                <Button
+                  variant="outline"
                   className="w-full"
-                  onClick={() => navigate('/client/messages')}
-                >
+                  onClick={() => navigate('/client/messages')}>
+
                   View All Messages
                 </Button>
               </div>
@@ -333,35 +333,35 @@ const ClientDashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-3">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="h-20 flex-col"
-                  onClick={() => navigate('/client/documents')}
-                >
+                  onClick={() => navigate('/client/documents')}>
+
                   <Upload className="h-6 w-6 mb-2" />
                   Upload Document
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="h-20 flex-col"
-                  onClick={() => navigate('/client/messages')}
-                >
+                  onClick={() => navigate('/client/messages')}>
+
                   <MessageSquare className="h-6 w-6 mb-2" />
                   Send Message
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="h-20 flex-col"
-                  onClick={() => navigate('/client/invoices')}
-                >
+                  onClick={() => navigate('/client/invoices')}>
+
                   <DollarSign className="h-6 w-6 mb-2" />
                   Pay Invoice
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="h-20 flex-col"
-                  onClick={() => navigate('/client/projects')}
-                >
+                  onClick={() => navigate('/client/projects')}>
+
                   <TrendingUp className="h-6 w-6 mb-2" />
                   View Progress
                 </Button>
@@ -370,8 +370,8 @@ const ClientDashboard: React.FC = () => {
           </Card>
         </div>
       </div>
-    </ClientPortalLayout>
-  );
+    </ClientPortalLayout>);
+
 };
 
 export default ClientDashboard;

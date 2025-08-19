@@ -21,7 +21,7 @@ import ClientInvoices from "./pages/ClientInvoices";
 import ClientDocuments from "./pages/ClientDocuments";
 import ClientMessages from "./pages/ClientMessages";
 import ClientAuthGuard from "./components/ClientAuthGuard";
-import EnhancedChatBot from "./components/EnhancedChatBot";
+import FloatingChatWidget from "./components/FloatingChatWidget";
 
 const queryClient = new QueryClient();
 
@@ -79,7 +79,7 @@ const App = () =>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      <EnhancedChatBot />
+      <FloatingChatWidget />
     </TooltipProvider>
   </QueryClientProvider>
 </ErrorBoundary>;

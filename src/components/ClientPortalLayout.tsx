@@ -5,16 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { 
-  Home, 
-  FolderOpen, 
-  FileText, 
-  Upload, 
-  MessageSquare, 
-  LogOut, 
+import {
+  Home,
+  FolderOpen,
+  FileText,
+  Upload,
+  MessageSquare,
+  LogOut,
   Menu,
-  User
-} from 'lucide-react';
+  User } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ClientPortalLayoutProps {
@@ -49,12 +49,12 @@ const ClientPortalLayout: React.FC<ClientPortalLayoutProps> = ({ children }) => 
     try {
       const { error } = await window.ezsite.apis.logout();
       if (error) throw new Error(error);
-      
+
       toast({
         title: "Logged out successfully",
-        description: "You have been logged out of the client portal.",
+        description: "You have been logged out of the client portal."
       });
-      
+
       navigate('/client/login');
     } catch (error) {
       toast({
@@ -66,38 +66,38 @@ const ClientPortalLayout: React.FC<ClientPortalLayoutProps> = ({ children }) => 
   };
 
   const navigationItems = [
-    { path: '/client/dashboard', icon: Home, label: 'Dashboard' },
-    { path: '/client/projects', icon: FolderOpen, label: 'Projects' },
-    { path: '/client/invoices', icon: FileText, label: 'Invoices' },
-    { path: '/client/documents', icon: Upload, label: 'Documents' },
-    { path: '/client/messages', icon: MessageSquare, label: 'Messages' },
-  ];
+  { path: '/client/dashboard', icon: Home, label: 'Dashboard' },
+  { path: '/client/projects', icon: FolderOpen, label: 'Projects' },
+  { path: '/client/invoices', icon: FileText, label: 'Invoices' },
+  { path: '/client/documents', icon: Upload, label: 'Documents' },
+  { path: '/client/messages', icon: MessageSquare, label: 'Messages' }];
 
-  const NavigationContent = () => (
-    <nav className="space-y-2">
-      {navigationItems.map((item) => (
-        <Link
-          key={item.path}
-          to={item.path}
-          className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
-            location.pathname === item.path
-              ? 'bg-primary text-primary-foreground'
-              : 'hover:bg-accent hover:text-accent-foreground'
-          }`}
-        >
+
+  const NavigationContent = () =>
+  <nav className="space-y-2">
+      {navigationItems.map((item) =>
+    <Link
+      key={item.path}
+      to={item.path}
+      className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+      location.pathname === item.path ?
+      'bg-primary text-primary-foreground' :
+      'hover:bg-accent hover:text-accent-foreground'}`
+      }>
+
           <item.icon className="h-5 w-5" />
           <span>{item.label}</span>
         </Link>
-      ))}
-    </nav>
-  );
+    )}
+    </nav>;
+
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -127,8 +127,8 @@ const ClientPortalLayout: React.FC<ClientPortalLayoutProps> = ({ children }) => 
           </div>
 
           <div className="flex items-center space-x-4">
-            {user && (
-              <div className="flex items-center space-x-2">
+            {user &&
+            <div className="flex items-center space-x-2">
                 <Avatar className="h-8 w-8">
                   <AvatarFallback>
                     <User className="h-4 w-4" />
@@ -139,7 +139,7 @@ const ClientPortalLayout: React.FC<ClientPortalLayoutProps> = ({ children }) => 
                   <Badge variant="secondary" className="text-xs">Client</Badge>
                 </div>
               </div>
-            )}
+            }
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="h-4 w-4 mr-1" />
               Logout
@@ -162,8 +162,8 @@ const ClientPortalLayout: React.FC<ClientPortalLayoutProps> = ({ children }) => 
           </main>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ClientPortalLayout;

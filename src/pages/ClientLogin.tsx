@@ -36,7 +36,7 @@ const ClientLogin: React.FC = () => {
 
       // Check user roles after successful login
       const { data: userInfo, error: userError } = await window.ezsite.apis.getUserInfo();
-      
+
       if (userError || !userInfo) {
         throw new Error('Failed to retrieve user information');
       }
@@ -51,7 +51,7 @@ const ClientLogin: React.FC = () => {
 
       toast({
         title: "Welcome back!",
-        description: "You have successfully logged into the client portal.",
+        description: "You have successfully logged into the client portal."
       });
 
       navigate(from, { replace: true });
@@ -78,11 +78,11 @@ const ClientLogin: React.FC = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <Alert variant="destructive">
+            {error &&
+            <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
-            )}
+            }
             
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -93,8 +93,8 @@ const ClientLogin: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                disabled={isLoading}
-              />
+                disabled={isLoading} />
+
             </div>
             
             <div className="space-y-2">
@@ -106,8 +106,8 @@ const ClientLogin: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                disabled={isLoading}
-              />
+                disabled={isLoading} />
+
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -116,10 +116,10 @@ const ClientLogin: React.FC = () => {
             </Button>
 
             <div className="text-center space-y-2">
-              <Link 
-                to="/resetpassword" 
-                className="text-sm text-primary hover:underline"
-              >
+              <Link
+                to="/resetpassword"
+                className="text-sm text-primary hover:underline">
+
                 Forgot your password?
               </Link>
               <p className="text-sm text-muted-foreground">
@@ -129,8 +129,8 @@ const ClientLogin: React.FC = () => {
           </form>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ClientLogin;

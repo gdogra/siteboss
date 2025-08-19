@@ -5,9 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { 
-  FileText, 
-  DollarSign, 
+import {
+  FileText,
+  DollarSign,
   Calendar,
   Download,
   Eye,
@@ -16,8 +16,8 @@ import {
   Filter,
   CheckCircle,
   Clock,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle } from
+'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ClientPortalLayout from '@/components/ClientPortalLayout';
 import { useToast } from '@/hooks/use-toast';
@@ -94,7 +94,7 @@ const ClientInvoices: React.FC = () => {
   };
 
   const getInvoicePayments = (invoiceId: number) => {
-    return payments.filter(payment => payment.invoice_id === invoiceId);
+    return payments.filter((payment) => payment.invoice_id === invoiceId);
   };
 
   const calculateTotalPaid = (invoiceId: number) => {
@@ -103,9 +103,9 @@ const ClientInvoices: React.FC = () => {
     }, 0);
   };
 
-  const filteredInvoices = invoices.filter(invoice => {
+  const filteredInvoices = invoices.filter((invoice) => {
     const matchesSearch = invoice.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         invoice.id?.toString().includes(searchTerm);
+    invoice.id?.toString().includes(searchTerm);
     const matchesStatus = statusFilter === 'all' || invoice.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -125,7 +125,7 @@ const ClientInvoices: React.FC = () => {
       // For now, we'll simulate a payment
       toast({
         title: "Payment initiated",
-        description: "Redirecting to payment processor...",
+        description: "Redirecting to payment processor..."
       });
 
       // Simulate payment processing
@@ -148,7 +148,7 @@ const ClientInvoices: React.FC = () => {
 
           toast({
             title: "Payment successful",
-            description: `Invoice #${invoice.id} has been paid successfully.`,
+            description: `Invoice #${invoice.id} has been paid successfully.`
           });
 
           fetchInvoices();
@@ -180,8 +180,8 @@ const ClientInvoices: React.FC = () => {
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
         </div>
-      </ClientPortalLayout>
-    );
+      </ClientPortalLayout>);
+
   }
 
   return (
@@ -205,14 +205,14 @@ const ClientInvoices: React.FC = () => {
               placeholder="Search invoices..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
-            />
+              className="pl-9" />
+
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md"
-          >
+            className="px-3 py-2 border border-gray-300 rounded-md">
+
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
             <option value="paid">Paid</option>
@@ -228,10 +228,10 @@ const ClientInvoices: React.FC = () => {
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Total Outstanding</p>
                   <p className="text-2xl font-bold text-red-600">
-                    ${filteredInvoices
-                      .filter(i => i.status !== 'paid')
-                      .reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0)
-                      .toFixed(2)}
+                    ${filteredInvoices.
+                    filter((i) => i.status !== 'paid').
+                    reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0).
+                    toFixed(2)}
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-red-600" />
@@ -245,10 +245,10 @@ const ClientInvoices: React.FC = () => {
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Total Paid</p>
                   <p className="text-2xl font-bold text-green-600">
-                    ${filteredInvoices
-                      .filter(i => i.status === 'paid')
-                      .reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0)
-                      .toFixed(2)}
+                    ${filteredInvoices.
+                    filter((i) => i.status === 'paid').
+                    reduce((sum, i) => sum + (parseFloat(i.amount) || 0), 0).
+                    toFixed(2)}
                   </p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-green-600" />
@@ -262,7 +262,7 @@ const ClientInvoices: React.FC = () => {
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Pending Invoices</p>
                   <p className="text-2xl font-bold">
-                    {filteredInvoices.filter(i => i.status === 'pending').length}
+                    {filteredInvoices.filter((i) => i.status === 'pending').length}
                   </p>
                 </div>
                 <Clock className="h-8 w-8 text-yellow-600" />
@@ -273,8 +273,8 @@ const ClientInvoices: React.FC = () => {
 
         {/* Invoices List */}
         <div className="space-y-4">
-          {filteredInvoices.map((invoice) => (
-            <Card key={invoice.id} className="hover:shadow-md transition-shadow">
+          {filteredInvoices.map((invoice) =>
+          <Card key={invoice.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
@@ -304,65 +304,65 @@ const ClientInvoices: React.FC = () => {
                     
                     <div className="flex gap-2">
                       <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setSelectedInvoice(invoice)}
-                      >
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedInvoice(invoice)}>
+
                         <Eye className="h-4 w-4 mr-1" />
                         View
                       </Button>
                       
-                      {invoice.status !== 'paid' && (
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            setSelectedInvoice(invoice);
-                            setIsPaymentModalOpen(true);
-                          }}
-                        >
+                      {invoice.status !== 'paid' &&
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setSelectedInvoice(invoice);
+                        setIsPaymentModalOpen(true);
+                      }}>
+
                           <CreditCard className="h-4 w-4 mr-1" />
                           Pay Now
                         </Button>
-                      )}
+                    }
                     </div>
                   </div>
                 </div>
 
                 {/* Payment History */}
-                {getInvoicePayments(invoice.id).length > 0 && (
-                  <div className="mt-4 pt-4 border-t">
+                {getInvoicePayments(invoice.id).length > 0 &&
+              <div className="mt-4 pt-4 border-t">
                     <h4 className="text-sm font-medium mb-2">Payment History</h4>
                     <div className="space-y-1">
-                      {getInvoicePayments(invoice.id).map((payment) => (
-                        <div key={payment.id} className="text-sm text-muted-foreground">
+                      {getInvoicePayments(invoice.id).map((payment) =>
+                  <div key={payment.id} className="text-sm text-muted-foreground">
                           ${parseFloat(payment.amount).toFixed(2)} paid on{' '}
                           {new Date(payment.created_at).toLocaleDateString()}
                         </div>
-                      ))}
+                  )}
                     </div>
                   </div>
-                )}
+              }
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
 
         {/* No invoices message */}
-        {filteredInvoices.length === 0 && (
-          <div className="text-center py-12">
+        {filteredInvoices.length === 0 &&
+        <div className="text-center py-12">
             <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No invoices found</h3>
             <p className="text-muted-foreground">
-              {searchTerm || statusFilter !== 'all' 
-                ? 'No invoices match your search criteria.' 
-                : 'You don\'t have any invoices yet.'}
+              {searchTerm || statusFilter !== 'all' ?
+            'No invoices match your search criteria.' :
+            'You don\'t have any invoices yet.'}
             </p>
           </div>
-        )}
+        }
 
         {/* Invoice Details Modal */}
-        {selectedInvoice && !isPaymentModalOpen && (
-          <Dialog open={true} onOpenChange={() => setSelectedInvoice(null)}>
+        {selectedInvoice && !isPaymentModalOpen &&
+        <Dialog open={true} onOpenChange={() => setSelectedInvoice(null)}>
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Invoice #{selectedInvoice.id}</DialogTitle>
@@ -400,12 +400,12 @@ const ClientInvoices: React.FC = () => {
                   </p>
                 </div>
 
-                {getInvoicePayments(selectedInvoice.id).length > 0 && (
-                  <div>
+                {getInvoicePayments(selectedInvoice.id).length > 0 &&
+              <div>
                     <p className="text-sm font-medium mb-2">Payment History</p>
                     <div className="space-y-2">
-                      {getInvoicePayments(selectedInvoice.id).map((payment) => (
-                        <div key={payment.id} className="p-2 bg-muted rounded text-sm">
+                      {getInvoicePayments(selectedInvoice.id).map((payment) =>
+                  <div key={payment.id} className="p-2 bg-muted rounded text-sm">
                           <div className="flex justify-between">
                             <span>${parseFloat(payment.amount).toFixed(2)}</span>
                             <span>{new Date(payment.created_at).toLocaleString()}</span>
@@ -414,18 +414,18 @@ const ClientInvoices: React.FC = () => {
                             Method: {payment.payment_method} | Status: {payment.status}
                           </p>
                         </div>
-                      ))}
+                  )}
                     </div>
                   </div>
-                )}
+              }
               </div>
             </DialogContent>
           </Dialog>
-        )}
+        }
 
         {/* Payment Modal */}
-        {isPaymentModalOpen && selectedInvoice && (
-          <Dialog open={isPaymentModalOpen} onOpenChange={setIsPaymentModalOpen}>
+        {isPaymentModalOpen && selectedInvoice &&
+        <Dialog open={isPaymentModalOpen} onOpenChange={setIsPaymentModalOpen}>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Pay Invoice #{selectedInvoice.id}</DialogTitle>
@@ -453,37 +453,37 @@ const ClientInvoices: React.FC = () => {
 
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => handlePayInvoice(selectedInvoice)}
-                    disabled={paymentLoading}
-                    className="flex-1"
-                  >
-                    {paymentLoading ? (
-                      <>
+                  onClick={() => handlePayInvoice(selectedInvoice)}
+                  disabled={paymentLoading}
+                  className="flex-1">
+
+                    {paymentLoading ?
+                  <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                         Processing...
-                      </>
-                    ) : (
-                      <>
+                      </> :
+
+                  <>
                         <CreditCard className="h-4 w-4 mr-2" />
                         Pay Now
                       </>
-                    )}
+                  }
                   </Button>
                   <Button
-                    variant="outline"
-                    onClick={() => setIsPaymentModalOpen(false)}
-                    disabled={paymentLoading}
-                  >
+                  variant="outline"
+                  onClick={() => setIsPaymentModalOpen(false)}
+                  disabled={paymentLoading}>
+
                     Cancel
                   </Button>
                 </div>
               </div>
             </DialogContent>
           </Dialog>
-        )}
+        }
       </div>
-    </ClientPortalLayout>
-  );
+    </ClientPortalLayout>);
+
 };
 
 export default ClientInvoices;
