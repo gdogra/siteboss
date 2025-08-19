@@ -397,8 +397,8 @@ const AdminDashboard = () => {
             <p className="text-gray-600">Loading dashboard...</p>
           </div>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
