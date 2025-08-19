@@ -9,26 +9,26 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Settings, 
-  Plus, 
-  Trash2, 
-  Move, 
-  Eye, 
+import {
+  Settings,
+  Plus,
+  Trash2,
+  Move,
+  Eye,
   EyeOff,
   Grid,
   Layout,
   Palette,
   Save,
-  Undo
-} from 'lucide-react';
+  Undo } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Widget {
   id: string;
   name: string;
   type: 'kpi' | 'chart' | 'table' | 'alert';
-  position: { x: number; y: number; w: number; h: number };
+  position: {x: number;y: number;w: number;h: number;};
   config: any;
   visible: boolean;
 }
@@ -69,13 +69,13 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
   const { toast } = useToast();
 
   const availableWidgets = [
-    { id: 'revenue-kpi', name: 'Total Revenue', type: 'kpi', category: 'financial' },
-    { id: 'leads-kpi', name: 'Lead Conversion', type: 'kpi', category: 'sales' },
-    { id: 'projects-kpi', name: 'Active Projects', type: 'kpi', category: 'operations' },
-    { id: 'revenue-chart', name: 'Revenue Trend', type: 'chart', category: 'financial' },
-    { id: 'leads-chart', name: 'Leads Pipeline', type: 'chart', category: 'sales' },
-    { id: 'alerts-panel', name: 'System Alerts', type: 'alert', category: 'monitoring' }
-  ];
+  { id: 'revenue-kpi', name: 'Total Revenue', type: 'kpi', category: 'financial' },
+  { id: 'leads-kpi', name: 'Lead Conversion', type: 'kpi', category: 'sales' },
+  { id: 'projects-kpi', name: 'Active Projects', type: 'kpi', category: 'operations' },
+  { id: 'revenue-chart', name: 'Revenue Trend', type: 'chart', category: 'financial' },
+  { id: 'leads-chart', name: 'Leads Pipeline', type: 'chart', category: 'sales' },
+  { id: 'alerts-panel', name: 'System Alerts', type: 'alert', category: 'monitoring' }];
+
 
   const loadDashboardLayout = async () => {
     try {
@@ -86,9 +86,9 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
         OrderByField: "ID",
         IsAsc: false,
         Filters: [
-          { name: "user_id", op: "Equal", value: userId },
-          { name: "is_active", op: "Equal", value: true }
-        ]
+        { name: "user_id", op: "Equal", value: userId },
+        { name: "is_active", op: "Equal", value: true }]
+
       });
 
       if (error) throw new Error(error);
@@ -145,7 +145,7 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
 
       toast({
         title: "Dashboard Saved",
-        description: "Your dashboard layout has been saved successfully.",
+        description: "Your dashboard layout has been saved successfully."
       });
 
       if (onLayoutChange) {
@@ -158,7 +158,7 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
       toast({
         title: "Save Failed",
         description: "Failed to save dashboard layout. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setSaving(false);
@@ -168,37 +168,37 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
   const addWidget = (widgetType: string) => {
     const widget: Widget = {
       id: `${widgetType}-${Date.now()}`,
-      name: availableWidgets.find(w => w.id === widgetType)?.name || 'New Widget',
-      type: availableWidgets.find(w => w.id === widgetType)?.type as any || 'kpi',
+      name: availableWidgets.find((w) => w.id === widgetType)?.name || 'New Widget',
+      type: availableWidgets.find((w) => w.id === widgetType)?.type as any || 'kpi',
       position: { x: 0, y: 0, w: 4, h: 3 },
       config: {},
       visible: true
     };
 
-    setLayout(prev => ({
+    setLayout((prev) => ({
       ...prev,
       widgets: [...prev.widgets, widget]
     }));
   };
 
   const removeWidget = (widgetId: string) => {
-    setLayout(prev => ({
+    setLayout((prev) => ({
       ...prev,
-      widgets: prev.widgets.filter(w => w.id !== widgetId)
+      widgets: prev.widgets.filter((w) => w.id !== widgetId)
     }));
   };
 
   const toggleWidgetVisibility = (widgetId: string) => {
-    setLayout(prev => ({
+    setLayout((prev) => ({
       ...prev,
-      widgets: prev.widgets.map(w =>
-        w.id === widgetId ? { ...w, visible: !w.visible } : w
+      widgets: prev.widgets.map((w) =>
+      w.id === widgetId ? { ...w, visible: !w.visible } : w
       )
     }));
   };
 
   const updateSettings = (key: string, value: any) => {
-    setLayout(prev => ({
+    setLayout((prev) => ({
       ...prev,
       settings: {
         ...prev.settings,
@@ -250,8 +250,8 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {availableWidgets.map(widget => (
-                    <div key={widget.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  {availableWidgets.map((widget) =>
+                  <div key={widget.id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
                         <p className="font-medium">{widget.name}</p>
                         <p className="text-sm text-muted-foreground">{widget.category}</p>
@@ -259,15 +259,15 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                       <div className="flex items-center gap-2">
                         <Badge variant="outline">{widget.type}</Badge>
                         <Button
-                          size="sm"
-                          onClick={() => addWidget(widget.id)}
-                          disabled={layout.widgets.some(w => w.name === widget.name)}
-                        >
+                        size="sm"
+                        onClick={() => addWidget(widget.id)}
+                        disabled={layout.widgets.some((w) => w.name === widget.name)}>
+
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
-                  ))}
+                  )}
                 </CardContent>
               </Card>
 
@@ -280,13 +280,13 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {layout.widgets.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">
+                  {layout.widgets.length === 0 ?
+                  <p className="text-center text-muted-foreground py-8">
                       No widgets added yet
-                    </p>
-                  ) : (
-                    layout.widgets.map(widget => (
-                      <div key={widget.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    </p> :
+
+                  layout.widgets.map((widget) =>
+                  <div key={widget.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <p className="font-medium">{widget.name}</p>
                           <Badge variant="outline" className="text-xs mt-1">
@@ -295,23 +295,23 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                         </div>
                         <div className="flex items-center gap-2">
                           <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => toggleWidgetVisibility(widget.id)}
-                          >
+                        size="sm"
+                        variant="outline"
+                        onClick={() => toggleWidgetVisibility(widget.id)}>
+
                             {widget.visible ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
                           </Button>
                           <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => removeWidget(widget.id)}
-                          >
+                        size="sm"
+                        variant="outline"
+                        onClick={() => removeWidget(widget.id)}>
+
                             <Trash2 className="h-3 w-3" />
                           </Button>
                         </div>
                       </div>
-                    ))
-                  )}
+                  )
+                  }
                 </CardContent>
               </Card>
             </div>
@@ -332,8 +332,8 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                     <Input
                       id="dashboard-name"
                       value={layout.name}
-                      onChange={(e) => setLayout(prev => ({ ...prev, name: e.target.value }))}
-                    />
+                      onChange={(e) => setLayout((prev) => ({ ...prev, name: e.target.value }))} />
+
                   </div>
                   
                   <div className="space-y-2">
@@ -341,8 +341,8 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                     <div className="flex items-center space-x-2">
                       <Switch
                         checked={layout.settings.showGrid}
-                        onCheckedChange={(checked) => updateSettings('showGrid', checked)}
-                      />
+                        onCheckedChange={(checked) => updateSettings('showGrid', checked)} />
+
                       <span className="text-sm">Show grid lines</span>
                     </div>
                   </div>
@@ -351,16 +351,16 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                 <div className="pt-4 border-t">
                   <h4 className="font-medium mb-3">Widget Preview</h4>
                   <div className="grid grid-cols-4 gap-2 min-h-[200px] border-2 border-dashed border-muted-foreground/25 rounded-lg p-4">
-                    {layout.widgets.map(widget => (
-                      <div
-                        key={widget.id}
-                        className={`p-2 border rounded text-xs text-center ${
-                          widget.visible ? 'bg-primary/10 border-primary' : 'bg-muted border-muted-foreground'
-                        }`}
-                      >
+                    {layout.widgets.map((widget) =>
+                    <div
+                      key={widget.id}
+                      className={`p-2 border rounded text-xs text-center ${
+                      widget.visible ? 'bg-primary/10 border-primary' : 'bg-muted border-muted-foreground'}`
+                      }>
+
                         {widget.name}
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
               </CardContent>
@@ -381,8 +381,8 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                     <Label>Theme</Label>
                     <Select
                       value={layout.settings.theme}
-                      onValueChange={(value) => updateSettings('theme', value)}
-                    >
+                      onValueChange={(value) => updateSettings('theme', value)}>
+
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -398,8 +398,8 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
                     <Label>Refresh Interval (seconds)</Label>
                     <Select
                       value={layout.settings.refreshInterval.toString()}
-                      onValueChange={(value) => updateSettings('refreshInterval', parseInt(value))}
-                    >
+                      onValueChange={(value) => updateSettings('refreshInterval', parseInt(value))}>
+
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -429,8 +429,8 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
           </Button>
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>);
+
 };
 
 export default DashboardCustomizer;

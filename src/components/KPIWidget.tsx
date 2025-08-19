@@ -81,30 +81,30 @@ const KPIWidget: React.FC<KPIWidgetProps> = ({
             {formatValue(value, format)}
           </div>
           
-          {subtitle && (
-            <p className="text-xs text-muted-foreground">
+          {subtitle &&
+          <p className="text-xs text-muted-foreground">
               {subtitle}
             </p>
-          )}
+          }
           
-          {change !== undefined && (
-            <div className={`flex items-center text-xs ${getChangeColor(changeType)}`}>
+          {change !== undefined &&
+          <div className={`flex items-center text-xs ${getChangeColor(changeType)}`}>
               {getChangeIcon(changeType)}
               <span className="ml-1">
                 {Math.abs(change)}% from last period
               </span>
             </div>
-          )}
+          }
           
-          {category && (
-            <Badge variant="secondary" className="w-fit text-xs">
+          {category &&
+          <Badge variant="secondary" className="w-fit text-xs">
               {category}
             </Badge>
-          )}
+          }
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default KPIWidget;

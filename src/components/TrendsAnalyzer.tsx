@@ -34,7 +34,7 @@ const TrendsAnalyzer: React.FC<TrendsAnalyzerProps> = ({ timeRange, category }) 
       toast({
         title: "Error",
         description: "Failed to load trends data. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -81,8 +81,8 @@ const TrendsAnalyzer: React.FC<TrendsAnalyzerProps> = ({ timeRange, category }) 
           <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
           <p className="text-muted-foreground">Loading trends analysis...</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   if (!trendsData) {
@@ -92,8 +92,8 @@ const TrendsAnalyzer: React.FC<TrendsAnalyzerProps> = ({ timeRange, category }) 
         <Button onClick={loadTrendsData} className="mt-4">
           Retry Loading
         </Button>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -155,28 +155,28 @@ const TrendsAnalyzer: React.FC<TrendsAnalyzerProps> = ({ timeRange, category }) 
                   </p>
                 </div>
               </CardContent>
-            </Card>
-          );
+            </Card>);
+
         })}
       </div>
 
       {/* Detailed Trend Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {Object.entries(trendsData.trends).map(([categoryName, categoryData]: [string, any]) => (
-          <AnalyticsChart
-            key={categoryName}
-            title={`${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Trends`}
-            type="line"
-            data={categoryData.data}
-            height={300}
-            description={`Historical data with ${categoryData.forecast?.length || 0} day forecast`}
-          />
-        ))}
+        {Object.entries(trendsData.trends).map(([categoryName, categoryData]: [string, any]) =>
+        <AnalyticsChart
+          key={categoryName}
+          title={`${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Trends`}
+          type="line"
+          data={categoryData.data}
+          height={300}
+          description={`Historical data with ${categoryData.forecast?.length || 0} day forecast`} />
+
+        )}
       </div>
 
       {/* Forecast Section */}
-      {trendsData.trends && Object.values(trendsData.trends)[0]?.forecast?.length > 0 && (
-        <Card>
+      {trendsData.trends && Object.values(trendsData.trends)[0]?.forecast?.length > 0 &&
+      <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <LineChart className="h-5 w-5" />
@@ -189,21 +189,21 @@ const TrendsAnalyzer: React.FC<TrendsAnalyzerProps> = ({ timeRange, category }) 
           <CardContent>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {Object.entries(trendsData.trends).map(([categoryName, categoryData]: [string, any]) => {
-                const forecastData = [...categoryData.data.slice(-7), ...categoryData.forecast];
-                return (
-                  <AnalyticsChart
-                    key={`${categoryName}-forecast`}
-                    title={`${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Forecast`}
-                    type="line"
-                    data={forecastData}
-                    height={250}
-                  />
-                );
-              })}
+              const forecastData = [...categoryData.data.slice(-7), ...categoryData.forecast];
+              return (
+                <AnalyticsChart
+                  key={`${categoryName}-forecast`}
+                  title={`${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Forecast`}
+                  type="line"
+                  data={forecastData}
+                  height={250} />);
+
+
+            })}
             </div>
           </CardContent>
         </Card>
-      )}
+      }
 
       {/* Trend Analysis Insights */}
       <Card>
@@ -238,14 +238,14 @@ const TrendsAnalyzer: React.FC<TrendsAnalyzerProps> = ({ timeRange, category }) 
                       </Badge>
                     </div>
                   </div>
-                </div>
-              );
+                </div>);
+
             })}
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TrendsAnalyzer;

@@ -2,19 +2,19 @@
 function checkAnalyticsAlerts(tenantId = null) {
   const now = new Date();
   const triggeredAlerts = [];
-  
+
   // Simulate checking various metrics against alert thresholds
   const mockMetrics = [
-    { name: 'revenue_drop', value: -15, threshold: -10, level: 'warning' },
-    { name: 'low_conversion_rate', value: 0.08, threshold: 0.1, level: 'critical' },
-    { name: 'high_project_delays', value: 0.25, threshold: 0.2, level: 'warning' },
-    { name: 'inventory_shortage', value: 5, threshold: 10, level: 'critical' },
-    { name: 'overdue_payments', value: 25000, threshold: 20000, level: 'warning' }
-  ];
-  
+  { name: 'revenue_drop', value: -15, threshold: -10, level: 'warning' },
+  { name: 'low_conversion_rate', value: 0.08, threshold: 0.1, level: 'critical' },
+  { name: 'high_project_delays', value: 0.25, threshold: 0.2, level: 'warning' },
+  { name: 'inventory_shortage', value: 5, threshold: 10, level: 'critical' },
+  { name: 'overdue_payments', value: 25000, threshold: 20000, level: 'warning' }];
+
+
   mockMetrics.forEach((metric, index) => {
     const shouldTrigger = Math.random() > 0.7; // 30% chance to trigger
-    
+
     if (shouldTrigger) {
       const alert = {
         id: index + 1,
@@ -28,11 +28,11 @@ function checkAnalyticsAlerts(tenantId = null) {
         triggered_at: now.toISOString(),
         tenant_id: tenantId
       };
-      
+
       triggeredAlerts.push(alert);
     }
   });
-  
+
   return {
     alertsTriggered: triggeredAlerts.length,
     alerts: triggeredAlerts,
@@ -48,6 +48,6 @@ function generateAlertMessage(metricName, value, threshold) {
     inventory_shortage: `${value} items are below minimum stock levels (threshold: ${threshold} items)`,
     overdue_payments: `$${value.toLocaleString()} in overdue payments exceeds threshold of $${threshold.toLocaleString()}`
   };
-  
+
   return messages[metricName] || `Metric ${metricName} value ${value} has exceeded threshold ${threshold}`;
 }

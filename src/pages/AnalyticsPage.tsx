@@ -1,23 +1,23 @@
 
 import React, { useState } from 'react';
-import AuthGuard from  '@/components/AuthGuard';
+import AuthGuard from '@/components/AuthGuard';
 import Header from '@/components/Header';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  BarChart3, 
-  Activity, 
-  TrendingUp, 
-  Users, 
+import {
+  BarChart3,
+  Activity,
+  TrendingUp,
+  Users,
   Settings,
   Download,
   Share,
   Filter,
-  Calendar
-} from 'lucide-react';
+  Calendar } from
+'lucide-react';
 
 const AnalyticsPage: React.FC = () => {
   const [userRole, setUserRole] = useState('Administrator');
@@ -60,10 +60,10 @@ const AnalyticsPage: React.FC = () => {
           </div>
 
           {/* Analytics Dashboard */}
-          <AnalyticsDashboard 
+          <AnalyticsDashboard
             userRole={userRole}
-            userId={userId}
-          />
+            userId={userId} />
+
 
           {/* Additional Features Section */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -215,8 +215,8 @@ const AnalyticsPage: React.FC = () => {
           </Card>
         </main>
       </div>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default AnalyticsPage;

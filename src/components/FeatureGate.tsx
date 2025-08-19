@@ -1,39 +1,44 @@
-
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Lock, Crown, Zap, ArrowRight } from 'lucide-react';
+import { Crown, Lock, Sparkles, ArrowRight } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
 
 interface FeatureGateProps {
-  featureKey: string;
-  featureName: string;
+  feature: string;
   children: React.ReactNode;
   fallback?: React.ReactNode;
-  requiredPlan?: string;
-  showUpgrade?: boolean;
-  onUpgrade?: () => void;
+  showUpgradePrompt?: boolean;
 }
 
 const FeatureGate: React.FC<FeatureGateProps> = ({
-  featureKey,
-  featureName,
+  feature,
   children,
   fallback,
-  requiredPlan,
-  showUpgrade = true,
-  onUpgrade
+  showUpgradePrompt = true
 }) => {
-  const { hasFeatureAccess, subscription, plans, isTrialActive } = useSubscription();
+  const { 
+    hasFeatureAccess, 
+    isTrialActive, 
+    daysLeftInTrial, 
+    currentPlan,
+    loading
+  } = useSubscription();
 
-  // Check if user has access to the feature
-  const hasAccess = hasFeatureAccess(featureKey);
-  const isOnTrial = isTrialActive();
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <span className="ml-2 text-slate-600">Checking access...</span>
+      </div>
+    );
+  }
 
-  // If user has access or is on trial, render children
-  if (hasAccess || isOnTrial) {
+  // Check if user has access to this feature
+  if (hasFeatureAccess(feature)) {
     return <>{children}</>;
   }
 
@@ -42,87 +47,99 @@ const FeatureGate: React.FC<FeatureGateProps> = ({
     return <>{fallback}</>;
   }
 
-  // Find the required plan
-  const currentPlan = subscription ? plans.find((p) => p.id === subscription.subscription_plan_id) : null;
-  const requiredPlanObj = requiredPlan ? plans.find((p) => p.plan_code.toLowerCase() === requiredPlan.toLowerCase()) : null;
+  // Default upgrade prompt
+  if (!showUpgradePrompt) {
+    return null;
+  }
 
-  const getPlanIcon = (planCode: string) => {
-    switch (planCode?.toLowerCase()) {
-      case 'professional':return <Zap className="h-4 w-4" />;
-      case 'enterprise':return <Crown className="h-4 w-4" />;
-      default:return <Lock className="h-4 w-4" />;
-    }
-  };
+  const trialActive = isTrialActive();
+  const daysLeft = daysLeftInTrial();
 
-  // Default upgrade gate UI
   return (
-    <Card className="border-dashed border-2">
-      <CardHeader className="text-center">
-        <div className="flex items-center justify-center mb-2">
-          <div className="p-3 bg-muted rounded-full">
-            <Lock className="h-6 w-6 text-muted-foreground" />
-          </div>
-        </div>
-        <CardTitle className="flex items-center justify-center gap-2">
-          {requiredPlanObj && getPlanIcon(requiredPlanObj.plan_code)}
-          {featureName} - Premium Feature
+    <Card className="border-amber-200 bg-amber-50">
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2">
+          <Crown className="w-5 h-5 text-amber-600" />
+          <span>Premium Feature</span>
+          <Badge variant="secondary" className="bg-amber-100 text-amber-800">
+            {currentPlan?.plan_name || 'Upgrade Required'}
+          </Badge>
         </CardTitle>
-        <CardDescription>
-          {requiredPlan ?
-          `This feature requires the ${requiredPlan} plan or higher` :
-          'This feature is not available in your current plan'
-          }
-        </CardDescription>
       </CardHeader>
-
+      
       <CardContent className="space-y-4">
-        {/* Current vs Required Plan */}
-        <div className="flex items-center justify-center space-x-4">
-          {currentPlan &&
-          <>
-              <Badge variant="outline">{currentPlan.plan_name}</Badge>
-              <ArrowRight className="h-4 w-4 text-muted-foreground" />
-            </>
-          }
-          {requiredPlanObj &&
-          <Badge variant="default" className="bg-primary">
-              {requiredPlanObj.plan_name}
-            </Badge>
-          }
+        {trialActive ? (
+          <Alert className="border-blue-200 bg-blue-50">
+            <Sparkles className="h-4 w-4" />
+            <AlertDescription className="text-blue-800">
+              You have {daysLeft} day{daysLeft !== 1 ? 's' : ''} left in your free trial. 
+              Upgrade now to continue using this feature after your trial ends.
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <Alert className="border-amber-200 bg-amber-50">
+            <Lock className="h-4 w-4" />
+            <AlertDescription className="text-amber-800">
+              This feature requires a premium subscription. Upgrade your plan to access advanced functionality.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="space-y-3">
+          <h4 className="font-medium text-slate-900">Unlock this feature with a premium plan:</h4>
+          
+          <div className="grid gap-2 text-sm">
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
+              <div>
+                <div className="font-medium text-slate-900">Professional Plan</div>
+                <div className="text-slate-600">Full access to all features</div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-slate-900">$99/mo</div>
+                <div className="text-xs text-slate-500">Most Popular</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
+              <div>
+                <div className="font-medium text-slate-900">Enterprise Plan</div>
+                <div className="text-slate-600">Advanced features + priority support</div>
+              </div>
+              <div className="text-right">
+                <div className="font-bold text-slate-900">$199/mo</div>
+                <div className="text-xs text-slate-500">Best Value</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Feature Benefits */}
-        <Alert>
-          <Crown className="h-4 w-4" />
-          <AlertDescription>
-            Upgrade to unlock {featureName.toLowerCase()} and many other premium features
-          </AlertDescription>
-        </Alert>
-
-        {/* Upgrade Button */}
-        {showUpgrade &&
-        <div className="text-center">
-            <Button onClick={onUpgrade} className="w-full">
-              <Crown className="h-4 w-4 mr-2" />
-              Upgrade Plan
+        <div className="flex space-x-2">
+          <Button 
+            className="flex-1"
+            onClick={() => window.location.href = '/subscription-management'}
+          >
+            <Crown className="w-4 h-4 mr-2" />
+            Upgrade Now
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+          
+          {!trialActive && (
+            <Button 
+              variant="outline"
+              onClick={() => window.location.href = '/trial-signup'}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Try Free
             </Button>
-          </div>
-        }
+          )}
+        </div>
 
-        {/* Trial CTA */}
-        {!subscription &&
-        <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-2">
-              Try all premium features free for 30 days
-            </p>
-            <Button variant="outline" onClick={onUpgrade}>
-              Start Free Trial
-            </Button>
-          </div>
-        }
+        <div className="text-xs text-slate-500 text-center">
+          Questions? <a href="mailto:support@siteboss.app" className="text-blue-600 hover:underline">Contact our sales team</a>
+        </div>
       </CardContent>
-    </Card>);
-
+    </Card>
+  );
 };
 
 export default FeatureGate;

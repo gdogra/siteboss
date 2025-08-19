@@ -16,8 +16,8 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
-} from 'recharts';
+  ResponsiveContainer } from
+'recharts';
 
 interface AnalyticsChartProps {
   title: string;
@@ -51,13 +51,13 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
       return (
         <div className="bg-background border rounded-lg shadow-lg p-3">
           <p className="font-medium">{label}</p>
-          {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
+          {payload.map((entry: any, index: number) =>
+          <p key={index} className="text-sm" style={{ color: entry.color }}>
               {entry.name}: {formatValue(entry.value, entry.name)}
             </p>
-          ))}
-        </div>
-      );
+          )}
+        </div>);
+
     }
     return null;
   };
@@ -73,18 +73,18 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
               <YAxis />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
-              {Object.keys(data[0] || {}).filter(key => key !== 'date').map((key, index) => (
-                <Line
-                  key={key}
-                  type="monotone"
-                  dataKey={key}
-                  stroke={colors[index % colors.length]}
-                  strokeWidth={2}
-                />
-              ))}
+              {Object.keys(data[0] || {}).filter((key) => key !== 'date').map((key, index) =>
+              <Line
+                key={key}
+                type="monotone"
+                dataKey={key}
+                stroke={colors[index % colors.length]}
+                strokeWidth={2} />
+
+              )}
             </LineChart>
-          </ResponsiveContainer>
-        );
+          </ResponsiveContainer>);
+
 
       case 'area':
         return (
@@ -95,20 +95,20 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
               <YAxis />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
-              {Object.keys(data[0] || {}).filter(key => key !== 'date').map((key, index) => (
-                <Area
-                  key={key}
-                  type="monotone"
-                  dataKey={key}
-                  stackId="1"
-                  stroke={colors[index % colors.length]}
-                  fill={colors[index % colors.length]}
-                  fillOpacity={0.6}
-                />
-              ))}
+              {Object.keys(data[0] || {}).filter((key) => key !== 'date').map((key, index) =>
+              <Area
+                key={key}
+                type="monotone"
+                dataKey={key}
+                stackId="1"
+                stroke={colors[index % colors.length]}
+                fill={colors[index % colors.length]}
+                fillOpacity={0.6} />
+
+              )}
             </AreaChart>
-          </ResponsiveContainer>
-        );
+          </ResponsiveContainer>);
+
 
       case 'bar':
         return (
@@ -121,8 +121,8 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
               <Legend />
               <Bar dataKey="count" fill={colors[0]} />
             </BarChart>
-          </ResponsiveContainer>
-        );
+          </ResponsiveContainer>);
+
 
       case 'pie':
         return (
@@ -136,16 +136,16 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 outerRadius={80}
                 fill="#8884d8"
-                dataKey="value"
-              >
-                {data.map((entry: any, index: number) => (
-                  <Cell key={`cell-${index}`} fill={entry.color || colors[index % colors.length]} />
-                ))}
+                dataKey="value">
+
+                {data.map((entry: any, index: number) =>
+                <Cell key={`cell-${index}`} fill={entry.color || colors[index % colors.length]} />
+                )}
               </Pie>
               <Tooltip content={<CustomTooltip />} />
             </PieChart>
-          </ResponsiveContainer>
-        );
+          </ResponsiveContainer>);
+
 
       default:
         return <div>Unsupported chart type</div>;
@@ -161,8 +161,8 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({
       <CardContent>
         {renderChart()}
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default AnalyticsChart;

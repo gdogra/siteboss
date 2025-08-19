@@ -13,17 +13,14 @@ import {
   Lock,
   User,
   Phone,
-  MapPin,
   CheckCircle,
-  Zap,
   Shield,
-  Clock,
-  Users,
-  Crown,
   Gift,
   ArrowRight,
-  Sparkles } from
-'lucide-react';
+  Sparkles,
+  Crown,
+  AlertCircle
+} from 'lucide-react';
 
 const TrialSignup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -41,29 +38,52 @@ const TrialSignup: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const validateStep = (step: number): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (step === 1) {
+      if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+      if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+      if (!formData.email.trim()) newErrors.email = 'Email is required';
+      if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+      if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address';
+      }
+    } else if (step === 2) {
+      if (!formData.company.trim()) newErrors.company = 'Company name is required';
+      if (!formData.companySize) newErrors.companySize = 'Company size is required';
+    } else if (step === 3) {
+      if (!formData.password) newErrors.password = 'Password is required';
+      if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = 'Passwords do not match';
+      }
+      if (!formData.agreeToTerms) newErrors.agreeToTerms = 'You must accept the terms and conditions';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: '' }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formData.agreeToTerms) {
+    
+    if (!validateStep(3)) {
       toast({
-        title: "Terms Required",
-        description: "Please accept the terms and conditions to continue",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Password Mismatch",
-        description: "Please ensure both password fields match",
+        title: "Validation Error",
+        description: "Please fix the errors below",
         variant: "destructive"
       });
       return;
@@ -71,29 +91,106 @@ const TrialSignup: React.FC = () => {
 
     setLoading(true);
     try {
-      // Register user
-      const { error } = await window.ezsite.apis.register({
+      // Register user first
+      const { error: registerError } = await window.ezsite.apis.register({
         email: formData.email,
         password: formData.password
       });
 
-      if (error) throw error;
+      if (registerError) {
+        throw new Error(registerError);
+      }
 
-      // Start free trial
-      await window.ezsite.apis.run({
-        path: "activateFreeTrial",
-        param: [{
-          email: formData.email,
-          company: formData.company,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          phone: formData.phone,
-          jobTitle: formData.jobTitle,
-          companySize: formData.companySize,
-          plan: 'professional',
-          trialDays: 30
-        }]
+      // Get user info after registration
+      const { data: userInfo, error: userInfoError } = await window.ezsite.apis.getUserInfo();
+      if (userInfoError) {
+        throw new Error('Failed to get user information: ' + userInfoError);
+      }
+
+      if (!userInfo || !userInfo.ID) {
+        throw new Error('User not found after registration');
+      }
+
+      const userId = userInfo.ID;
+      const now = new Date().toISOString();
+      const trialEndDate = new Date();
+      trialEndDate.setDate(trialEndDate.getDate() + 30);
+      const trialEnd = trialEndDate.toISOString();
+
+      // Find the Professional plan
+      const { data: plansData, error: plansError } = await window.ezsite.apis.tablePage('35510', {
+        PageNo: 1,
+        PageSize: 1,
+        OrderByField: 'id',
+        IsAsc: true,
+        Filters: [{ name: 'plan_code', op: 'Equal', value: 'professional' }]
       });
+
+      let planId = 2; // Default fallback
+      if (plansData && plansData.List && plansData.List.length > 0) {
+        planId = plansData.List[0].id;
+      }
+
+      // Create trial management record
+      const { error: trialError } = await window.ezsite.apis.tableCreate('35515', {
+        user_id: userId,
+        plan_id: planId,
+        trial_type: 'free',
+        source: 'signup',
+        start_date: now,
+        end_date: trialEnd,
+        status: 'active',
+        days_remaining: 30,
+        extended_days: 0,
+        converted_to_paid: false,
+        created_at: now,
+        updated_at: now
+      });
+
+      if (trialError) {
+        throw new Error('Failed to create trial record: ' + trialError);
+      }
+
+      // Create user subscription record
+      const { error: subscriptionError } = await window.ezsite.apis.tableCreate('35511', {
+        user_id: userId,
+        plan_id: planId,
+        status: 'trial',
+        is_trial: true,
+        start_date: now,
+        trial_start: now,
+        trial_end: trialEnd,
+        amount: 0,
+        currency: 'USD',
+        created_at: now,
+        updated_at: now
+      });
+
+      if (subscriptionError) {
+        throw new Error('Failed to create subscription record: ' + subscriptionError);
+      }
+
+      // Create user trials tracking record
+      const { error: userTrialError } = await window.ezsite.apis.tableCreate('35522', {
+        user_id: userId,
+        trial_plan_id: planId,
+        trial_length_days: 30,
+        features_used: JSON.stringify([]),
+        onboarding_completed: false,
+        signup_source: 'trial_page',
+        engagement_score: 0,
+        onboarding_progress: 0,
+        conversion_probability: 0.3,
+        follow_up_emails_sent: 0,
+        last_activity_date: now,
+        created_at: now,
+        updated_at: now
+      });
+
+      if (userTrialError) {
+        console.warn('Failed to create user trial record:', userTrialError);
+        // Don't throw error for this non-critical record
+      }
 
       toast({
         title: "Welcome to SiteBoss!",
@@ -104,6 +201,7 @@ const TrialSignup: React.FC = () => {
       navigate('/onauthsuccess');
 
     } catch (error) {
+      console.error('Signup error:', error);
       toast({
         title: "Signup Failed",
         description: error instanceof Error ? error.message : "Please try again",
@@ -115,7 +213,7 @@ const TrialSignup: React.FC = () => {
   };
 
   const nextStep = () => {
-    if (currentStep < 3) {
+    if (validateStep(currentStep)) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -127,58 +225,70 @@ const TrialSignup: React.FC = () => {
   };
 
   const features = [
-  "30-day free trial",
-  "No credit card required",
-  "Full feature access",
-  "Unlimited projects",
-  "Team collaboration",
-  "Mobile app access",
-  "24/7 support",
-  "Cancel anytime"];
-
+    "30-day free trial",
+    "No credit card required",
+    "Full feature access",
+    "Unlimited projects",
+    "Team collaboration",
+    "Mobile app access",
+    "24/7 support",
+    "Cancel anytime"
+  ];
 
   const plans = [
-  {
-    name: "Starter",
-    price: "$49",
-    originalPrice: "$59",
-    popular: false,
-    features: [
-    "Up to 5 projects",
-    "10 team members",
-    "5GB storage",
-    "Basic support"]
+    {
+      name: "Starter",
+      price: "$49",
+      originalPrice: "$59",
+      popular: false,
+      features: [
+        "Up to 5 projects",
+        "10 team members",
+        "5GB storage",
+        "Basic support"
+      ]
+    },
+    {
+      name: "Professional",
+      price: "$99",
+      originalPrice: "$119",
+      popular: true,
+      features: [
+        "Unlimited projects",
+        "25 team members",
+        "25GB storage",
+        "Priority support",
+        "Advanced analytics",
+        "Custom branding"
+      ]
+    },
+    {
+      name: "Enterprise",
+      price: "$199",
+      originalPrice: "$239",
+      popular: false,
+      features: [
+        "Unlimited everything",
+        "Unlimited members",
+        "Unlimited storage",
+        "24/7 phone support",
+        "White-label solution",
+        "API access"
+      ]
+    }
+  ];
 
-  },
-  {
-    name: "Professional",
-    price: "$99",
-    originalPrice: "$119",
-    popular: true,
-    features: [
-    "Unlimited projects",
-    "25 team members",
-    "25GB storage",
-    "Priority support",
-    "Advanced analytics",
-    "Custom branding"]
-
-  },
-  {
-    name: "Enterprise",
-    price: "$199",
-    originalPrice: "$239",
-    popular: false,
-    features: [
-    "Unlimited everything",
-    "Unlimited members",
-    "Unlimited storage",
-    "24/7 phone support",
-    "White-label solution",
-    "API access"]
-
-  }];
-
+  const renderError = (fieldName: string) => {
+    if (errors[fieldName]) {
+      return (
+        <div className="flex items-center text-red-500 text-sm mt-1">
+          <AlertCircle className="w-4 h-4 mr-1" />
+          {errors[fieldName]}
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -242,12 +352,12 @@ const TrialSignup: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-3">
-                    {features.map((feature, index) =>
-                    <div key={index} className="flex items-center space-x-2">
+                    {features.map((feature, index) => (
+                      <div key={index} className="flex items-center space-x-2">
                         <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                         <span className="text-sm text-slate-600">{feature}</span>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </CardContent>
               </Card>
@@ -265,17 +375,17 @@ const TrialSignup: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {plans.map((plan, index) =>
-                    <div
-                      key={index}
-                      className={`p-4 border rounded-lg ${plan.popular ? 'border-blue-500 bg-blue-50' : 'border-slate-200'}`}>
-
+                    {plans.map((plan, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 border rounded-lg ${plan.popular ? 'border-blue-500 bg-blue-50' : 'border-slate-200'}`}
+                      >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-2">
                             <h4 className="font-semibold text-slate-900">{plan.name}</h4>
-                            {plan.popular &&
-                          <Badge className="bg-blue-500 text-white text-xs">Most Popular</Badge>
-                          }
+                            {plan.popular && (
+                              <Badge className="bg-blue-500 text-white text-xs">Most Popular</Badge>
+                            )}
                           </div>
                           <div className="text-right">
                             <div className="flex items-baseline space-x-1">
@@ -286,19 +396,19 @@ const TrialSignup: React.FC = () => {
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-1">
-                          {plan.features.slice(0, 3).map((feature, fIndex) =>
-                        <span key={fIndex} className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                          {plan.features.slice(0, 3).map((feature, fIndex) => (
+                            <span key={fIndex} className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
                               {feature}
                             </span>
-                        )}
-                          {plan.features.length > 3 &&
-                        <span className="text-xs text-slate-500">
+                          ))}
+                          {plan.features.length > 3 && (
+                            <span className="text-xs text-slate-500">
                               +{plan.features.length - 3} more
                             </span>
-                        }
+                          )}
                         </div>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </CardContent>
               </Card>
@@ -318,8 +428,8 @@ const TrialSignup: React.FC = () => {
                 <div className="w-full bg-slate-200 rounded-full h-2 mt-4">
                   <div
                     className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${currentStep / 3 * 100}%` }}>
-                  </div>
+                    style={{ width: `${currentStep / 3 * 100}%` }}
+                  ></div>
                 </div>
               </CardHeader>
 
@@ -327,64 +437,69 @@ const TrialSignup: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   
                   {/* Step 1: Personal Information */}
-                  {currentStep === 1 &&
-                  <div className="space-y-4">
+                  {currentStep === 1 && (
+                    <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="firstName">First Name</Label>
+                          <Label htmlFor="firstName">First Name *</Label>
                           <div className="relative">
                             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                             <Input
-                            id="firstName"
-                            value={formData.firstName}
-                            onChange={(e) => handleInputChange('firstName', e.target.value)}
-                            placeholder="John"
-                            className="pl-10"
-                            required />
-
+                              id="firstName"
+                              value={formData.firstName}
+                              onChange={(e) => handleInputChange('firstName', e.target.value)}
+                              placeholder="John"
+                              className="pl-10"
+                              required
+                            />
                           </div>
+                          {renderError('firstName')}
                         </div>
                         <div>
-                          <Label htmlFor="lastName">Last Name</Label>
+                          <Label htmlFor="lastName">Last Name *</Label>
                           <Input
-                          id="lastName"
-                          value={formData.lastName}
-                          onChange={(e) => handleInputChange('lastName', e.target.value)}
-                          placeholder="Doe"
-                          required />
-
+                            id="lastName"
+                            value={formData.lastName}
+                            onChange={(e) => handleInputChange('lastName', e.target.value)}
+                            placeholder="Doe"
+                            required
+                          />
+                          {renderError('lastName')}
                         </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="email">Work Email</Label>
+                        <Label htmlFor="email">Work Email *</Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                          id="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                          placeholder="john@company.com"
-                          className="pl-10"
-                          required />
-
+                            id="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => handleInputChange('email', e.target.value)}
+                            placeholder="john@company.com"
+                            className="pl-10"
+                            required
+                          />
                         </div>
+                        {renderError('email')}
                       </div>
 
                       <div>
-                        <Label htmlFor="phone">Phone Number</Label>
+                        <Label htmlFor="phone">Phone Number *</Label>
                         <div className="relative">
                           <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                          id="phone"
-                          type="tel"
-                          value={formData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                          placeholder="+1 (555) 000-0000"
-                          className="pl-10" />
-
+                            id="phone"
+                            type="tel"
+                            value={formData.phone}
+                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                            placeholder="+1 (555) 000-0000"
+                            className="pl-10"
+                            required
+                          />
                         </div>
+                        {renderError('phone')}
                       </div>
 
                       <Button type="button" onClick={nextStep} className="w-full">
@@ -392,51 +507,53 @@ const TrialSignup: React.FC = () => {
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
                     </div>
-                  }
+                  )}
 
                   {/* Step 2: Company Information */}
-                  {currentStep === 2 &&
-                  <div className="space-y-4">
+                  {currentStep === 2 && (
+                    <div className="space-y-4">
                       <div>
-                        <Label htmlFor="company">Company Name</Label>
+                        <Label htmlFor="company">Company Name *</Label>
                         <div className="relative">
                           <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                          id="company"
-                          value={formData.company}
-                          onChange={(e) => handleInputChange('company', e.target.value)}
-                          placeholder="ABC Construction Co."
-                          className="pl-10"
-                          required />
-
+                            id="company"
+                            value={formData.company}
+                            onChange={(e) => handleInputChange('company', e.target.value)}
+                            placeholder="ABC Construction Co."
+                            className="pl-10"
+                            required
+                          />
                         </div>
+                        {renderError('company')}
                       </div>
 
                       <div>
                         <Label htmlFor="jobTitle">Job Title</Label>
                         <Input
-                        id="jobTitle"
-                        value={formData.jobTitle}
-                        onChange={(e) => handleInputChange('jobTitle', e.target.value)}
-                        placeholder="Project Manager" />
-
+                          id="jobTitle"
+                          value={formData.jobTitle}
+                          onChange={(e) => handleInputChange('jobTitle', e.target.value)}
+                          placeholder="Project Manager"
+                        />
                       </div>
 
                       <div>
-                        <Label htmlFor="companySize">Company Size</Label>
+                        <Label htmlFor="companySize">Company Size *</Label>
                         <select
-                        id="companySize"
-                        value={formData.companySize}
-                        onChange={(e) => handleInputChange('companySize', e.target.value)}
-                        className="w-full p-2 border border-slate-300 rounded-md"
-                        required>
-
+                          id="companySize"
+                          value={formData.companySize}
+                          onChange={(e) => handleInputChange('companySize', e.target.value)}
+                          className="w-full p-2 border border-slate-300 rounded-md"
+                          required
+                        >
                           <option value="">Select company size</option>
                           <option value="1-10">1-10 employees</option>
                           <option value="11-50">11-50 employees</option>
                           <option value="51-200">51-200 employees</option>
                           <option value="201+">201+ employees</option>
                         </select>
+                        {renderError('companySize')}
                       </div>
 
                       <div className="flex space-x-3">
@@ -449,55 +566,57 @@ const TrialSignup: React.FC = () => {
                         </Button>
                       </div>
                     </div>
-                  }
+                  )}
 
                   {/* Step 3: Security & Terms */}
-                  {currentStep === 3 &&
-                  <div className="space-y-4">
+                  {currentStep === 3 && (
+                    <div className="space-y-4">
                       <div>
-                        <Label htmlFor="password">Create Password</Label>
+                        <Label htmlFor="password">Create Password *</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                          id="password"
-                          type="password"
-                          value={formData.password}
-                          onChange={(e) => handleInputChange('password', e.target.value)}
-                          placeholder="••••••••"
-                          className="pl-10"
-                          required
-                          minLength={8} />
-
+                            id="password"
+                            type="password"
+                            value={formData.password}
+                            onChange={(e) => handleInputChange('password', e.target.value)}
+                            placeholder="••••••••"
+                            className="pl-10"
+                            required
+                            minLength={8}
+                          />
                         </div>
+                        {renderError('password')}
                         <p className="text-xs text-slate-500 mt-1">
                           Minimum 8 characters
                         </p>
                       </div>
 
                       <div>
-                        <Label htmlFor="confirmPassword">Confirm Password</Label>
+                        <Label htmlFor="confirmPassword">Confirm Password *</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                           <Input
-                          id="confirmPassword"
-                          type="password"
-                          value={formData.confirmPassword}
-                          onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                          placeholder="••••••••"
-                          className="pl-10"
-                          required />
-
+                            id="confirmPassword"
+                            type="password"
+                            value={formData.confirmPassword}
+                            onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                            placeholder="••••••••"
+                            className="pl-10"
+                            required
+                          />
                         </div>
+                        {renderError('confirmPassword')}
                       </div>
 
                       <div className="space-y-3">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-start space-x-2">
                           <Checkbox
-                          id="terms"
-                          checked={formData.agreeToTerms}
-                          onCheckedChange={(checked) => handleInputChange('agreeToTerms', !!checked)} />
-
-                          <Label htmlFor="terms" className="text-sm text-slate-600">
+                            id="terms"
+                            checked={formData.agreeToTerms}
+                            onCheckedChange={(checked) => handleInputChange('agreeToTerms', !!checked)}
+                          />
+                          <Label htmlFor="terms" className="text-sm text-slate-600 leading-relaxed">
                             I agree to the{' '}
                             <Link to="/terms" className="text-blue-600 hover:underline">
                               Terms of Service
@@ -508,13 +627,14 @@ const TrialSignup: React.FC = () => {
                             </Link>
                           </Label>
                         </div>
+                        {renderError('agreeToTerms')}
 
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-start space-x-2">
                           <Checkbox
-                          id="newsletter"
-                          checked={formData.subscribeNewsletter}
-                          onCheckedChange={(checked) => handleInputChange('subscribeNewsletter', !!checked)} />
-
+                            id="newsletter"
+                            checked={formData.subscribeNewsletter}
+                            onCheckedChange={(checked) => handleInputChange('subscribeNewsletter', !!checked)}
+                          />
                           <Label htmlFor="newsletter" className="text-sm text-slate-600">
                             Subscribe to SiteBoss updates and construction industry insights
                           </Label>
@@ -526,25 +646,25 @@ const TrialSignup: React.FC = () => {
                           Back
                         </Button>
                         <Button
-                        type="submit"
-                        disabled={loading || !formData.agreeToTerms}
-                        className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-
-                          {loading ?
-                        <div className="flex items-center space-x-2">
+                          type="submit"
+                          disabled={loading || !formData.agreeToTerms}
+                          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                        >
+                          {loading ? (
+                            <div className="flex items-center space-x-2">
                               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                               <span>Creating account...</span>
-                            </div> :
-
-                        <>
+                            </div>
+                          ) : (
+                            <>
                               Start Free Trial
                               <Sparkles className="w-4 h-4 ml-2" />
                             </>
-                        }
+                          )}
                         </Button>
                       </div>
                     </div>
-                  }
+                  )}
                 </form>
 
                 <div className="text-center mt-6 text-xs text-slate-500">
@@ -558,8 +678,8 @@ const TrialSignup: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>);
-
+    </div>
+  );
 };
 
 export default TrialSignup;

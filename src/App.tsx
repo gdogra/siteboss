@@ -58,6 +58,7 @@ const App = () =>
           <Route path="/onauthsuccess" element={<OnAuthSuccess />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
           <Route path="/signup" element={<TrialSignup />} />
+          <Route path="/trial-signup" element={<TrialSignup />} />
           <Route path="/onboarding" element={<OnboardingWizard />} />
           
           {/* Client Portal Routes */}

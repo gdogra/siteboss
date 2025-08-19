@@ -6,21 +6,21 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Activity, 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
-  DollarSign, 
-  Users, 
-  FolderOpen, 
+import {
+  Activity,
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  DollarSign,
+  Users,
+  FolderOpen,
   Clock,
   RefreshCw,
   Settings,
   Eye,
   Lightbulb,
-  Bell
-} from 'lucide-react';
+  Bell } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import KPIWidget from './KPIWidget';
 import AnalyticsChart from './AnalyticsChart';
@@ -59,12 +59,12 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
 
       setDashboardData(data);
       setLastUpdate(new Date());
-      
+
       // Show success toast only for manual refresh
       if (!loading) {
         toast({
           title: "Dashboard Updated",
-          description: "Analytics data has been refreshed successfully.",
+          description: "Analytics data has been refreshed successfully."
         });
       }
     } catch (error) {
@@ -72,7 +72,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
       toast({
         title: "Error",
         description: "Failed to load dashboard data. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -110,8 +110,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
           <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
           <p className="text-muted-foreground">Loading analytics dashboard...</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   if (!dashboardData) {
@@ -121,8 +121,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
         <AlertDescription>
           Failed to load analytics data. Please refresh the page or contact support.
         </AlertDescription>
-      </Alert>
-    );
+      </Alert>);
+
   }
 
   return (
@@ -133,11 +133,11 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
           <h1 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h1>
           <p className="text-muted-foreground">
             Real-time insights across all SiteBoss modules
-            {lastUpdate && (
-              <span className="ml-2">
+            {lastUpdate &&
+            <span className="ml-2">
                 • Last updated: {lastUpdate.toLocaleTimeString()}
               </span>
-            )}
+            }
           </p>
         </div>
         
@@ -158,8 +158,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
             onClick={handleManualRefresh}
             disabled={refreshing}
             size="sm"
-            variant="outline"
-          >
+            variant="outline">
+
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
@@ -173,9 +173,9 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
 
       {/* KPI Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {dashboardData.kpis?.map((kpi: any, index: number) => (
-          <KPIWidget key={index} {...kpi} />
-        ))}
+        {dashboardData.kpis?.map((kpi: any, index: number) =>
+        <KPIWidget key={index} {...kpi} />
+        )}
       </div>
 
       {/* Main Content Tabs */}
@@ -191,41 +191,41 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
         <TabsContent value="overview" className="space-y-6">
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {dashboardData.charts?.revenueOverTime && (
-              <AnalyticsChart
-                title={dashboardData.charts.revenueOverTime.title}
-                type={dashboardData.charts.revenueOverTime.type}
-                data={dashboardData.charts.revenueOverTime.data}
-                height={300}
-              />
-            )}
+            {dashboardData.charts?.revenueOverTime &&
+            <AnalyticsChart
+              title={dashboardData.charts.revenueOverTime.title}
+              type={dashboardData.charts.revenueOverTime.type}
+              data={dashboardData.charts.revenueOverTime.data}
+              height={300} />
+
+            }
             
-            {dashboardData.charts?.leadsBySource && (
-              <AnalyticsChart
-                title={dashboardData.charts.leadsBySource.title}
-                type={dashboardData.charts.leadsBySource.type}
-                data={dashboardData.charts.leadsBySource.data}
-                height={300}
-              />
-            )}
+            {dashboardData.charts?.leadsBySource &&
+            <AnalyticsChart
+              title={dashboardData.charts.leadsBySource.title}
+              type={dashboardData.charts.leadsBySource.type}
+              data={dashboardData.charts.leadsBySource.data}
+              height={300} />
+
+            }
             
-            {dashboardData.charts?.projectStatus && (
-              <AnalyticsChart
-                title={dashboardData.charts.projectStatus.title}
-                type={dashboardData.charts.projectStatus.type}
-                data={dashboardData.charts.projectStatus.data}
-                height={300}
-              />
-            )}
+            {dashboardData.charts?.projectStatus &&
+            <AnalyticsChart
+              title={dashboardData.charts.projectStatus.title}
+              type={dashboardData.charts.projectStatus.type}
+              data={dashboardData.charts.projectStatus.data}
+              height={300} />
+
+            }
             
-            {dashboardData.charts?.timeTrackingTrend && (
-              <AnalyticsChart
-                title={dashboardData.charts.timeTrackingTrend.title}
-                type={dashboardData.charts.timeTrackingTrend.type}
-                data={dashboardData.charts.timeTrackingTrend.data}
-                height={300}
-              />
-            )}
+            {dashboardData.charts?.timeTrackingTrend &&
+            <AnalyticsChart
+              title={dashboardData.charts.timeTrackingTrend.title}
+              type={dashboardData.charts.timeTrackingTrend.type}
+              data={dashboardData.charts.timeTrackingTrend.data}
+              height={300} />
+
+            }
           </div>
 
           {/* Recent Activity */}
@@ -241,8 +241,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {dashboardData.recentActivity?.map((activity: any, index: number) => (
-                  <div key={index} className="flex items-center gap-3 py-2 border-b last:border-b-0">
+                {dashboardData.recentActivity?.map((activity: any, index: number) =>
+                <div key={index} className="flex items-center gap-3 py-2 border-b last:border-b-0">
                     <div className="flex-shrink-0">
                       {activity.type === 'project' && <FolderOpen className="h-4 w-4 text-blue-500" />}
                       {activity.type === 'lead' && <Users className="h-4 w-4 text-green-500" />}
@@ -256,7 +256,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                       {new Date(activity.timestamp).toLocaleTimeString()}
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
@@ -284,8 +284,8 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {dashboardData.recentActivity?.map((activity: any, index: number) => (
-                  <div key={index} className="flex items-start gap-4 p-4 border rounded-lg">
+                {dashboardData.recentActivity?.map((activity: any, index: number) =>
+                <div key={index} className="flex items-start gap-4 p-4 border rounded-lg">
                     <div className="flex-shrink-0 mt-1">
                       {activity.type === 'project' && <FolderOpen className="h-5 w-5 text-blue-500" />}
                       {activity.type === 'lead' && <Users className="h-5 w-5 text-green-500" />}
@@ -302,14 +302,14 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                       <p className="text-xs text-muted-foreground mt-2">by {activity.user}</p>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AnalyticsDashboard;

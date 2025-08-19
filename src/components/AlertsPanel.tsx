@@ -4,16 +4,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  AlertTriangle, 
-  Info, 
-  AlertCircle, 
-  Check, 
-  X, 
-  Clock, 
+import {
+  AlertTriangle,
+  Info,
+  AlertCircle,
+  Check,
+  X,
+  Clock,
   RefreshCw,
-  Settings 
-} from 'lucide-react';
+  Settings } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface AlertItem {
@@ -57,12 +57,12 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
           status: 'active'
         }));
 
-        setAlerts(prev => [...newAlerts, ...prev]);
-        
+        setAlerts((prev) => [...newAlerts, ...prev]);
+
         toast({
           title: "New Alerts",
           description: `${data.alertsTriggered} new alert(s) triggered.`,
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     } catch (error) {
@@ -73,22 +73,22 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
   };
 
   const acknowledgeAlert = (alertId: number) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId ? { ...alert, status: 'acknowledged' } : alert
+    setAlerts((prev) => prev.map((alert) =>
+    alert.id === alertId ? { ...alert, status: 'acknowledged' } : alert
     ));
     toast({
       title: "Alert Acknowledged",
-      description: "Alert has been acknowledged.",
+      description: "Alert has been acknowledged."
     });
   };
 
   const resolveAlert = (alertId: number) => {
-    setAlerts(prev => prev.map(alert => 
-      alert.id === alertId ? { ...alert, status: 'resolved' } : alert
+    setAlerts((prev) => prev.map((alert) =>
+    alert.id === alertId ? { ...alert, status: 'resolved' } : alert
     ));
     toast({
       title: "Alert Resolved",
-      description: "Alert has been marked as resolved.",
+      description: "Alert has been marked as resolved."
     });
   };
 
@@ -129,8 +129,8 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
     }
   };
 
-  const activeAlerts = alerts.filter(alert => alert.status !== 'resolved');
-  const resolvedAlerts = alerts.filter(alert => alert.status === 'resolved');
+  const activeAlerts = alerts.filter((alert) => alert.status !== 'resolved');
+  const resolvedAlerts = alerts.filter((alert) => alert.status === 'resolved');
 
   useEffect(() => {
     // Check for new alerts every 2 minutes
@@ -153,8 +153,8 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
             onClick={checkForNewAlerts}
             disabled={loading}
             size="sm"
-            variant="outline"
-          >
+            variant="outline">
+
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Check Alerts
           </Button>
@@ -172,7 +172,7 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
             <AlertCircle className="h-8 w-8 text-red-500 mr-4" />
             <div>
               <p className="text-2xl font-bold">
-                {alerts.filter(a => a.level === 'critical' && a.status !== 'resolved').length}
+                {alerts.filter((a) => a.level === 'critical' && a.status !== 'resolved').length}
               </p>
               <p className="text-sm text-muted-foreground">Critical Alerts</p>
             </div>
@@ -184,7 +184,7 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
             <AlertTriangle className="h-8 w-8 text-yellow-500 mr-4" />
             <div>
               <p className="text-2xl font-bold">
-                {alerts.filter(a => a.level === 'warning' && a.status !== 'resolved').length}
+                {alerts.filter((a) => a.level === 'warning' && a.status !== 'resolved').length}
               </p>
               <p className="text-sm text-muted-foreground">Warnings</p>
             </div>
@@ -196,7 +196,7 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
             <Info className="h-8 w-8 text-blue-500 mr-4" />
             <div>
               <p className="text-2xl font-bold">
-                {alerts.filter(a => a.level === 'info' && a.status !== 'resolved').length}
+                {alerts.filter((a) => a.level === 'info' && a.status !== 'resolved').length}
               </p>
               <p className="text-sm text-muted-foreground">Information</p>
             </div>
@@ -216,14 +216,14 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {activeAlerts.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
+          {activeAlerts.length === 0 ?
+          <div className="text-center py-8 text-muted-foreground">
               No active alerts. Everything looks good! 🎉
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {activeAlerts.map((alert) => (
-                <Alert key={alert.id} className="relative">
+            </div> :
+
+          <div className="space-y-4">
+              {activeAlerts.map((alert) =>
+            <Alert key={alert.id} className="relative">
                   <div className="flex items-start gap-3 w-full">
                     {getAlertIcon(alert.level)}
                     <div className="flex-1 min-w-0">
@@ -243,21 +243,21 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
                           {new Date(alert.timestamp).toLocaleString()}
                         </span>
                         <div className="flex gap-2">
-                          {alert.status !== 'acknowledged' && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => acknowledgeAlert(alert.id)}
-                            >
+                          {alert.status !== 'acknowledged' &&
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => acknowledgeAlert(alert.id)}>
+
                               <Check className="h-3 w-3 mr-1" />
                               Acknowledge
                             </Button>
-                          )}
+                      }
                           <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => resolveAlert(alert.id)}
-                          >
+                        size="sm"
+                        variant="outline"
+                        onClick={() => resolveAlert(alert.id)}>
+
                             <X className="h-3 w-3 mr-1" />
                             Resolve
                           </Button>
@@ -266,15 +266,15 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
                     </div>
                   </div>
                 </Alert>
-              ))}
+            )}
             </div>
-          )}
+          }
         </CardContent>
       </Card>
 
       {/* Resolved Alerts */}
-      {resolvedAlerts.length > 0 && (
-        <Card>
+      {resolvedAlerts.length > 0 &&
+      <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Check className="h-5 w-5 text-green-500" />
@@ -286,8 +286,8 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {resolvedAlerts.slice(0, 5).map((alert) => (
-                <div key={alert.id} className="flex items-center gap-3 py-2 opacity-60">
+              {resolvedAlerts.slice(0, 5).map((alert) =>
+            <div key={alert.id} className="flex items-center gap-3 py-2 opacity-60">
                   {getAlertIcon(alert.level)}
                   <div className="flex-1">
                     <p className="font-medium text-sm">{alert.title}</p>
@@ -295,13 +295,13 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts: initialAlerts }) => {
                   </div>
                   <Badge variant="outline" className="text-xs">Resolved</Badge>
                 </div>
-              ))}
+            )}
             </div>
           </CardContent>
         </Card>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default AlertsPanel;

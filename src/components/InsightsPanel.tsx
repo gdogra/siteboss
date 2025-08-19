@@ -21,9 +21,9 @@ interface InsightsPanelProps {
 const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const filteredInsights = selectedCategory === 'all' 
-    ? insights 
-    : insights.filter(insight => insight.category === selectedCategory);
+  const filteredInsights = selectedCategory === 'all' ?
+  insights :
+  insights.filter((insight) => insight.category === selectedCategory);
 
   const getImpactColor = (impact: string) => {
     switch (impact) {
@@ -51,7 +51,7 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
     }
   };
 
-  const categories = Array.from(new Set(insights.map(insight => insight.category)));
+  const categories = Array.from(new Set(insights.map((insight) => insight.category)));
 
   return (
     <div className="space-y-6">
@@ -71,20 +71,20 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
           <Button
             variant={selectedCategory === 'all' ? 'default' : 'outline'}
             size="sm"
-            onClick={() => setSelectedCategory('all')}
-          >
+            onClick={() => setSelectedCategory('all')}>
+
             All
           </Button>
-          {categories.map(category => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setSelectedCategory(category)}
-            >
+          {categories.map((category) =>
+          <Button
+            key={category}
+            variant={selectedCategory === category ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedCategory(category)}>
+
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </Button>
-          ))}
+          )}
         </div>
       </div>
 
@@ -95,7 +95,7 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
             <AlertTriangle className="h-8 w-8 text-red-500 mr-4" />
             <div>
               <p className="text-2xl font-bold">
-                {insights.filter(i => i.impact === 'high').length}
+                {insights.filter((i) => i.impact === 'high').length}
               </p>
               <p className="text-sm text-muted-foreground">High Impact</p>
             </div>
@@ -107,7 +107,7 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
             <TrendingUp className="h-8 w-8 text-yellow-500 mr-4" />
             <div>
               <p className="text-2xl font-bold">
-                {insights.filter(i => i.impact === 'medium').length}
+                {insights.filter((i) => i.impact === 'medium').length}
               </p>
               <p className="text-sm text-muted-foreground">Medium Impact</p>
             </div>
@@ -119,7 +119,7 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
             <Target className="h-8 w-8 text-blue-500 mr-4" />
             <div>
               <p className="text-2xl font-bold">
-                {insights.filter(i => i.actionable).length}
+                {insights.filter((i) => i.actionable).length}
               </p>
               <p className="text-sm text-muted-foreground">Actionable</p>
             </div>
@@ -141,15 +141,15 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
 
       {/* Insights List */}
       <div className="space-y-4">
-        {filteredInsights.length === 0 ? (
-          <Card>
+        {filteredInsights.length === 0 ?
+        <Card>
             <CardContent className="text-center py-8 text-muted-foreground">
               No insights available for the selected category.
             </CardContent>
-          </Card>
-        ) : (
-          filteredInsights.map((insight, index) => (
-            <Card key={index} className="relative">
+          </Card> :
+
+        filteredInsights.map((insight, index) =>
+        <Card key={index} className="relative">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-3">
@@ -168,18 +168,18 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
                     <Badge variant="outline">
                       {insight.category}
                     </Badge>
-                    {insight.actionable && (
-                      <Badge variant="default" className="bg-green-100 text-green-800">
+                    {insight.actionable &&
+                <Badge variant="default" className="bg-green-100 text-green-800">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         Actionable
                       </Badge>
-                    )}
+                }
                   </div>
                 </div>
               </CardHeader>
               
-              {insight.recommendation && (
-                <CardContent className="pt-0">
+              {insight.recommendation &&
+          <CardContent className="pt-0">
                   <div className="bg-muted/50 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <ArrowRight className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
@@ -192,19 +192,19 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
                     </div>
                   </div>
                   
-                  {insight.actionable && (
-                    <div className="flex justify-end mt-4">
+                  {insight.actionable &&
+            <div className="flex justify-end mt-4">
                       <Button size="sm">
                         Take Action
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Button>
                     </div>
-                  )}
+            }
                 </CardContent>
-              )}
+          }
             </Card>
-          ))
-        )}
+        )
+        }
       </div>
 
       {/* Performance Improvement Tips */}
@@ -258,8 +258,8 @@ const InsightsPanel: React.FC<InsightsPanelProps> = ({ insights }) => {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default InsightsPanel;

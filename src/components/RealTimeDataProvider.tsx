@@ -26,24 +26,24 @@ export const RealTimeDataProvider: React.FC<RealTimeDataProviderProps> = ({
   const { toast } = useToast();
 
   const subscribe = (callback: (data: any) => void) => {
-    setSubscribers(prev => [...prev, callback]);
+    setSubscribers((prev) => [...prev, callback]);
     return () => unsubscribe(callback);
   };
 
   const unsubscribe = (callback: (data: any) => void) => {
-    setSubscribers(prev => prev.filter(sub => sub !== callback));
+    setSubscribers((prev) => prev.filter((sub) => sub !== callback));
   };
 
   const fetchAndBroadcastData = async () => {
     try {
       setIsConnected(true);
-      
+
       // Aggregate data from multiple sources
       const [dashboardData, alertsData, trendsData] = await Promise.allSettled([
-        window.ezsite.apis.run({ path: 'getAnalyticsDashboardData', param: [1, 'Administrator', 'daily'] }),
-        window.ezsite.apis.run({ path: 'checkAnalyticsAlerts', param: [] }),
-        window.ezsite.apis.run({ path: 'getAnalyticsTrends', param: ['all', 'daily'] })
-      ]);
+      window.ezsite.apis.run({ path: 'getAnalyticsDashboardData', param: [1, 'Administrator', 'daily'] }),
+      window.ezsite.apis.run({ path: 'checkAnalyticsAlerts', param: [] }),
+      window.ezsite.apis.run({ path: 'getAnalyticsTrends', param: ['all', 'daily'] })]
+      );
 
       const aggregatedData = {
         dashboard: dashboardData.status === 'fulfilled' ? dashboardData.value.data : null,
@@ -53,7 +53,7 @@ export const RealTimeDataProvider: React.FC<RealTimeDataProviderProps> = ({
       };
 
       // Notify all subscribers
-      subscribers.forEach(callback => {
+      subscribers.forEach((callback) => {
         try {
           callback(aggregatedData);
         } catch (error) {
@@ -62,15 +62,15 @@ export const RealTimeDataProvider: React.FC<RealTimeDataProviderProps> = ({
       });
 
       setLastUpdate(new Date());
-      
+
     } catch (error) {
       console.error('Failed to fetch real-time data:', error);
       setIsConnected(false);
-      
+
       toast({
         title: "Connection Error",
         description: "Failed to fetch real-time updates. Retrying...",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -95,8 +95,8 @@ export const RealTimeDataProvider: React.FC<RealTimeDataProviderProps> = ({
   return (
     <RealTimeDataContext.Provider value={value}>
       {children}
-    </RealTimeDataContext.Provider>
-  );
+    </RealTimeDataContext.Provider>);
+
 };
 
 export const useRealTimeData = () => {
