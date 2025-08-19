@@ -3,11 +3,11 @@
 async function enhancedChatController(userMessage, conversationId, userId, userContext = {}) {
   try {
     const startTime = Date.now();
-    
+
     // Initialize conversation context if needed
     let conversationHistory = [];
     let conversationContext = {};
-    
+
     try {
       // In a real implementation, you would fetch from database
       conversationHistory = await fetchConversationHistory(conversationId);
@@ -16,19 +16,19 @@ async function enhancedChatController(userMessage, conversationId, userId, userC
       console.log('Context building failed, using fallback:', contextError.message);
       conversationContext = buildFallbackContext(userContext);
     }
-    
+
     // Step 1: Advanced Intent Recognition
     const intentAnalysis = await performIntentRecognition(userMessage, conversationHistory, userContext);
-    
+
     // Step 2: Conversation Context Management
     const enhancedContext = await enhanceConversationContext(
-      conversationId, 
-      userMessage, 
-      conversationHistory, 
+      conversationId,
+      userMessage,
+      conversationHistory,
       userContext,
       intentAnalysis
     );
-    
+
     // Step 3: Conversation Flow Management (if applicable)
     let flowResult = null;
     if (enhancedContext.activeFlow) {
@@ -39,7 +39,7 @@ async function enhancedChatController(userMessage, conversationId, userId, userC
         enhancedContext
       );
     }
-    
+
     // Step 4: Enhanced Response Generation
     const responseResult = await generateEnhancedResponse(
       intentAnalysis,
@@ -47,7 +47,7 @@ async function enhancedChatController(userMessage, conversationId, userId, userC
       userMessage,
       flowResult
     );
-    
+
     // Step 5: Response Optimization
     const analyticsData = await getAnalyticsData(userId, conversationId);
     const optimizedResponse = await optimizeResponse(
@@ -55,7 +55,7 @@ async function enhancedChatController(userMessage, conversationId, userId, userC
       enhancedContext,
       analyticsData
     );
-    
+
     // Step 6: Learning and Analytics
     const interactionData = {
       user_message: userMessage,
@@ -66,13 +66,13 @@ async function enhancedChatController(userMessage, conversationId, userId, userC
       conversation_id: conversationId,
       user_id: userId
     };
-    
+
     // Async learning (don't wait for completion)
     performAsyncLearning(interactionData);
-    
+
     // Step 7: Save interaction and update analytics
     await saveEnhancedInteraction(interactionData);
-    
+
     // Return enhanced response
     return {
       success: true,
@@ -99,10 +99,10 @@ async function enhancedChatController(userMessage, conversationId, userId, userC
       quickReplies: generateQuickReplies(intentAnalysis, enhancedContext),
       smartSuggestions: generateSmartSuggestions(optimizedResponse, enhancedContext)
     };
-    
+
   } catch (error) {
     console.error('Enhanced chat controller error:', error);
-    
+
     // Fallback response with basic functionality
     return await generateFallbackResponse(userMessage, conversationId, userId, userContext);
   }
@@ -130,19 +130,19 @@ async function enhanceConversationContext(conversationId, userMessage, conversat
   try {
     // Build comprehensive conversation context
     const baseContext = conversationContextManager(conversationId, userMessage, conversationHistory, userContext);
-    
+
     // Add intent analysis to context
     baseContext.currentIntent = intentAnalysis.primaryIntent;
     baseContext.alternativeIntents = intentAnalysis.alternativeIntents;
     baseContext.messageEntities = intentAnalysis.entities;
     baseContext.messageSentiment = intentAnalysis.sentiment;
     baseContext.messageComplexity = intentAnalysis.complexity;
-    
+
     // Determine if a conversation flow should be active
     const flowAnalysis = determineConversationFlow(baseContext, userMessage);
     baseContext.activeFlow = flowAnalysis.activeFlow;
     baseContext.currentFlowStep = flowAnalysis.currentStep;
-    
+
     return baseContext;
   } catch (error) {
     console.error('Context enhancement failed:', error);
@@ -182,12 +182,12 @@ async function generateEnhancedResponse(intentAnalysis, context, userMessage, fl
         }
       };
     }
-    
+
     // Otherwise, use enhanced response generation
     return enhancedResponseGenerator(intentAnalysis, context, userMessage);
   } catch (error) {
     console.error('Enhanced response generation failed:', error);
-    
+
     // Fallback to basic response
     const basicResponse = generateChatResponse(userMessage, [], context.userProfile);
     return {
@@ -266,7 +266,7 @@ async function saveEnhancedInteraction(interactionData) {
       0,
       0
     );
-    
+
     const responseData = saveMessage(
       interactionData.conversation_id,
       'bot',
@@ -274,7 +274,7 @@ async function saveEnhancedInteraction(interactionData) {
       interactionData.processing_time,
       interactionData.response_data.confidence
     );
-    
+
     // Update analytics asynchronously
     setTimeout(() => {
       updateAnalytics({
@@ -286,7 +286,7 @@ async function saveEnhancedInteraction(interactionData) {
         user_satisfaction: null // Will be updated when feedback is provided
       });
     }, 50);
-    
+
     return { messageData, responseData };
   } catch (error) {
     console.error('Failed to save interaction:', error);
@@ -298,7 +298,7 @@ async function saveEnhancedInteraction(interactionData) {
 // Generate quick replies based on context
 function generateQuickReplies(intentAnalysis, context) {
   const quickReplies = [];
-  
+
   // Add contextual quick replies based on intent
   if (intentAnalysis.primaryIntent) {
     switch (intentAnalysis.primaryIntent.name) {
@@ -313,24 +313,24 @@ function generateQuickReplies(intentAnalysis, context) {
         break;
     }
   }
-  
+
   // Add general helpful replies
   if (quickReplies.length < 3) {
     quickReplies.push('Get quote', 'Schedule consultation', 'View services');
   }
-  
+
   // Add urgency-based replies
   if (context.urgencyLevel?.level === 'high' || context.urgencyLevel?.level === 'critical') {
     quickReplies.unshift('Emergency help', 'Immediate assistance');
   }
-  
+
   return quickReplies.slice(0, 4); // Limit to 4 quick replies
 }
 
 // Generate smart suggestions based on context and response
 function generateSmartSuggestions(responseData, context) {
   const suggestions = [];
-  
+
   // Add suggestions based on response content
   if (responseData.response.includes('quote') || responseData.response.includes('estimate')) {
     suggestions.push({
@@ -339,7 +339,7 @@ function generateSmartSuggestions(responseData, context) {
       priority: 'high'
     });
   }
-  
+
   if (responseData.response.includes('consultation') || responseData.response.includes('meeting')) {
     suggestions.push({
       text: 'Schedule consultation',
@@ -347,7 +347,7 @@ function generateSmartSuggestions(responseData, context) {
       priority: 'high'
     });
   }
-  
+
   // Add user-specific suggestions
   if (context.userProfile.userRole === 'Administrator') {
     suggestions.push({
@@ -356,7 +356,7 @@ function generateSmartSuggestions(responseData, context) {
       priority: 'medium'
     });
   }
-  
+
   // Add contextual suggestions based on conversation history
   if (context.longTermMemory.primaryInterests.includes('residential')) {
     suggestions.push({
@@ -365,7 +365,7 @@ function generateSmartSuggestions(responseData, context) {
       priority: 'medium'
     });
   }
-  
+
   return suggestions.slice(0, 3); // Limit to 3 suggestions
 }
 
@@ -373,7 +373,7 @@ function generateSmartSuggestions(responseData, context) {
 async function generateFallbackResponse(userMessage, conversationId, userId, userContext) {
   try {
     const basicResponse = generateChatResponse(userMessage, [], userContext);
-    
+
     return {
       success: true,
       response: basicResponse.response,
@@ -392,16 +392,16 @@ async function generateFallbackResponse(userMessage, conversationId, userId, use
       conversationFlow: null,
       quickReplies: ['Get help', 'Contact support', 'Try again'],
       smartSuggestions: [
-        {
-          text: 'Speak to a specialist',
-          action: 'contact_support',
-          priority: 'high'
-        }
-      ]
+      {
+        text: 'Speak to a specialist',
+        action: 'contact_support',
+        priority: 'high'
+      }]
+
     };
   } catch (error) {
     console.error('Fallback response generation failed:', error);
-    
+
     return {
       success: false,
       response: "I apologize, but I'm experiencing technical difficulties. Please contact our support team at (555) 123-4567 for immediate assistance.",
@@ -458,21 +458,21 @@ function buildFallbackContext(userContext) {
 function determineConversationFlow(context, userMessage) {
   // Simple flow determination logic
   const lowerMessage = userMessage.toLowerCase();
-  
+
   if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent')) {
     return {
       activeFlow: 'emergency_assessment',
       currentStep: 'urgency_level'
     };
   }
-  
+
   if (lowerMessage.includes('quote') || lowerMessage.includes('estimate')) {
     return {
       activeFlow: 'quote_collection',
       currentStep: 'project_type'
     };
   }
-  
+
   return {
     activeFlow: null,
     currentStep: null
