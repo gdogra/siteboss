@@ -8,10 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { 
-  Save, Plus, Trash2, Eye, History, FileText, 
-  User, DollarSign, Clock, Edit3
-} from 'lucide-react';
+import {
+  Save, Plus, Trash2, Eye, History, FileText,
+  User, DollarSign, Clock, Edit3 } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalVersion {
@@ -87,8 +87,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
   });
 
   const [lineItems, setLineItems] = useState<LineItem[]>([
-    { description: '', quantity: 1, unit_price: 0, total: 0 }
-  ]);
+  { description: '', quantity: 1, unit_price: 0, total: 0 }]
+  );
 
   const [pricingData, setPricingData] = useState({
     tax_rate: 0,
@@ -112,12 +112,12 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
         OrderByField: 'id',
         IsAsc: true,
         Filters: [
-          { name: 'id', op: 'Equal', value: proposalId }
-        ]
+        { name: 'id', op: 'Equal', value: proposalId }]
+
       });
 
       if (error) throw error;
-      
+
       const proposalData = data?.List?.[0];
       if (proposalData) {
         setProposal(proposalData);
@@ -153,15 +153,15 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
         OrderByField: 'version_number',
         IsAsc: false,
         Filters: [
-          { name: 'proposal_id', op: 'Equal', value: proposalId }
-        ]
+        { name: 'proposal_id', op: 'Equal', value: proposalId }]
+
       });
 
       if (error) throw error;
-      
+
       const versionList = data?.List || [];
       setVersions(versionList);
-      
+
       const current = versionList.find((v: ProposalVersion) => v.is_current);
       if (current) {
         setCurrentVersion(current);
@@ -197,7 +197,7 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
       }
 
       // Load terms and conditions
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         terms_conditions: version.terms_conditions || ''
       }));
@@ -207,29 +207,29 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
   };
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleLineItemChange = (index: number, field: string, value: any) => {
-    setLineItems(prev => {
+    setLineItems((prev) => {
       const newItems = [...prev];
       newItems[index] = { ...newItems[index], [field]: value };
-      
+
       if (field === 'quantity' || field === 'unit_price') {
         newItems[index].total = newItems[index].quantity * newItems[index].unit_price;
       }
-      
+
       return newItems;
     });
   };
 
   const addLineItem = () => {
-    setLineItems(prev => [...prev, { description: '', quantity: 1, unit_price: 0, total: 0 }]);
+    setLineItems((prev) => [...prev, { description: '', quantity: 1, unit_price: 0, total: 0 }]);
   };
 
   const removeLineItem = (index: number) => {
     if (lineItems.length > 1) {
-      setLineItems(prev => prev.filter((_, i) => i !== index));
+      setLineItems((prev) => prev.filter((_, i) => i !== index));
     }
   };
 
@@ -237,7 +237,7 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
     const subtotal = lineItems.reduce((sum, item) => sum + item.total, 0);
     const taxAmount = subtotal * (pricingData.tax_rate / 100);
     const total = subtotal + taxAmount - pricingData.discount_amount;
-    
+
     return {
       subtotal: Math.round(subtotal * 100),
       taxAmount: Math.round(taxAmount * 100),
@@ -257,9 +257,9 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
 
     try {
       setSaving(true);
-      
+
       const totals = calculateTotals();
-      
+
       // Mark current version as not current
       if (currentVersion) {
         await window.ezsite.apis.tableUpdate(35434, {
@@ -270,7 +270,7 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
 
       // Create new version
       const newVersionNumber = (currentVersion?.version_number || 0) + 1;
-      
+
       const versionData = {
         proposal_id: proposalId,
         version_number: newVersionNumber,
@@ -302,7 +302,7 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
       };
 
       const { error: versionError } = await window.ezsite.apis.tableCreate(35434, versionData);
-      
+
       if (versionError) throw versionError;
 
       // Update proposal
@@ -326,7 +326,7 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
       };
 
       const { error: proposalError } = await window.ezsite.apis.tableUpdate(35433, proposalUpdateData);
-      
+
       if (proposalError) throw proposalError;
 
       toast({
@@ -361,8 +361,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         <span className="ml-4">Loading proposal...</span>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -373,11 +373,11 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
           <h3 className="text-lg font-semibold">{proposal?.proposal_number}</h3>
           <p className="text-gray-600">
             Current Version: {currentVersion?.version_number || 1}
-            {currentVersion && (
-              <span className="ml-2 text-sm">
+            {currentVersion &&
+            <span className="ml-2 text-sm">
                 • {new Date(currentVersion.created_at).toLocaleDateString()}
               </span>
-            )}
+            }
           </p>
         </div>
         
@@ -414,8 +414,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                   <Input
                     id="title"
                     value={formData.title}
-                    onChange={(e) => handleInputChange('title', e.target.value)}
-                  />
+                    onChange={(e) => handleInputChange('title', e.target.value)} />
+
                 </div>
 
                 <div>
@@ -455,8 +455,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                     id="valid_until"
                     type="date"
                     value={formData.valid_until}
-                    onChange={(e) => handleInputChange('valid_until', e.target.value)}
-                  />
+                    onChange={(e) => handleInputChange('valid_until', e.target.value)} />
+
                 </div>
 
                 <div>
@@ -492,8 +492,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                   <Input
                     id="client_name"
                     value={formData.client_name}
-                    onChange={(e) => handleInputChange('client_name', e.target.value)}
-                  />
+                    onChange={(e) => handleInputChange('client_name', e.target.value)} />
+
                 </div>
 
                 <div>
@@ -502,8 +502,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                     id="client_email"
                     type="email"
                     value={formData.client_email}
-                    onChange={(e) => handleInputChange('client_email', e.target.value)}
-                  />
+                    onChange={(e) => handleInputChange('client_email', e.target.value)} />
+
                 </div>
 
                 <div>
@@ -511,8 +511,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                   <Input
                     id="client_phone"
                     value={formData.client_phone}
-                    onChange={(e) => handleInputChange('client_phone', e.target.value)}
-                  />
+                    onChange={(e) => handleInputChange('client_phone', e.target.value)} />
+
                 </div>
 
                 <div>
@@ -521,8 +521,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                     id="client_address"
                     value={formData.client_address}
                     onChange={(e) => handleInputChange('client_address', e.target.value)}
-                    rows={3}
-                  />
+                    rows={3} />
+
                 </div>
               </div>
             </CardContent>
@@ -539,62 +539,62 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {lineItems.map((item, index) => (
-                <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
+              {lineItems.map((item, index) =>
+              <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
                   <div className="md:col-span-2">
                     <Label>Description</Label>
                     <Input
-                      value={item.description}
-                      onChange={(e) => handleLineItemChange(index, 'description', e.target.value)}
-                      placeholder="Item description..."
-                    />
+                    value={item.description}
+                    onChange={(e) => handleLineItemChange(index, 'description', e.target.value)}
+                    placeholder="Item description..." />
+
                   </div>
                   
                   <div>
                     <Label>Quantity</Label>
                     <Input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={item.quantity}
-                      onChange={(e) => handleLineItemChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                    />
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.quantity}
+                    onChange={(e) => handleLineItemChange(index, 'quantity', parseFloat(e.target.value) || 0)} />
+
                   </div>
                   
                   <div>
                     <Label>Unit Price</Label>
                     <Input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={item.unit_price}
-                      onChange={(e) => handleLineItemChange(index, 'unit_price', parseFloat(e.target.value) || 0)}
-                    />
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.unit_price}
+                    onChange={(e) => handleLineItemChange(index, 'unit_price', parseFloat(e.target.value) || 0)} />
+
                   </div>
                   
                   <div>
                     <Label>Total</Label>
                     <Input
-                      type="number"
-                      value={item.total.toFixed(2)}
-                      readOnly
-                      className="bg-gray-50"
-                    />
+                    type="number"
+                    value={item.total.toFixed(2)}
+                    readOnly
+                    className="bg-gray-50" />
+
                   </div>
                   
                   <div className="flex items-end">
                     <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => removeLineItem(index)}
-                      disabled={lineItems.length === 1}
-                    >
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => removeLineItem(index)}
+                    disabled={lineItems.length === 1}>
+
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
-              ))}
+              )}
 
               <Button type="button" variant="outline" onClick={addLineItem}>
                 <Plus className="w-4 h-4 mr-2" />
@@ -619,8 +619,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                     max="100"
                     step="0.01"
                     value={pricingData.tax_rate}
-                    onChange={(e) => setPricingData(prev => ({ ...prev, tax_rate: parseFloat(e.target.value) || 0 }))}
-                  />
+                    onChange={(e) => setPricingData((prev) => ({ ...prev, tax_rate: parseFloat(e.target.value) || 0 }))} />
+
                 </div>
 
                 <div>
@@ -631,8 +631,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                     min="0"
                     step="0.01"
                     value={pricingData.discount_amount}
-                    onChange={(e) => setPricingData(prev => ({ ...prev, discount_amount: parseFloat(e.target.value) || 0 }))}
-                  />
+                    onChange={(e) => setPricingData((prev) => ({ ...prev, discount_amount: parseFloat(e.target.value) || 0 }))} />
+
                 </div>
 
                 <div className="space-y-2">
@@ -668,8 +668,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                 value={formData.terms_conditions}
                 onChange={(e) => handleInputChange('terms_conditions', e.target.value)}
                 placeholder="Enter terms and conditions..."
-                rows={12}
-              />
+                rows={12} />
+
             </CardContent>
           </Card>
         </TabsContent>
@@ -687,8 +687,8 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                   value={changeSummary}
                   onChange={(e) => setChangeSummary(e.target.value)}
                   placeholder="Describe what changed in this version..."
-                  rows={3}
-                />
+                  rows={3} />
+
               </div>
               
               <Button onClick={saveAsNewVersion} disabled={saving || !changeSummary.trim()}>
@@ -718,16 +718,16 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
           </DialogHeader>
           
           <div className="space-y-4 max-h-96 overflow-y-auto">
-            {versions.map((version) => (
-              <Card key={version.id} className={version.is_current ? 'ring-2 ring-blue-500' : ''}>
+            {versions.map((version) =>
+            <Card key={version.id} className={version.is_current ? 'ring-2 ring-blue-500' : ''}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <h4 className="font-medium">
                         Version {version.version_number}
-                        {version.is_current && (
-                          <Badge className="ml-2" variant="default">Current</Badge>
-                        )}
+                        {version.is_current &&
+                      <Badge className="ml-2" variant="default">Current</Badge>
+                      }
                       </h4>
                       <p className="text-sm text-gray-600">{version.change_summary}</p>
                       <p className="text-xs text-gray-500">
@@ -735,25 +735,25 @@ const ProposalEditor: React.FC<ProposalEditorProps> = ({ proposalId, onSuccess, 
                       </p>
                     </div>
                     
-                    {!version.is_current && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => loadVersion(version)}
-                      >
+                    {!version.is_current &&
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadVersion(version)}>
+
                         <Edit3 className="w-4 h-4 mr-2" />
                         Edit
                       </Button>
-                    )}
+                  }
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProposalEditor;

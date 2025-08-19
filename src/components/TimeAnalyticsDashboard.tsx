@@ -8,12 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Progress } from '@/components/ui/progress';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Clock, 
-  Users, 
-  MapPin, 
+import {
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  Users,
+  MapPin,
   BarChart3,
   PieChart,
   CalendarIcon,
@@ -22,8 +22,8 @@ import {
   Target,
   Zap,
   Route,
-  AlertTriangle
-} from 'lucide-react';
+  AlertTriangle } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns';
 
@@ -45,18 +45,18 @@ interface AnalyticsData {
 }
 
 interface ProductivityMetrics {
-  hourlyProductivity: { hour: number; productivity: number; sessions: number }[];
-  dailyProductivity: { date: string; productivity: number; hours: number }[];
-  projectProductivity: { project: string; productivity: number; hours: number }[];
-  workerProductivity: { worker: string; productivity: number; hours: number }[];
+  hourlyProductivity: {hour: number;productivity: number;sessions: number;}[];
+  dailyProductivity: {date: string;productivity: number;hours: number;}[];
+  projectProductivity: {project: string;productivity: number;hours: number;}[];
+  workerProductivity: {worker: string;productivity: number;hours: number;}[];
 }
 
 interface LocationMetrics {
   totalDistance: number;
   averageSpeed: number;
-  topLocations: { address: string; visits: number; duration: number }[];
+  topLocations: {address: string;visits: number;duration: number;}[];
   geofenceCompliance: number;
-  violationHotspots: { location: string; violations: number }[];
+  violationHotspots: {location: string;violations: number;}[];
 }
 
 const TimeAnalyticsDashboard: React.FC = () => {
@@ -122,7 +122,7 @@ const TimeAnalyticsDashboard: React.FC = () => {
         IsAsc: true,
         Filters: []
       });
-      
+
       if (response.error) throw response.error;
       setProjects(response.data?.List || []);
     } catch (error) {
@@ -139,7 +139,7 @@ const TimeAnalyticsDashboard: React.FC = () => {
         IsAsc: true,
         Filters: []
       });
-      
+
       if (response.error) throw response.error;
       setUsers(response.data?.List || []);
     } catch (error) {
@@ -153,9 +153,9 @@ const TimeAnalyticsDashboard: React.FC = () => {
 
       // Build filters
       const filters = [
-        { name: 'start_time', op: 'GreaterThanOrEqual', value: dateRange.from.toISOString() },
-        { name: 'start_time', op: 'LessThanOrEqual', value: dateRange.to.toISOString() }
-      ];
+      { name: 'start_time', op: 'GreaterThanOrEqual', value: dateRange.from.toISOString() },
+      { name: 'start_time', op: 'LessThanOrEqual', value: dateRange.to.toISOString() }];
+
 
       if (selectedProject !== 'all') {
         filters.push({ name: 'project_id', op: 'Equal', value: parseInt(selectedProject) });
@@ -180,9 +180,9 @@ const TimeAnalyticsDashboard: React.FC = () => {
         OrderByField: 'timestamp',
         IsAsc: false,
         Filters: [
-          { name: 'timestamp', op: 'GreaterThanOrEqual', value: dateRange.from.toISOString() },
-          { name: 'timestamp', op: 'LessThanOrEqual', value: dateRange.to.toISOString() }
-        ]
+        { name: 'timestamp', op: 'GreaterThanOrEqual', value: dateRange.from.toISOString() },
+        { name: 'timestamp', op: 'LessThanOrEqual', value: dateRange.to.toISOString() }]
+
       });
 
       const locations = locationResponse.data?.List || [];
@@ -208,11 +208,11 @@ const TimeAnalyticsDashboard: React.FC = () => {
     const totalHours = sessions.reduce((sum, session) => sum + (session.total_duration || 0) / 60, 0);
     const workHours = sessions.reduce((sum, session) => sum + (session.work_duration || 0) / 60, 0);
     const breakHours = sessions.reduce((sum, session) => sum + (session.break_duration || 0) / 60, 0);
-    const averageProductivity = sessions.length > 0 
-      ? sessions.reduce((sum, session) => sum + (session.productivity_score || 0), 0) / sessions.length 
-      : 0;
+    const averageProductivity = sessions.length > 0 ?
+    sessions.reduce((sum, session) => sum + (session.productivity_score || 0), 0) / sessions.length :
+    0;
     const totalDistance = sessions.reduce((sum, session) => sum + (session.total_distance || 0), 0);
-    const uniqueWorkers = new Set(sessions.map(session => session.user_id)).size;
+    const uniqueWorkers = new Set(sessions.map((session) => session.user_id)).size;
     const geofenceViolations = sessions.reduce((sum, session) => sum + (session.geofence_violations || 0), 0);
 
     // Calculate trends (simplified - comparing with previous period)
@@ -238,8 +238,8 @@ const TimeAnalyticsDashboard: React.FC = () => {
 
   const calculateProductivityMetrics = (sessions: any[]) => {
     // Hourly productivity
-    const hourlyData: { [key: number]: { productivity: number; sessions: number } } = {};
-    sessions.forEach(session => {
+    const hourlyData: {[key: number]: {productivity: number;sessions: number;};} = {};
+    sessions.forEach((session) => {
       const hour = new Date(session.start_time).getHours();
       if (!hourlyData[hour]) {
         hourlyData[hour] = { productivity: 0, sessions: 0 };
@@ -255,8 +255,8 @@ const TimeAnalyticsDashboard: React.FC = () => {
     }));
 
     // Daily productivity
-    const dailyData: { [key: string]: { productivity: number; hours: number; sessions: number } } = {};
-    sessions.forEach(session => {
+    const dailyData: {[key: string]: {productivity: number;hours: number;sessions: number;};} = {};
+    sessions.forEach((session) => {
       const date = new Date(session.start_time).toISOString().split('T')[0];
       if (!dailyData[date]) {
         dailyData[date] = { productivity: 0, hours: 0, sessions: 0 };
@@ -273,8 +273,8 @@ const TimeAnalyticsDashboard: React.FC = () => {
     }));
 
     // Project productivity
-    const projectData: { [key: number]: { productivity: number; hours: number; sessions: number } } = {};
-    sessions.forEach(session => {
+    const projectData: {[key: number]: {productivity: number;hours: number;sessions: number;};} = {};
+    sessions.forEach((session) => {
       const projectId = session.project_id;
       if (!projectData[projectId]) {
         projectData[projectId] = { productivity: 0, hours: 0, sessions: 0 };
@@ -294,8 +294,8 @@ const TimeAnalyticsDashboard: React.FC = () => {
     });
 
     // Worker productivity
-    const workerData: { [key: number]: { productivity: number; hours: number; sessions: number } } = {};
-    sessions.forEach(session => {
+    const workerData: {[key: number]: {productivity: number;hours: number;sessions: number;};} = {};
+    sessions.forEach((session) => {
       const userId = session.user_id;
       if (!workerData[userId]) {
         workerData[userId] = { productivity: 0, hours: 0, sessions: 0 };
@@ -324,13 +324,13 @@ const TimeAnalyticsDashboard: React.FC = () => {
 
   const calculateLocationMetrics = (locations: any[]) => {
     const totalDistance = locations.reduce((sum, location) => sum + (location.distance_from_previous || 0), 0);
-    
+
     // Calculate average speed (simplified)
-    const averageSpeed = totalDistance > 0 ? (totalDistance / 1000) / (locations.length / 60) : 0; // rough estimate
+    const averageSpeed = totalDistance > 0 ? totalDistance / 1000 / (locations.length / 60) : 0; // rough estimate
 
     // Top locations
-    const locationCounts: { [key: string]: { visits: number; duration: number } } = {};
-    locations.forEach(location => {
+    const locationCounts: {[key: string]: {visits: number;duration: number;};} = {};
+    locations.forEach((location) => {
       const address = location.address || 'Unknown';
       if (!locationCounts[address]) {
         locationCounts[address] = { visits: 0, duration: 0 };
@@ -339,23 +339,23 @@ const TimeAnalyticsDashboard: React.FC = () => {
       locationCounts[address].duration += 5; // Assume 5 minutes per location point
     });
 
-    const topLocations = Object.entries(locationCounts)
-      .map(([address, data]) => ({ address, ...data }))
-      .sort((a, b) => b.visits - a.visits)
-      .slice(0, 10);
+    const topLocations = Object.entries(locationCounts).
+    map(([address, data]) => ({ address, ...data })).
+    sort((a, b) => b.visits - a.visits).
+    slice(0, 10);
 
     // Geofence compliance (mock calculation)
-    const qualityScores = locations.map(l => l.quality_score || 100);
-    const geofenceCompliance = qualityScores.length > 0 
-      ? qualityScores.reduce((sum, score) => sum + score, 0) / qualityScores.length 
-      : 100;
+    const qualityScores = locations.map((l) => l.quality_score || 100);
+    const geofenceCompliance = qualityScores.length > 0 ?
+    qualityScores.reduce((sum, score) => sum + score, 0) / qualityScores.length :
+    100;
 
     // Violation hotspots (mock data)
     const violationHotspots = [
-      { location: 'Main Street', violations: 5 },
-      { location: 'Downtown Area', violations: 3 },
-      { location: 'Industrial Zone', violations: 2 }
-    ];
+    { location: 'Main Street', violations: 5 },
+    { location: 'Downtown Area', violations: 3 },
+    { location: 'Industrial Zone', violations: 2 }];
+
 
     setLocationMetrics({
       totalDistance: totalDistance / 1000, // Convert to km
@@ -369,7 +369,7 @@ const TimeAnalyticsDashboard: React.FC = () => {
   const handlePeriodChange = (period: string) => {
     setSelectedPeriod(period);
     const now = new Date();
-    
+
     switch (period) {
       case '7d':
         setDateRange({ from: subDays(now, 7), to: now });
@@ -395,23 +395,23 @@ const TimeAnalyticsDashboard: React.FC = () => {
     try {
       // Generate CSV report
       const reportData = [
-        ['Time Tracking Analytics Report'],
-        [`Generated: ${new Date().toLocaleDateString()}`],
-        [`Period: ${format(dateRange.from, 'yyyy-MM-dd')} to ${format(dateRange.to, 'yyyy-MM-dd')}`],
-        [''],
-        ['Summary'],
-        ['Total Hours', analytics.totalHours.toFixed(1)],
-        ['Work Hours', analytics.workHours.toFixed(1)],
-        ['Break Hours', analytics.breakHours.toFixed(1)],
-        ['Average Productivity', `${analytics.averageProductivity}%`],
-        ['Total Distance', `${analytics.totalDistance.toFixed(2)} km`],
-        ['Unique Workers', analytics.uniqueWorkers.toString()],
-        ['Geofence Violations', analytics.geofenceViolations.toString()],
-        ['Total Sessions', analytics.sessionCount.toString()],
-        ['']
-      ];
+      ['Time Tracking Analytics Report'],
+      [`Generated: ${new Date().toLocaleDateString()}`],
+      [`Period: ${format(dateRange.from, 'yyyy-MM-dd')} to ${format(dateRange.to, 'yyyy-MM-dd')}`],
+      [''],
+      ['Summary'],
+      ['Total Hours', analytics.totalHours.toFixed(1)],
+      ['Work Hours', analytics.workHours.toFixed(1)],
+      ['Break Hours', analytics.breakHours.toFixed(1)],
+      ['Average Productivity', `${analytics.averageProductivity}%`],
+      ['Total Distance', `${analytics.totalDistance.toFixed(2)} km`],
+      ['Unique Workers', analytics.uniqueWorkers.toString()],
+      ['Geofence Violations', analytics.geofenceViolations.toString()],
+      ['Total Sessions', analytics.sessionCount.toString()],
+      ['']];
 
-      const csvContent = reportData.map(row => row.join(',')).join('\n');
+
+      const csvContent = reportData.map((row) => row.join(',')).join('\n');
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -440,21 +440,21 @@ const TimeAnalyticsDashboard: React.FC = () => {
     const isPositive = value > 0;
     const TrendIcon = isPositive ? TrendingUp : TrendingDown;
     const color = isPositive ? 'text-green-600' : 'text-red-600';
-    
+
     return (
       <div className={`flex items-center gap-1 ${color}`}>
         <TrendIcon className="h-3 w-3" />
         <span className="text-xs">{Math.abs(value).toFixed(1)}%</span>
-      </div>
-    );
+      </div>);
+
   };
 
   if (loading) {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[...Array(8)].map((_, i) => (
-            <Card key={i}>
+          {[...Array(8)].map((_, i) =>
+          <Card key={i}>
               <CardContent className="pt-6">
                 <div className="animate-pulse space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -462,10 +462,10 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -506,11 +506,11 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Projects</SelectItem>
-                  {projects.map((project: any) => (
-                    <SelectItem key={project.id} value={project.id.toString()}>
+                  {projects.map((project: any) =>
+                  <SelectItem key={project.id} value={project.id.toString()}>
                       {project.name}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
 
@@ -635,23 +635,23 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 <CardTitle>Project Productivity</CardTitle>
               </CardHeader>
               <CardContent>
-                {productivityMetrics.projectProductivity.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                {productivityMetrics.projectProductivity.length === 0 ?
+                <div className="text-center py-8 text-muted-foreground">
                     No project data available
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {productivityMetrics.projectProductivity.slice(0, 5).map((project, index) => (
-                      <div key={index} className="space-y-2">
+                  </div> :
+
+                <div className="space-y-4">
+                    {productivityMetrics.projectProductivity.slice(0, 5).map((project, index) =>
+                  <div key={index} className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="font-medium">{project.project}</span>
                           <span>{project.productivity}% • {project.hours.toFixed(1)}h</span>
                         </div>
                         <Progress value={project.productivity} className="h-2" />
                       </div>
-                    ))}
+                  )}
                   </div>
-                )}
+                }
               </CardContent>
             </Card>
 
@@ -661,23 +661,23 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 <CardTitle>Worker Productivity</CardTitle>
               </CardHeader>
               <CardContent>
-                {productivityMetrics.workerProductivity.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                {productivityMetrics.workerProductivity.length === 0 ?
+                <div className="text-center py-8 text-muted-foreground">
                     No worker data available
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {productivityMetrics.workerProductivity.slice(0, 5).map((worker, index) => (
-                      <div key={index} className="space-y-2">
+                  </div> :
+
+                <div className="space-y-4">
+                    {productivityMetrics.workerProductivity.slice(0, 5).map((worker, index) =>
+                  <div key={index} className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="font-medium">{worker.worker}</span>
                           <span>{worker.productivity}% • {worker.hours.toFixed(1)}h</span>
                         </div>
                         <Progress value={worker.productivity} className="h-2" />
                       </div>
-                    ))}
+                  )}
                   </div>
-                )}
+                }
               </CardContent>
             </Card>
           </div>
@@ -715,14 +715,14 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 <CardTitle>Most Visited Locations</CardTitle>
               </CardHeader>
               <CardContent>
-                {locationMetrics.topLocations.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                {locationMetrics.topLocations.length === 0 ?
+                <div className="text-center py-8 text-muted-foreground">
                     No location data available
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {locationMetrics.topLocations.slice(0, 5).map((location, index) => (
-                      <div key={index} className="flex items-center justify-between p-2 border rounded">
+                  </div> :
+
+                <div className="space-y-3">
+                    {locationMetrics.topLocations.slice(0, 5).map((location, index) =>
+                  <div key={index} className="flex items-center justify-between p-2 border rounded">
                         <div className="flex items-center gap-2">
                           <MapPin className="h-4 w-4 text-gray-500" />
                           <span className="text-sm font-medium">{location.address}</span>
@@ -732,9 +732,9 @@ const TimeAnalyticsDashboard: React.FC = () => {
                           <div className="text-xs text-muted-foreground">{location.duration}min</div>
                         </div>
                       </div>
-                    ))}
+                  )}
                   </div>
-                )}
+                }
               </CardContent>
             </Card>
           </div>
@@ -748,14 +748,14 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 <CardTitle>Hourly Productivity Pattern</CardTitle>
               </CardHeader>
               <CardContent>
-                {productivityMetrics.hourlyProductivity.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                {productivityMetrics.hourlyProductivity.length === 0 ?
+                <div className="text-center py-8 text-muted-foreground">
                     No hourly data available
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {productivityMetrics.hourlyProductivity.map((hour) => (
-                      <div key={hour.hour} className="flex items-center justify-between text-sm">
+                  </div> :
+
+                <div className="space-y-2">
+                    {productivityMetrics.hourlyProductivity.map((hour) =>
+                  <div key={hour.hour} className="flex items-center justify-between text-sm">
                         <span>{hour.hour.toString().padStart(2, '0')}:00</span>
                         <div className="flex items-center gap-2">
                           <Progress value={hour.productivity} className="w-24 h-2" />
@@ -765,9 +765,9 @@ const TimeAnalyticsDashboard: React.FC = () => {
                           </Badge>
                         </div>
                       </div>
-                    ))}
+                  )}
                   </div>
-                )}
+                }
               </CardContent>
             </Card>
 
@@ -777,14 +777,14 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 <CardTitle>Recent Daily Performance</CardTitle>
               </CardHeader>
               <CardContent>
-                {productivityMetrics.dailyProductivity.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                {productivityMetrics.dailyProductivity.length === 0 ?
+                <div className="text-center py-8 text-muted-foreground">
                     No daily data available
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {productivityMetrics.dailyProductivity.slice(-7).map((day) => (
-                      <div key={day.date} className="flex items-center justify-between">
+                  </div> :
+
+                <div className="space-y-3">
+                    {productivityMetrics.dailyProductivity.slice(-7).map((day) =>
+                  <div key={day.date} className="flex items-center justify-between">
                         <span className="text-sm">{format(new Date(day.date), 'MMM dd')}</span>
                         <div className="flex items-center gap-2">
                           <Progress value={day.productivity} className="w-20 h-2" />
@@ -794,9 +794,9 @@ const TimeAnalyticsDashboard: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                    ))}
+                  )}
                   </div>
-                )}
+                }
               </CardContent>
             </Card>
           </div>
@@ -831,15 +831,15 @@ const TimeAnalyticsDashboard: React.FC = () => {
                 <CardTitle>Violation Hotspots</CardTitle>
               </CardHeader>
               <CardContent>
-                {locationMetrics.violationHotspots.length === 0 ? (
-                  <div className="text-center py-8 text-green-600">
+                {locationMetrics.violationHotspots.length === 0 ?
+                <div className="text-center py-8 text-green-600">
                     <CheckCircle className="h-8 w-8 mx-auto mb-2" />
                     <div>No violations detected</div>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {locationMetrics.violationHotspots.map((hotspot, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded">
+                  </div> :
+
+                <div className="space-y-3">
+                    {locationMetrics.violationHotspots.map((hotspot, index) =>
+                  <div key={index} className="flex items-center justify-between p-3 border rounded">
                         <div className="flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4 text-red-500" />
                           <span className="text-sm font-medium">{hotspot.location}</span>
@@ -848,16 +848,16 @@ const TimeAnalyticsDashboard: React.FC = () => {
                           {hotspot.violations} violations
                         </Badge>
                       </div>
-                    ))}
+                  )}
                   </div>
-                )}
+                }
               </CardContent>
             </Card>
           </div>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TimeAnalyticsDashboard;

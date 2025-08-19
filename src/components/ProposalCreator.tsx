@@ -66,8 +66,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
   });
 
   const [lineItems, setLineItems] = useState<LineItem[]>([
-    { description: '', quantity: 1, unit_price: 0, total: 0 }
-  ]);
+  { description: '', quantity: 1, unit_price: 0, total: 0 }]
+  );
 
   const { toast } = useToast();
 
@@ -78,7 +78,7 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
 
   useEffect(() => {
     if (selectedLead) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         client_name: selectedLead.contact_name,
         client_email: selectedLead.email,
@@ -93,8 +93,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
       try {
         const template = JSON.parse(selectedTemplate.content_template || '{}');
         const pricing = JSON.parse(selectedTemplate.pricing_template || '{}');
-        
-        setFormData(prev => ({
+
+        setFormData((prev) => ({
           ...prev,
           title: template.title || '',
           terms_conditions: selectedTemplate.terms_template || ''
@@ -117,8 +117,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
         OrderByField: 'name',
         IsAsc: true,
         Filters: [
-          { name: 'is_active', op: 'Equal', value: true }
-        ]
+        { name: 'is_active', op: 'Equal', value: true }]
+
       });
 
       if (error) throw error;
@@ -151,30 +151,30 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
   };
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleLineItemChange = (index: number, field: string, value: any) => {
-    setLineItems(prev => {
+    setLineItems((prev) => {
       const newItems = [...prev];
       newItems[index] = { ...newItems[index], [field]: value };
-      
+
       // Calculate total for this line item
       if (field === 'quantity' || field === 'unit_price') {
         newItems[index].total = newItems[index].quantity * newItems[index].unit_price;
       }
-      
+
       return newItems;
     });
   };
 
   const addLineItem = () => {
-    setLineItems(prev => [...prev, { description: '', quantity: 1, unit_price: 0, total: 0 }]);
+    setLineItems((prev) => [...prev, { description: '', quantity: 1, unit_price: 0, total: 0 }]);
   };
 
   const removeLineItem = (index: number) => {
     if (lineItems.length > 1) {
-      setLineItems(prev => prev.filter((_, i) => i !== index));
+      setLineItems((prev) => prev.filter((_, i) => i !== index));
     }
   };
 
@@ -182,7 +182,7 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
     const subtotal = lineItems.reduce((sum, item) => sum + item.total, 0);
     const taxAmount = subtotal * (formData.tax_rate / 100);
     const total = subtotal + taxAmount - formData.discount_amount;
-    
+
     return {
       subtotal: Math.round(subtotal * 100), // Convert to cents
       taxAmount: Math.round(taxAmount * 100),
@@ -201,7 +201,7 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.title.trim()) {
       toast({
         title: 'Validation Error',
@@ -222,10 +222,10 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
 
     try {
       setLoading(true);
-      
+
       const totals = calculateTotals();
       const proposalNumber = generateProposalNumber();
-      
+
       // Create proposal
       const proposalData = {
         proposal_number: proposalNumber,
@@ -251,7 +251,7 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
       };
 
       const { data: proposalResult, error: proposalError } = await window.ezsite.apis.tableCreate(35433, proposalData);
-      
+
       if (proposalError) throw proposalError;
 
       // Create initial version
@@ -286,7 +286,7 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
       };
 
       const { error: versionError } = await window.ezsite.apis.tableCreate(35434, versionData);
-      
+
       if (versionError) throw versionError;
 
       toast({
@@ -325,21 +325,21 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
               <div>
                 <Label htmlFor="template">Choose Template</Label>
                 <Select onValueChange={(value) => {
-                  const template = templates.find(t => t.id.toString() === value);
+                  const template = templates.find((t) => t.id.toString() === value);
                   setSelectedTemplate(template || null);
                 }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a template..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {templates.map((template) => (
-                      <SelectItem key={template.id} value={template.id.toString()}>
+                    {templates.map((template) =>
+                    <SelectItem key={template.id} value={template.id.toString()}>
                         <div className="flex flex-col">
                           <span>{template.name}</span>
                           <span className="text-xs text-gray-500">{template.category}</span>
                         </div>
                       </SelectItem>
-                    ))}
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -347,35 +347,35 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
               <div>
                 <Label htmlFor="lead">Link to Lead (Optional)</Label>
                 <Select onValueChange={(value) => {
-                  const lead = leads.find(l => l.id.toString() === value);
+                  const lead = leads.find((l) => l.id.toString() === value);
                   setSelectedLead(lead || null);
                 }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a lead..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {leads.map((lead) => (
-                      <SelectItem key={lead.id} value={lead.id.toString()}>
+                    {leads.map((lead) =>
+                    <SelectItem key={lead.id} value={lead.id.toString()}>
                         <div className="flex flex-col">
                           <span>{lead.contact_name}</span>
                           <span className="text-xs text-gray-500">{lead.company_name}</span>
                         </div>
                       </SelectItem>
-                    ))}
+                    )}
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            {selectedTemplate && (
-              <div className="p-4 bg-blue-50 rounded-lg">
+            {selectedTemplate &&
+            <div className="p-4 bg-blue-50 rounded-lg">
                 <h4 className="font-medium text-blue-900">{selectedTemplate.name}</h4>
                 <p className="text-sm text-blue-700">{selectedTemplate.description}</p>
                 <Badge variant="secondary" className="mt-2">
                   {selectedTemplate.category}
                 </Badge>
               </div>
-            )}
+            }
           </CardContent>
         </Card>
 
@@ -393,8 +393,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                   value={formData.title}
                   onChange={(e) => handleInputChange('title', e.target.value)}
                   placeholder="Enter proposal title..."
-                  required
-                />
+                  required />
+
               </div>
 
               <div>
@@ -426,8 +426,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                       mode="single"
                       selected={validUntil}
                       onSelect={(date) => date && setValidUntil(date)}
-                      initialFocus
-                    />
+                      initialFocus />
+
                   </PopoverContent>
                 </Popover>
               </div>
@@ -452,8 +452,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                   value={formData.client_name}
                   onChange={(e) => handleInputChange('client_name', e.target.value)}
                   placeholder="Enter client name..."
-                  required
-                />
+                  required />
+
               </div>
 
               <div>
@@ -464,8 +464,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                   value={formData.client_email}
                   onChange={(e) => handleInputChange('client_email', e.target.value)}
                   placeholder="client@example.com"
-                  required
-                />
+                  required />
+
               </div>
 
               <div>
@@ -474,8 +474,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                   id="client_phone"
                   value={formData.client_phone}
                   onChange={(e) => handleInputChange('client_phone', e.target.value)}
-                  placeholder="+1 (555) 123-4567"
-                />
+                  placeholder="+1 (555) 123-4567" />
+
               </div>
 
               <div>
@@ -500,8 +500,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                   value={formData.client_address}
                   onChange={(e) => handleInputChange('client_address', e.target.value)}
                   placeholder="Enter client address..."
-                  rows={3}
-                />
+                  rows={3} />
+
               </div>
             </div>
           </CardContent>
@@ -516,62 +516,62 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {lineItems.map((item, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
+            {lineItems.map((item, index) =>
+            <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
                 <div className="md:col-span-2">
                   <Label>Description</Label>
                   <Input
-                    value={item.description}
-                    onChange={(e) => handleLineItemChange(index, 'description', e.target.value)}
-                    placeholder="Item description..."
-                  />
+                  value={item.description}
+                  onChange={(e) => handleLineItemChange(index, 'description', e.target.value)}
+                  placeholder="Item description..." />
+
                 </div>
                 
                 <div>
                   <Label>Quantity</Label>
                   <Input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={item.quantity}
-                    onChange={(e) => handleLineItemChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                  />
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={item.quantity}
+                  onChange={(e) => handleLineItemChange(index, 'quantity', parseFloat(e.target.value) || 0)} />
+
                 </div>
                 
                 <div>
                   <Label>Unit Price</Label>
                   <Input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={item.unit_price}
-                    onChange={(e) => handleLineItemChange(index, 'unit_price', parseFloat(e.target.value) || 0)}
-                  />
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={item.unit_price}
+                  onChange={(e) => handleLineItemChange(index, 'unit_price', parseFloat(e.target.value) || 0)} />
+
                 </div>
                 
                 <div>
                   <Label>Total</Label>
                   <Input
-                    type="number"
-                    value={item.total.toFixed(2)}
-                    readOnly
-                    className="bg-gray-50"
-                  />
+                  type="number"
+                  value={item.total.toFixed(2)}
+                  readOnly
+                  className="bg-gray-50" />
+
                 </div>
                 
                 <div className="flex items-end">
                   <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => removeLineItem(index)}
-                    disabled={lineItems.length === 1}
-                  >
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => removeLineItem(index)}
+                  disabled={lineItems.length === 1}>
+
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
-            ))}
+            )}
 
             <Button type="button" variant="outline" onClick={addLineItem}>
               <Plus className="w-4 h-4 mr-2" />
@@ -596,8 +596,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                   max="100"
                   step="0.01"
                   value={formData.tax_rate}
-                  onChange={(e) => handleInputChange('tax_rate', parseFloat(e.target.value) || 0)}
-                />
+                  onChange={(e) => handleInputChange('tax_rate', parseFloat(e.target.value) || 0)} />
+
               </div>
 
               <div>
@@ -608,8 +608,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
                   min="0"
                   step="0.01"
                   value={formData.discount_amount}
-                  onChange={(e) => handleInputChange('discount_amount', parseFloat(e.target.value) || 0)}
-                />
+                  onChange={(e) => handleInputChange('discount_amount', parseFloat(e.target.value) || 0)} />
+
               </div>
 
               <div className="space-y-2">
@@ -644,8 +644,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
               value={formData.terms_conditions}
               onChange={(e) => handleInputChange('terms_conditions', e.target.value)}
               placeholder="Enter terms and conditions..."
-              rows={6}
-            />
+              rows={6} />
+
           </CardContent>
         </Card>
 
@@ -659,8 +659,8 @@ const ProposalCreator: React.FC<ProposalCreatorProps> = ({ onSuccess, onCancel }
           </Button>
         </div>
       </form>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProposalCreator;

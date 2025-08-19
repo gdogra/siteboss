@@ -1,37 +1,37 @@
 function sendProposalEmail(proposalId, emailType, recipientEmail, customData = {}) {
-    // This function sends various types of proposal-related emails
-    
-    if (!proposalId || !emailType || !recipientEmail) {
-        throw new Error('Proposal ID, email type, and recipient email are required');
-    }
+  // This function sends various types of proposal-related emails
 
-    const emailTypes = [
-        'proposal_sent',
-        'proposal_viewed', 
-        'proposal_signed',
-        'proposal_rejected',
-        'reminder',
-        'follow_up',
-        'approval_request',
-        'approval_granted',
-        'approval_denied'
-    ];
+  if (!proposalId || !emailType || !recipientEmail) {
+    throw new Error('Proposal ID, email type, and recipient email are required');
+  }
 
-    if (!emailTypes.includes(emailType)) {
-        throw new Error(`Invalid email type. Must be one of: ${emailTypes.join(', ')}`);
-    }
+  const emailTypes = [
+  'proposal_sent',
+  'proposal_viewed',
+  'proposal_signed',
+  'proposal_rejected',
+  'reminder',
+  'follow_up',
+  'approval_request',
+  'approval_granted',
+  'approval_denied'];
 
-    // Generate email content based on type
-    let subject, htmlContent, textContent;
-    const proposalUrl = `${customData.baseUrl || 'https://yourcompany.com'}/proposal/${proposalId}/view`;
-    const companyName = customData.companyName || 'Your Company';
-    const proposalNumber = customData.proposalNumber || `PROP-${proposalId}`;
-    const clientName = customData.clientName || 'Valued Client';
 
-    switch (emailType) {
-        case 'proposal_sent':
-            subject = `New Proposal: ${proposalNumber}`;
-            htmlContent = `
+  if (!emailTypes.includes(emailType)) {
+    throw new Error(`Invalid email type. Must be one of: ${emailTypes.join(', ')}`);
+  }
+
+  // Generate email content based on type
+  let subject, htmlContent, textContent;
+  const proposalUrl = `${customData.baseUrl || 'https://yourcompany.com'}/proposal/${proposalId}/view`;
+  const companyName = customData.companyName || 'Your Company';
+  const proposalNumber = customData.proposalNumber || `PROP-${proposalId}`;
+  const clientName = customData.clientName || 'Valued Client';
+
+  switch (emailType) {
+    case 'proposal_sent':
+      subject = `New Proposal: ${proposalNumber}`;
+      htmlContent = `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2 style="color: #333;">New Proposal Ready for Review</h2>
                     <p>Dear ${clientName},</p>
@@ -47,7 +47,7 @@ function sendProposalEmail(proposalId, emailType, recipientEmail, customData = {
                     <p>Best regards,<br>${companyName}</p>
                 </div>
             `;
-            textContent = `
+      textContent = `
 New Proposal Ready for Review
 
 Dear ${clientName},
@@ -66,11 +66,11 @@ Thank you for your business!
 Best regards,
 ${companyName}
             `;
-            break;
+      break;
 
-        case 'proposal_signed':
-            subject = `Proposal Signed - ${proposalNumber}`;
-            htmlContent = `
+    case 'proposal_signed':
+      subject = `Proposal Signed - ${proposalNumber}`;
+      htmlContent = `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2 style="color: #28a745;">Proposal Signed Successfully!</h2>
                     <p>Great news! The proposal ${proposalNumber} has been signed by ${clientName}.</p>
@@ -85,11 +85,11 @@ ${companyName}
                     <p>Best regards,<br>${companyName}</p>
                 </div>
             `;
-            break;
+      break;
 
-        case 'reminder':
-            subject = `Reminder: Proposal ${proposalNumber} Awaiting Review`;
-            htmlContent = `
+    case 'reminder':
+      subject = `Reminder: Proposal ${proposalNumber} Awaiting Review`;
+      htmlContent = `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2 style="color: #ffc107;">Friendly Reminder</h2>
                     <p>Dear ${clientName},</p>
@@ -103,11 +103,11 @@ ${companyName}
                     <p>Best regards,<br>${companyName}</p>
                 </div>
             `;
-            break;
+      break;
 
-        case 'approval_request':
-            subject = `Approval Required: Proposal ${proposalNumber}`;
-            htmlContent = `
+    case 'approval_request':
+      subject = `Approval Required: Proposal ${proposalNumber}`;
+      htmlContent = `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2 style="color: #dc3545;">Approval Required</h2>
                     <p>A proposal requires your approval before it can be sent to the client.</p>
@@ -122,11 +122,11 @@ ${companyName}
                     <p>Best regards,<br>Proposal Management System</p>
                 </div>
             `;
-            break;
+      break;
 
-        default:
-            subject = `Proposal Update - ${proposalNumber}`;
-            htmlContent = `
+    default:
+      subject = `Proposal Update - ${proposalNumber}`;
+      htmlContent = `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                     <h2>Proposal Update</h2>
                     <p>There has been an update to proposal ${proposalNumber}.</p>
@@ -136,29 +136,29 @@ ${companyName}
                     <p>Best regards,<br>${companyName}</p>
                 </div>
             `;
+  }
+
+  // Return email data (in production, you would send this via your email service)
+  const emailData = {
+    to: recipientEmail,
+    subject: subject,
+    html: htmlContent,
+    text: textContent || htmlContent.replace(/<[^>]*>/g, ''), // Strip HTML for text version
+    metadata: {
+      proposalId: proposalId,
+      emailType: emailType,
+      sentAt: new Date().toISOString(),
+      customData: customData
     }
+  };
 
-    // Return email data (in production, you would send this via your email service)
-    const emailData = {
-        to: recipientEmail,
-        subject: subject,
-        html: htmlContent,
-        text: textContent || htmlContent.replace(/<[^>]*>/g, ''), // Strip HTML for text version
-        metadata: {
-            proposalId: proposalId,
-            emailType: emailType,
-            sentAt: new Date().toISOString(),
-            customData: customData
-        }
-    };
+  // Log the email for debugging
+  console.log('Email prepared:', {
+    type: emailType,
+    to: recipientEmail,
+    subject: subject,
+    proposalId: proposalId
+  });
 
-    // Log the email for debugging
-    console.log('Email prepared:', {
-        type: emailType,
-        to: recipientEmail,
-        subject: subject,
-        proposalId: proposalId
-    });
-
-    return emailData;
+  return emailData;
 }

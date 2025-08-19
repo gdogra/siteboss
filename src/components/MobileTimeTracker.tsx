@@ -7,22 +7,22 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Clock, 
-  MapPin, 
-  Play, 
-  Square, 
-  Coffee, 
-  Navigation, 
-  Wifi, 
+import {
+  Clock,
+  MapPin,
+  Play,
+  Square,
+  Coffee,
+  Navigation,
+  Wifi,
   WifiOff,
   AlertTriangle,
   CheckCircle,
   Timer,
   Battery,
   Signal,
-  Target
-} from 'lucide-react';
+  Target } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface LocationData {
@@ -58,12 +58,12 @@ const MobileTimeTracker: React.FC = () => {
   const [breakTimer, setBreakTimer] = useState(0);
   const [gpsAccuracy, setGpsAccuracy] = useState<number | null>(null);
   const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
-  
+
   const watchIdRef = useRef<number | null>(null);
   const sessionIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const breakIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const locationTrackingRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const MobileTimeTracker: React.FC = () => {
     checkBatteryStatus();
     setupConnectionListener();
     loadActiveSession();
-    
+
     return () => {
       if (watchIdRef.current) {
         navigator.geolocation.clearWatch(watchIdRef.current);
@@ -92,7 +92,7 @@ const MobileTimeTracker: React.FC = () => {
         IsAsc: true,
         Filters: [{ name: 'status', op: 'Equal', value: 'In Progress' }]
       });
-      
+
       if (response.error) throw response.error;
       setProjects(response.data?.List || []);
     } catch (error) {
@@ -111,18 +111,18 @@ const MobileTimeTracker: React.FC = () => {
         OrderByField: 'start_time',
         IsAsc: false,
         Filters: [
-          { name: 'user_id', op: 'Equal', value: userInfo.data.ID },
-          { name: 'status', op: 'Equal', value: 'active' }
-        ]
+        { name: 'user_id', op: 'Equal', value: userInfo.data.ID },
+        { name: 'status', op: 'Equal', value: 'active' }]
+
       });
-      
+
       if (response.data?.List?.length > 0) {
         const session = response.data.List[0];
         setCurrentSession(session);
         setSelectedProject(session.project_id.toString());
         startSessionTimer();
         startLocationTracking();
-        
+
         // Check if on break by looking for unclosed break_start event
         const breakResponse = await window.ezsite.apis.tablePage(35437, {
           PageNo: 1,
@@ -130,11 +130,11 @@ const MobileTimeTracker: React.FC = () => {
           OrderByField: 'timestamp',
           IsAsc: false,
           Filters: [
-            { name: 'session_id', op: 'Equal', value: session.id },
-            { name: 'event_type', op: 'Equal', value: 'break_start' }
-          ]
+          { name: 'session_id', op: 'Equal', value: session.id },
+          { name: 'event_type', op: 'Equal', value: 'break_start' }]
+
         });
-        
+
         if (breakResponse.data?.List?.length > 0) {
           // Check if there's a corresponding break_end
           const breakEndResponse = await window.ezsite.apis.tablePage(35437, {
@@ -143,16 +143,16 @@ const MobileTimeTracker: React.FC = () => {
             OrderByField: 'timestamp',
             IsAsc: false,
             Filters: [
-              { name: 'session_id', op: 'Equal', value: session.id },
-              { name: 'event_type', op: 'Equal', value: 'break_end' }
-            ]
+            { name: 'session_id', op: 'Equal', value: session.id },
+            { name: 'event_type', op: 'Equal', value: 'break_end' }]
+
           });
-          
+
           const breakStart = new Date(breakResponse.data.List[0].timestamp);
-          const breakEnd = breakEndResponse.data?.List?.length > 0 
-            ? new Date(breakEndResponse.data.List[0].timestamp) 
-            : null;
-            
+          const breakEnd = breakEndResponse.data?.List?.length > 0 ?
+          new Date(breakEndResponse.data.List[0].timestamp) :
+          null;
+
           if (!breakEnd || breakStart > breakEnd) {
             setIsOnBreak(true);
             startBreakTimer(breakStart);
@@ -169,7 +169,7 @@ const MobileTimeTracker: React.FC = () => {
       try {
         const permission = await navigator.permissions.query({ name: 'geolocation' });
         setLocationPermission(permission.state);
-        
+
         permission.addEventListener('change', () => {
           setLocationPermission(permission.state);
         });
@@ -184,7 +184,7 @@ const MobileTimeTracker: React.FC = () => {
       try {
         const battery = await (navigator as any).getBattery();
         setBatteryLevel(battery.level * 100);
-        
+
         battery.addEventListener('levelchange', () => {
           setBatteryLevel(battery.level * 100);
         });
@@ -324,9 +324,9 @@ const MobileTimeTracker: React.FC = () => {
 
   const startSessionTimer = () => {
     if (sessionIntervalRef.current) return;
-    
+
     sessionIntervalRef.current = setInterval(() => {
-      setSessionTimer(prev => prev + 1);
+      setSessionTimer((prev) => prev + 1);
     }, 1000);
   };
 
@@ -339,9 +339,9 @@ const MobileTimeTracker: React.FC = () => {
 
   const startBreakTimer = (startTime?: Date) => {
     if (breakIntervalRef.current) return;
-    
+
     const start = startTime ? startTime.getTime() : Date.now();
-    
+
     breakIntervalRef.current = setInterval(() => {
       const elapsed = Math.floor((Date.now() - start) / 1000);
       setBreakTimer(elapsed);
@@ -421,7 +421,7 @@ const MobileTimeTracker: React.FC = () => {
 
       toast({
         title: 'Clocked In',
-        description: 'Successfully clocked in with GPS location.',
+        description: 'Successfully clocked in with GPS location.'
       });
 
     } catch (error) {
@@ -466,7 +466,7 @@ const MobileTimeTracker: React.FC = () => {
       // Update session
       const totalMinutes = Math.floor(sessionTimer / 60);
       const breakMinutes = Math.floor(breakTimer / 60);
-      
+
       await window.ezsite.apis.tableUpdate(35439, {
         ID: currentSession.id,
         end_time: new Date().toISOString(),
@@ -487,7 +487,7 @@ const MobileTimeTracker: React.FC = () => {
 
       toast({
         title: 'Clocked Out',
-        description: 'Successfully clocked out.',
+        description: 'Successfully clocked out.'
       });
 
     } catch (error) {
@@ -529,7 +529,7 @@ const MobileTimeTracker: React.FC = () => {
 
       toast({
         title: 'Break Started',
-        description: 'Break time started.',
+        description: 'Break time started.'
       });
 
     } catch (error) {
@@ -571,7 +571,7 @@ const MobileTimeTracker: React.FC = () => {
 
       toast({
         title: 'Break Ended',
-        description: 'Break time ended.',
+        description: 'Break time ended.'
       });
 
     } catch (error) {
@@ -586,7 +586,7 @@ const MobileTimeTracker: React.FC = () => {
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
+    const minutes = Math.floor(seconds % 3600 / 60);
     const secs = seconds % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
@@ -615,29 +615,29 @@ const MobileTimeTracker: React.FC = () => {
       <div className="bg-white border-b p-4 sticky top-0 z-10">
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-4">
-            {connectionStatus ? (
-              <div className="flex items-center gap-1 text-green-600">
+            {connectionStatus ?
+            <div className="flex items-center gap-1 text-green-600">
                 <Wifi className="h-4 w-4" />
                 <span>Online</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 text-red-600">
+              </div> :
+
+            <div className="flex items-center gap-1 text-red-600">
                 <WifiOff className="h-4 w-4" />
                 <span>Offline</span>
               </div>
-            )}
+            }
             
             <div className={`flex items-center gap-1 ${locationStatus.color}`}>
               {locationStatus.icon}
               <span>{locationStatus.text}</span>
             </div>
             
-            {batteryLevel && (
-              <div className="flex items-center gap-1">
+            {batteryLevel &&
+            <div className="flex items-center gap-1">
                 <Battery className="h-4 w-4" />
                 <span>{Math.round(batteryLevel)}%</span>
               </div>
-            )}
+            }
           </div>
           
           <div className="text-right">
@@ -650,8 +650,8 @@ const MobileTimeTracker: React.FC = () => {
 
       <div className="p-4 space-y-6">
         {/* Current Session Card */}
-        {currentSession ? (
-          <Card>
+        {currentSession ?
+        <Card>
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center justify-between">
                 <span className="flex items-center gap-2">
@@ -681,28 +681,28 @@ const MobileTimeTracker: React.FC = () => {
               </div>
 
               {/* Current Location */}
-              {currentLocation && (
-                <div className="p-3 bg-gray-50 rounded-lg">
+              {currentLocation &&
+            <div className="p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-gray-500" />
                     <span>{currentLocation.address}</span>
                   </div>
                 </div>
-              )}
+            }
 
               {/* Action Buttons */}
               <div className="grid grid-cols-2 gap-3">
-                {isOnBreak ? (
-                  <Button onClick={endBreak} className="w-full">
+                {isOnBreak ?
+              <Button onClick={endBreak} className="w-full">
                     <Play className="h-4 w-4 mr-2" />
                     End Break
-                  </Button>
-                ) : (
-                  <Button onClick={startBreak} variant="outline" className="w-full">
+                  </Button> :
+
+              <Button onClick={startBreak} variant="outline" className="w-full">
                     <Coffee className="h-4 w-4 mr-2" />
                     Start Break
                   </Button>
-                )}
+              }
                 
                 <Button onClick={clockOut} variant="destructive" className="w-full">
                   <Square className="h-4 w-4 mr-2" />
@@ -710,10 +710,10 @@ const MobileTimeTracker: React.FC = () => {
                 </Button>
               </div>
             </CardContent>
-          </Card>
-        ) : (
-          /* Clock In Card */
-          <Card>
+          </Card> : (
+
+        /* Clock In Card */
+        <Card>
             <CardHeader>
               <CardTitle>Start Work Session</CardTitle>
               <CardDescription>Select a project and clock in to begin tracking</CardDescription>
@@ -727,58 +727,58 @@ const MobileTimeTracker: React.FC = () => {
                     <SelectValue placeholder="Select project" />
                   </SelectTrigger>
                   <SelectContent>
-                    {projects.map((project: any) => (
-                      <SelectItem key={project.id} value={project.id.toString()}>
+                    {projects.map((project: any) =>
+                  <SelectItem key={project.id} value={project.id.toString()}>
                         {project.name} - {project.client_name}
                       </SelectItem>
-                    ))}
+                  )}
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Location Permission Alert */}
-              {locationPermission === 'denied' && (
-                <Alert>
+              {locationPermission === 'denied' &&
+            <Alert>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
                     Location access is required for time tracking. Please enable location permissions in your browser settings.
                   </AlertDescription>
                 </Alert>
-              )}
+            }
 
               {/* Current Location Preview */}
-              {currentLocation && (
-                <div className="p-3 bg-green-50 rounded-lg">
+              {currentLocation &&
+            <div className="p-3 bg-green-50 rounded-lg">
                   <div className="flex items-center gap-2 text-sm text-green-700">
                     <CheckCircle className="h-4 w-4" />
                     <span>Location acquired: {currentLocation.address}</span>
                   </div>
                 </div>
-              )}
+            }
 
               {/* Notes */}
               <div className="space-y-2">
                 <Label>Notes (Optional)</Label>
                 <Textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Add any notes about this work session..."
-                  rows={3}
-                />
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Add any notes about this work session..."
+                rows={3} />
+
               </div>
 
               {/* Clock In Button */}
-              <Button 
-                onClick={clockIn} 
-                className="w-full h-12 text-lg"
-                disabled={!selectedProject || locationPermission === 'denied'}
-              >
+              <Button
+              onClick={clockIn}
+              className="w-full h-12 text-lg"
+              disabled={!selectedProject || locationPermission === 'denied'}>
+
                 <Clock className="h-5 w-5 mr-2" />
                 Clock In
               </Button>
             </CardContent>
-          </Card>
-        )}
+          </Card>)
+        }
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4">
@@ -800,8 +800,8 @@ const MobileTimeTracker: React.FC = () => {
           </Card>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default MobileTimeTracker;

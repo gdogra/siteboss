@@ -4,18 +4,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  FileText, 
-  Users, 
-  Calendar, 
+import {
+  FileText,
+  Users,
+  Calendar,
   Settings,
   Smartphone,
   Building,
   Shield,
-  PlusCircle
-} from 'lucide-react';
-import AuthGuard from  '@/components/AuthGuard';
-import Header from  '@/components/Header';
+  PlusCircle } from
+'lucide-react';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 import PermitManagementDashboard from '@/components/PermitManagementDashboard';
 import ApplicantPortal from '@/components/ApplicantPortal';
 import InspectorMobileInterface from '@/components/InspectorMobileInterface';
@@ -35,7 +35,7 @@ const PermitManagementPage = () => {
       const { data: userInfo } = await window.ezsite.apis.getUserInfo();
       if (userInfo?.Roles) {
         setUserRole(userInfo.Roles);
-        
+
         // Default interface based on role
         if (userInfo.Roles.includes('Administrator')) {
           setActiveInterface('dashboard');
@@ -52,7 +52,7 @@ const PermitManagementPage = () => {
 
   const getRoleInterfaces = () => {
     const interfaces = [];
-    
+
     // Always show applicant portal (everyone can apply for permits)
     interfaces.push({
       id: 'applicant',
@@ -88,7 +88,7 @@ const PermitManagementPage = () => {
   };
 
   const interfaces = getRoleInterfaces();
-  const ActiveComponent = interfaces.find(int => int.id === activeInterface)?.component || ApplicantPortal;
+  const ActiveComponent = interfaces.find((int) => int.id === activeInterface)?.component || ApplicantPortal;
 
   return (
     <AuthGuard>
@@ -96,34 +96,34 @@ const PermitManagementPage = () => {
         <Header />
         
         {/* Interface Selector for multi-role users */}
-        {interfaces.length > 1 && (
-          <div className="bg-white border-b">
+        {interfaces.length > 1 &&
+        <div className="bg-white border-b">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex space-x-8 overflow-x-auto py-4">
                 {interfaces.map((interfaceItem) => {
-                  const Icon = interfaceItem.icon;
-                  return (
-                    <button
-                      key={interfaceItem.id}
-                      onClick={() => setActiveInterface(interfaceItem.id)}
-                      className={`flex items-center space-x-3 px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-                        activeInterface === interfaceItem.id
-                          ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                      }`}
-                    >
+                const Icon = interfaceItem.icon;
+                return (
+                  <button
+                    key={interfaceItem.id}
+                    onClick={() => setActiveInterface(interfaceItem.id)}
+                    className={`flex items-center space-x-3 px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                    activeInterface === interfaceItem.id ?
+                    'bg-blue-100 text-blue-700 border border-blue-200' :
+                    'text-gray-600 hover:text-gray-900 hover:bg-gray-100'}`
+                    }>
+
                       <Icon className="w-5 h-5" />
                       <div className="text-left">
                         <div className="font-medium">{interfaceItem.name}</div>
                         <div className="text-xs text-gray-500">{interfaceItem.description}</div>
                       </div>
-                    </button>
-                  );
-                })}
+                    </button>);
+
+              })}
               </div>
             </div>
           </div>
-        )}
+        }
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -131,29 +131,29 @@ const PermitManagementPage = () => {
         </div>
 
         {/* Quick Actions Floating Button (Mobile) */}
-        {activeInterface === 'inspector' && (
-          <div className="fixed bottom-6 right-6 md:hidden">
+        {activeInterface === 'inspector' &&
+        <div className="fixed bottom-6 right-6 md:hidden">
             <Button
-              size="lg"
-              className="rounded-full w-14 h-14 shadow-lg"
-              onClick={() => toast({ title: "Quick Action", description: "Feature coming soon!" })}
-            >
+            size="lg"
+            className="rounded-full w-14 h-14 shadow-lg"
+            onClick={() => toast({ title: "Quick Action", description: "Feature coming soon!" })}>
+
               <PlusCircle className="w-6 h-6" />
             </Button>
           </div>
-        )}
+        }
 
         {/* Role Badge */}
         <div className="fixed top-20 right-4 z-50">
           <Badge variant="outline" className="bg-white shadow-sm">
             <Shield className="w-3 h-3 mr-1" />
-            {userRole.includes('Administrator') ? 'Admin' : 
-             userRole.includes('Inspector') ? 'Inspector' : 'Applicant'}
+            {userRole.includes('Administrator') ? 'Admin' :
+            userRole.includes('Inspector') ? 'Inspector' : 'Applicant'}
           </Badge>
         </div>
       </div>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default PermitManagementPage;

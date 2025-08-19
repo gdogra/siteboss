@@ -10,19 +10,19 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  MapPin, 
-  Shield, 
-  AlertTriangle, 
-  Plus, 
-  Edit, 
-  Trash2, 
+import {
+  MapPin,
+  Shield,
+  AlertTriangle,
+  Plus,
+  Edit,
+  Trash2,
   Eye,
   CheckCircle,
   XCircle,
   Target,
-  Clock
-} from 'lucide-react';
+  Clock } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Geofence {
@@ -81,7 +81,7 @@ const GeofenceManager: React.FC = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      
+
       // Load geofences
       const geofencesResponse = await window.ezsite.apis.tablePage(35508, {
         PageNo: 1,
@@ -134,20 +134,20 @@ const GeofenceManager: React.FC = () => {
       });
 
       if (locationsResponse.data?.List) {
-        const simulatedViolations = locationsResponse.data.List
-          .filter((location: any) => Math.random() > 0.95) // Simulate 5% violation rate
-          .map((location: any, index: number) => ({
-            id: index + 1,
-            session_id: location.session_id,
-            geofence_id: 1, // Assume first geofence
-            user_id: location.user_id,
-            violation_type: 'exit',
-            timestamp: location.timestamp,
-            latitude: location.latitude,
-            longitude: location.longitude,
-            duration_minutes: Math.floor(Math.random() * 30) + 1,
-            resolved: Math.random() > 0.3
-          }));
+        const simulatedViolations = locationsResponse.data.List.
+        filter((location: any) => Math.random() > 0.95) // Simulate 5% violation rate
+        .map((location: any, index: number) => ({
+          id: index + 1,
+          session_id: location.session_id,
+          geofence_id: 1, // Assume first geofence
+          user_id: location.user_id,
+          violation_type: 'exit',
+          timestamp: location.timestamp,
+          latitude: location.latitude,
+          longitude: location.longitude,
+          duration_minutes: Math.floor(Math.random() * 30) + 1,
+          resolved: Math.random() > 0.3
+        }));
 
         setViolations(simulatedViolations);
       }
@@ -289,12 +289,12 @@ const GeofenceManager: React.FC = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             center_latitude: position.coords.latitude.toFixed(6),
             center_longitude: position.coords.longitude.toFixed(6)
           }));
-          
+
           toast({
             title: 'Location Set',
             description: 'Current location has been set as geofence center'
@@ -324,8 +324,8 @@ const GeofenceManager: React.FC = () => {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i}>
+          {[...Array(6)].map((_, i) =>
+          <Card key={i}>
               <CardContent className="pt-6">
                 <div className="animate-pulse space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -333,10 +333,10 @@ const GeofenceManager: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -361,7 +361,7 @@ const GeofenceManager: React.FC = () => {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Active Geofences</p>
                 <p className="text-2xl font-bold">
-                  {geofences.filter(g => g.is_active).length}
+                  {geofences.filter((g) => g.is_active).length}
                 </p>
               </div>
               <CheckCircle className="h-8 w-8 text-green-600" />
@@ -387,7 +387,7 @@ const GeofenceManager: React.FC = () => {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Unresolved</p>
                 <p className="text-2xl font-bold">
-                  {violations.filter(v => !v.resolved).length}
+                  {violations.filter((v) => !v.resolved).length}
                 </p>
               </div>
               <XCircle className="h-8 w-8 text-orange-600" />
@@ -427,26 +427,26 @@ const GeofenceManager: React.FC = () => {
                       <Label>Name</Label>
                       <Input
                         value={formData.name}
-                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                        placeholder="Site entrance"
-                      />
+                        onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                        placeholder="Site entrance" />
+
                     </div>
                     
                     <div className="space-y-2">
                       <Label>Project</Label>
                       <Select
                         value={formData.project_id}
-                        onValueChange={(value) => setFormData(prev => ({ ...prev, project_id: value }))}
-                      >
+                        onValueChange={(value) => setFormData((prev) => ({ ...prev, project_id: value }))}>
+
                         <SelectTrigger>
                           <SelectValue placeholder="Select project" />
                         </SelectTrigger>
                         <SelectContent>
-                          {projects.map((project: any) => (
-                            <SelectItem key={project.id} value={project.id.toString()}>
+                          {projects.map((project: any) =>
+                          <SelectItem key={project.id} value={project.id.toString()}>
                               {project.name}
                             </SelectItem>
-                          ))}
+                          )}
                         </SelectContent>
                       </Select>
                     </div>
@@ -456,18 +456,18 @@ const GeofenceManager: React.FC = () => {
                     <Label>Description</Label>
                     <Textarea
                       value={formData.description}
-                      onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                       placeholder="Description of the geofenced area"
-                      rows={2}
-                    />
+                      rows={2} />
+
                   </div>
 
                   <div className="space-y-2">
                     <Label>Geometry Type</Label>
                     <Select
                       value={formData.geometry_type}
-                      onValueChange={(value) => setFormData(prev => ({ ...prev, geometry_type: value as 'circle' | 'polygon' }))}
-                    >
+                      onValueChange={(value) => setFormData((prev) => ({ ...prev, geometry_type: value as 'circle' | 'polygon' }))}>
+
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -485,9 +485,9 @@ const GeofenceManager: React.FC = () => {
                         type="number"
                         step="0.000001"
                         value={formData.center_latitude}
-                        onChange={(e) => setFormData(prev => ({ ...prev, center_latitude: e.target.value }))}
-                        placeholder="40.7128"
-                      />
+                        onChange={(e) => setFormData((prev) => ({ ...prev, center_latitude: e.target.value }))}
+                        placeholder="40.7128" />
+
                     </div>
                     
                     <div className="space-y-2">
@@ -496,9 +496,9 @@ const GeofenceManager: React.FC = () => {
                         type="number"
                         step="0.000001"
                         value={formData.center_longitude}
-                        onChange={(e) => setFormData(prev => ({ ...prev, center_longitude: e.target.value }))}
-                        placeholder="-74.0060"
-                      />
+                        onChange={(e) => setFormData((prev) => ({ ...prev, center_longitude: e.target.value }))}
+                        placeholder="-74.0060" />
+
                     </div>
                   </div>
 
@@ -507,24 +507,24 @@ const GeofenceManager: React.FC = () => {
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={getCurrentLocation}
-                    >
+                      onClick={getCurrentLocation}>
+
                       <Target className="h-4 w-4 mr-1" />
                       Use Current Location
                     </Button>
                   </div>
 
-                  {formData.geometry_type === 'circle' && (
-                    <div className="space-y-2">
+                  {formData.geometry_type === 'circle' &&
+                  <div className="space-y-2">
                       <Label>Radius (meters)</Label>
                       <Input
-                        type="number"
-                        value={formData.radius}
-                        onChange={(e) => setFormData(prev => ({ ...prev, radius: e.target.value }))}
-                        placeholder="100"
-                      />
+                      type="number"
+                      value={formData.radius}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, radius: e.target.value }))}
+                      placeholder="100" />
+
                     </div>
-                  )}
+                  }
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -532,16 +532,16 @@ const GeofenceManager: React.FC = () => {
                       <Input
                         type="number"
                         value={formData.violation_tolerance}
-                        onChange={(e) => setFormData(prev => ({ ...prev, violation_tolerance: e.target.value }))}
-                        placeholder="5"
-                      />
+                        onChange={(e) => setFormData((prev) => ({ ...prev, violation_tolerance: e.target.value }))}
+                        placeholder="5" />
+
                     </div>
                     
                     <div className="flex items-center space-x-2 pt-6">
                       <Switch
                         checked={formData.is_active}
-                        onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_active: checked }))}
-                      />
+                        onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, is_active: checked }))} />
+
                       <Label>Active</Label>
                     </div>
                   </div>
@@ -552,8 +552,8 @@ const GeofenceManager: React.FC = () => {
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => setIsDialogOpen(false)}
-                    >
+                      onClick={() => setIsDialogOpen(false)}>
+
                       Cancel
                     </Button>
                   </div>
@@ -563,14 +563,14 @@ const GeofenceManager: React.FC = () => {
           </div>
         </CardHeader>
         <CardContent>
-          {geofences.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
+          {geofences.length === 0 ?
+          <div className="text-center py-8 text-muted-foreground">
               No geofences configured yet
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {geofences.map((geofence) => (
-                <div key={geofence.id} className="flex items-center justify-between p-4 border rounded-lg">
+            </div> :
+
+          <div className="space-y-4">
+              {geofences.map((geofence) =>
+            <div key={geofence.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <h4 className="font-medium">{geofence.name}</h4>
@@ -593,35 +593,35 @@ const GeofenceManager: React.FC = () => {
                   
                   <div className="flex items-center gap-1">
                     <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => toggleActive(geofence)}
-                    >
-                      {geofence.is_active ? (
-                        <XCircle className="h-4 w-4" />
-                      ) : (
-                        <CheckCircle className="h-4 w-4" />
-                      )}
+                  size="sm"
+                  variant="outline"
+                  onClick={() => toggleActive(geofence)}>
+
+                      {geofence.is_active ?
+                  <XCircle className="h-4 w-4" /> :
+
+                  <CheckCircle className="h-4 w-4" />
+                  }
                     </Button>
                     <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleEdit(geofence)}
-                    >
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleEdit(geofence)}>
+
                       <Edit className="h-4 w-4" />
                     </Button>
                     <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleDelete(geofence.id)}
-                    >
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleDelete(geofence.id)}>
+
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
-              ))}
+            )}
             </div>
-          )}
+          }
         </CardContent>
       </Card>
 
@@ -635,25 +635,25 @@ const GeofenceManager: React.FC = () => {
           <CardDescription>Geofence violations detected in location tracking</CardDescription>
         </CardHeader>
         <CardContent>
-          {violations.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
+          {violations.length === 0 ?
+          <div className="text-center py-8 text-muted-foreground">
               No violations detected
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {violations.slice(0, 10).map((violation) => (
-                <div key={violation.id} className="flex items-center justify-between p-3 border rounded-lg">
+            </div> :
+
+          <div className="space-y-3">
+              {violations.slice(0, 10).map((violation) =>
+            <div key={violation.id} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-red-500" />
                       <span className="font-medium">
                         User {violation.user_id} exited geofence
                       </span>
-                      {violation.resolved && (
-                        <Badge variant="outline" className="text-green-600">
+                      {violation.resolved &&
+                  <Badge variant="outline" className="text-green-600">
                           Resolved
                         </Badge>
-                      )}
+                  }
                     </div>
                     <p className="text-sm text-muted-foreground">
                       {formatTime(violation.timestamp)} • 
@@ -668,13 +668,13 @@ const GeofenceManager: React.FC = () => {
                     </Badge>
                   </div>
                 </div>
-              ))}
+            )}
             </div>
-          )}
+          }
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default GeofenceManager;

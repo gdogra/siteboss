@@ -7,10 +7,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
-import { 
-  PenTool, Upload, Type, MapPin, Check, X, 
-  Shield, Clock, User, FileSignature
-} from 'lucide-react';
+import {
+  PenTool, Upload, Type, MapPin, Check, X,
+  Shield, Clock, User, FileSignature } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ProposalSignatureProps {
@@ -27,11 +27,11 @@ interface GPSLocation {
   timestamp: number;
 }
 
-const ProposalSignature: React.FC<ProposalSignatureProps> = ({ 
-  proposalId, 
-  proposalVersionId, 
-  onSuccess, 
-  onCancel 
+const ProposalSignature: React.FC<ProposalSignatureProps> = ({
+  proposalId,
+  proposalVersionId,
+  onSuccess,
+  onCancel
 }) => {
   const [signatureType, setSignatureType] = useState<'drawn' | 'typed' | 'uploaded'>('drawn');
   const [isDrawing, setIsDrawing] = useState(false);
@@ -114,7 +114,7 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasEvent>) => {
     if (!isDrawing) return;
-    
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -158,7 +158,7 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+      if (file.size > 2 * 1024 * 1024) {// 2MB limit
         toast({
           title: 'File Too Large',
           description: 'Please select an image under 2MB',
@@ -177,7 +177,7 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
       }
 
       setUploadedSignature(file);
-      
+
       // Preview the uploaded signature
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -195,24 +195,24 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
     canvas.width = 400;
     canvas.height = 100;
     const ctx = canvas.getContext('2d');
-    
+
     if (ctx) {
       ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
+
       ctx.fillStyle = 'black';
       ctx.font = '24px cursive';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(typedSignature, canvas.width / 2, canvas.height / 2);
-      
+
       setSignatureData(canvas.toDataURL());
     }
   };
 
   const generateVerificationCode = () => {
-    return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
+    return Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15);
   };
 
   const handleSubmit = async () => {
@@ -266,10 +266,10 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
         });
 
         if (uploadError) throw uploadError;
-        
+
         const { data: fileUrl, error: urlError } = await window.ezsite.apis.getUploadUrl(uploadResult);
         if (urlError) throw urlError;
-        
+
         finalSignatureData = fileUrl;
       }
 
@@ -300,7 +300,7 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
       };
 
       const { error: signatureError } = await window.ezsite.apis.tableCreate(35435, signatureRecord);
-      
+
       if (signatureError) throw signatureError;
 
       // Update proposal status
@@ -384,8 +384,8 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
                 value={signerName}
                 onChange={(e) => setSignerName(e.target.value)}
                 placeholder="Enter your full name"
-                required
-              />
+                required />
+
             </div>
             
             <div>
@@ -396,8 +396,8 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
                 value={signerEmail}
                 onChange={(e) => setSignerEmail(e.target.value)}
                 placeholder="your@email.com"
-                required
-              />
+                required />
+
             </div>
             
             <div>
@@ -428,40 +428,40 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
               <Switch
                 id="enable-gps"
                 checked={enableGPS}
-                onCheckedChange={setEnableGPS}
-              />
+                onCheckedChange={setEnableGPS} />
+
               <Label htmlFor="enable-gps">Enable GPS</Label>
             </div>
           </div>
 
-          {enableGPS && (
-            <div className="p-3 border rounded-lg bg-gray-50">
-              {gpsLocation ? (
-                <div className="text-sm text-green-700">
+          {enableGPS &&
+          <div className="p-3 border rounded-lg bg-gray-50">
+              {gpsLocation ?
+            <div className="text-sm text-green-700">
                   <Check className="w-4 h-4 inline mr-2" />
                   Location verified (±{gpsLocation.accuracy.toFixed(0)}m accuracy)
-                </div>
-              ) : gpsError ? (
-                <div className="text-sm text-red-600">
+                </div> :
+            gpsError ?
+            <div className="text-sm text-red-600">
                   <X className="w-4 h-4 inline mr-2" />
                   {gpsError}
                   <Button
-                    variant="link"
-                    size="sm"
-                    onClick={getCurrentLocation}
-                    className="ml-2 p-0 h-auto"
-                  >
+                variant="link"
+                size="sm"
+                onClick={getCurrentLocation}
+                className="ml-2 p-0 h-auto">
+
                     Retry
                   </Button>
-                </div>
-              ) : (
-                <div className="text-sm text-gray-600">
+                </div> :
+
+            <div className="text-sm text-gray-600">
                   <Clock className="w-4 h-4 inline mr-2" />
                   Getting location...
                 </div>
-              )}
+            }
             </div>
-          )}
+          }
         </div>
 
         {/* Signature Methods */}
@@ -499,8 +499,8 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
                   onMouseUp={stopDrawing}
                   onTouchStart={startDrawing}
                   onTouchMove={draw}
-                  onTouchEnd={stopDrawing}
-                />
+                  onTouchEnd={stopDrawing} />
+
                 <div className="flex justify-between mt-2">
                   <p className="text-sm text-gray-600">Draw your signature above</p>
                   <Button variant="outline" size="sm" onClick={clearCanvas}>
@@ -518,33 +518,33 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
                   value={typedSignature}
                   onChange={(e) => setTypedSignature(e.target.value)}
                   placeholder="Enter your full name"
-                  className="text-2xl font-cursive"
-                />
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                  className="text-2xl font-cursive" />
+
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={generateTypedSignature}
                   disabled={!typedSignature.trim()}
-                  className="mt-2"
-                >
+                  className="mt-2">
+
                   Generate Signature
                 </Button>
               </div>
               
-              {signatureData && (
-                <div className="border rounded-lg p-4">
+              {signatureData &&
+              <div className="border rounded-lg p-4">
                   <img src={signatureData} alt="Typed signature" className="max-w-full h-auto" />
                 </div>
-              )}
+              }
             </TabsContent>
 
             <TabsContent value="uploaded" className="space-y-4">
               <div>
                 <Label>Upload signature image</Label>
-                <div 
+                <div
                   className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-400"
-                  onClick={() => fileInputRef.current?.click()}
-                >
+                  onClick={() => fileInputRef.current?.click()}>
+
                   <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-gray-600">Click to upload or drag and drop</p>
                   <p className="text-xs text-gray-500">PNG, JPG up to 2MB</p>
@@ -554,15 +554,15 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
                   type="file"
                   accept="image/*"
                   onChange={handleFileUpload}
-                  className="hidden"
-                />
+                  className="hidden" />
+
               </div>
               
-              {signatureData && (
-                <div className="border rounded-lg p-4">
+              {signatureData &&
+              <div className="border rounded-lg p-4">
                   <img src={signatureData} alt="Uploaded signature" className="max-w-full h-auto" />
                 </div>
-              )}
+              }
             </TabsContent>
           </Tabs>
         </div>
@@ -574,8 +574,8 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
             id="agreement"
             checked={agreementAccepted}
             onChange={(e) => setAgreementAccepted(e.target.checked)}
-            className="mt-1"
-          />
+            className="mt-1" />
+
           <label htmlFor="agreement" className="text-sm text-gray-700">
             <strong>Digital Signature Agreement:</strong> I agree that my electronic signature 
             is the legal equivalent of my manual signature and that I am signing this document 
@@ -597,16 +597,16 @@ const ProposalSignature: React.FC<ProposalSignatureProps> = ({
           <Button variant="outline" onClick={onCancel} disabled={loading}>
             Cancel
           </Button>
-          <Button 
-            onClick={handleSubmit} 
-            disabled={loading || !agreementAccepted || !signerName.trim() || !signerEmail.trim()}
-          >
+          <Button
+            onClick={handleSubmit}
+            disabled={loading || !agreementAccepted || !signerName.trim() || !signerEmail.trim()}>
+
             {loading ? 'Signing...' : 'Sign Proposal'}
           </Button>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default ProposalSignature;

@@ -10,11 +10,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Camera, 
-  MapPin, 
-  Navigation, 
-  CheckCircle, 
+import {
+  Camera,
+  MapPin,
+  Navigation,
+  CheckCircle,
   XCircle,
   AlertTriangle,
   Clock,
@@ -31,8 +31,8 @@ import {
   Thermometer,
   CloudRain,
   Sun,
-  Wind
-} from 'lucide-react';
+  Wind } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Inspection {
@@ -87,7 +87,7 @@ const InspectorMobileInterface = () => {
   const [violations, setViolations] = useState<Violation[]>([]);
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [photos, setPhotos] = useState<string[]>([]);
-  const [location, setLocation] = useState<{lat: number, lng: number} | null>(null);
+  const [location, setLocation] = useState<{lat: number;lng: number;} | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [currentView, setCurrentView] = useState<'list' | 'inspection' | 'checklist' | 'violations' | 'photos'>('list');
@@ -110,9 +110,9 @@ const InspectorMobileInterface = () => {
         OrderByField: 'scheduled_at',
         IsAsc: true,
         Filters: [
-          { name: 'inspector_user_id', op: 'Equal', value: userInfo.data.ID },
-          { name: 'status', op: 'StringContains', value: 'scheduled' }
-        ]
+        { name: 'inspector_user_id', op: 'Equal', value: userInfo.data.ID },
+        { name: 'status', op: 'StringContains', value: 'scheduled' }]
+
       });
 
       if (error) throw error;
@@ -162,52 +162,52 @@ const InspectorMobileInterface = () => {
   const initializeChecklist = (inspectionType: string) => {
     // Initialize checklist based on inspection type
     const defaultChecklist: ChecklistItem[] = [
-      {
-        id: '1',
-        category: 'Safety',
-        item: 'Personal protective equipment available and in use',
-        required: true,
-        checked: false,
-        notes: '',
-        photos: []
-      },
-      {
-        id: '2',
-        category: 'Safety',
-        item: 'Work area properly secured',
-        required: true,
-        checked: false,
-        notes: '',
-        photos: []
-      },
-      {
-        id: '3',
-        category: 'Code Compliance',
-        item: 'Work matches approved plans',
-        required: true,
-        checked: false,
-        notes: '',
-        photos: []
-      },
-      {
-        id: '4',
-        category: 'Code Compliance',
-        item: 'Proper permits posted on site',
-        required: true,
-        checked: false,
-        notes: '',
-        photos: []
-      },
-      {
-        id: '5',
-        category: 'Quality',
-        item: 'Materials meet specification requirements',
-        required: false,
-        checked: false,
-        notes: '',
-        photos: []
-      }
-    ];
+    {
+      id: '1',
+      category: 'Safety',
+      item: 'Personal protective equipment available and in use',
+      required: true,
+      checked: false,
+      notes: '',
+      photos: []
+    },
+    {
+      id: '2',
+      category: 'Safety',
+      item: 'Work area properly secured',
+      required: true,
+      checked: false,
+      notes: '',
+      photos: []
+    },
+    {
+      id: '3',
+      category: 'Code Compliance',
+      item: 'Work matches approved plans',
+      required: true,
+      checked: false,
+      notes: '',
+      photos: []
+    },
+    {
+      id: '4',
+      category: 'Code Compliance',
+      item: 'Proper permits posted on site',
+      required: true,
+      checked: false,
+      notes: '',
+      photos: []
+    },
+    {
+      id: '5',
+      category: 'Quality',
+      item: 'Materials meet specification requirements',
+      required: false,
+      checked: false,
+      notes: '',
+      photos: []
+    }];
+
 
     setChecklist(defaultChecklist);
   };
@@ -249,11 +249,11 @@ const InspectorMobileInterface = () => {
       const { data: fileUrl, error: urlError } = await window.ezsite.apis.getUploadUrl(fileId);
       if (urlError) throw urlError;
 
-      setPhotos(prev => [...prev, fileUrl]);
+      setPhotos((prev) => [...prev, fileUrl]);
 
       toast({
         title: "Photo Captured",
-        description: "Photo uploaded successfully",
+        description: "Photo uploaded successfully"
       });
     } catch (error) {
       console.error('Error uploading photo:', error);
@@ -277,19 +277,19 @@ const InspectorMobileInterface = () => {
       photos: [],
       notes: ''
     };
-    setViolations(prev => [...prev, newViolation]);
+    setViolations((prev) => [...prev, newViolation]);
   };
 
   const updateViolation = (id: string, updates: Partial<Violation>) => {
-    setViolations(prev => prev.map(v => v.id === id ? { ...v, ...updates } : v));
+    setViolations((prev) => prev.map((v) => v.id === id ? { ...v, ...updates } : v));
   };
 
   const removeViolation = (id: string) => {
-    setViolations(prev => prev.filter(v => v.id !== id));
+    setViolations((prev) => prev.filter((v) => v.id !== id));
   };
 
   const updateChecklistItem = (id: string, updates: Partial<ChecklistItem>) => {
-    setChecklist(prev => prev.map(item => item.id === id ? { ...item, ...updates } : item));
+    setChecklist((prev) => prev.map((item) => item.id === id ? { ...item, ...updates } : item));
   };
 
   const completeInspection = async () => {
@@ -302,12 +302,12 @@ const InspectorMobileInterface = () => {
         ...activeInspection,
         status: 'completed',
         completed_at: new Date().toISOString(),
-        result: violations.some(v => v.severity === 'critical') ? 'failed' : 
-                violations.some(v => v.severity === 'major') ? 'conditional' : 'passed',
+        result: violations.some((v) => v.severity === 'critical') ? 'failed' :
+        violations.some((v) => v.severity === 'major') ? 'conditional' : 'passed',
         violations: JSON.stringify(violations),
         checklist_data: JSON.stringify(checklist),
         photos: JSON.stringify(photos),
-        reinspection_required: violations.some(v => v.severity === 'critical' || v.severity === 'major'),
+        reinspection_required: violations.some((v) => v.severity === 'critical' || v.severity === 'major'),
         updated_at: new Date().toISOString()
       };
 
@@ -336,7 +336,7 @@ const InspectorMobileInterface = () => {
 
       toast({
         title: "Inspection Complete",
-        description: `Inspection completed with result: ${completedInspection.result}`,
+        description: `Inspection completed with result: ${completedInspection.result}`
       });
 
       setActiveInspection(null);
@@ -357,20 +357,20 @@ const InspectorMobileInterface = () => {
 
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {
-      case 'scheduled': return 'bg-blue-100 text-blue-800';
-      case 'in_progress': return 'bg-yellow-100 text-yellow-800';
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'scheduled':return 'bg-blue-100 text-blue-800';
+      case 'in_progress':return 'bg-yellow-100 text-yellow-800';
+      case 'completed':return 'bg-green-100 text-green-800';
+      case 'cancelled':return 'bg-red-100 text-red-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-800';
-      case 'major': return 'bg-orange-100 text-orange-800';
-      case 'minor': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'critical':return 'bg-red-100 text-red-800';
+      case 'major':return 'bg-orange-100 text-orange-800';
+      case 'minor':return 'bg-yellow-100 text-yellow-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -386,8 +386,8 @@ const InspectorMobileInterface = () => {
             {location ? 'Located' : 'No GPS'}
           </div>
         </div>
-        {weather && (
-          <div className="flex items-center justify-between mt-2 text-sm opacity-90">
+        {weather &&
+        <div className="flex items-center justify-between mt-2 text-sm opacity-90">
             <div className="flex items-center gap-2">
               <Sun className="w-4 h-4" />
               {weather.condition} {weather.temperature}
@@ -397,50 +397,50 @@ const InspectorMobileInterface = () => {
               {weather.windSpeed}
             </div>
           </div>
-        )}
+        }
       </div>
 
       {/* Navigation */}
-      {activeInspection && currentView !== 'list' && (
-        <div className="bg-gray-100 p-2">
+      {activeInspection && currentView !== 'list' &&
+      <div className="bg-gray-100 p-2">
           <div className="flex gap-1 text-xs">
             <Button
-              variant={currentView === 'inspection' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setCurrentView('inspection')}
-            >
+            variant={currentView === 'inspection' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setCurrentView('inspection')}>
+
               Overview
             </Button>
             <Button
-              variant={currentView === 'checklist' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setCurrentView('checklist')}
-            >
+            variant={currentView === 'checklist' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setCurrentView('checklist')}>
+
               Checklist
             </Button>
             <Button
-              variant={currentView === 'violations' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setCurrentView('violations')}
-            >
+            variant={currentView === 'violations' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setCurrentView('violations')}>
+
               Violations
             </Button>
             <Button
-              variant={currentView === 'photos' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setCurrentView('photos')}
-            >
+            variant={currentView === 'photos' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setCurrentView('photos')}>
+
               Photos
             </Button>
           </div>
         </div>
-      )}
+      }
 
       {/* Content */}
       <div className="p-4">
         {/* Inspections List */}
-        {currentView === 'list' && (
-          <div className="space-y-4">
+        {currentView === 'list' &&
+        <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Today's Inspections</h2>
               <Button size="sm" onClick={() => window.location.reload()}>
@@ -448,10 +448,10 @@ const InspectorMobileInterface = () => {
               </Button>
             </div>
 
-            {inspections.length > 0 ? (
-              <div className="space-y-3">
-                {inspections.map((inspection) => (
-                  <Card key={inspection.id} className="cursor-pointer hover:shadow-md transition-shadow">
+            {inspections.length > 0 ?
+          <div className="space-y-3">
+                {inspections.map((inspection) =>
+            <Card key={inspection.id} className="cursor-pointer hover:shadow-md transition-shadow">
                     <CardContent className="p-4">
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
@@ -471,44 +471,44 @@ const InspectorMobileInterface = () => {
                         </div>
 
                         <Button
-                          className="w-full mt-3"
-                          onClick={() => startInspection(inspection)}
-                        >
+                    className="w-full mt-3"
+                    onClick={() => startInspection(inspection)}>
+
                           Start Inspection
                         </Button>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
-            ) : (
-              <Card>
+            )}
+              </div> :
+
+          <Card>
                 <CardContent className="text-center py-8">
                   <Calendar className="w-12 h-12 mx-auto mb-4 text-gray-400" />
                   <p className="text-gray-600">No inspections scheduled for today</p>
                 </CardContent>
               </Card>
-            )}
+          }
           </div>
-        )}
+        }
 
         {/* Inspection Overview */}
-        {currentView === 'inspection' && activeInspection && (
-          <div className="space-y-4">
+        {currentView === 'inspection' && activeInspection &&
+        <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setCurrentView('list')}
-              >
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentView('list')}>
+
                 ← Back
               </Button>
               <Button
-                variant="outline"
-                size="sm"
-                onClick={completeInspection}
-                disabled={loading}
-              >
+              variant="outline"
+              size="sm"
+              onClick={completeInspection}
+              disabled={loading}>
+
                 Complete
               </Button>
             </div>
@@ -524,15 +524,15 @@ const InspectorMobileInterface = () => {
                 <div>
                   <Label htmlFor="notes">Inspection Notes</Label>
                   <Textarea
-                    id="notes"
-                    value={activeInspection.notes || ''}
-                    onChange={(e) => setActiveInspection(prev => prev ? {
-                      ...prev,
-                      notes: e.target.value
-                    } : null)}
-                    placeholder="Add your inspection notes..."
-                    rows={4}
-                  />
+                  id="notes"
+                  value={activeInspection.notes || ''}
+                  onChange={(e) => setActiveInspection((prev) => prev ? {
+                    ...prev,
+                    notes: e.target.value
+                  } : null)}
+                  placeholder="Add your inspection notes..."
+                  rows={4} />
+
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 text-sm">
@@ -557,7 +557,7 @@ const InspectorMobileInterface = () => {
             {/* Quick Stats */}
             <div className="grid grid-cols-3 gap-2">
               <Card className="p-3 text-center">
-                <div className="text-lg font-bold text-green-600">{checklist.filter(item => item.checked).length}</div>
+                <div className="text-lg font-bold text-green-600">{checklist.filter((item) => item.checked).length}</div>
                 <div className="text-xs text-gray-600">Items Checked</div>
               </Card>
               <Card className="p-3 text-center">
@@ -591,108 +591,108 @@ const InspectorMobileInterface = () => {
             </div>
 
             <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              capture="environment"
-              onChange={handlePhotoCapture}
-              className="hidden"
-            />
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handlePhotoCapture}
+            className="hidden" />
+
           </div>
-        )}
+        }
 
         {/* Checklist View */}
-        {currentView === 'checklist' && activeInspection && (
-          <div className="space-y-4">
+        {currentView === 'checklist' && activeInspection &&
+        <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Inspection Checklist</h2>
               <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setCurrentView('inspection')}
-              >
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentView('inspection')}>
+
                 ← Back
               </Button>
             </div>
 
             <div className="space-y-3">
-              {checklist.map((item) => (
-                <Card key={item.id} className={item.required ? 'border-l-4 border-l-red-500' : ''}>
+              {checklist.map((item) =>
+            <Card key={item.id} className={item.required ? 'border-l-4 border-l-red-500' : ''}>
                   <CardContent className="p-4">
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">
                         <Checkbox
-                          checked={item.checked}
-                          onCheckedChange={(checked) => 
-                            updateChecklistItem(item.id, { checked: !!checked })
-                          }
-                          className="mt-0.5"
-                        />
+                      checked={item.checked}
+                      onCheckedChange={(checked) =>
+                      updateChecklistItem(item.id, { checked: !!checked })
+                      }
+                      className="mt-0.5" />
+
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <p className="text-sm font-medium">{item.item}</p>
-                            {item.required && (
-                              <Badge variant="destructive" className="text-xs">Required</Badge>
-                            )}
+                            {item.required &&
+                        <Badge variant="destructive" className="text-xs">Required</Badge>
+                        }
                           </div>
                           <p className="text-xs text-gray-600">{item.category}</p>
                         </div>
                       </div>
                       
                       <Textarea
-                        value={item.notes}
-                        onChange={(e) => 
-                          updateChecklistItem(item.id, { notes: e.target.value })
-                        }
-                        placeholder="Add notes..."
-                        rows={2}
-                        className="text-sm"
-                      />
+                    value={item.notes}
+                    onChange={(e) =>
+                    updateChecklistItem(item.id, { notes: e.target.value })
+                    }
+                    placeholder="Add notes..."
+                    rows={2}
+                    className="text-sm" />
+
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+            )}
             </div>
           </div>
-        )}
+        }
 
         {/* Violations View */}
-        {currentView === 'violations' && activeInspection && (
-          <div className="space-y-4">
+        {currentView === 'violations' && activeInspection &&
+        <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Violations</h2>
               <div className="flex gap-2">
                 <Button
-                  size="sm"
-                  onClick={addViolation}
-                >
+                size="sm"
+                onClick={addViolation}>
+
                   <Plus className="w-4 h-4 mr-1" />
                   Add
                 </Button>
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setCurrentView('inspection')}
-                >
+                variant="ghost"
+                size="sm"
+                onClick={() => setCurrentView('inspection')}>
+
                   ← Back
                 </Button>
               </div>
             </div>
 
-            {violations.length > 0 ? (
-              <div className="space-y-3">
-                {violations.map((violation) => (
-                  <Card key={violation.id}>
+            {violations.length > 0 ?
+          <div className="space-y-3">
+                {violations.map((violation) =>
+            <Card key={violation.id}>
                     <CardContent className="p-4 space-y-3">
                       <div className="flex items-center justify-between">
                         <Badge className={getSeverityColor(violation.severity)}>
                           {violation.severity.toUpperCase()}
                         </Badge>
                         <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeViolation(violation.id!)}
-                        >
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeViolation(violation.id!)}>
+
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -701,19 +701,19 @@ const InspectorMobileInterface = () => {
                         <div>
                           <Label className="text-xs">Violation Code</Label>
                           <Input
-                            value={violation.code}
-                            onChange={(e) => updateViolation(violation.id!, { code: e.target.value })}
-                            placeholder="e.g., SAFETY-001"
-                            className="text-sm"
-                          />
+                      value={violation.code}
+                      onChange={(e) => updateViolation(violation.id!, { code: e.target.value })}
+                      placeholder="e.g., SAFETY-001"
+                      className="text-sm" />
+
                         </div>
 
                         <div>
                           <Label className="text-xs">Type</Label>
                           <Select
-                            value={violation.type}
-                            onValueChange={(value) => updateViolation(violation.id!, { type: value })}
-                          >
+                      value={violation.type}
+                      onValueChange={(value) => updateViolation(violation.id!, { type: value })}>
+
                             <SelectTrigger className="text-sm">
                               <SelectValue placeholder="Select type" />
                             </SelectTrigger>
@@ -731,9 +731,9 @@ const InspectorMobileInterface = () => {
                         <div>
                           <Label className="text-xs">Severity</Label>
                           <Select
-                            value={violation.severity}
-                            onValueChange={(value) => updateViolation(violation.id!, { severity: value as any })}
-                          >
+                      value={violation.severity}
+                      onValueChange={(value) => updateViolation(violation.id!, { severity: value as any })}>
+
                             <SelectTrigger className="text-sm">
                               <SelectValue />
                             </SelectTrigger>
@@ -748,31 +748,31 @@ const InspectorMobileInterface = () => {
                         <div>
                           <Label className="text-xs">Description</Label>
                           <Textarea
-                            value={violation.description}
-                            onChange={(e) => updateViolation(violation.id!, { description: e.target.value })}
-                            placeholder="Describe the violation..."
-                            rows={3}
-                            className="text-sm"
-                          />
+                      value={violation.description}
+                      onChange={(e) => updateViolation(violation.id!, { description: e.target.value })}
+                      placeholder="Describe the violation..."
+                      rows={3}
+                      className="text-sm" />
+
                         </div>
 
                         <div>
                           <Label className="text-xs">Notes</Label>
                           <Textarea
-                            value={violation.notes}
-                            onChange={(e) => updateViolation(violation.id!, { notes: e.target.value })}
-                            placeholder="Additional notes..."
-                            rows={2}
-                            className="text-sm"
-                          />
+                      value={violation.notes}
+                      onChange={(e) => updateViolation(violation.id!, { notes: e.target.value })}
+                      placeholder="Additional notes..."
+                      rows={2}
+                      className="text-sm" />
+
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
-              </div>
-            ) : (
-              <Card>
+            )}
+              </div> :
+
+          <Card>
                 <CardContent className="text-center py-8">
                   <CheckCircle className="w-12 h-12 mx-auto mb-4 text-green-500" />
                   <p className="text-gray-600">No violations found</p>
@@ -782,13 +782,13 @@ const InspectorMobileInterface = () => {
                   </Button>
                 </CardContent>
               </Card>
-            )}
+          }
           </div>
-        )}
+        }
 
         {/* Photos View */}
-        {currentView === 'photos' && activeInspection && (
-          <div className="space-y-4">
+        {currentView === 'photos' && activeInspection &&
+        <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Photos</h2>
               <div className="flex gap-2">
@@ -797,37 +797,37 @@ const InspectorMobileInterface = () => {
                   Take Photo
                 </Button>
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setCurrentView('inspection')}
-                >
+                variant="ghost"
+                size="sm"
+                onClick={() => setCurrentView('inspection')}>
+
                   ← Back
                 </Button>
               </div>
             </div>
 
-            {photos.length > 0 ? (
-              <div className="grid grid-cols-2 gap-2">
-                {photos.map((photo, index) => (
-                  <div key={index} className="relative aspect-square">
+            {photos.length > 0 ?
+          <div className="grid grid-cols-2 gap-2">
+                {photos.map((photo, index) =>
+            <div key={index} className="relative aspect-square">
                     <img
-                      src={photo}
-                      alt={`Inspection photo ${index + 1}`}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
+                src={photo}
+                alt={`Inspection photo ${index + 1}`}
+                className="w-full h-full object-cover rounded-lg" />
+
                     <Button
-                      variant="destructive"
-                      size="sm"
-                      className="absolute top-2 right-2 w-8 h-8 p-0"
-                      onClick={() => setPhotos(prev => prev.filter((_, i) => i !== index))}
-                    >
+                variant="destructive"
+                size="sm"
+                className="absolute top-2 right-2 w-8 h-8 p-0"
+                onClick={() => setPhotos((prev) => prev.filter((_, i) => i !== index))}>
+
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <Card>
+            )}
+              </div> :
+
+          <Card>
                 <CardContent className="text-center py-12">
                   <Camera className="w-16 h-16 mx-auto mb-4 text-gray-400" />
                   <p className="text-gray-600 mb-4">No photos captured yet</p>
@@ -837,12 +837,12 @@ const InspectorMobileInterface = () => {
                   </Button>
                 </CardContent>
               </Card>
-            )}
+          }
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default InspectorMobileInterface;

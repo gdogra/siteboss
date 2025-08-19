@@ -3,11 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  FileText, Clock, CheckCircle, XCircle, Download, 
+import {
+  FileText, Clock, CheckCircle, XCircle, Download,
   Share2, Mail, Calendar, User, Phone, MapPin,
-  DollarSign, Eye
-} from 'lucide-react';
+  DollarSign, Eye } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ProposalSignature from './ProposalSignature';
 
@@ -85,16 +85,16 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
         OrderByField: 'id',
         IsAsc: true,
         Filters: [
-          { name: 'id', op: 'Equal', value: proposalId }
-        ]
+        { name: 'id', op: 'Equal', value: proposalId }]
+
       });
 
       if (error) throw error;
-      
+
       const proposalData = data?.List?.[0];
       if (proposalData) {
         setProposal(proposalData);
-        
+
         // Update status to viewed if first time viewing
         if (proposalData.status === 'sent' && !proposalData.viewed_at && !readonly) {
           await window.ezsite.apis.tableUpdate(35433, {
@@ -123,23 +123,23 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
         OrderByField: 'version_number',
         IsAsc: false,
         Filters: [
-          { name: 'proposal_id', op: 'Equal', value: proposalId },
-          { name: 'is_current', op: 'Equal', value: true }
-        ]
+        { name: 'proposal_id', op: 'Equal', value: proposalId },
+        { name: 'is_current', op: 'Equal', value: true }]
+
       });
 
       if (error) throw error;
-      
+
       const versionData = data?.List?.[0];
       if (versionData) {
         setVersion(versionData);
-        
+
         // Parse line items
         if (versionData.line_items) {
           const items = JSON.parse(versionData.line_items);
           setLineItems(items);
         }
-        
+
         // Parse pricing data
         if (versionData.pricing_data) {
           const pricing = JSON.parse(versionData.pricing_data);
@@ -182,7 +182,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
   const formatCurrency = (amount: number, currency: string = 'USD') => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: currency,
+      currency: currency
     }).format(amount / 100);
   };
 
@@ -261,13 +261,13 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
 
   const handleShare = async () => {
     const url = `${window.location.origin}/proposal/${proposalId}/view`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
           title: proposal?.title,
           text: `View proposal: ${proposal?.title}`,
-          url: url,
+          url: url
         });
       } catch (error) {
         // Fallback to clipboard
@@ -291,8 +291,8 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         <span className="ml-4">Loading proposal...</span>
-      </div>
-    );
+      </div>);
+
   }
 
   if (!proposal) {
@@ -301,8 +301,8 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
         <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Proposal Not Found</h3>
         <p className="text-gray-600">The proposal you're looking for doesn't exist or has been removed.</p>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -318,12 +318,12 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
                   {getStatusIcon(proposal.status)}
                   <span className="ml-1 capitalize">{proposal.status}</span>
                 </Badge>
-                {isExpired() && (
-                  <Badge variant="destructive">
+                {isExpired() &&
+                <Badge variant="destructive">
                     <Clock className="w-4 h-4 mr-1" />
                     Expired
                   </Badge>
-                )}
+                }
               </div>
               <p className="text-lg text-gray-600">Proposal #{proposal.proposal_number}</p>
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
@@ -347,12 +347,12 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
                 <Download className="w-4 h-4 mr-2" />
                 Download PDF
               </Button>
-              {canSign() && (
-                <Button onClick={() => setShowSignature(true)}>
+              {canSign() &&
+              <Button onClick={() => setShowSignature(true)}>
                   <CheckCircle className="w-4 h-4 mr-2" />
                   Sign Proposal
                 </Button>
-              )}
+              }
             </div>
           </div>
         </CardContent>
@@ -370,38 +370,38 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <h4 className="font-medium text-gray-900">{proposal.client_name}</h4>
-              {proposal.client_email && (
-                <div className="flex items-center gap-2 text-gray-600">
+              {proposal.client_email &&
+              <div className="flex items-center gap-2 text-gray-600">
                   <Mail className="w-4 h-4" />
                   <a href={`mailto:${proposal.client_email}`} className="hover:text-blue-600">
                     {proposal.client_email}
                   </a>
                 </div>
-              )}
-              {proposal.client_phone && (
-                <div className="flex items-center gap-2 text-gray-600">
+              }
+              {proposal.client_phone &&
+              <div className="flex items-center gap-2 text-gray-600">
                   <Phone className="w-4 h-4" />
                   <a href={`tel:${proposal.client_phone}`} className="hover:text-blue-600">
                     {proposal.client_phone}
                   </a>
                 </div>
-              )}
+              }
             </div>
-            {proposal.client_address && (
-              <div>
+            {proposal.client_address &&
+            <div>
                 <div className="flex items-start gap-2 text-gray-600">
                   <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
                   <span>{proposal.client_address}</span>
                 </div>
               </div>
-            )}
+            }
           </div>
         </CardContent>
       </Card>
 
       {/* Line Items */}
-      {lineItems.length > 0 && (
-        <Card>
+      {lineItems.length > 0 &&
+      <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="w-5 h-5" />
@@ -420,8 +420,8 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
                   </tr>
                 </thead>
                 <tbody>
-                  {lineItems.map((item, index) => (
-                    <tr key={index} className="border-b">
+                  {lineItems.map((item, index) =>
+                <tr key={index} className="border-b">
                       <td className="py-3 px-4">{item.description}</td>
                       <td className="text-right py-3 px-4">{item.quantity}</td>
                       <td className="text-right py-3 px-4">
@@ -431,7 +431,7 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
                         {formatCurrency(item.total * 100, proposal.currency)}
                       </td>
                     </tr>
-                  ))}
+                )}
                 </tbody>
               </table>
             </div>
@@ -444,18 +444,18 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
                 <span>Subtotal:</span>
                 <span>{formatCurrency(pricingData.subtotal || 0, proposal.currency)}</span>
               </div>
-              {(pricingData.tax_amount || 0) > 0 && (
-                <div className="flex justify-between">
+              {(pricingData.tax_amount || 0) > 0 &&
+            <div className="flex justify-between">
                   <span>Tax:</span>
                   <span>{formatCurrency(pricingData.tax_amount, proposal.currency)}</span>
                 </div>
-              )}
-              {(pricingData.discount_amount || 0) > 0 && (
-                <div className="flex justify-between text-green-600">
+            }
+              {(pricingData.discount_amount || 0) > 0 &&
+            <div className="flex justify-between text-green-600">
                   <span>Discount:</span>
                   <span>-{formatCurrency(pricingData.discount_amount, proposal.currency)}</span>
                 </div>
-              )}
+            }
               <Separator />
               <div className="flex justify-between text-lg font-bold">
                 <span>Total:</span>
@@ -464,11 +464,11 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
             </div>
           </CardContent>
         </Card>
-      )}
+      }
 
       {/* Terms and Conditions */}
-      {version?.terms_conditions && (
-        <Card>
+      {version?.terms_conditions &&
+      <Card>
           <CardHeader>
             <CardTitle>Terms and Conditions</CardTitle>
           </CardHeader>
@@ -480,11 +480,11 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
             </div>
           </CardContent>
         </Card>
-      )}
+      }
 
       {/* Sign Proposal Section */}
-      {canSign() && !showSignature && (
-        <Card className="border-green-200 bg-green-50">
+      {canSign() && !showSignature &&
+      <Card className="border-green-200 bg-green-50">
           <CardContent className="p-6 text-center">
             <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-green-900 mb-2">
@@ -499,28 +499,28 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
             </Button>
           </CardContent>
         </Card>
-      )}
+      }
 
       {/* Signature Component */}
-      {showSignature && (
-        <ProposalSignature
-          proposalId={proposalId}
-          proposalVersionId={version?.id || 0}
-          onSuccess={() => {
-            setShowSignature(false);
-            fetchProposal(); // Refresh to show signed status
-            toast({
-              title: 'Success',
-              description: 'Proposal signed successfully!'
-            });
-          }}
-          onCancel={() => setShowSignature(false)}
-        />
-      )}
+      {showSignature &&
+      <ProposalSignature
+        proposalId={proposalId}
+        proposalVersionId={version?.id || 0}
+        onSuccess={() => {
+          setShowSignature(false);
+          fetchProposal(); // Refresh to show signed status
+          toast({
+            title: 'Success',
+            description: 'Proposal signed successfully!'
+          });
+        }}
+        onCancel={() => setShowSignature(false)} />
+
+      }
 
       {/* Expired Notice */}
-      {isExpired() && (
-        <Card className="border-orange-200 bg-orange-50">
+      {isExpired() &&
+      <Card className="border-orange-200 bg-orange-50">
           <CardContent className="p-6 text-center">
             <Clock className="w-12 h-12 text-orange-600 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-orange-900 mb-2">
@@ -532,9 +532,9 @@ const ProposalViewer: React.FC<ProposalViewerProps> = ({ proposalId, readonly = 
             </p>
           </CardContent>
         </Card>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default ProposalViewer;

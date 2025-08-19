@@ -10,11 +10,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
-import { 
-  FileText, 
-  Calendar, 
-  DollarSign, 
-  Upload, 
+import {
+  FileText,
+  Calendar,
+  DollarSign,
+  Upload,
   AlertCircle,
   CheckCircle,
   Clock,
@@ -24,8 +24,8 @@ import {
   MapPin,
   CreditCard,
   FileCheck,
-  Bell
-} from 'lucide-react';
+  Bell } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useDropzone } from 'react-dropzone';
 
@@ -103,7 +103,7 @@ const ApplicantPortal = () => {
           IsAsc: false,
           Filters: [{ name: 'applicant_user_id', op: 'Equal', value: userInfo.data.ID }]
         });
-        
+
         if (applicationsError) throw applicationsError;
         setUserApplications(applicationsData?.List || []);
       }
@@ -116,7 +116,7 @@ const ApplicantPortal = () => {
         IsAsc: true,
         Filters: [{ name: 'is_active', op: 'Equal', value: true }]
       });
-      
+
       if (typesError) throw typesError;
       setPermitTypes(typesData?.List || []);
 
@@ -133,9 +133,9 @@ const ApplicantPortal = () => {
   };
 
   const handlePermitTypeChange = (permitTypeId: string) => {
-    const selectedType = permitTypes.find(type => type.id === parseInt(permitTypeId));
+    const selectedType = permitTypes.find((type) => type.id === parseInt(permitTypeId));
     if (selectedType) {
-      setCurrentApplication(prev => ({
+      setCurrentApplication((prev) => ({
         ...prev,
         permit_type_id: selectedType.id
       }));
@@ -156,7 +156,7 @@ const ApplicantPortal = () => {
     }
   };
 
-  const FileUploadZone = ({ document, index }: { document: DocumentUpload; index: number }) => {
+  const FileUploadZone = ({ document, index }: {document: DocumentUpload;index: number;}) => {
     const onDrop = (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
       if (file) {
@@ -177,18 +177,18 @@ const ApplicantPortal = () => {
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-          isDragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
-        }`}
-      >
+        isDragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}`
+        }>
+
         <input {...getInputProps()} />
         <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        {document.file ? (
-          <div>
+        {document.file ?
+        <div>
             <p className="text-sm font-medium">{document.file.name}</p>
             <p className="text-xs text-gray-500">{(document.file.size / 1024 / 1024).toFixed(2)} MB</p>
-          </div>
-        ) : (
-          <div>
+          </div> :
+
+        <div>
             <p className="text-sm">
               {isDragActive ? 'Drop file here...' : `Upload ${document.document_type}`}
             </p>
@@ -196,9 +196,9 @@ const ApplicantPortal = () => {
               {document.is_required ? 'Required' : 'Optional'}
             </p>
           </div>
-        )}
-      </div>
-    );
+        }
+      </div>);
+
   };
 
   const handleSubmitApplication = async () => {
@@ -206,8 +206,8 @@ const ApplicantPortal = () => {
       setLoading(true);
 
       // Validate required fields
-      if (!currentApplication.permit_type_id || !currentApplication.property_address || 
-          !currentApplication.work_description || !currentApplication.contractor_name) {
+      if (!currentApplication.permit_type_id || !currentApplication.property_address ||
+      !currentApplication.work_description || !currentApplication.contractor_name) {
         toast({
           title: "Validation Error",
           description: "Please fill in all required fields.",
@@ -218,9 +218,9 @@ const ApplicantPortal = () => {
 
       // Generate application number
       const applicationNumber = `PERM${Date.now()}`;
-      
+
       const userInfo = await window.ezsite.apis.getUserInfo();
-      
+
       const applicationData = {
         ...currentApplication,
         application_number: applicationNumber,
@@ -276,7 +276,7 @@ const ApplicantPortal = () => {
 
       toast({
         title: "Success",
-        description: `Application ${applicationNumber} submitted successfully!`,
+        description: `Application ${applicationNumber} submitted successfully!`
       });
 
       // Reset form and reload data
@@ -307,16 +307,16 @@ const ApplicantPortal = () => {
 
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'under_review': return 'bg-blue-100 text-blue-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'approved':return 'bg-green-100 text-green-800';
+      case 'pending':return 'bg-yellow-100 text-yellow-800';
+      case 'under_review':return 'bg-blue-100 text-blue-800';
+      case 'rejected':return 'bg-red-100 text-red-800';
+      case 'draft':return 'bg-gray-100 text-gray-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const selectedPermitType = permitTypes.find(type => type.id === currentApplication.permit_type_id);
+  const selectedPermitType = permitTypes.find((type) => type.id === currentApplication.permit_type_id);
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 p-6">
@@ -348,25 +348,25 @@ const ApplicantPortal = () => {
               <div className="space-y-6">
                 {/* Progress Steps */}
                 <div className="flex items-center justify-between mb-8">
-                  {[1, 2, 3, 4].map((stepNum) => (
-                    <div key={stepNum} className="flex items-center">
+                  {[1, 2, 3, 4].map((stepNum) =>
+                  <div key={stepNum} className="flex items-center">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                        step >= stepNum ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
-                      }`}>
+                    step >= stepNum ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`
+                    }>
                         {stepNum}
                       </div>
-                      {stepNum < 4 && (
-                        <div className={`w-16 h-1 mx-4 ${
-                          step > stepNum ? 'bg-blue-600' : 'bg-gray-200'
-                        }`} />
-                      )}
+                      {stepNum < 4 &&
+                    <div className={`w-16 h-1 mx-4 ${
+                    step > stepNum ? 'bg-blue-600' : 'bg-gray-200'}`
+                    } />
+                    }
                     </div>
-                  ))}
+                  )}
                 </div>
 
                 {/* Step 1: Permit Type Selection */}
-                {step === 1 && (
-                  <div className="space-y-4">
+                {step === 1 &&
+                <div className="space-y-4">
                     <h3 className="text-lg font-medium">Step 1: Select Permit Type</h3>
                     <div className="grid gap-4">
                       <div>
@@ -376,156 +376,156 @@ const ApplicantPortal = () => {
                             <SelectValue placeholder="Select permit type" />
                           </SelectTrigger>
                           <SelectContent>
-                            {permitTypes.map((type) => (
-                              <SelectItem key={type.id} value={type.id.toString()}>
+                            {permitTypes.map((type) =>
+                          <SelectItem key={type.id} value={type.id.toString()}>
                                 <div>
                                   <div className="font-medium">{type.name}</div>
                                   <div className="text-sm text-gray-500">${(type.fee_amount / 100).toFixed(2)} - {type.processing_time_days} days</div>
                                 </div>
                               </SelectItem>
-                            ))}
+                          )}
                           </SelectContent>
                         </Select>
                       </div>
 
-                      {selectedPermitType && (
-                        <div className="p-4 bg-blue-50 rounded-lg">
+                      {selectedPermitType &&
+                    <div className="p-4 bg-blue-50 rounded-lg">
                           <h4 className="font-medium text-blue-900">{selectedPermitType.name}</h4>
                           <p className="text-sm text-blue-800 mb-2">{selectedPermitType.description}</p>
                           <div className="flex gap-4 text-sm">
                             <span>Fee: ${(selectedPermitType.fee_amount / 100).toFixed(2)}</span>
                             <span>Processing Time: {selectedPermitType.processing_time_days} days</span>
-                            {selectedPermitType.inspection_required && (
-                              <Badge className="bg-blue-100 text-blue-800">Inspection Required</Badge>
-                            )}
+                            {selectedPermitType.inspection_required &&
+                        <Badge className="bg-blue-100 text-blue-800">Inspection Required</Badge>
+                        }
                           </div>
                         </div>
-                      )}
+                    }
                     </div>
                   </div>
-                )}
+                }
 
                 {/* Step 2: Application Details */}
-                {step === 2 && (
-                  <div className="space-y-4">
+                {step === 2 &&
+                <div className="space-y-4">
                     <h3 className="text-lg font-medium">Step 2: Application Details</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="property-address">Property Address *</Label>
                         <Input
-                          id="property-address"
-                          value={currentApplication.property_address}
-                          onChange={(e) => setCurrentApplication(prev => ({
-                            ...prev,
-                            property_address: e.target.value
-                          }))}
-                          placeholder="Enter complete property address"
-                        />
+                        id="property-address"
+                        value={currentApplication.property_address}
+                        onChange={(e) => setCurrentApplication((prev) => ({
+                          ...prev,
+                          property_address: e.target.value
+                        }))}
+                        placeholder="Enter complete property address" />
+
                       </div>
 
                       <div>
                         <Label htmlFor="estimated-value">Estimated Project Value *</Label>
                         <Input
-                          id="estimated-value"
-                          type="number"
-                          value={currentApplication.estimated_value / 100}
-                          onChange={(e) => setCurrentApplication(prev => ({
-                            ...prev,
-                            estimated_value: Math.round(parseFloat(e.target.value || '0') * 100)
-                          }))}
-                          placeholder="Enter estimated value in dollars"
-                        />
+                        id="estimated-value"
+                        type="number"
+                        value={currentApplication.estimated_value / 100}
+                        onChange={(e) => setCurrentApplication((prev) => ({
+                          ...prev,
+                          estimated_value: Math.round(parseFloat(e.target.value || '0') * 100)
+                        }))}
+                        placeholder="Enter estimated value in dollars" />
+
                       </div>
 
                       <div>
                         <Label htmlFor="contractor-name">Contractor Name *</Label>
                         <Input
-                          id="contractor-name"
-                          value={currentApplication.contractor_name}
-                          onChange={(e) => setCurrentApplication(prev => ({
-                            ...prev,
-                            contractor_name: e.target.value
-                          }))}
-                          placeholder="Enter contractor/company name"
-                        />
+                        id="contractor-name"
+                        value={currentApplication.contractor_name}
+                        onChange={(e) => setCurrentApplication((prev) => ({
+                          ...prev,
+                          contractor_name: e.target.value
+                        }))}
+                        placeholder="Enter contractor/company name" />
+
                       </div>
 
                       <div>
                         <Label htmlFor="contractor-license">Contractor License Number *</Label>
                         <Input
-                          id="contractor-license"
-                          value={currentApplication.contractor_license}
-                          onChange={(e) => setCurrentApplication(prev => ({
-                            ...prev,
-                            contractor_license: e.target.value
-                          }))}
-                          placeholder="Enter license number"
-                        />
+                        id="contractor-license"
+                        value={currentApplication.contractor_license}
+                        onChange={(e) => setCurrentApplication((prev) => ({
+                          ...prev,
+                          contractor_license: e.target.value
+                        }))}
+                        placeholder="Enter license number" />
+
                       </div>
 
                       <div className="md:col-span-2">
                         <Label htmlFor="work-description">Work Description *</Label>
                         <Textarea
-                          id="work-description"
-                          value={currentApplication.work_description}
-                          onChange={(e) => setCurrentApplication(prev => ({
-                            ...prev,
-                            work_description: e.target.value
-                          }))}
-                          placeholder="Provide detailed description of the work to be performed"
-                          rows={4}
-                        />
+                        id="work-description"
+                        value={currentApplication.work_description}
+                        onChange={(e) => setCurrentApplication((prev) => ({
+                          ...prev,
+                          work_description: e.target.value
+                        }))}
+                        placeholder="Provide detailed description of the work to be performed"
+                        rows={4} />
+
                       </div>
 
                       <div className="md:col-span-2">
                         <Label htmlFor="applicant-notes">Additional Notes (Optional)</Label>
                         <Textarea
-                          id="applicant-notes"
-                          value={currentApplication.applicant_notes || ''}
-                          onChange={(e) => setCurrentApplication(prev => ({
-                            ...prev,
-                            applicant_notes: e.target.value
-                          }))}
-                          placeholder="Any additional information or special requests"
-                          rows={3}
-                        />
+                        id="applicant-notes"
+                        value={currentApplication.applicant_notes || ''}
+                        onChange={(e) => setCurrentApplication((prev) => ({
+                          ...prev,
+                          applicant_notes: e.target.value
+                        }))}
+                        placeholder="Any additional information or special requests"
+                        rows={3} />
+
                       </div>
                     </div>
                   </div>
-                )}
+                }
 
                 {/* Step 3: Document Upload */}
-                {step === 3 && (
-                  <div className="space-y-4">
+                {step === 3 &&
+                <div className="space-y-4">
                     <h3 className="text-lg font-medium">Step 3: Upload Required Documents</h3>
-                    {documents.length > 0 ? (
-                      <div className="grid gap-4">
-                        {documents.map((doc, index) => (
-                          <div key={index} className="p-4 border rounded-lg">
+                    {documents.length > 0 ?
+                  <div className="grid gap-4">
+                        {documents.map((doc, index) =>
+                    <div key={index} className="p-4 border rounded-lg">
                             <div className="flex items-center justify-between mb-3">
                               <h4 className="font-medium">{doc.document_type}</h4>
-                              {doc.is_required ? (
-                                <Badge variant="destructive">Required</Badge>
-                              ) : (
-                                <Badge variant="secondary">Optional</Badge>
-                              )}
+                              {doc.is_required ?
+                        <Badge variant="destructive">Required</Badge> :
+
+                        <Badge variant="secondary">Optional</Badge>
+                        }
                             </div>
                             <FileUploadZone document={doc} index={index} />
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-8 text-gray-500">
+                    )}
+                      </div> :
+
+                  <div className="text-center py-8 text-gray-500">
                         <FileCheck className="w-12 h-12 mx-auto mb-4" />
                         <p>No documents required for this permit type.</p>
                       </div>
-                    )}
+                  }
                   </div>
-                )}
+                }
 
                 {/* Step 4: Review and Submit */}
-                {step === 4 && (
-                  <div className="space-y-6">
+                {step === 4 &&
+                <div className="space-y-6">
                     <h3 className="text-lg font-medium">Step 4: Review and Submit</h3>
                     
                     <div className="space-y-4">
@@ -572,50 +572,50 @@ const ApplicantPortal = () => {
                           <CardTitle className="text-lg">Documents</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          {documents.filter(doc => doc.file).length > 0 ? (
-                            <div className="space-y-2">
-                              {documents.filter(doc => doc.file).map((doc, index) => (
-                                <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                          {documents.filter((doc) => doc.file).length > 0 ?
+                        <div className="space-y-2">
+                              {documents.filter((doc) => doc.file).map((doc, index) =>
+                          <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                                   <span className="text-sm">{doc.document_type}: {doc.document_name}</span>
                                   <Badge variant="outline">Ready to upload</Badge>
                                 </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <p className="text-gray-500">No documents attached</p>
                           )}
+                            </div> :
+
+                        <p className="text-gray-500">No documents attached</p>
+                        }
                         </CardContent>
                       </Card>
                     </div>
                   </div>
-                )}
+                }
 
                 {/* Navigation Buttons */}
                 <div className="flex justify-between pt-6">
                   <Button
                     variant="outline"
                     onClick={() => setStep(Math.max(1, step - 1))}
-                    disabled={step === 1}
-                  >
+                    disabled={step === 1}>
+
                     Previous
                   </Button>
 
-                  {step < 4 ? (
-                    <Button
-                      onClick={() => setStep(step + 1)}
-                      disabled={step === 1 && !currentApplication.permit_type_id}
-                    >
+                  {step < 4 ?
+                  <Button
+                    onClick={() => setStep(step + 1)}
+                    disabled={step === 1 && !currentApplication.permit_type_id}>
+
                       Next
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleSubmitApplication}
-                      disabled={loading}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
+                    </Button> :
+
+                  <Button
+                    onClick={handleSubmitApplication}
+                    disabled={loading}
+                    className="bg-green-600 hover:bg-green-700">
+
                       {loading ? 'Submitting...' : 'Submit Application'}
                     </Button>
-                  )}
+                  }
                 </div>
               </div>
             </CardContent>
@@ -632,10 +632,10 @@ const ApplicantPortal = () => {
             </Button>
           </div>
 
-          {userApplications.length > 0 ? (
-            <div className="grid gap-4">
-              {userApplications.map((application) => (
-                <Card key={application.id}>
+          {userApplications.length > 0 ?
+          <div className="grid gap-4">
+              {userApplications.map((application) =>
+            <Card key={application.id}>
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start">
                       <div className="space-y-2">
@@ -644,12 +644,12 @@ const ApplicantPortal = () => {
                           <Badge className={getStatusColor(application.status || '')}>
                             {application.status?.replace('_', ' ').toUpperCase()}
                           </Badge>
-                          {application.fee_paid && (
-                            <Badge className="bg-green-100 text-green-800">
+                          {application.fee_paid &&
+                      <Badge className="bg-green-100 text-green-800">
                               <CreditCard className="w-3 h-3 mr-1" />
                               PAID
                             </Badge>
-                          )}
+                      }
                         </div>
                         <p className="text-gray-600 flex items-center gap-2">
                           <MapPin className="w-4 h-4" />
@@ -659,9 +659,9 @@ const ApplicantPortal = () => {
                         <div className="flex gap-4 text-sm text-gray-500">
                           <span>Submitted: {application.submitted_at ? new Date(application.submitted_at).toLocaleDateString() : 'Draft'}</span>
                           <span>Value: ${((application.estimated_value || 0) / 100).toLocaleString()}</span>
-                          {application.expires_at && (
-                            <span>Expires: {new Date(application.expires_at).toLocaleDateString()}</span>
-                          )}
+                          {application.expires_at &&
+                      <span>Expires: {new Date(application.expires_at).toLocaleDateString()}</span>
+                      }
                         </div>
                       </div>
                       <div className="flex gap-2">
@@ -669,20 +669,20 @@ const ApplicantPortal = () => {
                           <Eye className="w-4 h-4 mr-2" />
                           View Details
                         </Button>
-                        {!application.fee_paid && application.status !== 'draft' && (
-                          <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                        {!application.fee_paid && application.status !== 'draft' &&
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700">
                             <CreditCard className="w-4 h-4 mr-2" />
                             Pay Fees
                           </Button>
-                        )}
+                    }
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          ) : (
-            <Card>
+            )}
+            </div> :
+
+          <Card>
               <CardContent className="text-center py-12">
                 <FileText className="w-16 h-16 mx-auto mb-4 text-gray-400" />
                 <h3 className="text-lg font-medium mb-2">No Applications Yet</h3>
@@ -693,7 +693,7 @@ const ApplicantPortal = () => {
                 </Button>
               </CardContent>
             </Card>
-          )}
+          }
         </TabsContent>
 
         {/* Available Permits Tab */}
@@ -703,19 +703,19 @@ const ApplicantPortal = () => {
           </div>
 
           <div className="grid gap-6">
-            {permitTypes.map((type) => (
-              <Card key={type.id}>
+            {permitTypes.map((type) =>
+            <Card key={type.id}>
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
                         <h3 className="text-xl font-semibold">{type.name}</h3>
                         <Badge variant="outline">{type.code}</Badge>
-                        {type.inspection_required && (
-                          <Badge className="bg-blue-100 text-blue-800">
+                        {type.inspection_required &&
+                      <Badge className="bg-blue-100 text-blue-800">
                             Inspection Required
                           </Badge>
-                        )}
+                      }
                       </div>
                       <p className="text-gray-600">{type.description}</p>
                       <div className="flex gap-6 text-sm">
@@ -730,23 +730,23 @@ const ApplicantPortal = () => {
                       </div>
                     </div>
                     <Button
-                      onClick={() => {
-                        handlePermitTypeChange(type.id.toString());
-                        setActiveTab('new-application');
-                      }}
-                    >
+                    onClick={() => {
+                      handlePermitTypeChange(type.id.toString());
+                      setActiveTab('new-application');
+                    }}>
+
                       <Plus className="w-4 h-4 mr-2" />
                       Apply Now
                     </Button>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ApplicantPortal;

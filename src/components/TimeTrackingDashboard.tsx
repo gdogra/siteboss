@@ -6,20 +6,20 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Clock, 
-  MapPin, 
-  Users, 
-  TrendingUp, 
-  AlertTriangle, 
-  CheckCircle, 
+import {
+  Clock,
+  MapPin,
+  Users,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle,
   Timer,
   Navigation,
   Calendar,
   FileText,
   Shield,
-  Activity
-} from 'lucide-react';
+  Activity } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface TimeTrackingDashboardProps {
@@ -83,31 +83,31 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
 
       // Calculate stats
       const today = new Date().toISOString().split('T')[0];
-      const todayEvents = eventsResponse.data?.List.filter((event: any) => 
-        event.timestamp?.startsWith(today)
+      const todayEvents = eventsResponse.data?.List.filter((event: any) =>
+      event.timestamp?.startsWith(today)
       ) || [];
 
       const activeSessions = sessionsResponse.data?.List || [];
-      const totalHours = activeSessions.reduce((sum: number, session: any) => 
-        sum + (session.work_duration || 0) / 60, 0
+      const totalHours = activeSessions.reduce((sum: number, session: any) =>
+      sum + (session.work_duration || 0) / 60, 0
       );
 
-      const violations = activeSessions.reduce((sum: number, session: any) => 
-        sum + (session.geofence_violations || 0), 0
+      const violations = activeSessions.reduce((sum: number, session: any) =>
+      sum + (session.geofence_violations || 0), 0
       );
 
-      const pendingEvents = eventsResponse.data?.List.filter((event: any) => 
-        event.verification_status === 'pending'
+      const pendingEvents = eventsResponse.data?.List.filter((event: any) =>
+      event.verification_status === 'pending'
       ).length || 0;
 
-      const avgProductivity = activeSessions.length > 0 
-        ? activeSessions.reduce((sum: number, session: any) => 
-            sum + (session.productivity_score || 0), 0
-          ) / activeSessions.length 
-        : 0;
+      const avgProductivity = activeSessions.length > 0 ?
+      activeSessions.reduce((sum: number, session: any) =>
+      sum + (session.productivity_score || 0), 0
+      ) / activeSessions.length :
+      0;
 
-      const totalDistance = activeSessions.reduce((sum: number, session: any) => 
-        sum + (session.total_distance || 0), 0
+      const totalDistance = activeSessions.reduce((sum: number, session: any) =>
+      sum + (session.total_distance || 0), 0
       );
 
       setStats({
@@ -143,11 +143,11 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
 
   const getEventIcon = (eventType: string) => {
     switch (eventType) {
-      case 'clock_in': return <Clock className="h-4 w-4 text-green-600" />;
-      case 'clock_out': return <Clock className="h-4 w-4 text-red-600" />;
-      case 'break_start': return <Timer className="h-4 w-4 text-yellow-600" />;
-      case 'break_end': return <Timer className="h-4 w-4 text-blue-600" />;
-      default: return <Activity className="h-4 w-4" />;
+      case 'clock_in':return <Clock className="h-4 w-4 text-green-600" />;
+      case 'clock_out':return <Clock className="h-4 w-4 text-red-600" />;
+      case 'break_start':return <Timer className="h-4 w-4 text-yellow-600" />;
+      case 'break_end':return <Timer className="h-4 w-4 text-blue-600" />;
+      default:return <Activity className="h-4 w-4" />;
     }
   };
 
@@ -157,20 +157,20 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
       approved: 'default',
       rejected: 'destructive'
     } as const;
-    
+
     return (
       <Badge variant={variants[status as keyof typeof variants] || 'outline'}>
         {status}
-      </Badge>
-    );
+      </Badge>);
+
   };
 
   if (loading) {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <Card key={i}>
+          {[...Array(4)].map((_, i) =>
+          <Card key={i}>
               <CardContent className="pt-6">
                 <div className="animate-pulse space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -178,10 +178,10 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -287,14 +287,14 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
               <CardDescription>Currently active time tracking sessions</CardDescription>
             </CardHeader>
             <CardContent>
-              {activeSessions.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
+              {activeSessions.length === 0 ?
+              <div className="text-center py-8 text-muted-foreground">
                   No active sessions
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {activeSessions.map((session: any) => (
-                    <div key={session.id} className="flex items-center justify-between p-4 border rounded-lg">
+                </div> :
+
+              <div className="space-y-4">
+                  {activeSessions.map((session: any) =>
+                <div key={session.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="space-y-1">
                         <div className="font-medium">User ID: {session.user_id}</div>
                         <div className="text-sm text-muted-foreground">
@@ -308,19 +308,19 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
                         <Badge variant="secondary">
                           {session.productivity_score || 0}% productivity
                         </Badge>
-                        {session.geofence_violations > 0 && (
-                          <Badge variant="destructive">
+                        {session.geofence_violations > 0 &&
+                    <Badge variant="destructive">
                             {session.geofence_violations} violations
                           </Badge>
-                        )}
+                    }
                         <Badge variant="outline">
                           {session.status}
                         </Badge>
                       </div>
                     </div>
-                  ))}
+                )}
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -332,14 +332,14 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
               <CardDescription>Latest clock-in/out and break events</CardDescription>
             </CardHeader>
             <CardContent>
-              {recentEvents.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
+              {recentEvents.length === 0 ?
+              <div className="text-center py-8 text-muted-foreground">
                   No recent events
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {recentEvents.map((event: any) => (
-                    <div key={event.id} className="flex items-center justify-between p-4 border rounded-lg">
+                </div> :
+
+              <div className="space-y-4">
+                  {recentEvents.map((event: any) =>
+                <div key={event.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex items-center gap-3">
                         {getEventIcon(event.event_type)}
                         <div>
@@ -349,12 +349,12 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
                           <div className="text-sm text-muted-foreground">
                             {formatTime(event.timestamp)} • User ID: {event.user_id}
                           </div>
-                          {event.address && (
-                            <div className="text-sm text-muted-foreground flex items-center gap-1">
+                          {event.address &&
+                      <div className="text-sm text-muted-foreground flex items-center gap-1">
                               <MapPin className="h-3 w-3" />
                               {event.address}
                             </div>
-                          )}
+                      }
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -364,9 +364,9 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
                         </Badge>
                       </div>
                     </div>
-                  ))}
+                )}
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -389,8 +389,8 @@ const TimeTrackingDashboard: React.FC<TimeTrackingDashboardProps> = ({ userRole 
           </Alert>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TimeTrackingDashboard;

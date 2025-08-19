@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -16,9 +16,11 @@ import {
   AlertCircle,
   TrendingUp } from
 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ClientPortalLayout from '@/components/ClientPortalLayout';
 import { useToast } from '@/hooks/use-toast';
+import TrialProgressIndicator from '@/components/TrialProgressIndicator';
+import UpgradePrompt from '@/components/UpgradePrompt';
 
 const ClientDashboard: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -29,10 +31,66 @@ const ClientDashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const [userInfo, setUserInfo] = useState(null);
+  const [trialStatus, setTrialStatus] = useState(null);
+  const [showOnboardingSuccess, setShowOnboardingSuccess] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+    loadUserInfo();
+
+    // Check if coming from onboarding
+    if (searchParams.get('onboarding') === 'completed') {
+      setShowOnboardingSuccess(true);
+      toast({
+        title: "🎉 Welcome to ContractPro!",
+        description: "Your account is ready. Start exploring your new construction management platform!",
+        duration: 5000
+      });
+    }
+  }, [searchParams]);
+
+  const loadUserInfo = async () => {
+    try {
+      const { data, error } = await window.ezsite.apis.getUserInfo();
+      if (!error && data) {
+        setUserInfo(data);
+        loadTrialStatus(data.ID);
+      }
+    } catch (error) {
+      console.error('Error loading user info:', error);
+    }
+  };
+
+  const loadTrialStatus = async (userId) => {
+    try {
+      // Check if user has active trial
+      const { data: trialData, error } = await window.ezsite.apis.tablePage(35522, {
+        PageNo: 1,
+        PageSize: 1,
+        Filters: [
+        { name: "user_id", op: "Equal", value: userId },
+        { name: "trial_status", op: "Equal", value: "active" }]
+
+      });
+
+      if (!error && trialData?.List?.length > 0) {
+        const trial = trialData.List[0];
+        const endDate = new Date(trial.trial_end_date);
+        const now = new Date();
+        const daysRemaining = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
+
+        setTrialStatus({
+          ...trial,
+          daysRemaining: Math.max(0, daysRemaining),
+          isActive: daysRemaining > 0
+        });
+      }
+    } catch (error) {
+      console.error('Error loading trial status:', error);
+    }
+  };
 
   const fetchDashboardData = async () => {
     try {
@@ -204,6 +262,21 @@ const ClientDashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Trial Status & Onboarding Success */}
+          {trialStatus?.isActive &&
+          <TrialProgressIndicator
+            userId={userInfo?.ID}
+            showUpgradePrompt={trialStatus.daysRemaining <= 14} />
+
+          }
+
+          {/* Upgrade Prompt for Low Trial Time */}
+          {trialStatus?.isActive && trialStatus.daysRemaining <= 7 &&
+          <UpgradePrompt
+            urgency={trialStatus.daysRemaining <= 3 ? 'high' : 'medium'}
+            daysRemaining={trialStatus.daysRemaining} />
+
+          }
           {/* Active Projects */}
           <Card>
             <CardHeader>

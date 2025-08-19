@@ -4,18 +4,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Clock, 
-  MapPin, 
-  Smartphone, 
-  BarChart3, 
-  Shield, 
-  FileText, 
+import {
+  Clock,
+  MapPin,
+  Smartphone,
+  BarChart3,
+  Shield,
+  FileText,
   CheckCircle,
   AlertTriangle,
   Target,
-  Navigation
-} from 'lucide-react';
+  Navigation } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 // Import all the time tracking components
@@ -26,8 +26,8 @@ import GeofenceManager from '@/components/GeofenceManager';
 import SessionVerificationWorkflow from '@/components/SessionVerificationWorkflow';
 import TimeAnalyticsDashboard from '@/components/TimeAnalyticsDashboard';
 import TimesheetGenerator from '@/components/TimesheetGenerator';
-import AuthGuard from  '@/components/AuthGuard';
-import Header from  '@/components/Header';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 
 const AdvancedTimeTrackingPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -40,13 +40,13 @@ const AdvancedTimeTrackingPage: React.FC = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     // Load user role
     loadUserRole();
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -112,12 +112,12 @@ const AdvancedTimeTrackingPage: React.FC = () => {
                   <CheckCircle className="h-3 w-3 mr-1" />
                   GPS Enabled
                 </Badge>
-                {isAdmin && (
-                  <Badge variant="outline" className="text-blue-600 border-blue-600">
+                {isAdmin &&
+                <Badge variant="outline" className="text-blue-600 border-blue-600">
                     <Shield className="h-3 w-3 mr-1" />
                     Admin Access
                   </Badge>
-                )}
+                }
               </div>
             </div>
           </div>
@@ -147,18 +147,18 @@ const AdvancedTimeTrackingPage: React.FC = () => {
                 <Navigation className="h-4 w-4" />
                 <span className="hidden sm:inline">GPS</span>
               </TabsTrigger>
-              {isAdmin && (
-                <TabsTrigger value="geofences" className="flex items-center gap-1">
+              {isAdmin &&
+              <TabsTrigger value="geofences" className="flex items-center gap-1">
                   <MapPin className="h-4 w-4" />
                   <span className="hidden sm:inline">Geofences</span>
                 </TabsTrigger>
-              )}
-              {(isAdmin || isContractor) && (
-                <TabsTrigger value="verification" className="flex items-center gap-1">
+              }
+              {(isAdmin || isContractor) &&
+              <TabsTrigger value="verification" className="flex items-center gap-1">
                   <CheckCircle className="h-4 w-4" />
                   <span className="hidden sm:inline">Verify</span>
                 </TabsTrigger>
-              )}
+              }
               <TabsTrigger value="analytics" className="flex items-center gap-1">
                 <BarChart3 className="h-4 w-4" />
                 <span className="hidden sm:inline">Analytics</span>
@@ -235,8 +235,8 @@ const AdvancedTimeTrackingPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default AdvancedTimeTrackingPage;

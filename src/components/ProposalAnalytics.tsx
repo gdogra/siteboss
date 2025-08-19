@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  TrendingUp, TrendingDown, Eye, Download, FileSignature, 
+import {
+  TrendingUp, TrendingDown, Eye, Download, FileSignature,
   Clock, Users, DollarSign, Target, BarChart3, PieChart,
-  Calendar, Filter, ExternalLink, MapPin
-} from 'lucide-react';
+  Calendar, Filter, ExternalLink, MapPin } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface AnalyticsData {
@@ -20,9 +20,9 @@ interface AnalyticsData {
   signedValue: number;
   conversionRate: number;
   averageTimeToSign: number;
-  viewsData: Array<{ date: string; views: number }>;
-  deviceData: Array<{ device: string; count: number }>;
-  locationData: Array<{ location: string; count: number }>;
+  viewsData: Array<{date: string;views: number;}>;
+  deviceData: Array<{device: string;count: number;}>;
+  locationData: Array<{location: string;count: number;}>;
 }
 
 interface ProposalAnalytic {
@@ -72,10 +72,10 @@ const ProposalAnalytics: React.FC = () => {
     try {
       setLoading(true);
       await Promise.all([
-        fetchProposals(),
-        fetchAnalytics(),
-        fetchEvents()
-      ]);
+      fetchProposals(),
+      fetchAnalytics(),
+      fetchEvents()]
+      );
       calculateAnalytics();
     } catch (error) {
       console.error('Error fetching analytics data:', error);
@@ -109,7 +109,7 @@ const ProposalAnalytics: React.FC = () => {
   const fetchAnalytics = async () => {
     try {
       const filters = [];
-      
+
       // Date filter
       const daysAgo = new Date();
       daysAgo.setDate(daysAgo.getDate() - parseInt(timeRange));
@@ -144,81 +144,81 @@ const ProposalAnalytics: React.FC = () => {
   };
 
   const fetchEvents = async () => {
-    // This is handled in fetchAnalytics
-  };
 
-  const calculateAnalytics = () => {
+
+    // This is handled in fetchAnalytics
+  };const calculateAnalytics = () => {
     if (!proposals.length) return;
 
     // Filter proposals based on time range
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - parseInt(timeRange));
-    
-    const filteredProposals = proposals.filter(p => 
-      new Date(p.created_at) >= cutoffDate &&
-      (selectedProposal === 'all' || p.id.toString() === selectedProposal)
+
+    const filteredProposals = proposals.filter((p) =>
+    new Date(p.created_at) >= cutoffDate && (
+    selectedProposal === 'all' || p.id.toString() === selectedProposal)
     );
 
     const totalProposals = filteredProposals.length;
-    const signedProposals = filteredProposals.filter(p => p.status === 'signed').length;
-    const rejectedProposals = filteredProposals.filter(p => p.status === 'rejected').length;
-    const pendingProposals = filteredProposals.filter(p => 
-      ['sent', 'viewed'].includes(p.status)
+    const signedProposals = filteredProposals.filter((p) => p.status === 'signed').length;
+    const rejectedProposals = filteredProposals.filter((p) => p.status === 'rejected').length;
+    const pendingProposals = filteredProposals.filter((p) =>
+    ['sent', 'viewed'].includes(p.status)
     ).length;
 
     const totalValue = filteredProposals.reduce((sum, p) => sum + (p.total_amount || 0), 0);
-    const signedValue = filteredProposals
-      .filter(p => p.status === 'signed')
-      .reduce((sum, p) => sum + (p.total_amount || 0), 0);
+    const signedValue = filteredProposals.
+    filter((p) => p.status === 'signed').
+    reduce((sum, p) => sum + (p.total_amount || 0), 0);
 
-    const conversionRate = totalProposals > 0 ? (signedProposals / totalProposals) * 100 : 0;
+    const conversionRate = totalProposals > 0 ? signedProposals / totalProposals * 100 : 0;
 
     // Calculate average time to sign
-    const signedWithDates = filteredProposals.filter(p => p.signed_at && p.created_at);
-    const averageTimeToSign = signedWithDates.length > 0 
-      ? signedWithDates.reduce((sum, p) => {
-          const created = new Date(p.created_at).getTime();
-          const signed = new Date(p.signed_at!).getTime();
-          return sum + (signed - created);
-        }, 0) / signedWithDates.length / (1000 * 60 * 60 * 24) // Convert to days
-      : 0;
+    const signedWithDates = filteredProposals.filter((p) => p.signed_at && p.created_at);
+    const averageTimeToSign = signedWithDates.length > 0 ?
+    signedWithDates.reduce((sum, p) => {
+      const created = new Date(p.created_at).getTime();
+      const signed = new Date(p.signed_at!).getTime();
+      return sum + (signed - created);
+    }, 0) / signedWithDates.length / (1000 * 60 * 60 * 24) // Convert to days
+    : 0;
 
     // Process views data for chart
-    const viewsByDate: { [key: string]: number } = {};
-    events.filter(e => e.event_type === 'view').forEach(event => {
+    const viewsByDate: {[key: string]: number;} = {};
+    events.filter((e) => e.event_type === 'view').forEach((event) => {
       const date = new Date(event.created_at).toISOString().split('T')[0];
       viewsByDate[date] = (viewsByDate[date] || 0) + 1;
     });
 
-    const viewsData = Object.entries(viewsByDate)
-      .map(([date, views]) => ({ date, views }))
-      .sort((a, b) => a.date.localeCompare(b.date));
+    const viewsData = Object.entries(viewsByDate).
+    map(([date, views]) => ({ date, views })).
+    sort((a, b) => a.date.localeCompare(b.date));
 
     // Process device data
-    const deviceCounts: { [key: string]: number } = {};
-    events.forEach(event => {
+    const deviceCounts: {[key: string]: number;} = {};
+    events.forEach((event) => {
       if (event.device_type) {
         deviceCounts[event.device_type] = (deviceCounts[event.device_type] || 0) + 1;
       }
     });
 
-    const deviceData = Object.entries(deviceCounts)
-      .map(([device, count]) => ({ device, count }))
-      .sort((a, b) => b.count - a.count);
+    const deviceData = Object.entries(deviceCounts).
+    map(([device, count]) => ({ device, count })).
+    sort((a, b) => b.count - a.count);
 
     // Process location data (simplified - in real app you'd use GeoIP)
-    const locationCounts: { [key: string]: number } = {};
-    events.forEach(event => {
+    const locationCounts: {[key: string]: number;} = {};
+    events.forEach((event) => {
       if (event.operating_system) {
         const location = event.operating_system; // Placeholder
         locationCounts[location] = (locationCounts[location] || 0) + 1;
       }
     });
 
-    const locationData = Object.entries(locationCounts)
-      .map(([location, count]) => ({ location, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
+    const locationData = Object.entries(locationCounts).
+    map(([location, count]) => ({ location, count })).
+    sort((a, b) => b.count - a.count).
+    slice(0, 10);
 
     setAnalytics({
       totalProposals,
@@ -238,7 +238,7 @@ const ProposalAnalytics: React.FC = () => {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'USD'
     }).format(amount / 100);
   };
 
@@ -247,16 +247,16 @@ const ProposalAnalytics: React.FC = () => {
   };
 
   const getTopPerformingProposals = () => {
-    return proposals
-      .filter(p => p.status === 'signed')
-      .sort((a, b) => (b.total_amount || 0) - (a.total_amount || 0))
-      .slice(0, 10);
+    return proposals.
+    filter((p) => p.status === 'signed').
+    sort((a, b) => (b.total_amount || 0) - (a.total_amount || 0)).
+    slice(0, 10);
   };
 
   const getRecentActivity = () => {
-    return events
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      .slice(0, 20);
+    return events.
+    sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).
+    slice(0, 20);
   };
 
   if (loading || !analytics) {
@@ -264,8 +264,8 @@ const ProposalAnalytics: React.FC = () => {
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         <span className="ml-4">Loading analytics...</span>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -293,11 +293,11 @@ const ProposalAnalytics: React.FC = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Proposals</SelectItem>
-              {proposals.slice(0, 20).map(proposal => (
-                <SelectItem key={proposal.id} value={proposal.id.toString()}>
+              {proposals.slice(0, 20).map((proposal) =>
+              <SelectItem key={proposal.id} value={proposal.id.toString()}>
                   {proposal.proposal_number} - {proposal.title.substring(0, 30)}...
                 </SelectItem>
-              ))}
+              )}
             </SelectContent>
           </Select>
         </div>
@@ -392,7 +392,7 @@ const ProposalAnalytics: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium">{analytics.signedProposals}</span>
                       <span className="text-xs text-gray-500">
-                        ({formatPercentage((analytics.signedProposals / analytics.totalProposals) * 100)})
+                        ({formatPercentage(analytics.signedProposals / analytics.totalProposals * 100)})
                       </span>
                     </div>
                   </div>
@@ -405,7 +405,7 @@ const ProposalAnalytics: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium">{analytics.pendingProposals}</span>
                       <span className="text-xs text-gray-500">
-                        ({formatPercentage((analytics.pendingProposals / analytics.totalProposals) * 100)})
+                        ({formatPercentage(analytics.pendingProposals / analytics.totalProposals * 100)})
                       </span>
                     </div>
                   </div>
@@ -418,7 +418,7 @@ const ProposalAnalytics: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium">{analytics.rejectedProposals}</span>
                       <span className="text-xs text-gray-500">
-                        ({formatPercentage((analytics.rejectedProposals / analytics.totalProposals) * 100)})
+                        ({formatPercentage(analytics.rejectedProposals / analytics.totalProposals * 100)})
                       </span>
                     </div>
                   </div>
@@ -435,22 +435,22 @@ const ProposalAnalytics: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {analytics.deviceData.slice(0, 5).map((device, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                  {analytics.deviceData.slice(0, 5).map((device, index) =>
+                  <div key={index} className="flex items-center justify-between">
                       <span className="text-sm capitalize">{device.device}</span>
                       <div className="flex items-center gap-2">
                         <div className="w-20 bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-blue-500 h-2 rounded-full"
-                            style={{
-                              width: `${(device.count / analytics.deviceData[0]?.count || 1) * 100}%`
-                            }}
-                          ></div>
+                          className="bg-blue-500 h-2 rounded-full"
+                          style={{
+                            width: `${(device.count / analytics.deviceData[0]?.count || 1) * 100}%`
+                          }}>
+                        </div>
                         </div>
                         <span className="text-sm font-medium w-8 text-right">{device.count}</span>
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -468,24 +468,24 @@ const ProposalAnalytics: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {analytics.viewsData.slice(-14).map((day, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                  {analytics.viewsData.slice(-14).map((day, index) =>
+                  <div key={index} className="flex items-center justify-between">
                       <span className="text-sm">
                         {new Date(day.date).toLocaleDateString()}
                       </span>
                       <div className="flex items-center gap-2">
                         <div className="w-20 bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-blue-500 h-2 rounded-full"
-                            style={{
-                              width: `${(day.views / Math.max(...analytics.viewsData.map(d => d.views))) * 100}%`
-                            }}
-                          ></div>
+                          className="bg-blue-500 h-2 rounded-full"
+                          style={{
+                            width: `${day.views / Math.max(...analytics.viewsData.map((d) => d.views)) * 100}%`
+                          }}>
+                        </div>
                         </div>
                         <span className="text-sm font-medium w-8 text-right">{day.views}</span>
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -499,22 +499,22 @@ const ProposalAnalytics: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {analytics.locationData.slice(0, 8).map((location, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                  {analytics.locationData.slice(0, 8).map((location, index) =>
+                  <div key={index} className="flex items-center justify-between">
                       <span className="text-sm">{location.location}</span>
                       <div className="flex items-center gap-2">
                         <div className="w-16 bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-green-500 h-2 rounded-full"
-                            style={{
-                              width: `${(location.count / analytics.locationData[0]?.count || 1) * 100}%`
-                            }}
-                          ></div>
+                          className="bg-green-500 h-2 rounded-full"
+                          style={{
+                            width: `${(location.count / analytics.locationData[0]?.count || 1) * 100}%`
+                          }}>
+                        </div>
                         </div>
                         <span className="text-sm font-medium w-6 text-right">{location.count}</span>
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -531,8 +531,8 @@ const ProposalAnalytics: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {getTopPerformingProposals().map((proposal, index) => (
-                  <div key={proposal.id} className="flex items-center justify-between p-3 border rounded-lg">
+                {getTopPerformingProposals().map((proposal, index) =>
+                <div key={proposal.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center justify-center w-8 h-8 bg-green-100 text-green-700 rounded-full text-sm font-bold">
                         {index + 1}
@@ -553,7 +553,7 @@ const ProposalAnalytics: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
@@ -569,8 +569,8 @@ const ProposalAnalytics: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {getRecentActivity().map((activity, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
+                {getRecentActivity().map((activity, index) =>
+                <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
                     <div className="flex-shrink-0 mt-1">
                       {activity.event_type === 'view' && <Eye className="w-4 h-4 text-blue-500" />}
                       {activity.event_type === 'download' && <Download className="w-4 h-4 text-green-500" />}
@@ -591,20 +591,20 @@ const ProposalAnalytics: React.FC = () => {
                       <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
                         <span className="capitalize">{activity.device_type}</span>
                         <span>{activity.browser?.split(' ')[0]}</span>
-                        {activity.time_spent > 0 && (
-                          <span>{activity.time_spent}s</span>
-                        )}
+                        {activity.time_spent > 0 &&
+                      <span>{activity.time_spent}s</span>
+                      }
                       </div>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProposalAnalytics;

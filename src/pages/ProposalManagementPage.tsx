@@ -1,6 +1,6 @@
 import React from 'react';
-import AuthGuard from  '@/components/AuthGuard';
-import Header from  '@/components/Header';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 import ProposalManagement from '@/components/ProposalManagement';
 
 const ProposalManagementPage: React.FC = () => {
@@ -12,8 +12,8 @@ const ProposalManagementPage: React.FC = () => {
           <ProposalManagement />
         </main>
       </div>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default ProposalManagementPage;

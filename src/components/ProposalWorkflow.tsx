@@ -9,11 +9,11 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Play, Pause, CheckCircle, XCircle, Clock, User, 
+import {
+  Play, Pause, CheckCircle, XCircle, Clock, User,
   ArrowRight, Settings, AlertCircle, FileText,
-  Users, Calendar, Bell, Workflow
-} from 'lucide-react';
+  Users, Calendar, Bell, Workflow } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface WorkflowRule {
@@ -78,43 +78,43 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
       // For now, we'll use local storage or initialize with defaults
       const savedWorkflows = localStorage.getItem('proposalWorkflows');
       const savedSteps = localStorage.getItem('approvalSteps');
-      
+
       if (savedWorkflows) {
         setWorkflows(JSON.parse(savedWorkflows));
       } else {
         // Initialize with default workflows
         const defaultWorkflows: WorkflowRule[] = [
-          {
-            id: '1',
-            name: 'High Value Approval',
-            description: 'Require approval for proposals over $50,000',
-            trigger: 'amount_threshold',
-            conditions: { minAmount: 5000000 }, // $50,000 in cents
-            actions: { requireApproval: true, notifyManager: true },
-            isActive: true,
-            priority: 1
-          },
-          {
-            id: '2',
-            name: 'Auto-send on Creation',
-            description: 'Automatically send proposals to clients when created',
-            trigger: 'status_change',
-            conditions: { fromStatus: 'draft', toStatus: 'ready' },
-            actions: { sendToClient: true, trackAnalytics: true },
-            isActive: false,
-            priority: 2
-          },
-          {
-            id: '3',
-            name: 'Follow-up Reminder',
-            description: 'Send reminder if no response after 7 days',
-            trigger: 'time_based',
-            conditions: { daysAfterSent: 7, status: 'sent' },
-            actions: { sendReminder: true, escalateToManager: false },
-            isActive: true,
-            priority: 3
-          }
-        ];
+        {
+          id: '1',
+          name: 'High Value Approval',
+          description: 'Require approval for proposals over $50,000',
+          trigger: 'amount_threshold',
+          conditions: { minAmount: 5000000 }, // $50,000 in cents
+          actions: { requireApproval: true, notifyManager: true },
+          isActive: true,
+          priority: 1
+        },
+        {
+          id: '2',
+          name: 'Auto-send on Creation',
+          description: 'Automatically send proposals to clients when created',
+          trigger: 'status_change',
+          conditions: { fromStatus: 'draft', toStatus: 'ready' },
+          actions: { sendToClient: true, trackAnalytics: true },
+          isActive: false,
+          priority: 2
+        },
+        {
+          id: '3',
+          name: 'Follow-up Reminder',
+          description: 'Send reminder if no response after 7 days',
+          trigger: 'time_based',
+          conditions: { daysAfterSent: 7, status: 'sent' },
+          actions: { sendReminder: true, escalateToManager: false },
+          isActive: true,
+          priority: 3
+        }];
+
         setWorkflows(defaultWorkflows);
         localStorage.setItem('proposalWorkflows', JSON.stringify(defaultWorkflows));
       }
@@ -124,24 +124,24 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
       } else {
         // Initialize with default approval steps
         const defaultSteps: ApprovalStep[] = [
-          {
-            id: '1',
-            stepName: 'Manager Review',
-            approverRole: 'Administrator',
-            approverEmail: 'manager@company.com',
-            isRequired: true,
-            timeoutHours: 24,
-            escalationEmail: 'director@company.com'
-          },
-          {
-            id: '2',
-            stepName: 'Director Approval',
-            approverRole: 'Administrator',
-            approverEmail: 'director@company.com',
-            isRequired: false,
-            timeoutHours: 48
-          }
-        ];
+        {
+          id: '1',
+          stepName: 'Manager Review',
+          approverRole: 'Administrator',
+          approverEmail: 'manager@company.com',
+          isRequired: true,
+          timeoutHours: 24,
+          escalationEmail: 'director@company.com'
+        },
+        {
+          id: '2',
+          stepName: 'Director Approval',
+          approverRole: 'Administrator',
+          approverEmail: 'director@company.com',
+          isRequired: false,
+          timeoutHours: 48
+        }];
+
         setApprovalSteps(defaultSteps);
         localStorage.setItem('approvalSteps', JSON.stringify(defaultSteps));
       }
@@ -169,8 +169,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
         OrderByField: 'created_at',
         IsAsc: false,
         Filters: [
-          { name: 'status', op: 'Equal', value: 'pending_approval' }
-        ]
+        { name: 'status', op: 'Equal', value: 'pending_approval' }]
+
       });
 
       if (error) throw error;
@@ -230,8 +230,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
   };
 
   const toggleWorkflow = (id: string) => {
-    const updatedWorkflows = workflows.map(w =>
-      w.id === id ? { ...w, isActive: !w.isActive } : w
+    const updatedWorkflows = workflows.map((w) =>
+    w.id === id ? { ...w, isActive: !w.isActive } : w
     );
     saveWorkflows(updatedWorkflows);
 
@@ -242,7 +242,7 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
   };
 
   const deleteWorkflow = (id: string) => {
-    const updatedWorkflows = workflows.filter(w => w.id !== id);
+    const updatedWorkflows = workflows.filter((w) => w.id !== id);
     saveWorkflows(updatedWorkflows);
 
     toast({
@@ -284,7 +284,7 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
       });
 
       fetchPendingApprovals();
-      
+
       toast({
         title: 'Success',
         description: 'Proposal approved successfully'
@@ -324,7 +324,7 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
       });
 
       fetchPendingApprovals();
-      
+
       toast({
         title: 'Success',
         description: 'Proposal rejected'
@@ -377,7 +377,7 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'USD'
     }).format(amount / 100);
   };
 
@@ -386,8 +386,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         <span className="ml-4">Loading workflow data...</span>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -408,28 +408,28 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
         </TabsList>
 
         <TabsContent value="rules" className="space-y-4">
-          {workflows.length === 0 ? (
-            <Card>
+          {workflows.length === 0 ?
+          <Card>
               <CardContent className="p-6 text-center">
                 <Workflow className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600">No workflow rules configured</p>
               </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {workflows.map((workflow) => (
-                <Card key={workflow.id}>
+            </Card> :
+
+          <div className="grid grid-cols-1 gap-4">
+              {workflows.map((workflow) =>
+            <Card key={workflow.id}>
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="font-semibold">{workflow.name}</h3>
                           <Badge variant={workflow.isActive ? 'default' : 'secondary'}>
-                            {workflow.isActive ? (
-                              <><Play className="w-3 h-3 mr-1" /> Active</>
-                            ) : (
-                              <><Pause className="w-3 h-3 mr-1" /> Inactive</>
-                            )}
+                            {workflow.isActive ?
+                        <><Play className="w-3 h-3 mr-1" /> Active</> :
+
+                        <><Pause className="w-3 h-3 mr-1" /> Inactive</>
+                        }
                           </Badge>
                           <Badge variant="outline">
                             Priority: {workflow.priority}
@@ -444,60 +444,60 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                             Trigger: {workflow.trigger.replace('_', ' ')}
                           </span>
                           
-                          {workflow.trigger === 'amount_threshold' && workflow.conditions.minAmount && (
-                            <span>
+                          {workflow.trigger === 'amount_threshold' && workflow.conditions.minAmount &&
+                      <span>
                               Min Amount: {formatCurrency(workflow.conditions.minAmount)}
                             </span>
-                          )}
+                      }
                           
-                          {workflow.trigger === 'time_based' && workflow.conditions.daysAfterSent && (
-                            <span>
+                          {workflow.trigger === 'time_based' && workflow.conditions.daysAfterSent &&
+                      <span>
                               After {workflow.conditions.daysAfterSent} days
                             </span>
-                          )}
+                      }
                         </div>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <Switch
-                          checked={workflow.isActive}
-                          onCheckedChange={() => toggleWorkflow(workflow.id)}
-                        />
+                      checked={workflow.isActive}
+                      onCheckedChange={() => toggleWorkflow(workflow.id)} />
+
                         <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setSelectedWorkflow(workflow)}
-                        >
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedWorkflow(workflow)}>
+
                           <Settings className="w-4 h-4" />
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => deleteWorkflow(workflow.id)}
-                        >
+                      variant="outline"
+                      size="sm"
+                      onClick={() => deleteWorkflow(workflow.id)}>
+
                           <XCircle className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+            )}
             </div>
-          )}
+          }
         </TabsContent>
 
         <TabsContent value="approvals" className="space-y-4">
-          {pendingApprovals.length === 0 ? (
-            <Card>
+          {pendingApprovals.length === 0 ?
+          <Card>
               <CardContent className="p-6 text-center">
                 <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
                 <p className="text-gray-600">No pending approvals</p>
               </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {pendingApprovals.map((proposal) => (
-                <Card key={proposal.id}>
+            </Card> :
+
+          <div className="grid grid-cols-1 gap-4">
+              {pendingApprovals.map((proposal) =>
+            <Card key={proposal.id}>
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -521,41 +521,41 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                         </div>
 
                         <div className="flex items-center gap-2 mb-4">
-                          {approvalSteps.map((step, index) => (
-                            <div key={step.id} className="flex items-center">
+                          {approvalSteps.map((step, index) =>
+                      <div key={step.id} className="flex items-center">
                               <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-lg">
                                 <User className="w-4 h-4 text-blue-600" />
                                 <span className="text-sm text-blue-700">{step.stepName}</span>
                               </div>
-                              {index < approvalSteps.length - 1 && (
-                                <ArrowRight className="w-4 h-4 text-gray-400 mx-2" />
-                              )}
+                              {index < approvalSteps.length - 1 &&
+                        <ArrowRight className="w-4 h-4 text-gray-400 mx-2" />
+                        }
                             </div>
-                          ))}
+                      )}
                         </div>
                       </div>
 
                       <div className="flex flex-col gap-2">
                         <Button
-                          size="sm"
-                          onClick={() => approveProposal(proposal.id, 'manual')}
-                        >
+                      size="sm"
+                      onClick={() => approveProposal(proposal.id, 'manual')}>
+
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Approve
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => rejectProposal(proposal.id, 'Manual rejection')}
-                        >
+                      variant="outline"
+                      size="sm"
+                      onClick={() => rejectProposal(proposal.id, 'Manual rejection')}>
+
                           <XCircle className="w-4 h-4 mr-2" />
                           Reject
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => window.open(`/proposal/${proposal.id}/view`, '_blank')}
-                        >
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open(`/proposal/${proposal.id}/view`, '_blank')}>
+
                           <FileText className="w-4 h-4 mr-2" />
                           View
                         </Button>
@@ -563,9 +563,9 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+            )}
             </div>
-          )}
+          }
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-4">
@@ -574,8 +574,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
               <CardTitle>Approval Steps</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {approvalSteps.map((step, index) => (
-                <div key={step.id} className="flex items-center justify-between p-4 border rounded-lg">
+              {approvalSteps.map((step, index) =>
+              <div key={step.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full font-bold">
                       {index + 1}
@@ -586,25 +586,25 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                       <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
                         <span>{step.approverRole}</span>
                         <span>{step.timeoutHours}h timeout</span>
-                        {step.isRequired && (
-                          <Badge variant="outline" className="text-xs">Required</Badge>
-                        )}
+                        {step.isRequired &&
+                      <Badge variant="outline" className="text-xs">Required</Badge>
+                      }
                       </div>
                     </div>
                   </div>
                   
                   <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      const updatedSteps = approvalSteps.filter(s => s.id !== step.id);
-                      saveApprovalSteps(updatedSteps);
-                    }}
-                  >
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const updatedSteps = approvalSteps.filter((s) => s.id !== step.id);
+                    saveApprovalSteps(updatedSteps);
+                  }}>
+
                     <XCircle className="w-4 h-4" />
                   </Button>
                 </div>
-              ))}
+              )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-2 border-dashed border-gray-200 rounded-lg">
                 <div>
@@ -612,9 +612,9 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                   <Input
                     id="step_name"
                     value={newApprovalStep.stepName}
-                    onChange={(e) => setNewApprovalStep(prev => ({ ...prev, stepName: e.target.value }))}
-                    placeholder="e.g., Manager Review"
-                  />
+                    onChange={(e) => setNewApprovalStep((prev) => ({ ...prev, stepName: e.target.value }))}
+                    placeholder="e.g., Manager Review" />
+
                 </div>
 
                 <div>
@@ -623,17 +623,17 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                     id="approver_email"
                     type="email"
                     value={newApprovalStep.approverEmail}
-                    onChange={(e) => setNewApprovalStep(prev => ({ ...prev, approverEmail: e.target.value }))}
-                    placeholder="approver@company.com"
-                  />
+                    onChange={(e) => setNewApprovalStep((prev) => ({ ...prev, approverEmail: e.target.value }))}
+                    placeholder="approver@company.com" />
+
                 </div>
 
                 <div>
                   <Label htmlFor="approver_role">Approver Role</Label>
-                  <Select 
-                    value={newApprovalStep.approverRole} 
-                    onValueChange={(value) => setNewApprovalStep(prev => ({ ...prev, approverRole: value }))}
-                  >
+                  <Select
+                    value={newApprovalStep.approverRole}
+                    onValueChange={(value) => setNewApprovalStep((prev) => ({ ...prev, approverRole: value }))}>
+
                     <SelectTrigger>
                       <SelectValue placeholder="Select role" />
                     </SelectTrigger>
@@ -652,8 +652,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                     type="number"
                     min="1"
                     value={newApprovalStep.timeoutHours}
-                    onChange={(e) => setNewApprovalStep(prev => ({ ...prev, timeoutHours: parseInt(e.target.value) || 24 }))}
-                  />
+                    onChange={(e) => setNewApprovalStep((prev) => ({ ...prev, timeoutHours: parseInt(e.target.value) || 24 }))} />
+
                 </div>
 
                 <div className="md:col-span-2">
@@ -661,8 +661,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                     <Switch
                       id="is_required"
                       checked={newApprovalStep.isRequired}
-                      onCheckedChange={(checked) => setNewApprovalStep(prev => ({ ...prev, isRequired: checked }))}
-                    />
+                      onCheckedChange={(checked) => setNewApprovalStep((prev) => ({ ...prev, isRequired: checked }))} />
+
                     <Label htmlFor="is_required">Required Step</Label>
                   </div>
                 </div>
@@ -692,9 +692,9 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
               <Input
                 id="rule_name"
                 value={newWorkflow.name}
-                onChange={(e) => setNewWorkflow(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Enter rule name..."
-              />
+                onChange={(e) => setNewWorkflow((prev) => ({ ...prev, name: e.target.value }))}
+                placeholder="Enter rule name..." />
+
             </div>
 
             <div>
@@ -702,18 +702,18 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
               <Textarea
                 id="rule_description"
                 value={newWorkflow.description}
-                onChange={(e) => setNewWorkflow(prev => ({ ...prev, description: e.target.value }))}
+                onChange={(e) => setNewWorkflow((prev) => ({ ...prev, description: e.target.value }))}
                 placeholder="Describe what this rule does..."
-                rows={3}
-              />
+                rows={3} />
+
             </div>
 
             <div>
               <Label htmlFor="trigger_type">Trigger Type</Label>
-              <Select 
-                value={newWorkflow.trigger} 
-                onValueChange={(value) => setNewWorkflow(prev => ({ ...prev, trigger: value as any }))}
-              >
+              <Select
+                value={newWorkflow.trigger}
+                onValueChange={(value) => setNewWorkflow((prev) => ({ ...prev, trigger: value as any }))}>
+
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -729,10 +729,10 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="priority">Priority</Label>
-                <Select 
-                  value={newWorkflow.priority?.toString()} 
-                  onValueChange={(value) => setNewWorkflow(prev => ({ ...prev, priority: parseInt(value) }))}
-                >
+                <Select
+                  value={newWorkflow.priority?.toString()}
+                  onValueChange={(value) => setNewWorkflow((prev) => ({ ...prev, priority: parseInt(value) }))}>
+
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -750,8 +750,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
                 <Switch
                   id="is_active"
                   checked={newWorkflow.isActive}
-                  onCheckedChange={(checked) => setNewWorkflow(prev => ({ ...prev, isActive: checked }))}
-                />
+                  onCheckedChange={(checked) => setNewWorkflow((prev) => ({ ...prev, isActive: checked }))} />
+
                 <Label htmlFor="is_active">Active</Label>
               </div>
             </div>
@@ -767,8 +767,8 @@ const ProposalWorkflow: React.FC<ProposalWorkflowProps> = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProposalWorkflow;

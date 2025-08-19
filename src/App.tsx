@@ -28,9 +28,12 @@ const InventoryManagementPage = React.lazy(() => import("./pages/InventoryManage
 const ProposalManagementPage = React.lazy(() => import("./pages/ProposalManagementPage"));
 const ProposalViewPage = React.lazy(() => import("./pages/ProposalViewPage"));
 const AdvancedTimeTrackingPage = React.lazy(() => import("./pages/AdvancedTimeTrackingPage"));
+const SubscriptionManagementPage = React.lazy(() => import("./pages/SubscriptionManagementPage"));
 const PermitManagementPage = React.lazy(() => import("./pages/PermitManagementPage"));
 import ClientAuthGuard from "./components/ClientAuthGuard";
 import FloatingChatWidget from "./components/FloatingChatWidget";
+import TrialSignup from "./pages/TrialSignup";
+import OnboardingWizard from "./components/OnboardingWizard";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +53,8 @@ const App = () =>
           <Route path="/payments" element={<PaymentsPage />} />
           <Route path="/onauthsuccess" element={<OnAuthSuccess />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="/signup" element={<TrialSignup />} />
+          <Route path="/onboarding" element={<OnboardingWizard />} />
           
           {/* Client Portal Routes */}
           <Route path="/client/login" element={<ClientLogin />} />
@@ -114,6 +119,7 @@ const App = () =>
             </React.Suspense>
           } />
           <Route path="/advanced-time-tracking" element={<AdvancedTimeTrackingPage />} />
+          <Route path="/subscription-management" element={<SubscriptionManagementPage />} />
           <Route path="/client-messages" element={<Navigate to="/client/messages" replace />} />
           
           <Route path="*" element={<NotFound />} />

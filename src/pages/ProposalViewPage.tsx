@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FileText, AlertCircle } from 'lucide-react';
 
 const ProposalViewPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{id: string;}>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
 
@@ -25,8 +25,8 @@ const ProposalViewPage: React.FC = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         <span className="ml-4">Loading proposal...</span>
-      </div>
-    );
+      </div>);
+
   }
 
   if (error) {
@@ -39,15 +39,15 @@ const ProposalViewPage: React.FC = () => {
             <p className="text-gray-600">{error}</p>
           </CardContent>
         </Card>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <ProposalViewer proposalId={parseInt(id!)} />
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProposalViewPage;

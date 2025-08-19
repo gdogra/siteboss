@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  MapPin, 
-  Navigation, 
-  Target, 
-  Satellite, 
-  TrendingUp, 
+import {
+  MapPin,
+  Navigation,
+  Target,
+  Satellite,
+  TrendingUp,
   Clock,
   Route,
   AlertTriangle,
@@ -18,8 +18,8 @@ import {
   RefreshCw,
   Zap,
   Square,
-  Play
-} from 'lucide-react';
+  Play } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface LocationPoint {
@@ -39,10 +39,10 @@ interface GPSLocationTrackerProps {
   showRealTime?: boolean;
 }
 
-const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({ 
-  sessionId, 
-  userId, 
-  showRealTime = true 
+const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
+  sessionId,
+  userId,
+  showRealTime = true
 }) => {
   const [locations, setLocations] = useState<LocationPoint[]>([]);
   const [currentLocation, setCurrentLocation] = useState<LocationPoint | null>(null);
@@ -53,18 +53,18 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
   const [qualityScore, setQualityScore] = useState<number>(100);
   const [loading, setLoading] = useState(false);
   const [batteryOptimized, setBatteryOptimized] = useState(false);
-  
+
   const { toast } = useToast();
 
   useEffect(() => {
     if (sessionId) {
       loadLocationHistory();
     }
-    
+
     if (showRealTime) {
       startRealTimeTracking();
     }
-    
+
     return () => {
       stopRealTimeTracking();
     };
@@ -72,7 +72,7 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
 
   const loadLocationHistory = async () => {
     if (!sessionId) return;
-    
+
     setLoading(true);
     try {
       const response = await window.ezsite.apis.tablePage(35438, {
@@ -82,17 +82,17 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
         IsAsc: true,
         Filters: [{ name: 'session_id', op: 'Equal', value: sessionId }]
       });
-      
+
       if (response.error) throw response.error;
-      
+
       const locationData = response.data?.List || [];
       setLocations(locationData);
-      
+
       if (locationData.length > 0) {
         setCurrentLocation(locationData[locationData.length - 1]);
         calculateMetrics(locationData);
       }
-      
+
     } catch (error) {
       console.error('Error loading location history:', error);
       toast({
@@ -107,51 +107,51 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
 
   const calculateMetrics = (locationData: LocationPoint[]) => {
     if (locationData.length === 0) return;
-    
+
     // Calculate total distance
-    const distance = locationData.reduce((sum, location) => 
-      sum + (location.distance_from_previous || 0), 0
+    const distance = locationData.reduce((sum, location) =>
+    sum + (location.distance_from_previous || 0), 0
     );
     setTotalDistance(distance);
-    
+
     // Calculate average accuracy
-    const avgAccuracy = locationData.reduce((sum, location) => 
-      sum + location.accuracy, 0
+    const avgAccuracy = locationData.reduce((sum, location) =>
+    sum + location.accuracy, 0
     ) / locationData.length;
     setTrackingAccuracy(avgAccuracy);
-    
+
     // Calculate average quality score
-    const avgQuality = locationData.reduce((sum, location) => 
-      sum + (location.quality_score || 0), 0
+    const avgQuality = locationData.reduce((sum, location) =>
+    sum + (location.quality_score || 0), 0
     ) / locationData.length;
     setQualityScore(avgQuality);
-    
+
     // Calculate average speed (simplified)
     if (locationData.length > 1) {
       const firstLocation = locationData[0];
       const lastLocation = locationData[locationData.length - 1];
-      const timeSpan = (new Date(lastLocation.timestamp).getTime() - 
-                       new Date(firstLocation.timestamp).getTime()) / 1000 / 3600; // hours
-      
+      const timeSpan = (new Date(lastLocation.timestamp).getTime() -
+      new Date(firstLocation.timestamp).getTime()) / 1000 / 3600; // hours
+
       if (timeSpan > 0) {
-        setAverageSpeed((distance / 1000) / timeSpan); // km/h
+        setAverageSpeed(distance / 1000 / timeSpan); // km/h
       }
     }
   };
 
   const startRealTimeTracking = () => {
     if (!navigator.geolocation || isTracking) return;
-    
+
     setIsTracking(true);
-    
+
     const options = {
       enableHighAccuracy: true,
       timeout: batteryOptimized ? 30000 : 10000,
       maximumAge: batteryOptimized ? 120000 : 60000
     };
-    
+
     const trackingInterval = batteryOptimized ? 120000 : 30000; // 2 minutes vs 30 seconds
-    
+
     const trackLocation = async () => {
       try {
         navigator.geolocation.getCurrentPosition(
@@ -162,7 +162,7 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
               accuracy: position.coords.accuracy,
               timestamp: new Date().toISOString()
             };
-            
+
             // Calculate distance from previous location
             if (currentLocation) {
               const distance = calculateDistance(
@@ -173,17 +173,17 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
               );
               newLocation.distance_from_previous = distance;
             }
-            
+
             // Calculate quality score based on accuracy and movement
             const qualityScore = calculateQualityScore(
               newLocation.accuracy!,
               newLocation.distance_from_previous || 0
             );
             newLocation.quality_score = qualityScore;
-            
+
             // Reverse geocode address (simplified)
             newLocation.address = `${newLocation.latitude!.toFixed(6)}, ${newLocation.longitude!.toFixed(6)}`;
-            
+
             // Save to database if session is active
             if (sessionId && userId) {
               try {
@@ -196,12 +196,12 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
                 console.error('Error saving location:', error);
               }
             }
-            
+
             // Update local state
             setCurrentLocation(newLocation as LocationPoint);
-            setLocations(prev => [...prev, newLocation as LocationPoint]);
+            setLocations((prev) => [...prev, newLocation as LocationPoint]);
             setTrackingAccuracy(newLocation.accuracy!);
-            
+
           },
           (error) => {
             console.error('Geolocation error:', error);
@@ -217,13 +217,13 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
         console.error('Tracking error:', error);
       }
     };
-    
+
     // Initial track
     trackLocation();
-    
+
     // Set up interval tracking
     const intervalId = setInterval(trackLocation, trackingInterval);
-    
+
     // Store interval ID for cleanup
     (window as any).gpsTrackingInterval = intervalId;
   };
@@ -244,8 +244,8 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
     const Δλ = (lon2 - lon1) * Math.PI / 180;
 
     const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    Math.cos(φ1) * Math.cos(φ2) *
+    Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c;
@@ -253,18 +253,18 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
 
   const calculateQualityScore = (accuracy: number, movement: number): number => {
     let score = 100;
-    
+
     // Penalize poor accuracy
-    if (accuracy > 100) score -= 40;
-    else if (accuracy > 50) score -= 20;
-    else if (accuracy > 20) score -= 10;
-    
+    if (accuracy > 100) score -= 40;else
+    if (accuracy > 50) score -= 20;else
+    if (accuracy > 20) score -= 10;
+
     // Penalize erratic movement (possible GPS drift)
     if (movement > 100) score -= 20; // Moving more than 100m in tracking interval
-    
+
     // Reward consistent tracking
     score = Math.max(0, Math.min(100, score));
-    
+
     return score;
   };
 
@@ -296,12 +296,12 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
       stopRealTimeTracking();
       setTimeout(() => startRealTimeTracking(), 1000);
     }
-    
+
     toast({
       title: batteryOptimized ? 'High Accuracy Mode' : 'Battery Optimized Mode',
-      description: batteryOptimized 
-        ? 'Tracking with high frequency and accuracy' 
-        : 'Tracking optimized for battery life'
+      description: batteryOptimized ?
+      'Tracking with high frequency and accuracy' :
+      'Tracking optimized for battery life'
     });
   };
 
@@ -319,17 +319,17 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
               GPS Location Tracker
             </span>
             <div className="flex items-center gap-2">
-              {isTracking && (
-                <Badge variant="default" className="animate-pulse">
+              {isTracking &&
+              <Badge variant="default" className="animate-pulse">
                   <div className="w-2 h-2 bg-white rounded-full mr-1"></div>
                   Tracking
                 </Badge>
-              )}
+              }
               <Button
                 size="sm"
                 variant="outline"
-                onClick={toggleBatteryOptimization}
-              >
+                onClick={toggleBatteryOptimization}>
+
                 <Zap className={`h-4 w-4 mr-1 ${batteryOptimized ? 'text-green-500' : 'text-yellow-500'}`} />
                 {batteryOptimized ? 'Battery' : 'Accuracy'}
               </Button>
@@ -338,8 +338,8 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Current Location */}
-          {currentLocation && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {currentLocation &&
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <div className="text-sm font-medium text-muted-foreground">Current Location</div>
                 <div className="text-sm">{currentLocation.address}</div>
@@ -365,7 +365,7 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
                 <Progress value={qualityScore} className="h-2" />
               </div>
             </div>
-          )}
+          }
 
           {/* Metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -403,27 +403,27 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
             <Button
               onClick={showRealTime ? stopRealTimeTracking : startRealTimeTracking}
               variant={isTracking ? "destructive" : "default"}
-              size="sm"
-            >
-              {isTracking ? (
-                <>
+              size="sm">
+
+              {isTracking ?
+              <>
                   <Square className="h-4 w-4 mr-2" />
                   Stop Tracking
-                </>
-              ) : (
-                <>
+                </> :
+
+              <>
                   <Play className="h-4 w-4 mr-2" />
                   Start Tracking
                 </>
-              )}
+              }
             </Button>
             
             <Button
               onClick={loadLocationHistory}
               variant="outline"
               size="sm"
-              disabled={loading}
-            >
+              disabled={loading}>
+
               <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
@@ -440,31 +440,31 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {loading ? (
-            <div className="space-y-2">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="animate-pulse flex items-center justify-between p-3 border rounded">
+          {loading ?
+          <div className="space-y-2">
+              {[...Array(5)].map((_, i) =>
+            <div key={i} className="animate-pulse flex items-center justify-between p-3 border rounded">
                   <div className="space-y-1">
                     <div className="h-4 bg-gray-200 rounded w-48"></div>
                     <div className="h-3 bg-gray-200 rounded w-24"></div>
                   </div>
                   <div className="h-6 bg-gray-200 rounded w-16"></div>
                 </div>
-              ))}
-            </div>
-          ) : locations.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
+            )}
+            </div> :
+          locations.length === 0 ?
+          <div className="text-center py-8 text-muted-foreground">
               No location data available
-            </div>
-          ) : (
-            <div className="space-y-2 max-h-96 overflow-y-auto">
-              {locations.slice(-20).reverse().map((location, index) => (
-                <div key={location.id} className="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
+            </div> :
+
+          <div className="space-y-2 max-h-96 overflow-y-auto">
+              {locations.slice(-20).reverse().map((location, index) =>
+            <div key={location.id} className="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
                   <div className="flex items-start gap-3">
                     <div className={`mt-1 w-2 h-2 rounded-full ${
-                      location.quality_score >= 90 ? 'bg-green-500' :
-                      location.quality_score >= 70 ? 'bg-yellow-500' : 'bg-red-500'
-                    }`}></div>
+                location.quality_score >= 90 ? 'bg-green-500' :
+                location.quality_score >= 70 ? 'bg-yellow-500' : 'bg-red-500'}`
+                }></div>
                     <div>
                       <div className="text-sm font-medium">{location.address}</div>
                       <div className="text-xs text-muted-foreground">
@@ -472,41 +472,41 @@ const GPSLocationTracker: React.FC<GPSLocationTrackerProps> = ({
                         Accuracy: {Math.round(location.accuracy)}m • 
                         Quality: {Math.round(location.quality_score)}%
                       </div>
-                      {location.distance_from_previous > 0 && (
-                        <div className="text-xs text-blue-600">
+                      {location.distance_from_previous > 0 &&
+                  <div className="text-xs text-blue-600">
                           Moved: {formatDistance(location.distance_from_previous)}
                         </div>
-                      )}
+                  }
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    {location.quality_score >= 90 ? (
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                    ) : location.quality_score >= 70 ? (
-                      <Target className="h-4 w-4 text-yellow-500" />
-                    ) : (
-                      <AlertTriangle className="h-4 w-4 text-red-500" />
-                    )}
+                    {location.quality_score >= 90 ?
+                <CheckCircle className="h-4 w-4 text-green-500" /> :
+                location.quality_score >= 70 ?
+                <Target className="h-4 w-4 text-yellow-500" /> :
+
+                <AlertTriangle className="h-4 w-4 text-red-500" />
+                }
                   </div>
                 </div>
-              ))}
+            )}
             </div>
-          )}
+          }
         </CardContent>
       </Card>
 
       {/* Quality Alerts */}
-      {qualityScore < 70 && (
-        <Alert>
+      {qualityScore < 70 &&
+      <Alert>
           <AlertTriangle className="h-4 w-4" />
           <AlertDescription>
             GPS tracking quality is below optimal. Consider enabling high accuracy mode or moving to an area with better satellite reception.
           </AlertDescription>
         </Alert>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default GPSLocationTracker;

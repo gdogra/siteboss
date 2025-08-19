@@ -6,11 +6,11 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Plus, Search, Filter, FileText, Edit, Eye, Send, 
+import {
+  Plus, Search, Filter, FileText, Edit, Eye, Send,
   CheckCircle, XCircle, Clock, AlertCircle, Download,
-  TrendingUp, Users, DollarSign, Calendar
-} from 'lucide-react';
+  TrendingUp, Users, DollarSign, Calendar } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ProposalCreator from './ProposalCreator';
 import ProposalEditor from './ProposalEditor';
@@ -106,7 +106,7 @@ const ProposalManagement: React.FC = () => {
 
       if (error) throw error;
       const proposals = data?.List || [];
-      
+
       const newStats = {
         total: proposals.length,
         draft: proposals.filter((p: Proposal) => p.status === 'draft').length,
@@ -127,19 +127,19 @@ const ProposalManagement: React.FC = () => {
     let filtered = proposals;
 
     if (searchTerm) {
-      filtered = filtered.filter(proposal => 
-        proposal.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        proposal.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        proposal.proposal_number.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter((proposal) =>
+      proposal.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      proposal.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      proposal.proposal_number.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(proposal => proposal.status === statusFilter);
+      filtered = filtered.filter((proposal) => proposal.status === statusFilter);
     }
 
     if (priorityFilter !== 'all') {
-      filtered = filtered.filter(proposal => proposal.priority === priorityFilter);
+      filtered = filtered.filter((proposal) => proposal.priority === priorityFilter);
     }
 
     setFilteredProposals(filtered);
@@ -172,7 +172,7 @@ const ProposalManagement: React.FC = () => {
   const formatCurrency = (amount: number, currency: string = 'USD') => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: currency,
+      currency: currency
     }).format(amount / 100);
   };
 
@@ -291,8 +291,8 @@ const ProposalManagement: React.FC = () => {
                   placeholder="Search proposals..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-full sm:w-64"
-                />
+                  className="pl-10 w-full sm:w-64" />
+
               </div>
               
               <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -331,23 +331,23 @@ const ProposalManagement: React.FC = () => {
 
           {/* Proposals List */}
           <div className="grid grid-cols-1 gap-4">
-            {loading ? (
-              <Card>
+            {loading ?
+            <Card>
                 <CardContent className="p-6 text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
                   <p className="mt-4 text-gray-600">Loading proposals...</p>
                 </CardContent>
-              </Card>
-            ) : filteredProposals.length === 0 ? (
-              <Card>
+              </Card> :
+            filteredProposals.length === 0 ?
+            <Card>
                 <CardContent className="p-6 text-center">
                   <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600">No proposals found</p>
                 </CardContent>
-              </Card>
-            ) : (
-              filteredProposals.map((proposal) => (
-                <Card key={proposal.id} className="hover:shadow-md transition-shadow">
+              </Card> :
+
+            filteredProposals.map((proposal) =>
+            <Card key={proposal.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                       <div className="flex-1 space-y-2">
@@ -357,15 +357,15 @@ const ProposalManagement: React.FC = () => {
                             {getStatusIcon(proposal.status)}
                             <span className="ml-1 capitalize">{proposal.status}</span>
                           </Badge>
-                          {proposal.priority !== 'normal' && (
-                            <Badge variant="outline" className={
-                              proposal.priority === 'high' ? 'border-orange-500 text-orange-700' :
-                              proposal.priority === 'urgent' ? 'border-red-500 text-red-700' :
-                              'border-gray-500 text-gray-700'
-                            }>
+                          {proposal.priority !== 'normal' &&
+                      <Badge variant="outline" className={
+                      proposal.priority === 'high' ? 'border-orange-500 text-orange-700' :
+                      proposal.priority === 'urgent' ? 'border-red-500 text-red-700' :
+                      'border-gray-500 text-gray-700'
+                      }>
                               {proposal.priority}
                             </Badge>
-                          )}
+                      }
                         </div>
                         
                         <div className="text-sm text-gray-600 space-y-1">
@@ -377,42 +377,42 @@ const ProposalManagement: React.FC = () => {
                       </div>
 
                       <div className="flex flex-col sm:flex-row gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => {
-                            setSelectedProposal(proposal);
-                            setShowEditor(true);
-                          }}
-                        >
+                        <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedProposal(proposal);
+                        setShowEditor(true);
+                      }}>
+
                           <Edit className="w-4 h-4 mr-2" />
                           Edit
                         </Button>
                         
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => window.open(`/proposal/${proposal.id}/view`, '_blank')}
-                        >
+                        <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open(`/proposal/${proposal.id}/view`, '_blank')}>
+
                           <Eye className="w-4 h-4 mr-2" />
                           View
                         </Button>
 
-                        {proposal.status === 'draft' && (
-                          <Button 
-                            size="sm"
-                            onClick={() => handleSendProposal(proposal)}
-                          >
+                        {proposal.status === 'draft' &&
+                    <Button
+                      size="sm"
+                      onClick={() => handleSendProposal(proposal)}>
+
                             <Send className="w-4 h-4 mr-2" />
                             Send
                           </Button>
-                        )}
+                    }
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              ))
-            )}
+            )
+            }
           </div>
         </TabsContent>
 
@@ -442,13 +442,13 @@ const ProposalManagement: React.FC = () => {
           <DialogHeader>
             <DialogTitle>Create New Proposal</DialogTitle>
           </DialogHeader>
-          <ProposalCreator 
+          <ProposalCreator
             onSuccess={() => {
               setShowCreator(false);
               fetchProposals();
             }}
-            onCancel={() => setShowCreator(false)}
-          />
+            onCancel={() => setShowCreator(false)} />
+
         </DialogContent>
       </Dialog>
 
@@ -457,20 +457,20 @@ const ProposalManagement: React.FC = () => {
           <DialogHeader>
             <DialogTitle>Edit Proposal</DialogTitle>
           </DialogHeader>
-          {selectedProposal && (
-            <ProposalEditor 
-              proposalId={selectedProposal.id}
-              onSuccess={() => {
-                setShowEditor(false);
-                fetchProposals();
-              }}
-              onCancel={() => setShowEditor(false)}
-            />
-          )}
+          {selectedProposal &&
+          <ProposalEditor
+            proposalId={selectedProposal.id}
+            onSuccess={() => {
+              setShowEditor(false);
+              fetchProposals();
+            }}
+            onCancel={() => setShowEditor(false)} />
+
+          }
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProposalManagement;

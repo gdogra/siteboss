@@ -11,21 +11,21 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
-import { 
-  FileText, 
-  Calendar as CalendarIcon, 
-  Clock, 
-  User, 
-  CheckCircle, 
-  XCircle, 
+import {
+  FileText,
+  Calendar as CalendarIcon,
+  Clock,
+  User,
+  CheckCircle,
+  XCircle,
   Send,
   Download,
   Eye,
   Edit,
   Plus,
   AlertTriangle,
-  Trash2
-} from 'lucide-react';
+  Trash2 } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, addDays, subDays } from 'date-fns';
 
@@ -69,14 +69,14 @@ const TimesheetGenerator: React.FC = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generatingTimesheet, setGeneratingTimesheet] = useState(false);
-  
+
   // Form states
   const [selectedUser, setSelectedUser] = useState('');
   const [periodType, setPeriodType] = useState('week');
   const [periodStart, setPeriodStart] = useState<Date>(startOfWeek(new Date()));
   const [periodEnd, setPeriodEnd] = useState<Date>(endOfWeek(new Date()));
   const [approvalNotes, setApprovalNotes] = useState('');
-  
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const TimesheetGenerator: React.FC = () => {
         IsAsc: true,
         Filters: []
       });
-      
+
       if (!usersResponse.error) {
         setUsers(usersResponse.data?.List || []);
       }
@@ -122,7 +122,7 @@ const TimesheetGenerator: React.FC = () => {
         IsAsc: true,
         Filters: []
       });
-      
+
       if (!projectsResponse.error) {
         setProjects(projectsResponse.data?.List || []);
       }
@@ -171,11 +171,11 @@ const TimesheetGenerator: React.FC = () => {
         OrderByField: 'start_time',
         IsAsc: true,
         Filters: [
-          { name: 'user_id', op: 'Equal', value: parseInt(selectedUser) },
-          { name: 'start_time', op: 'GreaterThanOrEqual', value: periodStart.toISOString() },
-          { name: 'start_time', op: 'LessThanOrEqual', value: periodEnd.toISOString() },
-          { name: 'status', op: 'Equal', value: 'completed' }
-        ]
+        { name: 'user_id', op: 'Equal', value: parseInt(selectedUser) },
+        { name: 'start_time', op: 'GreaterThanOrEqual', value: periodStart.toISOString() },
+        { name: 'start_time', op: 'LessThanOrEqual', value: periodEnd.toISOString() },
+        { name: 'status', op: 'Equal', value: 'completed' }]
+
       });
 
       if (sessionsResponse.error) throw sessionsResponse.error;
@@ -191,16 +191,16 @@ const TimesheetGenerator: React.FC = () => {
       }
 
       // Calculate totals
-      const totalHours = sessions.reduce((sum: number, session: any) => 
-        sum + (session.total_duration || 0) / 60, 0
+      const totalHours = sessions.reduce((sum: number, session: any) =>
+      sum + (session.total_duration || 0) / 60, 0
       );
-      
-      const workHours = sessions.reduce((sum: number, session: any) => 
-        sum + (session.work_duration || 0) / 60, 0
+
+      const workHours = sessions.reduce((sum: number, session: any) =>
+      sum + (session.work_duration || 0) / 60, 0
       );
-      
-      const breakHours = sessions.reduce((sum: number, session: any) => 
-        sum + (session.break_duration || 0) / 60, 0
+
+      const breakHours = sessions.reduce((sum: number, session: any) =>
+      sum + (session.break_duration || 0) / 60, 0
       );
 
       // Calculate regular vs overtime (assuming 40 hours per week is regular)
@@ -377,7 +377,7 @@ const TimesheetGenerator: React.FC = () => {
 
   const viewTimesheetDetails = async (timesheet: Timesheet) => {
     setSelectedTimesheet(timesheet);
-    
+
     try {
       if (timesheet.generated_data) {
         const data = JSON.parse(timesheet.generated_data);
@@ -393,7 +393,7 @@ const TimesheetGenerator: React.FC = () => {
     try {
       const user = users.find((u: any) => u.ID === timesheet.user_id);
       const userName = user ? (user as any).Name : `User ${timesheet.user_id}`;
-      
+
       let sessions: TimesheetSession[] = [];
       if (timesheet.generated_data) {
         const data = JSON.parse(timesheet.generated_data);
@@ -401,35 +401,35 @@ const TimesheetGenerator: React.FC = () => {
       }
 
       const csvContent = [
-        [`Timesheet for ${userName}`],
-        [`Period: ${format(new Date(timesheet.period_start), 'yyyy-MM-dd')} to ${format(new Date(timesheet.period_end), 'yyyy-MM-dd')}`],
-        [`Generated: ${new Date().toLocaleDateString()}`],
-        [`Status: ${timesheet.status}`],
-        [''],
-        ['Summary'],
-        ['Total Hours', timesheet.total_hours.toString()],
-        ['Regular Hours', timesheet.regular_hours.toString()],
-        ['Overtime Hours', timesheet.overtime_hours.toString()],
-        ['Break Hours', timesheet.break_hours.toString()],
-        [''],
-        ['Session Details'],
-        ['Date', 'Start Time', 'End Time', 'Project', 'Work Hours', 'Break Hours', 'Status', 'Notes']
-      ];
+      [`Timesheet for ${userName}`],
+      [`Period: ${format(new Date(timesheet.period_start), 'yyyy-MM-dd')} to ${format(new Date(timesheet.period_end), 'yyyy-MM-dd')}`],
+      [`Generated: ${new Date().toLocaleDateString()}`],
+      [`Status: ${timesheet.status}`],
+      [''],
+      ['Summary'],
+      ['Total Hours', timesheet.total_hours.toString()],
+      ['Regular Hours', timesheet.regular_hours.toString()],
+      ['Overtime Hours', timesheet.overtime_hours.toString()],
+      ['Break Hours', timesheet.break_hours.toString()],
+      [''],
+      ['Session Details'],
+      ['Date', 'Start Time', 'End Time', 'Project', 'Work Hours', 'Break Hours', 'Status', 'Notes']];
 
-      sessions.forEach(session => {
+
+      sessions.forEach((session) => {
         csvContent.push([
-          format(new Date(session.start_time), 'yyyy-MM-dd'),
-          format(new Date(session.start_time), 'HH:mm'),
-          session.end_time ? format(new Date(session.end_time), 'HH:mm') : '',
-          session.project_name || '',
-          (session.work_duration / 60).toFixed(2),
-          (session.break_duration / 60).toFixed(2),
-          session.verification_status || '',
-          session.notes || ''
-        ]);
+        format(new Date(session.start_time), 'yyyy-MM-dd'),
+        format(new Date(session.start_time), 'HH:mm'),
+        session.end_time ? format(new Date(session.end_time), 'HH:mm') : '',
+        session.project_name || '',
+        (session.work_duration / 60).toFixed(2),
+        (session.break_duration / 60).toFixed(2),
+        session.verification_status || '',
+        session.notes || '']
+        );
       });
 
-      const csv = csvContent.map(row => row.join(',')).join('\n');
+      const csv = csvContent.map((row) => row.join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -466,7 +466,7 @@ const TimesheetGenerator: React.FC = () => {
       approved: 'default',
       rejected: 'destructive'
     } as const;
-    
+
     const icons = {
       draft: <Edit className="h-3 w-3 mr-1" />,
       submitted: <Send className="h-3 w-3 mr-1" />,
@@ -478,8 +478,8 @@ const TimesheetGenerator: React.FC = () => {
       <Badge variant={variants[status as keyof typeof variants] || 'outline'}>
         {icons[status as keyof typeof icons]}
         {status.charAt(0).toUpperCase() + status.slice(1)}
-      </Badge>
-    );
+      </Badge>);
+
   };
 
   const formatHours = (hours: number) => {
@@ -498,8 +498,8 @@ const TimesheetGenerator: React.FC = () => {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i}>
+          {[...Array(6)].map((_, i) =>
+          <Card key={i}>
               <CardContent className="pt-6">
                 <div className="animate-pulse space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -507,16 +507,16 @@ const TimesheetGenerator: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
-  const draftTimesheets = timesheets.filter(t => t.status === 'draft');
-  const submittedTimesheets = timesheets.filter(t => t.status === 'submitted');
-  const approvedTimesheets = timesheets.filter(t => t.status === 'approved');
-  const rejectedTimesheets = timesheets.filter(t => t.status === 'rejected');
+  const draftTimesheets = timesheets.filter((t) => t.status === 'draft');
+  const submittedTimesheets = timesheets.filter((t) => t.status === 'submitted');
+  const approvedTimesheets = timesheets.filter((t) => t.status === 'approved');
+  const rejectedTimesheets = timesheets.filter((t) => t.status === 'rejected');
 
   return (
     <div className="space-y-6">
@@ -592,11 +592,11 @@ const TimesheetGenerator: React.FC = () => {
                       <SelectValue placeholder="Select employee" />
                     </SelectTrigger>
                     <SelectContent>
-                      {users.map((user: any) => (
-                        <SelectItem key={user.ID} value={user.ID.toString()}>
+                      {users.map((user: any) =>
+                      <SelectItem key={user.ID} value={user.ID.toString()}>
                           {user.Name}
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -631,8 +631,8 @@ const TimesheetGenerator: React.FC = () => {
                         mode="single"
                         selected={periodStart}
                         onSelect={(date) => date && setPeriodStart(date)}
-                        initialFocus
-                      />
+                        initialFocus />
+
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -651,18 +651,18 @@ const TimesheetGenerator: React.FC = () => {
                         mode="single"
                         selected={periodEnd}
                         onSelect={(date) => date && setPeriodEnd(date)}
-                        initialFocus
-                      />
+                        initialFocus />
+
                     </PopoverContent>
                   </Popover>
                 </div>
               </div>
 
-              <Button 
-                onClick={generateTimesheet} 
+              <Button
+                onClick={generateTimesheet}
                 disabled={generatingTimesheet || !selectedUser}
-                className="w-full"
-              >
+                className="w-full">
+
                 {generatingTimesheet ? 'Generating...' : 'Generate Timesheet'}
               </Button>
             </CardContent>
@@ -674,14 +674,14 @@ const TimesheetGenerator: React.FC = () => {
               <CardTitle>Recent Timesheets</CardTitle>
             </CardHeader>
             <CardContent>
-              {timesheets.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
+              {timesheets.length === 0 ?
+              <div className="text-center py-8 text-muted-foreground">
                   No timesheets generated yet
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {timesheets.slice(0, 10).map((timesheet) => (
-                    <div key={timesheet.id} className="flex items-center justify-between p-4 border rounded-lg">
+                </div> :
+
+              <div className="space-y-4">
+                  {timesheets.slice(0, 10).map((timesheet) =>
+                <div key={timesheet.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{getUserName(timesheet.user_id)}</span>
@@ -699,49 +699,49 @@ const TimesheetGenerator: React.FC = () => {
                       
                       <div className="flex items-center gap-1">
                         <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => viewTimesheetDetails(timesheet)}
-                        >
+                      size="sm"
+                      variant="outline"
+                      onClick={() => viewTimesheetDetails(timesheet)}>
+
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => exportTimesheet(timesheet)}
-                        >
+                      size="sm"
+                      variant="outline"
+                      onClick={() => exportTimesheet(timesheet)}>
+
                           <Download className="h-4 w-4" />
                         </Button>
-                        {timesheet.status === 'draft' && (
-                          <Button
-                            size="sm"
-                            onClick={() => submitTimesheet(timesheet.id)}
-                          >
+                        {timesheet.status === 'draft' &&
+                    <Button
+                      size="sm"
+                      onClick={() => submitTimesheet(timesheet.id)}>
+
                             <Send className="h-4 w-4" />
                           </Button>
-                        )}
-                        {timesheet.status === 'draft' && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => deleteTimesheet(timesheet.id)}
-                          >
+                    }
+                        {timesheet.status === 'draft' &&
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => deleteTimesheet(timesheet.id)}>
+
                             <Trash2 className="h-4 w-4" />
                           </Button>
-                        )}
+                    }
                       </div>
                     </div>
-                  ))}
+                )}
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </div>
 
         {/* Timesheet Details */}
         <div>
-          {selectedTimesheet ? (
-            <Card>
+          {selectedTimesheet ?
+          <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5" />
@@ -808,8 +808,8 @@ const TimesheetGenerator: React.FC = () => {
                 <div className="space-y-3">
                   <h4 className="font-medium">Sessions ({timesheetSessions.length})</h4>
                   <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {timesheetSessions.map((session, index) => (
-                      <div key={session.id} className="p-3 border rounded text-sm">
+                    {timesheetSessions.map((session, index) =>
+                  <div key={session.id} className="p-3 border rounded text-sm">
                         <div className="font-medium">{session.project_name}</div>
                         <div className="text-xs text-muted-foreground">
                           {format(new Date(session.start_time), 'MMM dd, HH:mm')} - 
@@ -819,59 +819,59 @@ const TimesheetGenerator: React.FC = () => {
                           Work: {formatHours(session.work_duration / 60)} • 
                           Break: {formatHours(session.break_duration / 60)}
                         </div>
-                        {session.geofence_violations > 0 && (
-                          <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                        {session.geofence_violations > 0 &&
+                    <div className="mt-1 text-xs text-red-600 flex items-center gap-1">
                             <AlertTriangle className="h-3 w-3" />
                             {session.geofence_violations} violations
                           </div>
-                        )}
+                    }
                         <Badge variant="outline" className="mt-1">
                           {session.verification_status}
                         </Badge>
                       </div>
-                    ))}
+                  )}
                   </div>
                 </div>
 
                 {/* Approval Actions */}
-                {selectedTimesheet.status === 'submitted' && (
-                  <>
+                {selectedTimesheet.status === 'submitted' &&
+              <>
                     <Separator />
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label>Approval Notes</Label>
                         <Textarea
-                          value={approvalNotes}
-                          onChange={(e) => setApprovalNotes(e.target.value)}
-                          placeholder="Add notes about approval/rejection..."
-                          rows={3}
-                        />
+                      value={approvalNotes}
+                      onChange={(e) => setApprovalNotes(e.target.value)}
+                      placeholder="Add notes about approval/rejection..."
+                      rows={3} />
+
                       </div>
 
                       <div className="flex gap-2">
                         <Button
-                          onClick={() => approveTimesheet(selectedTimesheet.id)}
-                          className="flex-1"
-                        >
+                      onClick={() => approveTimesheet(selectedTimesheet.id)}
+                      className="flex-1">
+
                           <CheckCircle className="h-4 w-4 mr-2" />
                           Approve
                         </Button>
                         <Button
-                          onClick={() => rejectTimesheet(selectedTimesheet.id)}
-                          variant="destructive"
-                          className="flex-1"
-                        >
+                      onClick={() => rejectTimesheet(selectedTimesheet.id)}
+                      variant="destructive"
+                      className="flex-1">
+
                           <XCircle className="h-4 w-4 mr-2" />
                           Reject
                         </Button>
                       </div>
                     </div>
                   </>
-                )}
+              }
 
                 {/* Approval Info */}
-                {selectedTimesheet.status === 'approved' && selectedTimesheet.approved_at && (
-                  <>
+                {selectedTimesheet.status === 'approved' && selectedTimesheet.approved_at &&
+              <>
                     <Separator />
                     <div className="p-3 bg-green-50 rounded-lg">
                       <div className="text-sm text-green-700">
@@ -883,10 +883,10 @@ const TimesheetGenerator: React.FC = () => {
                       </div>
                     </div>
                   </>
-                )}
+              }
 
-                {selectedTimesheet.status === 'rejected' && (
-                  <>
+                {selectedTimesheet.status === 'rejected' &&
+              <>
                     <Separator />
                     <div className="p-3 bg-red-50 rounded-lg">
                       <div className="text-sm text-red-700">
@@ -895,31 +895,31 @@ const TimesheetGenerator: React.FC = () => {
                         <div className="text-xs">
                           {selectedTimesheet.approved_at && formatTime(selectedTimesheet.approved_at)}
                         </div>
-                        {selectedTimesheet.rejection_reason && (
-                          <div className="mt-2">
+                        {selectedTimesheet.rejection_reason &&
+                    <div className="mt-2">
                             <div className="text-xs font-medium">Reason:</div>
                             <div className="text-xs">{selectedTimesheet.rejection_reason}</div>
                           </div>
-                        )}
+                    }
                       </div>
                     </div>
                   </>
-                )}
+              }
               </CardContent>
-            </Card>
-          ) : (
-            <Card>
+            </Card> :
+
+          <Card>
               <CardContent className="pt-6">
                 <div className="text-center py-8 text-muted-foreground">
                   Select a timesheet to view details
                 </div>
               </CardContent>
             </Card>
-          )}
+          }
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TimesheetGenerator;

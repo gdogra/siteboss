@@ -7,12 +7,12 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { 
-  FileText, 
-  Calendar, 
-  DollarSign, 
-  Users, 
-  AlertTriangle, 
+import {
+  FileText,
+  Calendar,
+  DollarSign,
+  Users,
+  AlertTriangle,
   CheckCircle,
   Clock,
   Search,
@@ -21,8 +21,8 @@ import {
   Eye,
   Edit,
   Trash2,
-  Download
-} from 'lucide-react';
+  Download } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface PermitApplication {
@@ -82,7 +82,7 @@ const PermitManagementDashboard = () => {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Load applications
       const { data: applicationsData, error: applicationsError } = await window.ezsite.apis.tablePage(35423, {
         PageNo: 1,
@@ -91,7 +91,7 @@ const PermitManagementDashboard = () => {
         IsAsc: false,
         Filters: []
       });
-      
+
       if (applicationsError) throw applicationsError;
       setApplications(applicationsData?.List || []);
 
@@ -103,7 +103,7 @@ const PermitManagementDashboard = () => {
         IsAsc: true,
         Filters: [{ name: 'is_active', op: 'Equal', value: true }]
       });
-      
+
       if (typesError) throw typesError;
       setPermitTypes(typesData?.List || []);
 
@@ -115,7 +115,7 @@ const PermitManagementDashboard = () => {
         IsAsc: false,
         Filters: []
       });
-      
+
       if (inspectionsError) throw inspectionsError;
       setInspections(inspectionsData?.List || []);
 
@@ -134,33 +134,33 @@ const PermitManagementDashboard = () => {
   // Get status color
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'under_review': return 'bg-blue-100 text-blue-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'approved':return 'bg-green-100 text-green-800';
+      case 'pending':return 'bg-yellow-100 text-yellow-800';
+      case 'under_review':return 'bg-blue-100 text-blue-800';
+      case 'rejected':return 'bg-red-100 text-red-800';
+      case 'draft':return 'bg-gray-100 text-gray-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
   // Get priority color
   const getPriorityColor = (priority: string) => {
     switch (priority?.toLowerCase()) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'high':return 'bg-red-100 text-red-800';
+      case 'medium':return 'bg-yellow-100 text-yellow-800';
+      case 'low':return 'bg-green-100 text-green-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
   // Calculate dashboard stats
   const stats = {
     totalApplications: applications.length,
-    pendingReview: applications.filter(app => app.status === 'pending' || app.status === 'under_review').length,
-    approvedApplications: applications.filter(app => app.status === 'approved').length,
-    scheduledInspections: inspections.filter(insp => insp.status === 'scheduled').length,
-    completedInspections: inspections.filter(insp => insp.status === 'completed').length,
-    expiringSoon: applications.filter(app => {
+    pendingReview: applications.filter((app) => app.status === 'pending' || app.status === 'under_review').length,
+    approvedApplications: applications.filter((app) => app.status === 'approved').length,
+    scheduledInspections: inspections.filter((insp) => insp.status === 'scheduled').length,
+    completedInspections: inspections.filter((insp) => insp.status === 'completed').length,
+    expiringSoon: applications.filter((app) => {
       if (!app.expires_at) return false;
       const daysUntilExpiry = Math.ceil((new Date(app.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
       return daysUntilExpiry > 0 && daysUntilExpiry <= 30;
@@ -168,14 +168,14 @@ const PermitManagementDashboard = () => {
   };
 
   // Filter applications
-  const filteredApplications = applications.filter(app => {
-    const matchesSearch = !searchTerm || 
-      app.application_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.property_address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.contractor_name.toLowerCase().includes(searchTerm.toLowerCase());
-    
+  const filteredApplications = applications.filter((app) => {
+    const matchesSearch = !searchTerm ||
+    app.application_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    app.property_address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    app.contractor_name.toLowerCase().includes(searchTerm.toLowerCase());
+
     const matchesStatus = statusFilter === 'all' || app.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -183,8 +183,8 @@ const PermitManagementDashboard = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -280,8 +280,8 @@ const PermitManagementDashboard = () => {
                 placeholder="Search applications..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+                className="pl-10" />
+
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-48">
@@ -299,8 +299,8 @@ const PermitManagementDashboard = () => {
           </div>
 
           <div className="grid gap-4">
-            {filteredApplications.map((application) => (
-              <Card key={application.id}>
+            {filteredApplications.map((application) =>
+            <Card key={application.id}>
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-2">
@@ -312,12 +312,12 @@ const PermitManagementDashboard = () => {
                         <Badge className={getPriorityColor(application.priority)}>
                           {application.priority?.toUpperCase()} PRIORITY
                         </Badge>
-                        {application.fee_paid && (
-                          <Badge className="bg-green-100 text-green-800">
+                        {application.fee_paid &&
+                      <Badge className="bg-green-100 text-green-800">
                             <DollarSign className="w-3 h-3 mr-1" />
                             PAID
                           </Badge>
-                        )}
+                      }
                       </div>
                       <p className="text-gray-600">{application.property_address}</p>
                       <p className="text-sm">{application.work_description}</p>
@@ -340,7 +340,7 @@ const PermitManagementDashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </TabsContent>
 
@@ -355,8 +355,8 @@ const PermitManagementDashboard = () => {
           </div>
 
           <div className="grid gap-4">
-            {inspections.map((inspection) => (
-              <Card key={inspection.id}>
+            {inspections.map((inspection) =>
+            <Card key={inspection.id}>
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-2">
@@ -365,21 +365,21 @@ const PermitManagementDashboard = () => {
                         <Badge className={getStatusColor(inspection.status)}>
                           {inspection.status?.toUpperCase()}
                         </Badge>
-                        {inspection.reinspection_required && (
-                          <Badge className="bg-orange-100 text-orange-800">
+                        {inspection.reinspection_required &&
+                      <Badge className="bg-orange-100 text-orange-800">
                             REINSPECTION REQUIRED
                           </Badge>
-                        )}
+                      }
                       </div>
                       <div className="flex gap-4 text-sm text-gray-600">
                         <span>Scheduled: {new Date(inspection.scheduled_at).toLocaleString()}</span>
-                        {inspection.completed_at && (
-                          <span>Completed: {new Date(inspection.completed_at).toLocaleString()}</span>
-                        )}
+                        {inspection.completed_at &&
+                      <span>Completed: {new Date(inspection.completed_at).toLocaleString()}</span>
+                      }
                       </div>
-                      {inspection.result && (
-                        <p className="text-sm">Result: {inspection.result}</p>
-                      )}
+                      {inspection.result &&
+                    <p className="text-sm">Result: {inspection.result}</p>
+                    }
                     </div>
                     <div className="flex gap-2">
                       <Button variant="outline" size="sm">
@@ -394,7 +394,7 @@ const PermitManagementDashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </TabsContent>
 
@@ -409,19 +409,19 @@ const PermitManagementDashboard = () => {
           </div>
 
           <div className="grid gap-4">
-            {permitTypes.map((type) => (
-              <Card key={type.id}>
+            {permitTypes.map((type) =>
+            <Card key={type.id}>
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
                         <h3 className="font-semibold">{type.name}</h3>
                         <Badge variant="outline">{type.code}</Badge>
-                        {type.inspection_required && (
-                          <Badge className="bg-blue-100 text-blue-800">
+                        {type.inspection_required &&
+                      <Badge className="bg-blue-100 text-blue-800">
                             INSPECTION REQUIRED
                           </Badge>
-                        )}
+                      }
                       </div>
                       <p className="text-sm text-gray-600">{type.description}</p>
                       <div className="flex gap-4 text-sm text-gray-500">
@@ -442,7 +442,7 @@ const PermitManagementDashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </TabsContent>
 
@@ -501,8 +501,8 @@ const PermitManagementDashboard = () => {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default PermitManagementDashboard;
