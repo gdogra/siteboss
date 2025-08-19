@@ -1,16 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, X } from 'lucide-react';
+import { MessageCircle, X, Minimize2 } from 'lucide-react';
 import EnhancedChatBot from '@/components/EnhancedChatBot';
 
 const FloatingChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [hasNewMessage, setHasNewMessage] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [position, setPosition] = useState({ bottom: '1rem', right: '1rem' });
   const chatRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = () => {
-    setIsOpen(!isOpen);
+    if (isOpen) {
+      setIsOpen(false);
+      setIsMinimized(false);
+    } else {
+      setIsOpen(true);
+      setIsMinimized(false);
+    }
   };
+
+  const handleMinimize = () => {
+    setIsMinimized(true);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      setHasNewMessage(false);
+      setUnreadCount(0);
+    }
+  }, [isOpen]);
 
   // Ensure chat stays within viewport bounds
   useEffect(() => {

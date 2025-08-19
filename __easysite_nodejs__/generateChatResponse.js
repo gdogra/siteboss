@@ -2,8 +2,80 @@
 // Generate intelligent chat response using OpenAI GPT
 function generateChatResponse(message, conversationHistory = [], userContext = {}) {
   try {
-    // For demo purposes, we'll create intelligent responses without actual OpenAI API
-    // In production, you would integrate with OpenAI API here
+    // Advanced construction-focused chat response generation
+    const constructionResponses = {
+        greeting: [
+            "Hello! I'm your construction AI assistant. How can I help you with your project today?",
+            "Hi there! Ready to assist with your construction needs. What can I help you with?",
+            "Welcome! I specialize in construction management. How may I assist you?"
+        ],
+        project: {
+            status: [
+                "I can help you check your project status! Please provide your project ID or name, and I'll get you the latest updates on timeline, progress, and any pending items.",
+                "Let me help you track your construction project. You can view detailed progress reports in your dashboard, or I can connect you with your project manager for real-time updates."
+            ],
+            general: [
+                "Our construction services cover residential, commercial, and specialty projects. We handle everything from planning to completion. What type of project are you considering?",
+                "I'd be happy to discuss your construction project! Whether it's new construction, renovation, or repair work, we have the expertise to help. Tell me more about what you have in mind."
+            ]
+        },
+        pricing: {
+            quote: [
+                "I can help you get an accurate construction quote! For the best estimate, I'll need details about your project location, scope of work, materials preferences, and timeline. Would you like to start with a quick project assessment?",
+                "Getting a construction quote is easy! Our pricing depends on project complexity, materials, and timeline. I can connect you with our estimating team for a detailed consultation. What type of construction work are you planning?"
+            ],
+            general: [
+                "Our construction pricing is competitive and transparent. We provide detailed estimates breaking down materials, labor, permits, and timeline. Each project is unique, so let's discuss your specific needs for accurate pricing."
+            ]
+        },
+        services: [
+            "We offer comprehensive construction services including:\n🏠 Residential Construction & Renovation\n🏢 Commercial Building Projects\n🔧 Specialty Construction Work\n📋 Project Management & Consulting\n🤝 Subcontractor Coordination\n\nWhich service interests you most?",
+            "Our construction expertise covers the full spectrum:\n• New construction from ground up\n• Renovations and additions\n• Commercial and industrial projects\n• Project management and coordination\n• Permit handling and compliance\n\nWhat specific service can I tell you more about?"
+        ],
+        leads: {
+            status: [
+                "I can help you check your lead status! You can view all your inquiries and their progress in the Lead Management section, or I can connect you with our sales team for immediate updates.",
+                "Your lead inquiry is important to us! I can help track where you are in our process. Typically, our team responds within 24 hours with initial consultation scheduling."
+            ],
+            new: [
+                "Excellent! I'd love to help you start a new construction inquiry. To provide the best service, I'll need some basic information about your project. What type of construction are you considering?",
+                "Thank you for your interest in our construction services! Let me guide you through submitting a lead. We'll need project type, location, timeline, and budget range to get started."
+            ]
+        },
+        payments: {
+            invoice: [
+                "I can assist with invoice submissions! Our online portal makes it easy to submit and track invoices. You'll need your project information and documentation. Would you like me to guide you through the process?",
+                "For invoice processing, you can use our streamlined submission system. I can help you navigate the requirements and ensure your invoice is processed quickly. What type of invoice are you submitting?"
+            ],
+            status: [
+                "I can help you check payment status! In your dashboard, you'll find all payment history and pending items. If you need immediate assistance, I can connect you with our billing department."
+            ]
+        },
+        materials: [
+            "We work with top-quality construction materials from trusted suppliers! Whether you need concrete, steel, lumber, or specialty materials, we ensure everything meets project specifications and local codes. What materials are you interested in?",
+            "Material selection is crucial for project success. We source high-grade materials including structural components, finishes, and specialty items. Our team handles procurement, delivery scheduling, and quality verification. Tell me about your material needs!"
+        ],
+        permits: [
+            "Permit management is one of our specialties! We handle all regulatory requirements including building permits, environmental approvals, and inspection scheduling. Our team ensures full compliance with local codes and regulations.",
+            "Don't worry about permits - we've got you covered! Our experienced team manages the entire permitting process, from initial applications to final inspections. We work with local authorities to expedite approvals while ensuring full compliance."
+        ],
+        safety: [
+            "Safety is our absolute top priority! We maintain comprehensive safety protocols, regular training programs, and strict OSHA compliance on every job site. Our safety record speaks for itself - zero tolerance for unsafe practices.",
+            "We're committed to maintaining the highest safety standards in construction. Our team receives ongoing safety training, we conduct daily safety briefings, and implement rigorous safety protocols. Every worker goes home safely every day."
+        ],
+        timeline: [
+            "Construction timelines depend on several factors including project scope, permits, weather, and materials. Residential projects typically range from 3-6 months, while commercial projects may take 6-18 months. I can provide a more specific timeline once we discuss your project details.",
+            "Project scheduling is carefully managed to ensure timely completion. We factor in design phase, permit approval, material delivery, weather windows, and construction phases. Let me help you understand the timeline for your specific project type."
+        ],
+        help: [
+            "I'm here to help with all your construction needs! I can assist with project information, quotes, service details, payment questions, and connecting you with the right team members. What specific help do you need?",
+            "Absolutely! As your construction AI assistant, I can help with project tracking, service information, quotes, payments, and general construction questions. I'm also able to connect you with human experts when needed. How can I assist you?"
+        ],
+        general: [
+            "I specialize in construction management and services. I can help with project information, quotes, service details, lead management, payments, and general construction questions. What would you like to know?",
+            "As your construction AI assistant, I'm here to help with any construction-related questions or needs. Whether it's about ongoing projects, new inquiries, services, or payments, I'm ready to assist. How can I help you today?"
+        ]
+    };
 
     const lowerMessage = message.toLowerCase();
     const { userName = 'there', userRole = 'user' } = userContext;
