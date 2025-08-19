@@ -428,55 +428,55 @@ const AdminDashboard = () => {
 
           {/* Quick Navigation Cards - Role Based */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/leads')}>
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/leads')}>
                 <CardContent className="p-6 text-center">
                   <Users className="h-8 w-8 mx-auto mb-2 text-blue-600" />
                   <h3 className="font-medium">Lead Management</h3>
                   <p className="text-sm text-gray-600 mt-1">Manage leads & pipeline</p>
                 </CardContent>
               </Card>
-            )}
+            }
             
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/payments')}>
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/payments')}>
                 <CardContent className="p-6 text-center">
                   <DollarSign className="h-8 w-8 mx-auto mb-2 text-green-600" />
                   <h3 className="font-medium">Payments</h3>
                   <p className="text-sm text-gray-600 mt-1">Financial management</p>
                 </CardContent>
               </Card>
-            )}
+            }
             
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/invoice-submission')}>
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/invoice-submission')}>
                 <CardContent className="p-6 text-center">
                   <FileText className="h-8 w-8 mx-auto mb-2 text-purple-600" />
                   <h3 className="font-medium">Invoices</h3>
                   <p className="text-sm text-gray-600 mt-1">Invoice management</p>
                 </CardContent>
               </Card>
-            )}
+            }
             
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setShowProjectForm(true)}>
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setShowProjectForm(true)}>
                 <CardContent className="p-6 text-center">
                   <Building2 className="h-8 w-8 mx-auto mb-2 text-orange-600" />
                   <h3 className="font-medium">New Project</h3>
                   <p className="text-sm text-gray-600 mt-1">Create project</p>
                 </CardContent>
               </Card>
-            )}
+            }
             
-            {isViewer() && (
-              <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            {isViewer() &&
+            <Card className="cursor-pointer hover:shadow-md transition-shadow">
                 <CardContent className="p-6 text-center">
                   <Eye className="h-8 w-8 mx-auto mb-2 text-gray-600" />
                   <h3 className="font-medium">View Only Access</h3>
                   <p className="text-sm text-gray-600 mt-1">Read-only dashboard</p>
                 </CardContent>
               </Card>
-            )}
+            }
           </div>
 
           {/* Stats Overview */}
@@ -551,16 +551,16 @@ const AdminDashboard = () => {
               {(isAdmin() || isSalesOrAccountant()) && <LeadSummary currentUser={userInfo} />}
             </TabsContent>
             
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <TabsContent value="projects" className="space-y-6">
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <TabsContent value="projects" className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold">Projects</h2>
-                  {(isAdmin() || isSalesOrAccountant()) && (
-                    <Button onClick={() => setShowProjectForm(true)}>
+                  {(isAdmin() || isSalesOrAccountant()) &&
+                <Button onClick={() => setShowProjectForm(true)}>
                       <Plus className="h-4 w-4 mr-2" />
                       New Project
                     </Button>
-                  )}
+                }
                 </div>
 
               <div className="grid gap-6">
@@ -632,11 +632,11 @@ const AdminDashboard = () => {
                 }
               </div>
               </TabsContent>
-            )}
+            }
 
             {/* Work Periods Tab - Admin Only */}
-            {isAdmin() && (
-              <TabsContent value="workperiods" className="space-y-6">
+            {isAdmin() &&
+            <TabsContent value="workperiods" className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold">Work Periods</h2>
                   <Button onClick={() => setShowWorkPeriodForm(true)}>
@@ -748,11 +748,11 @@ const AdminDashboard = () => {
                 }
               </div>
               </TabsContent>
-            )}
+            }
 
             {/* Daily Logs Tab */}
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <TabsContent value="logs" className="space-y-6">
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <TabsContent value="logs" className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold">Recent Daily Logs</h2>
                   <Button onClick={() => setShowLogForm(true)}>
@@ -826,11 +826,11 @@ const AdminDashboard = () => {
                 }
               </div>
               </TabsContent>
-            )}
+            }
 
             {/* Payments Tab */}
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <TabsContent value="payments" className="space-y-6">
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <TabsContent value="payments" className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold">Recent Payments</h2>
                   <Button onClick={() => setShowPaymentForm(true)}>
@@ -888,11 +888,11 @@ const AdminDashboard = () => {
                 }
               </div>
               </TabsContent>
-            )}
+            }
 
             {/* Subcontractors Tab - Admin Only */}
-            {isAdmin() && (
-              <TabsContent value="subcontractors" className="space-y-6">
+            {isAdmin() &&
+            <TabsContent value="subcontractors" className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold">Subcontractors</h2>
                   <Button onClick={() => setShowSubcontractorForm(true)}>
@@ -955,11 +955,11 @@ const AdminDashboard = () => {
                 }
               </div>
               </TabsContent>
-            )}
+            }
 
             {/* Documents Tab */}
-            {(isAdmin() || isSalesOrAccountant()) && (
-              <TabsContent value="documents" className="space-y-6">
+            {(isAdmin() || isSalesOrAccountant()) &&
+            <TabsContent value="documents" className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold">Documents</h2>
                   <Button onClick={() => setShowDocumentForm(true)}>
@@ -1024,14 +1024,14 @@ const AdminDashboard = () => {
                 }
               </div>
             </TabsContent>
-            )}
+            }
 
             {/* Users Tab - Admin Only */}
-            {isAdmin() && (
-              <TabsContent value="users" className="space-y-6">
+            {isAdmin() &&
+            <TabsContent value="users" className="space-y-6">
                 <UserManagement />
               </TabsContent>
-            )}
+            }
           </Tabs>
 
           {/* Form Modals */}

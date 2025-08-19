@@ -39,13 +39,13 @@ const AdminLogin = () => {
 
 
 
+
+
       // User is not logged in, stay on login page
-    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {
-      toast({
-        title: "Error",
-        description: "Please enter both email and password",
-        variant: "destructive"
-      });
+    }};const handleInputChange = (field: string, value: string) => {setCredentials((prev) => ({ ...prev, [field]: value }));};const handleSubmit = async (e: React.FormEvent) => {e.preventDefault();if (!credentials.email || !credentials.password) {toast({ title: "Error",
+          description: "Please enter both email and password",
+          variant: "destructive"
+        });
       return;
     }
 
@@ -247,10 +247,10 @@ const AdminLogin = () => {
                 type="button"
                 variant="outline"
                 className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
-                onClick={() => setCredentials({ email: 'admin', password: 'admin123' })}>
+                onClick={() => setCredentials({ email: 'admin@lagunabay.dev', password: 'admin123' })}>
                 <div className="text-left">
                   <div className="font-medium text-blue-900">👑 Admin</div>
-                  <div className="text-sm text-blue-700">admin / admin123</div>
+                  <div className="text-sm text-blue-700">admin@lagunabay.dev / admin123</div>
                 </div>
               </Button>
               
@@ -258,10 +258,10 @@ const AdminLogin = () => {
                 type="button"
                 variant="outline"
                 className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
-                onClick={() => setCredentials({ email: 'manager', password: 'manager123' })}>
+                onClick={() => setCredentials({ email: 'manager@lagunabay.dev', password: 'manager123' })}>
                 <div className="text-left">
                   <div className="font-medium text-blue-900">📊 Manager</div>
-                  <div className="text-sm text-blue-700">manager / manager123</div>
+                  <div className="text-sm text-blue-700">manager@lagunabay.dev / manager123</div>
                 </div>
               </Button>
               
@@ -269,10 +269,10 @@ const AdminLogin = () => {
                 type="button"
                 variant="outline"
                 className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
-                onClick={() => setCredentials({ email: 'sales', password: 'sales123' })}>
+                onClick={() => setCredentials({ email: 'sales@lagunabay.dev', password: 'sales123' })}>
                 <div className="text-left">
                   <div className="font-medium text-blue-900">🎯 Sales</div>
-                  <div className="text-sm text-blue-700">sales / sales123</div>
+                  <div className="text-sm text-blue-700">sales@lagunabay.dev / sales123</div>
                 </div>
               </Button>
               
@@ -280,10 +280,10 @@ const AdminLogin = () => {
                 type="button"
                 variant="outline"
                 className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
-                onClick={() => setCredentials({ email: 'accountant', password: 'account123' })}>
+                onClick={() => setCredentials({ email: 'accountant@lagunabay.dev', password: 'account123' })}>
                 <div className="text-left">
                   <div className="font-medium text-blue-900">💰 Accountant</div>
-                  <div className="text-sm text-blue-700">accountant / account123</div>
+                  <div className="text-sm text-blue-700">accountant@lagunabay.dev / account123</div>
                 </div>
               </Button>
               
@@ -291,10 +291,10 @@ const AdminLogin = () => {
                 type="button"
                 variant="outline"
                 className="w-full justify-start hover:bg-blue-100 border-blue-300 bg-white/80 h-auto py-3"
-                onClick={() => setCredentials({ email: 'viewer', password: 'viewer123' })}>
+                onClick={() => setCredentials({ email: 'viewer@lagunabay.dev', password: 'viewer123' })}>
                 <div className="text-left">
                   <div className="font-medium text-blue-900">👀 Viewer</div>
-                  <div className="text-sm text-blue-700">viewer / viewer123</div>
+                  <div className="text-sm text-blue-700">viewer@lagunabay.dev / viewer123</div>
                 </div>
               </Button>
             </div>

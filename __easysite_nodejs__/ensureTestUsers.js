@@ -1,40 +1,40 @@
 // This function ensures test users exist in the system with proper roles
 async function ensureTestUsers() {
   const testUsers = [
-    {
-      email: 'admin',
-      password: 'admin123',
-      name: 'Administrator',
-      roleCode: 'Administrator'
-    },
-    {
-      email: 'manager',
-      password: 'manager123',
-      name: 'Project Manager',
-      roleCode: 'Administrator'
-    },
-    {
-      email: 'sales',
-      password: 'sales123',
-      name: 'Sales Representative',
-      roleCode: 'r-QpoZrh'
-    },
-    {
-      email: 'accountant',
-      password: 'account123',
-      name: 'Accountant',
-      roleCode: 'r-QpoZrh'
-    },
-    {
-      email: 'viewer',
-      password: 'viewer123',
-      name: 'Viewer',
-      roleCode: 'GeneralUser'
-    }
-  ];
+  {
+    email: 'admin@lagunabay.dev',
+    password: 'admin123',
+    name: 'Administrator',
+    roleCode: 'Administrator'
+  },
+  {
+    email: 'manager@lagunabay.dev',
+    password: 'manager123',
+    name: 'Project Manager',
+    roleCode: 'Administrator'
+  },
+  {
+    email: 'sales@lagunabay.dev',
+    password: 'sales123',
+    name: 'Sales Representative',
+    roleCode: 'r-QpoZrh'
+  },
+  {
+    email: 'accountant@lagunabay.dev',
+    password: 'account123',
+    name: 'Accountant',
+    roleCode: 'r-QpoZrh'
+  },
+  {
+    email: 'viewer@lagunabay.dev',
+    password: 'viewer123',
+    name: 'Viewer',
+    roleCode: 'GeneralUser'
+  }];
+
 
   const results = [];
-  
+
   for (const user of testUsers) {
     try {
       // Try to register each user (this will fail if they already exist)
@@ -49,7 +49,7 @@ async function ensureTestUsers() {
           name: user.name
         })
       });
-      
+
       if (response.ok) {
         results.push({
           email: user.email,

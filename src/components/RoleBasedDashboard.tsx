@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  Eye, 
-  Users, 
-  DollarSign, 
-  FileText, 
-  TrendingUp, 
+import {
+  Eye,
+  Users,
+  DollarSign,
+  FileText,
+  TrendingUp,
   Clock,
   AlertTriangle,
   CheckCircle,
-  Building2
-} from 'lucide-react';
+  Building2 } from
+'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface RoleBasedDashboardProps {
@@ -33,7 +33,7 @@ interface RoleBasedDashboardProps {
 
 const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({ userInfo, stats }) => {
   const navigate = useNavigate();
-  
+
   const hasRole = (requiredRole: string) => {
     if (!userInfo?.Roles) return false;
     const userRoles = userInfo.Roles.split(',');
@@ -87,8 +87,8 @@ const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({ userInfo, stats
       </Card>
 
       {/* Admin/Manager View */}
-      {isAdmin() && (
-        <div className="space-y-6">
+      {isAdmin() &&
+      <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card className="bg-green-50 border-green-200">
               <CardContent className="p-6">
@@ -136,27 +136,27 @@ const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({ userInfo, stats
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => navigate('/leads')}
-                >
+                <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => navigate('/leads')}>
+
                   <Users className="h-4 w-4 mr-2" />
                   Lead Management
                 </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => navigate('/payments')}
-                >
+                <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => navigate('/payments')}>
+
                   <DollarSign className="h-4 w-4 mr-2" />
                   Payment Processing
                 </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => navigate('/invoice-submission')}
-                >
+                <Button
+                variant="outline"
+                className="w-full justify-start"
+                onClick={() => navigate('/invoice-submission')}>
+
                   <FileText className="h-4 w-4 mr-2" />
                   Invoice Management
                 </Button>
@@ -183,7 +183,7 @@ const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({ userInfo, stats
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">Success Rate</span>
                     <span className="font-semibold">
-                      {stats.totalProjects > 0 ? Math.round((stats.completedProjects / stats.totalProjects) * 100) : 0}%
+                      {stats.totalProjects > 0 ? Math.round(stats.completedProjects / stats.totalProjects * 100) : 0}%
                     </span>
                   </div>
                 </div>
@@ -191,11 +191,11 @@ const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({ userInfo, stats
             </Card>
           </div>
         </div>
-      )}
+      }
 
       {/* Sales/Accountant View */}
-      {isSalesOrAccountant() && (
-        <div className="space-y-6">
+      {isSalesOrAccountant() &&
+      <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card className="bg-blue-50 border-blue-200">
               <CardContent className="p-6">
@@ -230,38 +230,38 @@ const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({ userInfo, stats
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button 
-                variant="outline" 
-                className="w-full justify-start"
-                onClick={() => navigate('/leads')}
-              >
+              <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={() => navigate('/leads')}>
+
                 <Users className="h-4 w-4 mr-2" />
                 Manage Leads
               </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start"
-                onClick={() => navigate('/payments')}
-              >
+              <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={() => navigate('/payments')}>
+
                 <DollarSign className="h-4 w-4 mr-2" />
                 Financial Overview
               </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start"
-                onClick={() => navigate('/invoice-submission')}
-              >
+              <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={() => navigate('/invoice-submission')}>
+
                 <FileText className="h-4 w-4 mr-2" />
                 Invoice Processing
               </Button>
             </CardContent>
           </Card>
         </div>
-      )}
+      }
 
       {/* Viewer Only Access */}
-      {isViewer() && (
-        <div className="space-y-6">
+      {isViewer() &&
+      <div className="space-y-6">
           <Card className="bg-gray-50 border-gray-200">
             <CardContent className="p-6">
               <div className="text-center py-8">
@@ -315,9 +315,9 @@ const RoleBasedDashboard: React.FC<RoleBasedDashboardProps> = ({ userInfo, stats
             </CardContent>
           </Card>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default RoleBasedDashboard;
