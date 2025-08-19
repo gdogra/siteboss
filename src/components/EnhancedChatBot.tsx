@@ -37,11 +37,8 @@ interface UserInfo {
   Roles: string;
 }
 
-interface EnhancedChatBotProps {
-  isFloatingMode?: boolean;
-}
-
-const EnhancedChatBot: React.FC<EnhancedChatBotProps> = ({ isFloatingMode = false }) => {
+const EnhancedChatBot: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -70,37 +67,10 @@ const EnhancedChatBot: React.FC<EnhancedChatBotProps> = ({ isFloatingMode = fals
   }, [messages]);
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
-
-  // Auto-focus input after bot responds
-  useEffect(() => {
-    if (!isTyping && inputRef.current && messages.length > 0) {
-      // Shorter delay for floating mode for better responsiveness
-      const delay = isFloatingMode ? 200 : 300;
-      const timer = setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, delay);
-      return () => clearTimeout(timer);
-    }
-  }, [isTyping, messages.length, isFloatingMode]);
-
-  // Additional focus management for floating mode
-  useEffect(() => {
-    if (isFloatingMode && inputRef.current && !isTyping) {
-      // Ensure input is focused when not typing in floating mode
-      const timer = setTimeout(() => {
-        if (inputRef.current && document.activeElement !== inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [isFloatingMode, isTyping]);
+  }, [isOpen]);
 
   useEffect(() => {
     checkUserAuth();
@@ -390,8 +360,11 @@ const EnhancedChatBot: React.FC<EnhancedChatBotProps> = ({ isFloatingMode = fals
   return (
     <>
       {/* Chat Window */}
-      <div className="w-full h-full">
-        <Card className="w-full h-full flex flex-col shadow-none border-0 bg-white">
+      <div className={cn(
+        "fixed bottom-4 right-4 z-50 transition-all duration-300 ease-in-out",
+        isOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
+      )}>
+        <Card className="w-96 h-[600px] flex flex-col shadow-2xl border-0 bg-white">
           <Tabs defaultValue="chat" className="flex-1 flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-t-lg text-white">
@@ -413,7 +386,7 @@ const EnhancedChatBot: React.FC<EnhancedChatBotProps> = ({ isFloatingMode = fals
                 <Button
                   variant="ghost"
                   size="sm"
-                  style={{ display: 'none' }}
+                  onClick={() => setIsOpen(false)}
                   className="text-white hover:bg-white/20 h-8 w-8 p-0">
                   <X className="h-4 w-4" />
                 </Button>
@@ -502,15 +475,7 @@ const EnhancedChatBot: React.FC<EnhancedChatBotProps> = ({ isFloatingMode = fals
                           variant="outline"
                           size="sm"
                           className="text-xs h-6"
-                          onClick={() => {
-                            setInputValue(action.replace(/_/g, ' '));
-                            // Focus input after setting suggested action
-                            setTimeout(() => {
-                              if (inputRef.current) {
-                                inputRef.current.focus();
-                              }
-                            }, 50);
-                          }}>
+                          onClick={() => setInputValue(action.replace(/_/g, ' '))}>
 
                                 {action.replace(/_/g, ' ')}
                               </Button>
@@ -722,6 +687,26 @@ const EnhancedChatBot: React.FC<EnhancedChatBotProps> = ({ isFloatingMode = fals
           </Tabs>
         </Card>
       </div>
+
+      {/* Toggle Button */}
+      <Button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "fixed bottom-4 right-4 z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-300",
+          "bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600",
+          isOpen && "rotate-180 transform"
+        )}>
+        {isOpen ?
+        <X className="h-6 w-6 text-white" /> :
+
+        <div className="relative">
+            <MessageCircle className="h-6 w-6 text-white" />
+            <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 bg-red-500 text-white text-xs flex items-center justify-center animate-pulse">
+              AI
+            </Badge>
+          </div>
+        }
+      </Button>
     </>);
 
 };

@@ -3,7 +3,7 @@
 function advancedIntentRecognition(message, conversationHistory = [], userContext = {}) {
   const lowerMessage = message.toLowerCase();
   const tokens = lowerMessage.split(/\s+/);
-
+  
   // Define construction business intents with patterns and confidence scoring
   const intents = {
     // Project related intents
@@ -25,7 +25,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       confidence_boost: 0.18,
       priority: 'high'
     },
-
+    
     // Service related intents
     'services_overview': {
       patterns: ['services', 'what do you do', 'capabilities', 'specialties', 'expertise'],
@@ -45,7 +45,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       confidence_boost: 0.12,
       priority: 'medium'
     },
-
+    
     // Emergency and urgent
     'emergency_service': {
       patterns: ['emergency', 'urgent', 'asap', 'immediate', 'help now', '911', 'disaster'],
@@ -53,7 +53,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       confidence_boost: 0.3,
       priority: 'critical'
     },
-
+    
     // Contact and support
     'contact_info': {
       patterns: ['contact', 'phone', 'email', 'address', 'location', 'office', 'reach'],
@@ -67,7 +67,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       confidence_boost: 0.12,
       priority: 'medium'
     },
-
+    
     // Business credentials and trust
     'credentials_inquiry': {
       patterns: ['licensed', 'insured', 'bonded', 'certified', 'qualified', 'credentials'],
@@ -75,7 +75,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       confidence_boost: 0.15,
       priority: 'medium'
     },
-
+    
     // Financial and payment
     'payment_inquiry': {
       patterns: ['payment', 'pay', 'billing', 'invoice', 'financing', 'loan'],
@@ -83,7 +83,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       confidence_boost: 0.12,
       priority: 'medium'
     },
-
+    
     // Materials and quality
     'materials_inquiry': {
       patterns: ['materials', 'supplies', 'quality', 'brands', 'suppliers'],
@@ -91,7 +91,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       confidence_boost: 0.1,
       priority: 'low'
     },
-
+    
     // Conversational intents
     'greeting': {
       patterns: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'greetings'],
@@ -112,14 +112,14 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       priority: 'low'
     }
   };
-
+  
   // Calculate intent scores
   const intentScores = {};
-
+  
   for (const [intentName, intentData] of Object.entries(intents)) {
     let score = 0;
     let matchCount = 0;
-
+    
     // Check for pattern matches
     for (const pattern of intentData.patterns) {
       if (lowerMessage.includes(pattern)) {
@@ -127,7 +127,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
         matchCount++;
       }
     }
-
+    
     // Check for keyword matches
     for (const keyword of intentData.keywords) {
       if (lowerMessage.includes(keyword)) {
@@ -135,29 +135,29 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
         matchCount++;
       }
     }
-
+    
     // Apply confidence boost
     if (matchCount > 0) {
       score += intentData.confidence_boost;
     }
-
+    
     // Context-based scoring adjustments
     if (conversationHistory.length > 0) {
-      const recentTopics = conversationHistory.slice(-3).
-      map((msg) => msg.topics || []).
-      flat();
-
+      const recentTopics = conversationHistory.slice(-3)
+        .map(msg => msg.topics || [])
+        .flat();
+      
       // Boost score if related to recent conversation topics
-      if (recentTopics.some((topic) => intentName.includes(topic.replace('_inquiry', '').replace('_service', '')))) {
+      if (recentTopics.some(topic => intentName.includes(topic.replace('_inquiry', '').replace('_service', '')))) {
         score += 0.15;
       }
     }
-
+    
     // User context adjustments
     if (userContext.userRole === 'Administrator' && intentName.includes('emergency')) {
       score += 0.1;
     }
-
+    
     if (score > 0) {
       intentScores[intentName] = {
         score: Math.min(score, 1.0),
@@ -166,14 +166,14 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
       };
     }
   }
-
+  
   // Find the highest scoring intent
-  const topIntents = Object.entries(intentScores).
-  sort(([, a], [, b]) => b.score - a.score).
-  slice(0, 3);
-
+  const topIntents = Object.entries(intentScores)
+    .sort(([,a], [,b]) => b.score - a.score)
+    .slice(0, 3);
+  
   const primaryIntent = topIntents[0];
-
+  
   return {
     primaryIntent: primaryIntent ? {
       name: primaryIntent[0],
@@ -195,7 +195,7 @@ function advancedIntentRecognition(message, conversationHistory = [], userContex
 function extractEntities(message) {
   const entities = {};
   const lowerMessage = message.toLowerCase();
-
+  
   // Extract project types
   const projectTypes = ['kitchen', 'bathroom', 'bedroom', 'garage', 'basement', 'roof', 'deck', 'patio', 'driveway', 'fence', 'pool'];
   for (const type of projectTypes) {
@@ -204,7 +204,7 @@ function extractEntities(message) {
       break;
     }
   }
-
+  
   // Extract materials
   const materials = ['wood', 'concrete', 'steel', 'brick', 'stone', 'vinyl', 'aluminum', 'composite'];
   for (const material of materials) {
@@ -213,7 +213,7 @@ function extractEntities(message) {
       break;
     }
   }
-
+  
   // Extract urgency indicators
   const urgencyWords = ['urgent', 'asap', 'emergency', 'immediate', 'soon', 'quickly'];
   for (const word of urgencyWords) {
@@ -222,21 +222,21 @@ function extractEntities(message) {
       break;
     }
   }
-
+  
   // Extract budget indicators
   const budgetPattern = /\$[\d,]+|\d+k|\d+ thousand|\d+ million/gi;
   const budgetMatch = message.match(budgetPattern);
   if (budgetMatch) {
     entities.budget = budgetMatch[0];
   }
-
+  
   // Extract timeline indicators
   const timelinePattern = /\d+\s*(day|week|month|year)s?|\d+\s*-\s*\d+\s*(day|week|month|year)s?/gi;
   const timelineMatch = message.match(timelinePattern);
   if (timelineMatch) {
     entities.timeline = timelineMatch[0];
   }
-
+  
   return entities;
 }
 
@@ -245,17 +245,17 @@ function analyzeSentiment(message) {
   const positive = ['great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'good', 'happy', 'satisfied', 'pleased'];
   const negative = ['bad', 'terrible', 'awful', 'horrible', 'disappointed', 'frustrated', 'angry', 'upset', 'poor'];
   const urgent = ['urgent', 'emergency', 'help', 'problem', 'issue', 'trouble', 'asap', 'immediate'];
-
+  
   const lowerMessage = message.toLowerCase();
   let sentiment = 'neutral';
-
-  if (positive.some((word) => lowerMessage.includes(word))) {
+  
+  if (positive.some(word => lowerMessage.includes(word))) {
     sentiment = 'positive';
-  } else if (negative.some((word) => lowerMessage.includes(word))) {
+  } else if (negative.some(word => lowerMessage.includes(word))) {
     sentiment = 'negative';
-  } else if (urgent.some((word) => lowerMessage.includes(word))) {
+  } else if (urgent.some(word => lowerMessage.includes(word))) {
     sentiment = 'urgent';
   }
-
+  
   return sentiment;
 }

@@ -1,109 +1,75 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { MessageCircle, X, Move } from 'lucide-react';
+import { MessageCircle, X } from 'lucide-react';
 import EnhancedChatBot from '@/components/EnhancedChatBot';
 
 const FloatingChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ x: window.innerWidth - 80, y: window.innerHeight - 80 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ bottom: '1rem', right: '1rem' });
   const chatRef = useRef<HTMLDivElement>(null);
-  const widgetRef = useRef<HTMLDivElement>(null);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
   };
 
-  // Initialize position on mount
+  // Ensure chat stays within viewport bounds
   useEffect(() => {
-    const initPosition = () => {
-      setPosition({ x: window.innerWidth - 80, y: window.innerHeight - 80 });
-    };
-    initPosition();
-    window.addEventListener('resize', initPosition);
-    return () => window.removeEventListener('resize', initPosition);
-  }, []);
+    if (isOpen && chatRef.current) {
+      const adjustPosition = () => {
+        const viewport = {
+          width: window.innerWidth,
+          height: window.innerHeight
+        };
 
-  // Drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!widgetRef.current) return;
+        // Chat dimensions
+        const chatWidth = Math.min(384, viewport.width - 32); // w-96 = 384px, with margin
+        const chatHeight = Math.min(384, viewport.height - 128); // h-96 = 384px, with margin
 
-    setIsDragging(true);
-    const rect = widgetRef.current.getBoundingClientRect();
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-  };
+        // Calculate safe positioning
+        let newBottom = '1rem';
+        let newRight = '1rem';
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging) return;
+        // Check if chat would go off screen horizontally
+        if (viewport.width < chatWidth + 80) {// 80px for button and margins
+          newRight = '0.5rem';
+        }
 
-    const newX = e.clientX - dragOffset.x;
-    const newY = e.clientY - dragOffset.y;
+        // Check if chat would go off screen vertically
+        if (viewport.height < chatHeight + 120) {// 120px for button and margins
+          newBottom = '0.5rem';
+        }
 
-    // Keep widget within screen bounds
-    const maxX = window.innerWidth - 56; // 56px for widget width
-    const maxY = window.innerHeight - 56; // 56px for widget height
-
-    setPosition({
-      x: Math.max(0, Math.min(maxX, newX)),
-      y: Math.max(0, Math.min(maxY, newY))
-    });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // Attach global mouse events for dragging
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('mouseup', handleMouseUp);
+        setPosition({ bottom: newBottom, right: newRight });
       };
+
+      adjustPosition();
+      window.addEventListener('resize', adjustPosition);
+
+      return () => window.removeEventListener('resize', adjustPosition);
     }
-  }, [isDragging, dragOffset]);
+  }, [isOpen]);
 
   return (
     <div
-      ref={widgetRef}
-      className={`fixed z-50 transition-all duration-200 ${isDragging ? 'cursor-grabbing' : ''}`}
+      className="fixed z-50"
       style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`
+        bottom: position.bottom,
+        right: position.right
       }}>
-
 
       {/* Chat Interface - appears when open */}
       <div
         ref={chatRef}
-        className={`mb-4 transition-all duration-300 ease-in-out transform ${
+        className={`mb-4 transition-all duration-300 ease-in-out transform origin-bottom-right ${
         isOpen ?
         'opacity-100 scale-100 translate-y-0' :
         'opacity-0 scale-95 translate-y-2 pointer-events-none'}`
-        }
-        style={{
-          transformOrigin: position.x > window.innerWidth / 2 ? 'bottom-right' : 'bottom-left'
-        }}>
-
+        }>
 
         <div className="w-96 h-96 max-w-[calc(100vw-1rem)] max-h-[calc(100vh-6rem)] bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden">
-          {/* Chat Header with Drag Handle */}
+          {/* Chat Header */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div
-                onMouseDown={handleMouseDown}
-                className={`p-1 rounded hover:bg-white/10 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} transition-colors`}
-                title="Drag to move">
-
-                <Move size={16} />
-              </div>
+            <div className="flex items-center space-x-2">
               <MessageCircle size={20} />
               <h3 className="font-semibold">AI Assistant</h3>
             </div>
@@ -119,17 +85,16 @@ const FloatingChatWidget: React.FC = () => {
           
           {/* Chat Content */}
           <div className="h-[calc(100%-4rem)]">
-            <EnhancedChatBot isFloatingMode={true} />
+            <EnhancedChatBot />
           </div>
         </div>
       </div>
 
       {/* Floating Toggle Button */}
       <Button
-        onClick={!isDragging ? toggleChat : undefined}
-        onMouseDown={handleMouseDown}
+        onClick={toggleChat}
         className={`rounded-full w-14 h-14 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all duration-200 ${
-        isOpen ? 'rotate-0' : 'rotate-0 hover:scale-110'} ${isDragging ? 'cursor-grabbing scale-95' : 'cursor-grab hover:cursor-grab'}`
+        isOpen ? 'rotate-0' : 'rotate-0 hover:scale-110'}`
         }
         size="sm">
 
