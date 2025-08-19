@@ -10,8 +10,8 @@ const TenantManagementPage: React.FC = () => {
       <main className="container mx-auto px-4 py-8">
         <TenantManagement />
       </main>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default TenantManagementPage;

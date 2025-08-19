@@ -22,7 +22,7 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
-  
+
   // Configuration state
   const [config, setConfig] = useState({
     // Basic branding
@@ -30,32 +30,32 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
     tagline: '',
     logo_url: '',
     favicon_url: '',
-    
+
     // Colors
     primary_color: '#1e40af',
     secondary_color: '#64748b',
     accent_color: '#059669',
-    
+
     // Typography
     font_family: 'Inter',
     heading_font: 'Inter',
-    
+
     // Messaging
     welcome_message: '',
     footer_text: '',
-    
+
     // Contact
     support_email: '',
     support_phone: '',
-    
+
     // Legal
     privacy_policy_url: '',
     terms_url: '',
-    
+
     // Advanced
     custom_css: '',
     login_background_url: '',
-    
+
     // Domain
     custom_domain: '',
     ssl_enabled: false
@@ -130,7 +130,7 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
 
       toast({
         title: 'Success',
-        description: 'White-label configuration saved successfully',
+        description: 'White-label configuration saved successfully'
       });
 
       onSaved?.();
@@ -139,7 +139,7 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
       toast({
         title: 'Error',
         description: 'Failed to save configuration',
-        variant: 'destructive',
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -160,11 +160,11 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
       tenant: currentTenant?.name,
       exported_at: new Date().toISOString()
     };
-    
+
     const blob = new Blob([JSON.stringify(configData, null, 2)], {
       type: 'application/json'
     });
-    
+
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -225,54 +225,54 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                   <Input
                     id="company_name"
                     value={config.company_name}
-                    onChange={(e) => setConfig(prev => ({ ...prev, company_name: e.target.value }))}
-                    placeholder="Your Company Name"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, company_name: e.target.value }))}
+                    placeholder="Your Company Name" />
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="tagline">Tagline</Label>
                   <Input
                     id="tagline"
                     value={config.tagline}
-                    onChange={(e) => setConfig(prev => ({ ...prev, tagline: e.target.value }))}
-                    placeholder="Your company tagline"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, tagline: e.target.value }))}
+                    placeholder="Your company tagline" />
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="logo_url">Logo URL</Label>
                   <Input
                     id="logo_url"
                     value={config.logo_url}
-                    onChange={(e) => setConfig(prev => ({ ...prev, logo_url: e.target.value }))}
-                    placeholder="https://example.com/logo.png"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, logo_url: e.target.value }))}
+                    placeholder="https://example.com/logo.png" />
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="favicon_url">Favicon URL</Label>
                   <Input
                     id="favicon_url"
                     value={config.favicon_url}
-                    onChange={(e) => setConfig(prev => ({ ...prev, favicon_url: e.target.value }))}
-                    placeholder="https://example.com/favicon.ico"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, favicon_url: e.target.value }))}
+                    placeholder="https://example.com/favicon.ico" />
+
                 </div>
               </div>
               
-              {config.logo_url && (
-                <div className="space-y-2">
+              {config.logo_url &&
+              <div className="space-y-2">
                   <Label>Logo Preview</Label>
                   <div className="border rounded-lg p-4 bg-muted/50">
-                    <img 
-                      src={config.logo_url} 
-                      alt="Logo preview" 
-                      className="h-12 w-auto"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
+                    <img
+                    src={config.logo_url}
+                    alt="Logo preview"
+                    className="h-12 w-auto"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }} />
+
                   </div>
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -291,14 +291,14 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                     <input
                       type="color"
                       value={config.primary_color}
-                      onChange={(e) => setConfig(prev => ({ ...prev, primary_color: e.target.value }))}
-                      className="w-12 h-10 rounded border"
-                    />
+                      onChange={(e) => setConfig((prev) => ({ ...prev, primary_color: e.target.value }))}
+                      className="w-12 h-10 rounded border" />
+
                     <Input
                       value={config.primary_color}
-                      onChange={(e) => setConfig(prev => ({ ...prev, primary_color: e.target.value }))}
-                      className="flex-1"
-                    />
+                      onChange={(e) => setConfig((prev) => ({ ...prev, primary_color: e.target.value }))}
+                      className="flex-1" />
+
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -307,14 +307,14 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                     <input
                       type="color"
                       value={config.secondary_color}
-                      onChange={(e) => setConfig(prev => ({ ...prev, secondary_color: e.target.value }))}
-                      className="w-12 h-10 rounded border"
-                    />
+                      onChange={(e) => setConfig((prev) => ({ ...prev, secondary_color: e.target.value }))}
+                      className="w-12 h-10 rounded border" />
+
                     <Input
                       value={config.secondary_color}
-                      onChange={(e) => setConfig(prev => ({ ...prev, secondary_color: e.target.value }))}
-                      className="flex-1"
-                    />
+                      onChange={(e) => setConfig((prev) => ({ ...prev, secondary_color: e.target.value }))}
+                      className="flex-1" />
+
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -323,14 +323,14 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                     <input
                       type="color"
                       value={config.accent_color}
-                      onChange={(e) => setConfig(prev => ({ ...prev, accent_color: e.target.value }))}
-                      className="w-12 h-10 rounded border"
-                    />
+                      onChange={(e) => setConfig((prev) => ({ ...prev, accent_color: e.target.value }))}
+                      className="w-12 h-10 rounded border" />
+
                     <Input
                       value={config.accent_color}
-                      onChange={(e) => setConfig(prev => ({ ...prev, accent_color: e.target.value }))}
-                      className="flex-1"
-                    />
+                      onChange={(e) => setConfig((prev) => ({ ...prev, accent_color: e.target.value }))}
+                      className="flex-1" />
+
                   </div>
                 </div>
               </div>
@@ -339,24 +339,24 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                 <Label>Color Preview</Label>
                 <div className="flex gap-4 p-4 border rounded-lg">
                   <div className="text-center">
-                    <div 
+                    <div
                       className="w-16 h-16 rounded-lg mb-2"
-                      style={{ backgroundColor: config.primary_color }}
-                    />
+                      style={{ backgroundColor: config.primary_color }} />
+
                     <p className="text-xs">Primary</p>
                   </div>
                   <div className="text-center">
-                    <div 
+                    <div
                       className="w-16 h-16 rounded-lg mb-2"
-                      style={{ backgroundColor: config.secondary_color }}
-                    />
+                      style={{ backgroundColor: config.secondary_color }} />
+
                     <p className="text-xs">Secondary</p>
                   </div>
                   <div className="text-center">
-                    <div 
+                    <div
                       className="w-16 h-16 rounded-lg mb-2"
-                      style={{ backgroundColor: config.accent_color }}
-                    />
+                      style={{ backgroundColor: config.accent_color }} />
+
                     <p className="text-xs">Accent</p>
                   </div>
                 </div>
@@ -377,18 +377,18 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                 <Input
                   id="welcome_message"
                   value={config.welcome_message}
-                  onChange={(e) => setConfig(prev => ({ ...prev, welcome_message: e.target.value }))}
-                  placeholder="Welcome to our platform!"
-                />
+                  onChange={(e) => setConfig((prev) => ({ ...prev, welcome_message: e.target.value }))}
+                  placeholder="Welcome to our platform!" />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="footer_text">Footer Text</Label>
                 <Input
                   id="footer_text"
                   value={config.footer_text}
-                  onChange={(e) => setConfig(prev => ({ ...prev, footer_text: e.target.value }))}
-                  placeholder="© 2024 Your Company. All rights reserved."
-                />
+                  onChange={(e) => setConfig((prev) => ({ ...prev, footer_text: e.target.value }))}
+                  placeholder="© 2024 Your Company. All rights reserved." />
+
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -397,36 +397,36 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                     id="support_email"
                     type="email"
                     value={config.support_email}
-                    onChange={(e) => setConfig(prev => ({ ...prev, support_email: e.target.value }))}
-                    placeholder="support@yourcompany.com"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, support_email: e.target.value }))}
+                    placeholder="support@yourcompany.com" />
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="support_phone">Support Phone</Label>
                   <Input
                     id="support_phone"
                     value={config.support_phone}
-                    onChange={(e) => setConfig(prev => ({ ...prev, support_phone: e.target.value }))}
-                    placeholder="+1-555-123-4567"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, support_phone: e.target.value }))}
+                    placeholder="+1-555-123-4567" />
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="privacy_policy_url">Privacy Policy URL</Label>
                   <Input
                     id="privacy_policy_url"
                     value={config.privacy_policy_url}
-                    onChange={(e) => setConfig(prev => ({ ...prev, privacy_policy_url: e.target.value }))}
-                    placeholder="/privacy"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, privacy_policy_url: e.target.value }))}
+                    placeholder="/privacy" />
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="terms_url">Terms of Service URL</Label>
                   <Input
                     id="terms_url"
                     value={config.terms_url}
-                    onChange={(e) => setConfig(prev => ({ ...prev, terms_url: e.target.value }))}
-                    placeholder="/terms"
-                  />
+                    onChange={(e) => setConfig((prev) => ({ ...prev, terms_url: e.target.value }))}
+                    placeholder="/terms" />
+
                 </div>
               </div>
             </CardContent>
@@ -448,19 +448,19 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                 <Input
                   id="login_background_url"
                   value={config.login_background_url}
-                  onChange={(e) => setConfig(prev => ({ ...prev, login_background_url: e.target.value }))}
-                  placeholder="https://example.com/background.jpg"
-                />
+                  onChange={(e) => setConfig((prev) => ({ ...prev, login_background_url: e.target.value }))}
+                  placeholder="https://example.com/background.jpg" />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="custom_css">Custom CSS</Label>
                 <Textarea
                   id="custom_css"
                   value={config.custom_css}
-                  onChange={(e) => setConfig(prev => ({ ...prev, custom_css: e.target.value }))}
+                  onChange={(e) => setConfig((prev) => ({ ...prev, custom_css: e.target.value }))}
                   placeholder="/* Your custom CSS here */"
-                  className="font-mono min-h-[200px]"
-                />
+                  className="font-mono min-h-[200px]" />
+
                 <p className="text-xs text-muted-foreground">
                   Advanced users can add custom CSS to further customize the appearance
                 </p>
@@ -484,9 +484,9 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                 <Input
                   id="custom_domain"
                   value={config.custom_domain}
-                  onChange={(e) => setConfig(prev => ({ ...prev, custom_domain: e.target.value }))}
-                  placeholder="yourcompany.com"
-                />
+                  onChange={(e) => setConfig((prev) => ({ ...prev, custom_domain: e.target.value }))}
+                  placeholder="yourcompany.com" />
+
                 <p className="text-xs text-muted-foreground">
                   Enter your custom domain without https://
                 </p>
@@ -495,30 +495,30 @@ const WhiteLabelConfig: React.FC<WhiteLabelConfigProps> = ({ tenantId, onSaved }
                 <Switch
                   id="ssl_enabled"
                   checked={config.ssl_enabled}
-                  onCheckedChange={(checked) => setConfig(prev => ({ ...prev, ssl_enabled: checked }))}
-                />
+                  onCheckedChange={(checked) => setConfig((prev) => ({ ...prev, ssl_enabled: checked }))} />
+
                 <Label htmlFor="ssl_enabled">SSL Certificate Enabled</Label>
               </div>
               
-              {config.custom_domain && (
-                <div className="p-4 border rounded-lg bg-muted/50 space-y-2">
+              {config.custom_domain &&
+              <div className="p-4 border rounded-lg bg-muted/50 space-y-2">
                   <h4 className="font-medium">Domain Configuration Required</h4>
                   <p className="text-sm text-muted-foreground">
                     To use your custom domain, please add the following CNAME record to your DNS:
                   </p>
                   <div className="bg-background p-2 rounded border font-mono text-sm">
-                    <strong>Type:</strong> CNAME<br/>
-                    <strong>Name:</strong> {config.custom_domain}<br/>
+                    <strong>Type:</strong> CNAME<br />
+                    <strong>Name:</strong> {config.custom_domain}<br />
                     <strong>Value:</strong> siteboss.app
                   </div>
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default WhiteLabelConfig;

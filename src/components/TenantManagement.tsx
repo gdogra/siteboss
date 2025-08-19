@@ -10,22 +10,22 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DataTable } from '@/components/DataTable';
-import { 
-  Building2, 
-  Plus, 
-  Edit2, 
-  Trash2, 
-  Globe, 
-  Palette, 
-  Settings, 
-  Users, 
+import {
+  Building2,
+  Plus,
+  Edit2,
+  Trash2,
+  Globe,
+  Palette,
+  Settings,
+  Users,
   Database,
   Shield,
   Zap,
   Crown,
   CheckCircle,
-  XCircle
-} from 'lucide-react';
+  XCircle } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useTenant } from '@/contexts/TenantContext';
 
@@ -82,7 +82,7 @@ const TenantManagement: React.FC = () => {
   useEffect(() => {
     loadTenants();
     if (currentTenant?.branding) {
-      setBranding(prev => ({ ...prev, ...currentTenant.branding }));
+      setBranding((prev) => ({ ...prev, ...currentTenant.branding }));
     }
   }, [currentTenant]);
 
@@ -91,47 +91,47 @@ const TenantManagement: React.FC = () => {
     try {
       // Mock data for demonstration
       const mockTenants: Tenant[] = [
-        {
-          id: '1',
-          name: 'SiteBoss Demo',
-          subdomain: 'siteboss',
-          custom_domain: 'demo.siteboss.com',
-          plan: 'professional',
-          status: 'active',
-          created_at: '2024-01-15',
-          user_count: 25,
-          storage_used: '2.5 GB',
-          billing_status: 'current'
-        },
-        {
-          id: '2',
-          name: 'ABC Construction',
-          subdomain: 'abc-construction',
-          plan: 'enterprise',
-          status: 'active',
-          created_at: '2024-02-01',
-          user_count: 50,
-          storage_used: '8.2 GB',
-          billing_status: 'current'
-        },
-        {
-          id: '3',
-          name: 'Metro Builders',
-          subdomain: 'metro-builders',
-          plan: 'starter',
-          status: 'pending',
-          created_at: '2024-03-10',
-          user_count: 8,
-          storage_used: '512 MB',
-          billing_status: 'current'
-        }
-      ];
+      {
+        id: '1',
+        name: 'SiteBoss Demo',
+        subdomain: 'siteboss',
+        custom_domain: 'demo.siteboss.com',
+        plan: 'professional',
+        status: 'active',
+        created_at: '2024-01-15',
+        user_count: 25,
+        storage_used: '2.5 GB',
+        billing_status: 'current'
+      },
+      {
+        id: '2',
+        name: 'ABC Construction',
+        subdomain: 'abc-construction',
+        plan: 'enterprise',
+        status: 'active',
+        created_at: '2024-02-01',
+        user_count: 50,
+        storage_used: '8.2 GB',
+        billing_status: 'current'
+      },
+      {
+        id: '3',
+        name: 'Metro Builders',
+        subdomain: 'metro-builders',
+        plan: 'starter',
+        status: 'pending',
+        created_at: '2024-03-10',
+        user_count: 8,
+        storage_used: '512 MB',
+        billing_status: 'current'
+      }];
+
       setTenants(mockTenants);
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to load tenants",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -145,13 +145,13 @@ const TenantManagement: React.FC = () => {
       });
       toast({
         title: "Branding Updated",
-        description: "Your branding settings have been saved successfully.",
+        description: "Your branding settings have been saved successfully."
       });
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to update branding settings",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -161,7 +161,7 @@ const TenantManagement: React.FC = () => {
       // Create tenant logic would go here
       toast({
         title: "Tenant Created",
-        description: `New tenant "${tenantData.name}" has been created successfully.`,
+        description: `New tenant "${tenantData.name}" has been created successfully.`
       });
       setDialogOpen(false);
       loadTenants();
@@ -169,7 +169,7 @@ const TenantManagement: React.FC = () => {
       toast({
         title: "Error",
         description: "Failed to create tenant",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -201,14 +201,14 @@ const TenantManagement: React.FC = () => {
   };
 
   const tenantColumns = [
-    { key: 'name', label: 'Tenant Name' },
-    { key: 'subdomain', label: 'Subdomain' },
-    { key: 'plan', label: 'Plan' },
-    { key: 'status', label: 'Status' },
-    { key: 'user_count', label: 'Users' },
-    { key: 'storage_used', label: 'Storage' },
-    { key: 'created_at', label: 'Created' },
-  ];
+  { key: 'name', label: 'Tenant Name' },
+  { key: 'subdomain', label: 'Subdomain' },
+  { key: 'plan', label: 'Plan' },
+  { key: 'status', label: 'Status' },
+  { key: 'user_count', label: 'Users' },
+  { key: 'storage_used', label: 'Storage' },
+  { key: 'created_at', label: 'Created' }];
+
 
   return (
     <div className="container mx-auto py-8 px-4 space-y-6">
@@ -271,8 +271,8 @@ const TenantManagement: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {tenants.map((tenant) => (
-                  <Card key={tenant.id} className="border-l-4 border-l-blue-500">
+                {tenants.map((tenant) =>
+                <Card key={tenant.id} className="border-l-4 border-l-blue-500">
                     <CardContent className="pt-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
@@ -286,11 +286,11 @@ const TenantManagement: React.FC = () => {
                             <p className="text-sm text-slate-500">
                               {tenant.subdomain}.siteboss.com
                             </p>
-                            {tenant.custom_domain && (
-                              <p className="text-sm text-blue-600">
+                            {tenant.custom_domain &&
+                          <p className="text-sm text-blue-600">
                                 Custom: {tenant.custom_domain}
                               </p>
-                            )}
+                          }
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">
@@ -322,7 +322,7 @@ const TenantManagement: React.FC = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
@@ -347,16 +347,16 @@ const TenantManagement: React.FC = () => {
                     <Input
                       id="company_name"
                       value={branding.company_name}
-                      onChange={(e) => setBranding(prev => ({ ...prev, company_name: e.target.value }))}
-                    />
+                      onChange={(e) => setBranding((prev) => ({ ...prev, company_name: e.target.value }))} />
+
                   </div>
                   <div>
                     <Label htmlFor="tagline">Tagline</Label>
                     <Input
                       id="tagline"
                       value={branding.tagline}
-                      onChange={(e) => setBranding(prev => ({ ...prev, tagline: e.target.value }))}
-                    />
+                      onChange={(e) => setBranding((prev) => ({ ...prev, tagline: e.target.value }))} />
+
                   </div>
                 </div>
 
@@ -365,9 +365,9 @@ const TenantManagement: React.FC = () => {
                   <Input
                     id="logo_url"
                     value={branding.logo_url}
-                    onChange={(e) => setBranding(prev => ({ ...prev, logo_url: e.target.value }))}
-                    placeholder="https://example.com/logo.png"
-                  />
+                    onChange={(e) => setBranding((prev) => ({ ...prev, logo_url: e.target.value }))}
+                    placeholder="https://example.com/logo.png" />
+
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -378,13 +378,13 @@ const TenantManagement: React.FC = () => {
                         id="primary_color"
                         type="color"
                         value={branding.primary_color}
-                        onChange={(e) => setBranding(prev => ({ ...prev, primary_color: e.target.value }))}
-                        className="w-16"
-                      />
+                        onChange={(e) => setBranding((prev) => ({ ...prev, primary_color: e.target.value }))}
+                        className="w-16" />
+
                       <Input
                         value={branding.primary_color}
-                        onChange={(e) => setBranding(prev => ({ ...prev, primary_color: e.target.value }))}
-                      />
+                        onChange={(e) => setBranding((prev) => ({ ...prev, primary_color: e.target.value }))} />
+
                     </div>
                   </div>
                   <div>
@@ -394,13 +394,13 @@ const TenantManagement: React.FC = () => {
                         id="accent_color"
                         type="color"
                         value={branding.accent_color}
-                        onChange={(e) => setBranding(prev => ({ ...prev, accent_color: e.target.value }))}
-                        className="w-16"
-                      />
+                        onChange={(e) => setBranding((prev) => ({ ...prev, accent_color: e.target.value }))}
+                        className="w-16" />
+
                       <Input
                         value={branding.accent_color}
-                        onChange={(e) => setBranding(prev => ({ ...prev, accent_color: e.target.value }))}
-                      />
+                        onChange={(e) => setBranding((prev) => ({ ...prev, accent_color: e.target.value }))} />
+
                     </div>
                   </div>
                 </div>
@@ -409,8 +409,8 @@ const TenantManagement: React.FC = () => {
                   <Label htmlFor="font_family">Font Family</Label>
                   <Select
                     value={branding.font_family}
-                    onValueChange={(value) => setBranding(prev => ({ ...prev, font_family: value }))}
-                  >
+                    onValueChange={(value) => setBranding((prev) => ({ ...prev, font_family: value }))}>
+
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -429,10 +429,10 @@ const TenantManagement: React.FC = () => {
                   <Textarea
                     id="custom_css"
                     value={branding.custom_css}
-                    onChange={(e) => setBranding(prev => ({ ...prev, custom_css: e.target.value }))}
+                    onChange={(e) => setBranding((prev) => ({ ...prev, custom_css: e.target.value }))}
                     placeholder="/* Add custom CSS here */"
-                    rows={6}
-                  />
+                    rows={6} />
+
                 </div>
 
                 <Button onClick={handleBrandingUpdate} className="w-full">
@@ -449,19 +449,19 @@ const TenantManagement: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div 
+                <div
                   className="border rounded-lg p-6 space-y-4"
                   style={{
                     backgroundColor: branding.background_color,
                     color: branding.text_color,
                     fontFamily: branding.font_family
-                  }}
-                >
+                  }}>
+
                   <div className="flex items-center space-x-3">
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-lg flex items-center justify-center text-white"
-                      style={{ backgroundColor: branding.primary_color }}
-                    >
+                      style={{ backgroundColor: branding.primary_color }}>
+
                       <Building2 className="w-6 h-6" />
                     </div>
                     <div>
@@ -475,10 +475,10 @@ const TenantManagement: React.FC = () => {
                   </div>
                   
                   <div className="space-y-3">
-                    <button 
+                    <button
                       className="px-4 py-2 rounded-md text-white font-medium"
-                      style={{ backgroundColor: branding.accent_color }}
-                    >
+                      style={{ backgroundColor: branding.accent_color }}>
+
                       Primary Button
                     </button>
                     
@@ -500,8 +500,8 @@ const TenantManagement: React.FC = () => {
           <TenantSettings />
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 // Domain Management Component
@@ -536,8 +536,8 @@ const DomainManagement: React.FC = () => {
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 // Tenant Settings Component
@@ -603,12 +603,12 @@ const TenantSettings: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 // Tenant Creation Form Component
-const TenantCreationForm: React.FC<{ onSubmit: (data: any) => void }> = ({ onSubmit }) => {
+const TenantCreationForm: React.FC<{onSubmit: (data: any) => void;}> = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     name: '',
     subdomain: '',
@@ -629,10 +629,10 @@ const TenantCreationForm: React.FC<{ onSubmit: (data: any) => void }> = ({ onSub
         <Input
           id="tenant_name"
           value={formData.name}
-          onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
           placeholder="ABC Construction"
-          required
-        />
+          required />
+
       </div>
       
       <div>
@@ -641,10 +641,10 @@ const TenantCreationForm: React.FC<{ onSubmit: (data: any) => void }> = ({ onSub
           <Input
             id="subdomain"
             value={formData.subdomain}
-            onChange={(e) => setFormData(prev => ({ ...prev, subdomain: e.target.value }))}
+            onChange={(e) => setFormData((prev) => ({ ...prev, subdomain: e.target.value }))}
             placeholder="abc-construction"
-            required
-          />
+            required />
+
           <div className="flex items-center px-3 bg-slate-100 border border-l-0 rounded-r-md">
             .siteboss.com
           </div>
@@ -653,7 +653,7 @@ const TenantCreationForm: React.FC<{ onSubmit: (data: any) => void }> = ({ onSub
       
       <div>
         <Label htmlFor="plan">Plan</Label>
-        <Select value={formData.plan} onValueChange={(value) => setFormData(prev => ({ ...prev, plan: value }))}>
+        <Select value={formData.plan} onValueChange={(value) => setFormData((prev) => ({ ...prev, plan: value }))}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -671,10 +671,10 @@ const TenantCreationForm: React.FC<{ onSubmit: (data: any) => void }> = ({ onSub
           <Input
             id="admin_name"
             value={formData.admin_name}
-            onChange={(e) => setFormData(prev => ({ ...prev, admin_name: e.target.value }))}
+            onChange={(e) => setFormData((prev) => ({ ...prev, admin_name: e.target.value }))}
             placeholder="John Doe"
-            required
-          />
+            required />
+
         </div>
         <div>
           <Label htmlFor="admin_email">Admin Email</Label>
@@ -682,18 +682,18 @@ const TenantCreationForm: React.FC<{ onSubmit: (data: any) => void }> = ({ onSub
             id="admin_email"
             type="email"
             value={formData.admin_email}
-            onChange={(e) => setFormData(prev => ({ ...prev, admin_email: e.target.value }))}
+            onChange={(e) => setFormData((prev) => ({ ...prev, admin_email: e.target.value }))}
             placeholder="admin@abcconstruction.com"
-            required
-          />
+            required />
+
         </div>
       </div>
       
       <Button type="submit" className="w-full">
         Create Tenant
       </Button>
-    </form>
-  );
+    </form>);
+
 };
 
 export default TenantManagement;

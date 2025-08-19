@@ -3,22 +3,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Building2, 
-  Users, 
-  FileText, 
-  DollarSign, 
-  BarChart3, 
-  Shield, 
-  Clock, 
+import {
+  Building2,
+  Users,
+  FileText,
+  DollarSign,
+  BarChart3,
+  Shield,
+  Clock,
   Smartphone,
   ArrowRight,
   CheckCircle,
   Star,
   Zap,
   Globe,
-  Palette
-} from 'lucide-react';
+  Palette } from
+'lucide-react';
 import { useTenant } from '@/contexts/TenantContext';
 
 const HomePage: React.FC = () => {
@@ -31,110 +31,110 @@ const HomePage: React.FC = () => {
   }, []);
 
   const features = [
-    {
-      icon: Building2,
-      title: "Project Management",
-      description: "Streamline your construction projects from start to finish with comprehensive tracking and management tools."
-    },
-    {
-      icon: Users,
-      title: "Team Collaboration",
-      description: "Connect your entire team with real-time communication, task assignments, and progress updates."
-    },
-    {
-      icon: FileText,
-      title: "Document Control",
-      description: "Centralize all project documents, contracts, and permits with version control and easy access."
-    },
-    {
-      icon: DollarSign,
-      title: "Financial Management",
-      description: "Track expenses, manage invoices, and monitor project profitability with integrated accounting tools."
-    },
-    {
-      icon: BarChart3,
-      title: "Analytics & Reporting",
-      description: "Make data-driven decisions with comprehensive analytics and customizable reporting dashboards."
-    },
-    {
-      icon: Clock,
-      title: "Time Tracking",
-      description: "Monitor labor hours, track productivity, and ensure accurate payroll with GPS-enabled time tracking."
-    }
-  ];
+  {
+    icon: Building2,
+    title: "Project Management",
+    description: "Streamline your construction projects from start to finish with comprehensive tracking and management tools."
+  },
+  {
+    icon: Users,
+    title: "Team Collaboration",
+    description: "Connect your entire team with real-time communication, task assignments, and progress updates."
+  },
+  {
+    icon: FileText,
+    title: "Document Control",
+    description: "Centralize all project documents, contracts, and permits with version control and easy access."
+  },
+  {
+    icon: DollarSign,
+    title: "Financial Management",
+    description: "Track expenses, manage invoices, and monitor project profitability with integrated accounting tools."
+  },
+  {
+    icon: BarChart3,
+    title: "Analytics & Reporting",
+    description: "Make data-driven decisions with comprehensive analytics and customizable reporting dashboards."
+  },
+  {
+    icon: Clock,
+    title: "Time Tracking",
+    description: "Monitor labor hours, track productivity, and ensure accurate payroll with GPS-enabled time tracking."
+  }];
+
 
   const plans = [
-    {
-      name: "Starter",
-      price: "$49",
-      period: "/month",
-      description: "Perfect for small construction teams",
-      features: [
-        "Up to 5 projects",
-        "10 team members",
-        "Basic reporting",
-        "Document storage (5GB)",
-        "Mobile app access",
-        "Email support"
-      ],
-      popular: false
-    },
-    {
-      name: "Professional",
-      price: "$99",
-      period: "/month",
-      description: "Ideal for growing construction companies",
-      features: [
-        "Unlimited projects",
-        "25 team members",
-        "Advanced analytics",
-        "Document storage (25GB)",
-        "GPS time tracking",
-        "Priority support",
-        "API access",
-        "Custom branding"
-      ],
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "$199",
-      period: "/month",
-      description: "For large construction organizations",
-      features: [
-        "Unlimited everything",
-        "Unlimited team members",
-        "White-label solution",
-        "Unlimited storage",
-        "Advanced integrations",
-        "24/7 phone support",
-        "Custom development",
-        "Dedicated account manager"
-      ],
-      popular: false
-    }
-  ];
+  {
+    name: "Starter",
+    price: "$49",
+    period: "/month",
+    description: "Perfect for small construction teams",
+    features: [
+    "Up to 5 projects",
+    "10 team members",
+    "Basic reporting",
+    "Document storage (5GB)",
+    "Mobile app access",
+    "Email support"],
+
+    popular: false
+  },
+  {
+    name: "Professional",
+    price: "$99",
+    period: "/month",
+    description: "Ideal for growing construction companies",
+    features: [
+    "Unlimited projects",
+    "25 team members",
+    "Advanced analytics",
+    "Document storage (25GB)",
+    "GPS time tracking",
+    "Priority support",
+    "API access",
+    "Custom branding"],
+
+    popular: true
+  },
+  {
+    name: "Enterprise",
+    price: "$199",
+    period: "/month",
+    description: "For large construction organizations",
+    features: [
+    "Unlimited everything",
+    "Unlimited team members",
+    "White-label solution",
+    "Unlimited storage",
+    "Advanced integrations",
+    "24/7 phone support",
+    "Custom development",
+    "Dedicated account manager"],
+
+    popular: false
+  }];
+
 
   const testimonials = [
-    {
-      name: "Mike Johnson",
-      company: "Johnson Construction Co.",
-      rating: 5,
-      text: "SiteBoss transformed how we manage our construction projects. The real-time collaboration features alone saved us hours every week."
-    },
-    {
-      name: "Sarah Williams",
-      company: "Elite Builders",
-      rating: 5,
-      text: "The time tracking and GPS features ensure our crews are productive and accountable. ROI was immediate."
-    },
-    {
-      name: "David Chen",
-      company: "Metro Development",
-      rating: 5,
-      text: "Finally, a construction management platform that understands our industry. The document control is game-changing."
-    }
-  ];
+  {
+    name: "Mike Johnson",
+    company: "Johnson Construction Co.",
+    rating: 5,
+    text: "SiteBoss transformed how we manage our construction projects. The real-time collaboration features alone saved us hours every week."
+  },
+  {
+    name: "Sarah Williams",
+    company: "Elite Builders",
+    rating: 5,
+    text: "The time tracking and GPS features ensure our crews are productive and accountable. ROI was immediate."
+  },
+  {
+    name: "David Chen",
+    company: "Metro Development",
+    rating: 5,
+    text: "Finally, a construction management platform that understands our industry. The document control is game-changing."
+  }];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -156,17 +156,17 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 onClick={() => navigate('/admin-login')}
-                className="text-slate-600 hover:text-slate-900"
-              >
+                className="text-slate-600 hover:text-slate-900">
+
                 Sign In
               </Button>
-              <Button 
+              <Button
                 onClick={() => navigate('/trial-signup')}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
-              >
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white">
+
                 Start Free Trial
               </Button>
             </div>
@@ -193,20 +193,20 @@ const HomePage: React.FC = () => {
               empowers your team, and grows your business. From permits to payroll, we've got you covered.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button 
+              <Button
                 size="lg"
                 onClick={() => navigate('/trial-signup')}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg"
-              >
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg">
+
                 Start Your Free Month
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
-              <Button 
+              <Button
                 size="lg"
                 variant="outline"
                 onClick={() => navigate('/admin-login')}
-                className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 text-lg"
-              >
+                className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 text-lg">
+
                 View Demo
               </Button>
             </div>
@@ -230,11 +230,11 @@ const HomePage: React.FC = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card 
-                key={index} 
-                className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-              >
+            {features.map((feature, index) =>
+            <Card
+              key={index}
+              className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+
                 <CardHeader>
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center mb-4">
                     <feature.icon className="w-6 h-6 text-blue-600" />
@@ -247,7 +247,7 @@ const HomePage: React.FC = () => {
                   </CardDescription>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -264,16 +264,16 @@ const HomePage: React.FC = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {plans.map((plan, index) => (
-              <Card 
-                key={index}
-                className={`relative border-0 shadow-lg ${plan.popular ? 'ring-2 ring-blue-500 scale-105' : ''}`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            {plans.map((plan, index) =>
+            <Card
+              key={index}
+              className={`relative border-0 shadow-lg ${plan.popular ? 'ring-2 ring-blue-500 scale-105' : ''}`}>
+
+                {plan.popular &&
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <Badge className="bg-blue-500 text-white">Most Popular</Badge>
                   </div>
-                )}
+              }
                 <CardHeader className="text-center pb-2">
                   <CardTitle className="text-2xl text-slate-900">{plan.name}</CardTitle>
                   <div className="flex items-baseline justify-center">
@@ -284,23 +284,23 @@ const HomePage: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, fIndex) => (
-                      <li key={fIndex} className="flex items-center text-slate-600">
+                    {plan.features.map((feature, fIndex) =>
+                  <li key={fIndex} className="flex items-center text-slate-600">
                         <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
                         {feature}
                       </li>
-                    ))}
+                  )}
                   </ul>
-                  <Button 
-                    className="w-full"
-                    variant={plan.popular ? "default" : "outline"}
-                    onClick={() => navigate('/trial-signup')}
-                  >
+                  <Button
+                  className="w-full"
+                  variant={plan.popular ? "default" : "outline"}
+                  onClick={() => navigate('/trial-signup')}>
+
                     Start Free Trial
                   </Button>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -317,13 +317,13 @@ const HomePage: React.FC = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-0 shadow-lg">
+            {testimonials.map((testimonial, index) =>
+            <Card key={index} className="border-0 shadow-lg">
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                    ))}
+                    {[...Array(testimonial.rating)].map((_, i) =>
+                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  )}
                   </div>
                   <p className="text-slate-600 mb-4 italic">"{testimonial.text}"</p>
                   <div className="border-t pt-4">
@@ -332,7 +332,7 @@ const HomePage: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -348,12 +348,12 @@ const HomePage: React.FC = () => {
             their projects efficiently and profitably.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
+            <Button
               size="lg"
               variant="secondary"
               onClick={() => navigate('/trial-signup')}
-              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg"
-            >
+              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg">
+
               Start Your Free Month Today
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
@@ -409,8 +409,8 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default HomePage;

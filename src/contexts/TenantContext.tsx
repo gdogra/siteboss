@@ -36,7 +36,7 @@ interface TenantContextType {
 
 const TenantContext = createContext<TenantContextType | undefined>(undefined);
 
-export const TenantProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const TenantProvider: React.FC<{children: ReactNode;}> = ({ children }) => {
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,15 +46,15 @@ export const TenantProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       setLoading(true);
       setError(null);
-      
+
       // Get subdomain from current URL
       const hostname = window.location.hostname;
       const subdomain = hostname.split('.')[0];
-      
+
       // For localhost development, use 'demo' as default
-      const tenantIdentifier = hostname === 'localhost' || hostname.includes('easysite.ai') 
-        ? 'siteboss' 
-        : subdomain;
+      const tenantIdentifier = hostname === 'localhost' || hostname.includes('easysite.ai') ?
+      'siteboss' :
+      subdomain;
 
       // Try to get tenant from local storage first
       const cachedTenant = localStorage.getItem('current_tenant');
@@ -92,7 +92,7 @@ export const TenantProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
       setTenant(defaultTenant);
       localStorage.setItem('current_tenant', JSON.stringify(defaultTenant));
-      
+
     } catch (err) {
       console.error('Error loading tenant:', err);
       setError(err instanceof Error ? err.message : 'Failed to load tenant');
@@ -127,22 +127,22 @@ export const TenantProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const updateTenantBranding = async (branding: Partial<Tenant>) => {
     if (!tenant) return;
-    
+
     try {
       const updatedTenant = { ...tenant, ...branding };
       setTenant(updatedTenant);
       localStorage.setItem('current_tenant', JSON.stringify(updatedTenant));
-      
+
       toast({
         title: "Branding Updated",
-        description: "Your branding settings have been saved successfully.",
+        description: "Your branding settings have been saved successfully."
       });
     } catch (err) {
       console.error('Error updating tenant branding:', err);
       toast({
         title: "Error",
         description: "Failed to update branding settings.",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -161,7 +161,7 @@ export const TenantProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       root.style.setProperty('--background-color', tenant.background_color);
       root.style.setProperty('--text-color', tenant.text_color);
       root.style.setProperty('--font-family', tenant.font_family);
-      
+
       // Update document title
       document.title = tenant.branding?.company_name || tenant.name;
     }
@@ -173,7 +173,7 @@ export const TenantProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     loading,
     error,
     refreshTenant,
-    updateTenantBranding,
+    updateTenantBranding
   };
 
   return <TenantContext.Provider value={value}>{children}</TenantContext.Provider>;

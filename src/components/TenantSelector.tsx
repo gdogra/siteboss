@@ -14,10 +14,10 @@ interface TenantSelectorProps {
   compact?: boolean;
 }
 
-const TenantSelector: React.FC<TenantSelectorProps> = ({ 
-  onTenantSelected, 
+const TenantSelector: React.FC<TenantSelectorProps> = ({
+  onTenantSelected,
   showSearch = true,
-  compact = false 
+  compact = false
 }) => {
   const [availableTenants, setAvailableTenants] = useState<Tenant[]>([]);
   const [filteredTenants, setFilteredTenants] = useState<Tenant[]>([]);
@@ -32,10 +32,10 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
 
   useEffect(() => {
     if (searchTerm.trim()) {
-      const filtered = availableTenants.filter(tenant =>
-        tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tenant.tenant_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tenant.custom_domain?.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = availableTenants.filter((tenant) =>
+      tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tenant.tenant_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tenant.custom_domain?.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredTenants(filtered);
     } else {
@@ -63,7 +63,7 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
       toast({
         title: 'Error',
         description: 'Failed to load available tenants',
-        variant: 'destructive',
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -76,14 +76,14 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
       onTenantSelected?.(tenant);
       toast({
         title: 'Tenant Selected',
-        description: `Switched to ${tenant.name}`,
+        description: `Switched to ${tenant.name}`
       });
     } catch (error) {
       console.error('Error selecting tenant:', error);
       toast({
         title: 'Error',
         description: 'Failed to switch tenant',
-        variant: 'destructive',
+        variant: 'destructive'
       });
     }
   };
@@ -91,34 +91,34 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
   if (compact) {
     return (
       <div className="space-y-2">
-        <Select 
-          value={currentTenant?.tenant_id || ''} 
+        <Select
+          value={currentTenant?.tenant_id || ''}
           onValueChange={(value) => {
-            const tenant = availableTenants.find(t => t.tenant_id === value);
+            const tenant = availableTenants.find((t) => t.tenant_id === value);
             if (tenant) handleTenantSelect(tenant);
-          }}
-        >
+          }}>
+
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select tenant organization..." />
           </SelectTrigger>
           <SelectContent>
-            {availableTenants.map((tenant) => (
-              <SelectItem key={tenant.id} value={tenant.tenant_id}>
+            {availableTenants.map((tenant) =>
+            <SelectItem key={tenant.id} value={tenant.tenant_id}>
                 <div className="flex items-center space-x-2">
                   <Building2 className="w-4 h-4" />
                   <span>{tenant.name}</span>
-                  {tenant.custom_domain && (
-                    <Badge variant="outline" className="text-xs">
+                  {tenant.custom_domain &&
+                <Badge variant="outline" className="text-xs">
                       Custom Domain
                     </Badge>
-                  )}
+                }
                 </div>
               </SelectItem>
-            ))}
+            )}
           </SelectContent>
         </Select>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -130,22 +130,22 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
         </p>
       </div>
 
-      {showSearch && (
-        <div className="relative">
+      {showSearch &&
+      <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search organizations..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-      )}
+          placeholder="Search organizations..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-9" />
 
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse">
+        </div>
+      }
+
+      {isLoading ?
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) =>
+        <Card key={i} className="animate-pulse">
               <CardHeader>
                 <div className="h-4 bg-muted rounded w-3/4"></div>
                 <div className="h-3 bg-muted rounded w-1/2"></div>
@@ -155,52 +155,52 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
                 <div className="h-8 bg-muted rounded w-full"></div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      ) : filteredTenants.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
-          {filteredTenants.map((tenant) => (
-            <Card 
-              key={tenant.id} 
-              className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
-                currentTenant?.id === tenant.id 
-                  ? 'ring-2 ring-primary bg-primary/5' 
-                  : 'hover:bg-muted/50'
-              }`}
-              onClick={() => handleTenantSelect(tenant)}
-            >
+        )}
+        </div> :
+      filteredTenants.length > 0 ?
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+          {filteredTenants.map((tenant) =>
+        <Card
+          key={tenant.id}
+          className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+          currentTenant?.id === tenant.id ?
+          'ring-2 ring-primary bg-primary/5' :
+          'hover:bg-muted/50'}`
+          }
+          onClick={() => handleTenantSelect(tenant)}>
+
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-2">
-                    <div 
-                      className="w-8 h-8 rounded flex items-center justify-center"
-                      style={{ backgroundColor: `${tenant.primary_color}15` }}
-                    >
-                      <Building2 
-                        className="w-4 h-4" 
-                        style={{ color: tenant.primary_color }}
-                      />
+                    <div
+                  className="w-8 h-8 rounded flex items-center justify-center"
+                  style={{ backgroundColor: `${tenant.primary_color}15` }}>
+
+                      <Building2
+                    className="w-4 h-4"
+                    style={{ color: tenant.primary_color }} />
+
                     </div>
                     <div>
                       <CardTitle className="text-lg">{tenant.name}</CardTitle>
                       <CardDescription className="text-sm">{tenant.tenant_id}</CardDescription>
                     </div>
                   </div>
-                  {currentTenant?.id === tenant.id && (
-                    <Badge variant="default" className="text-xs">
+                  {currentTenant?.id === tenant.id &&
+              <Badge variant="default" className="text-xs">
                       Current
                     </Badge>
-                  )}
+              }
                 </div>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-2">
-                  {tenant.custom_domain && (
-                    <div className="flex items-center text-sm text-muted-foreground">
+                  {tenant.custom_domain &&
+              <div className="flex items-center text-sm text-muted-foreground">
                       <Globe className="w-3 h-3 mr-1" />
                       <span className="truncate">{tenant.custom_domain}</span>
                     </div>
-                  )}
+              }
                   <div className="flex items-center justify-between">
                     <Badge variant="outline" className="text-xs">
                       {tenant.subscription_tier}
@@ -212,26 +212,26 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      ) : (
-        <Card>
+        )}
+        </div> :
+
+      <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center text-muted-foreground">
               <Building2 className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>No organizations found</p>
-              {searchTerm && (
-                <p className="text-sm mt-1">
+              {searchTerm &&
+            <p className="text-sm mt-1">
                   Try adjusting your search terms
                 </p>
-              )}
+            }
             </div>
           </CardContent>
         </Card>
-      )}
+      }
 
-      {!compact && (
-        <div className="text-center">
+      {!compact &&
+      <div className="text-center">
           <p className="text-sm text-muted-foreground">
             Don't see your organization?{' '}
             <Button variant="link" className="p-0 h-auto text-sm">
@@ -239,9 +239,9 @@ const TenantSelector: React.FC<TenantSelectorProps> = ({
             </Button>
           </p>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default TenantSelector;

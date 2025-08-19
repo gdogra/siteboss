@@ -33,7 +33,7 @@ const AdminLogin: React.FC = () => {
       toast({
         title: "Validation Error",
         description: "Please fill in all fields",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -45,14 +45,14 @@ const AdminLogin: React.FC = () => {
 
       toast({
         title: "Welcome back!",
-        description: `Successfully logged in to ${tenant?.branding?.company_name || 'SiteBoss'}`,
+        description: `Successfully logged in to ${tenant?.branding?.company_name || 'SiteBoss'}`
       });
       navigate('/admin-dashboard');
     } catch (error) {
       toast({
         title: "Login Failed",
         description: error || "Invalid email or password",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -63,27 +63,27 @@ const AdminLogin: React.FC = () => {
     navigate('/admin-dashboard');
     toast({
       title: "Demo Mode",
-      description: "You're now using SiteBoss in demo mode",
+      description: "You're now using SiteBoss in demo mode"
     });
   };
 
   const features = [
-    {
-      icon: Building2,
-      title: "Project Management",
-      description: "Complete project lifecycle management"
-    },
-    {
-      icon: Users,
-      title: "Team Collaboration",
-      description: "Real-time team coordination tools"
-    },
-    {
-      icon: Shield,
-      title: "Secure & Reliable",
-      description: "Enterprise-grade security"
-    }
-  ];
+  {
+    icon: Building2,
+    title: "Project Management",
+    description: "Complete project lifecycle management"
+  },
+  {
+    icon: Users,
+    title: "Team Collaboration",
+    description: "Real-time team coordination tools"
+  },
+  {
+    icon: Shield,
+    title: "Secure & Reliable",
+    description: "Enterprise-grade security"
+  }];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -93,19 +93,19 @@ const AdminLogin: React.FC = () => {
         <div className="hidden lg:block space-y-8">
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div 
+              <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center text-white"
-                style={{ 
-                  background: tenant?.primary_color ? 
-                    `linear-gradient(135deg, ${tenant.primary_color}, ${tenant.accent_color || tenant.primary_color})` :
-                    'linear-gradient(135deg, #0f172a, #3b82f6)'
-                }}
-              >
-                {tenant?.logo_url ? (
-                  <img src={tenant.logo_url} alt="Logo" className="w-8 h-8 rounded" />
-                ) : (
-                  <Building2 className="w-7 h-7" />
-                )}
+                style={{
+                  background: tenant?.primary_color ?
+                  `linear-gradient(135deg, ${tenant.primary_color}, ${tenant.accent_color || tenant.primary_color})` :
+                  'linear-gradient(135deg, #0f172a, #3b82f6)'
+                }}>
+
+                {tenant?.logo_url ?
+                <img src={tenant.logo_url} alt="Logo" className="w-8 h-8 rounded" /> :
+
+                <Building2 className="w-7 h-7" />
+                }
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-slate-900">
@@ -124,8 +124,8 @@ const AdminLogin: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            {features.map((feature, index) => (
-              <div key={index} className="flex items-start space-x-4">
+            {features.map((feature, index) =>
+            <div key={index} className="flex items-start space-x-4">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                   <feature.icon className="w-5 h-5 text-blue-600" />
                 </div>
@@ -134,7 +134,7 @@ const AdminLogin: React.FC = () => {
                   <p className="text-slate-600 text-sm">{feature.description}</p>
                 </div>
               </div>
-            ))}
+            )}
           </div>
 
           <div className="bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-6">
@@ -160,14 +160,14 @@ const AdminLogin: React.FC = () => {
             <CardHeader className="text-center pb-2">
               <div className="mx-auto mb-4 lg:hidden">
                 <div className="flex items-center justify-center space-x-3">
-                  <div 
+                  <div
                     className="w-10 h-10 rounded-lg flex items-center justify-center text-white"
-                    style={{ 
-                      background: tenant?.primary_color ? 
-                        `linear-gradient(135deg, ${tenant.primary_color}, ${tenant.accent_color || tenant.primary_color})` :
-                        'linear-gradient(135deg, #0f172a, #3b82f6)'
-                    }}
-                  >
+                    style={{
+                      background: tenant?.primary_color ?
+                      `linear-gradient(135deg, ${tenant.primary_color}, ${tenant.accent_color || tenant.primary_color})` :
+                      'linear-gradient(135deg, #0f172a, #3b82f6)'
+                    }}>
+
                     <Building2 className="w-6 h-6" />
                   </div>
                   <h2 className="text-xl font-bold text-slate-900">
@@ -196,8 +196,8 @@ const AdminLogin: React.FC = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="admin@example.com"
                       className="pl-10 h-12"
-                      required
-                    />
+                      required />
+
                   </div>
                 </div>
 
@@ -212,15 +212,15 @@ const AdminLogin: React.FC = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
                       className="pl-10 pr-10 h-12"
-                      required
-                    />
+                      required />
+
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon"
                       className="absolute right-0 top-0 h-12 px-3"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
+                      onClick={() => setShowPassword(!showPassword)}>
+
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </Button>
                   </div>
@@ -233,36 +233,36 @@ const AdminLogin: React.FC = () => {
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
-                      className="rounded border-slate-300"
-                    />
+                      className="rounded border-slate-300" />
+
                     <Label htmlFor="remember" className="text-sm text-slate-600">
                       Remember me
                     </Label>
                   </div>
-                  <Link 
-                    to="/reset-password" 
-                    className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-                  >
+                  <Link
+                    to="/reset-password"
+                    className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+
                     Forgot password?
                   </Link>
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <div className="flex items-center space-x-2">
+                  disabled={loading}>
+
+                  {loading ?
+                  <div className="flex items-center space-x-2">
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       <span>Signing in...</span>
-                    </div>
-                  ) : (
-                    <>
+                    </div> :
+
+                  <>
                       Sign In
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </>
-                  )}
+                  }
                 </Button>
               </form>
 
@@ -275,11 +275,11 @@ const AdminLogin: React.FC = () => {
                 </div>
               </div>
 
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full h-12"
-                onClick={handleDemoLogin}
-              >
+                onClick={handleDemoLogin}>
+
                 <Zap className="w-4 h-4 mr-2 text-amber-500" />
                 Try Demo
               </Button>
@@ -304,8 +304,8 @@ const AdminLogin: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminLogin;
