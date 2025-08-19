@@ -217,8 +217,8 @@ const LeadKanbanBoard: React.FC = () => {
     return <div className="flex items-center justify-center h-64">Loading leads...</div>;
   }
 
-  // Check permissions
-  if (currentUser?.Roles?.includes('r-QpoZrh')) {// Contractor
+  // Check permissions - only block contractors from viewing leads
+  if (currentUser?.Roles?.includes('r-QpoZrh') && !currentUser?.Roles?.includes('Administrator')) {// Contractor only
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">

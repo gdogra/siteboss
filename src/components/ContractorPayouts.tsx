@@ -8,20 +8,20 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import DataTable from  '@/components/DataTable';
+import DataTable from '@/components/DataTable';
 import { toast } from '@/hooks/use-toast';
-import { 
-  Plus, 
-  Send, 
-  DollarSign, 
-  Calendar, 
-  User, 
+import {
+  Plus,
+  Send,
+  DollarSign,
+  Calendar,
+  User,
   CreditCard,
   AlertCircle,
   CheckCircle,
   Building2,
-  Banknote
-} from 'lucide-react';
+  Banknote } from
+'lucide-react';
 
 const ContractorPayouts: React.FC = () => {
   const [payouts, setPayouts] = useState([]);
@@ -51,8 +51,8 @@ const ContractorPayouts: React.FC = () => {
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'transaction_type', op: 'Equal', value: 'payout' }
-        ]
+        { name: 'transaction_type', op: 'Equal', value: 'payout' }]
+
       });
 
       if (error) throw error;
@@ -94,8 +94,8 @@ const ContractorPayouts: React.FC = () => {
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'is_active', op: 'Equal', value: true }
-        ]
+        { name: 'is_active', op: 'Equal', value: true }]
+
       });
 
       if (error) throw error;
@@ -116,8 +116,8 @@ const ContractorPayouts: React.FC = () => {
         return;
       }
 
-      const contractor = contractors.find(c => c.id.toString() === formData.contractor_user_id);
-      const stripeAccount = stripeAccounts.find(a => a.user_id.toString() === formData.contractor_user_id);
+      const contractor = contractors.find((c) => c.id.toString() === formData.contractor_user_id);
+      const stripeAccount = stripeAccounts.find((a) => a.user_id.toString() === formData.contractor_user_id);
 
       if (!stripeAccount) {
         toast({
@@ -162,21 +162,21 @@ const ContractorPayouts: React.FC = () => {
 
       // Record ledger entries
       const ledgerEntries = [
-        {
-          account_type: 'accounts_payable',
-          account_id: `contractor_${formData.contractor_user_id}`,
-          entry_type: 'debit',
-          amount: amount,
-          description: 'Contractor payout'
-        },
-        {
-          account_type: 'cash',
-          account_id: 'company_cash',
-          entry_type: 'credit',
-          amount: amount,
-          description: 'Cash outflow for payout'
-        }
-      ];
+      {
+        account_type: 'accounts_payable',
+        account_id: `contractor_${formData.contractor_user_id}`,
+        entry_type: 'debit',
+        amount: amount,
+        description: 'Contractor payout'
+      },
+      {
+        account_type: 'cash',
+        account_id: 'company_cash',
+        entry_type: 'credit',
+        amount: amount,
+        description: 'Cash outflow for payout'
+      }];
+
 
       const { data: ledgerData, error: ledgerError } = await window.ezsite.apis.run({
         path: 'recordLedgerEntry',
@@ -266,54 +266,54 @@ const ContractorPayouts: React.FC = () => {
   };
 
   const payoutColumns = [
-    {
-      key: 'transaction_id',
-      label: 'Transaction ID',
-      render: (value: string) => (
-        <code className="text-xs bg-muted px-2 py-1 rounded">{value}</code>
-      )
-    },
-    {
-      key: 'payee_user_id',
-      label: 'Contractor',
-      render: (value: number) => {
-        const contractor = contractors.find(c => c.id === value);
-        return contractor?.name || `User ${value}`;
-      }
-    },
-    {
-      key: 'amount',
-      label: 'Amount',
-      render: (value: number) => (
-        <span className="font-medium text-green-600">-{formatCurrency(value)}</span>
-      )
-    },
-    {
-      key: 'status',
-      label: 'Status',
-      render: (value: string) => (
-        <Badge variant={getStatusVariant(value)} className="capitalize">
+  {
+    key: 'transaction_id',
+    label: 'Transaction ID',
+    render: (value: string) =>
+    <code className="text-xs bg-muted px-2 py-1 rounded">{value}</code>
+
+  },
+  {
+    key: 'payee_user_id',
+    label: 'Contractor',
+    render: (value: number) => {
+      const contractor = contractors.find((c) => c.id === value);
+      return contractor?.name || `User ${value}`;
+    }
+  },
+  {
+    key: 'amount',
+    label: 'Amount',
+    render: (value: number) =>
+    <span className="font-medium text-green-600">-{formatCurrency(value)}</span>
+
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    render: (value: string) =>
+    <Badge variant={getStatusVariant(value)} className="capitalize">
           {value}
         </Badge>
-      )
-    },
-    {
-      key: 'description',
-      label: 'Description',
-      render: (value: string) => (
-        <span className="text-sm text-muted-foreground">
+
+  },
+  {
+    key: 'description',
+    label: 'Description',
+    render: (value: string) =>
+    <span className="text-sm text-muted-foreground">
           {value || 'No description'}
         </span>
-      )
-    },
-    {
-      key: 'processed_at',
-      label: 'Date',
-      render: (value: string) => (
-        <span className="text-sm">{formatDate(value)}</span>
-      )
-    }
-  ];
+
+  },
+  {
+    key: 'processed_at',
+    label: 'Date',
+    render: (value: string) =>
+    <span className="text-sm">{formatDate(value)}</span>
+
+  }];
+
 
   return (
     <div className="space-y-6">
@@ -343,31 +343,31 @@ const ContractorPayouts: React.FC = () => {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="contractor">Contractor</Label>
-                <Select value={formData.contractor_user_id} onValueChange={(value) => 
-                  setFormData({...formData, contractor_user_id: value})
+                <Select value={formData.contractor_user_id} onValueChange={(value) =>
+                setFormData({ ...formData, contractor_user_id: value })
                 }>
                   <SelectTrigger>
                     <SelectValue placeholder="Select contractor" />
                   </SelectTrigger>
                   <SelectContent>
                     {contractors.map((contractor: any) => {
-                      const hasAccount = stripeAccounts.some(a => a.user_id === contractor.id);
+                      const hasAccount = stripeAccounts.some((a) => a.user_id === contractor.id);
                       return (
-                        <SelectItem 
-                          key={contractor.id} 
+                        <SelectItem
+                          key={contractor.id}
                           value={contractor.id.toString()}
-                          disabled={!hasAccount}
-                        >
+                          disabled={!hasAccount}>
+
                           <div className="flex items-center justify-between w-full">
                             <span>{contractor.name}</span>
-                            {hasAccount ? (
-                              <CheckCircle className="h-4 w-4 text-green-500 ml-2" />
-                            ) : (
-                              <AlertCircle className="h-4 w-4 text-orange-500 ml-2" />
-                            )}
+                            {hasAccount ?
+                            <CheckCircle className="h-4 w-4 text-green-500 ml-2" /> :
+
+                            <AlertCircle className="h-4 w-4 text-orange-500 ml-2" />
+                            }
                           </div>
-                        </SelectItem>
-                      );
+                        </SelectItem>);
+
                     })}
                   </SelectContent>
                 </Select>
@@ -385,10 +385,10 @@ const ContractorPayouts: React.FC = () => {
                     type="number"
                     step="0.01"
                     value={formData.amount}
-                    onChange={(e) => setFormData({...formData, amount: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                     className="pl-10"
-                    placeholder="0.00"
-                  />
+                    placeholder="0.00" />
+
                 </div>
               </div>
 
@@ -397,10 +397,10 @@ const ContractorPayouts: React.FC = () => {
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Payment for work completed..."
-                  rows={3}
-                />
+                  rows={3} />
+
               </div>
 
               <div className="flex items-center gap-2 p-4 bg-blue-50 rounded-lg">
@@ -439,7 +439,7 @@ const ContractorPayouts: React.FC = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {contractors.map((contractor: any) => {
-              const stripeAccount = stripeAccounts.find(a => a.user_id === contractor.id);
+              const stripeAccount = stripeAccounts.find((a) => a.user_id === contractor.id);
               return (
                 <div key={contractor.id} className="p-4 border rounded-lg">
                   <div className="flex items-center justify-between">
@@ -447,20 +447,20 @@ const ContractorPayouts: React.FC = () => {
                       <div className="font-medium">{contractor.name}</div>
                       <div className="text-sm text-muted-foreground">{contractor.email}</div>
                     </div>
-                    {stripeAccount ? (
-                      <Badge variant="default">
+                    {stripeAccount ?
+                    <Badge variant="default">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         Connected
-                      </Badge>
-                    ) : (
-                      <Badge variant="secondary">
+                      </Badge> :
+
+                    <Badge variant="secondary">
                         <AlertCircle className="h-3 w-3 mr-1" />
                         Not Connected
                       </Badge>
-                    )}
+                    }
                   </div>
-                </div>
-              );
+                </div>);
+
             })}
           </div>
         </CardContent>
@@ -482,12 +482,12 @@ const ContractorPayouts: React.FC = () => {
             data={payouts}
             columns={payoutColumns}
             loading={loading}
-            emptyMessage="No payouts found"
-          />
+            emptyMessage="No payouts found" />
+
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ContractorPayouts;

@@ -8,21 +8,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import DataTable from  '@/components/DataTable';
+import DataTable from '@/components/DataTable';
 import PaymentEngine from '@/components/PaymentEngine';
 import { toast } from '@/hooks/use-toast';
-import { 
-  Plus, 
-  FileText, 
-  Send, 
-  DollarSign, 
-  Calendar, 
-  User, 
+import {
+  Plus,
+  FileText,
+  Send,
+  DollarSign,
+  Calendar,
+  User,
   Building2,
   Edit,
   Trash2,
-  Eye
-} from 'lucide-react';
+  Eye } from
+'lucide-react';
 
 const InvoiceManagement: React.FC = () => {
   const [invoices, setInvoices] = useState([]);
@@ -233,70 +233,70 @@ const InvoiceManagement: React.FC = () => {
   };
 
   const invoiceColumns = [
-    {
-      key: 'invoice_number',
-      label: 'Invoice #',
-      render: (value: string) => (
-        <code className="font-medium">{value}</code>
-      )
-    },
-    {
-      key: 'project_id',
-      label: 'Project',
-      render: (value: number) => {
-        const project = projects.find(p => p.id === value);
-        return project?.name || `Project ${value}`;
-      }
-    },
-    {
-      key: 'total_amount',
-      label: 'Amount',
-      render: (value: number) => (
-        <span className="font-medium">{formatCurrency(value)}</span>
-      )
-    },
-    {
-      key: 'status',
-      label: 'Status',
-      render: (value: string) => (
-        <Badge variant={getStatusVariant(value)} className="capitalize">
+  {
+    key: 'invoice_number',
+    label: 'Invoice #',
+    render: (value: string) =>
+    <code className="font-medium">{value}</code>
+
+  },
+  {
+    key: 'project_id',
+    label: 'Project',
+    render: (value: number) => {
+      const project = projects.find((p) => p.id === value);
+      return project?.name || `Project ${value}`;
+    }
+  },
+  {
+    key: 'total_amount',
+    label: 'Amount',
+    render: (value: number) =>
+    <span className="font-medium">{formatCurrency(value)}</span>
+
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    render: (value: string) =>
+    <Badge variant={getStatusVariant(value)} className="capitalize">
           {value}
         </Badge>
-      )
-    },
-    {
-      key: 'due_date',
-      label: 'Due Date',
-      render: (value: string) => formatDate(value)
-    },
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (_: any, row: any) => (
-        <div className="flex gap-2">
-          {row.status === 'draft' && (
-            <Button size="sm" variant="outline" onClick={() => sendInvoice(row)}>
+
+  },
+  {
+    key: 'due_date',
+    label: 'Due Date',
+    render: (value: string) => formatDate(value)
+  },
+  {
+    key: 'actions',
+    label: 'Actions',
+    render: (_: any, row: any) =>
+    <div className="flex gap-2">
+          {row.status === 'draft' &&
+      <Button size="sm" variant="outline" onClick={() => sendInvoice(row)}>
               <Send className="h-3 w-3" />
             </Button>
-          )}
-          {(row.status === 'sent' || row.status === 'overdue') && (
-            <Button 
-              size="sm" 
-              onClick={() => {
-                setSelectedInvoice(row);
-                setShowPaymentDialog(true);
-              }}
-            >
+      }
+          {(row.status === 'sent' || row.status === 'overdue') &&
+      <Button
+        size="sm"
+        onClick={() => {
+          setSelectedInvoice(row);
+          setShowPaymentDialog(true);
+        }}>
+
               <DollarSign className="h-3 w-3" />
             </Button>
-          )}
+      }
           <Button size="sm" variant="outline">
             <Eye className="h-3 w-3" />
           </Button>
         </div>
-      )
-    }
-  ];
+
+  }];
+
 
   return (
     <div className="space-y-6">
@@ -327,18 +327,18 @@ const InvoiceManagement: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="project">Project</Label>
-                  <Select value={formData.project_id} onValueChange={(value) => 
-                    setFormData({...formData, project_id: value})
+                  <Select value={formData.project_id} onValueChange={(value) =>
+                  setFormData({ ...formData, project_id: value })
                   }>
                     <SelectTrigger>
                       <SelectValue placeholder="Select project" />
                     </SelectTrigger>
                     <SelectContent>
-                      {projects.map((project: any) => (
-                        <SelectItem key={project.id} value={project.id.toString()}>
+                      {projects.map((project: any) =>
+                      <SelectItem key={project.id} value={project.id.toString()}>
                           {project.name}
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -349,8 +349,8 @@ const InvoiceManagement: React.FC = () => {
                     id="due_date"
                     type="date"
                     value={formData.due_date}
-                    onChange={(e) => setFormData({...formData, due_date: e.target.value})}
-                  />
+                    onChange={(e) => setFormData({ ...formData, due_date: e.target.value })} />
+
                 </div>
               </div>
 
@@ -362,8 +362,8 @@ const InvoiceManagement: React.FC = () => {
                     type="number"
                     step="0.01"
                     value={formData.amount}
-                    onChange={(e) => setFormData({...formData, amount: e.target.value})}
-                  />
+                    onChange={(e) => setFormData({ ...formData, amount: e.target.value })} />
+
                 </div>
                 
                 <div>
@@ -373,8 +373,8 @@ const InvoiceManagement: React.FC = () => {
                     type="number"
                     step="0.01"
                     value={formData.tax_amount}
-                    onChange={(e) => setFormData({...formData, tax_amount: e.target.value})}
-                  />
+                    onChange={(e) => setFormData({ ...formData, tax_amount: e.target.value })} />
+
                 </div>
               </div>
 
@@ -383,9 +383,9 @@ const InvoiceManagement: React.FC = () => {
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  placeholder="Describe the work performed..."
-                />
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Describe the work performed..." />
+
               </div>
 
               <div className="flex justify-between items-center pt-4">
@@ -416,17 +416,17 @@ const InvoiceManagement: React.FC = () => {
             </DialogDescription>
           </DialogHeader>
           
-          {selectedInvoice && (
-            <PaymentEngine
-              mode="payment"
-              invoice={selectedInvoice}
-              onSuccess={() => {
-                setShowPaymentDialog(false);
-                loadInvoices();
-              }}
-              onCancel={() => setShowPaymentDialog(false)}
-            />
-          )}
+          {selectedInvoice &&
+          <PaymentEngine
+            mode="payment"
+            invoice={selectedInvoice}
+            onSuccess={() => {
+              setShowPaymentDialog(false);
+              loadInvoices();
+            }}
+            onCancel={() => setShowPaymentDialog(false)} />
+
+          }
         </DialogContent>
       </Dialog>
 
@@ -446,12 +446,12 @@ const InvoiceManagement: React.FC = () => {
             data={invoices}
             columns={invoiceColumns}
             loading={loading}
-            emptyMessage="No invoices found"
-          />
+            emptyMessage="No invoices found" />
+
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default InvoiceManagement;

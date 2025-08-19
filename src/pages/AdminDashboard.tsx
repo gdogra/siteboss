@@ -415,6 +415,41 @@ const AdminDashboard = () => {
             <p className="text-gray-600">Manage your construction projects and operations</p>
           </div>
 
+          {/* Quick Navigation Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/leads')}>
+              <CardContent className="p-6 text-center">
+                <Users className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                <h3 className="font-medium">Lead Management</h3>
+                <p className="text-sm text-gray-600 mt-1">Manage leads & pipeline</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/payments')}>
+              <CardContent className="p-6 text-center">
+                <DollarSign className="h-8 w-8 mx-auto mb-2 text-green-600" />
+                <h3 className="font-medium">Payments</h3>
+                <p className="text-sm text-gray-600 mt-1">Financial management</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => navigate('/invoice-submission')}>
+              <CardContent className="p-6 text-center">
+                <FileText className="h-8 w-8 mx-auto mb-2 text-purple-600" />
+                <h3 className="font-medium">Invoices</h3>
+                <p className="text-sm text-gray-600 mt-1">Invoice management</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setShowProjectForm(true)}>
+              <CardContent className="p-6 text-center">
+                <Building2 className="h-8 w-8 mx-auto mb-2 text-orange-600" />
+                <h3 className="font-medium">New Project</h3>
+                <p className="text-sm text-gray-600 mt-1">Create project</p>
+              </CardContent>
+            </Card>
+          </div>
+
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
             <Card>

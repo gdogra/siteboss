@@ -25,8 +25,8 @@ const Header = () => {
 
   const adminNavItems = [
   { name: 'Dashboard', href: '/admin-dashboard', icon: Home },
+  { name: 'Lead Management', href: '/leads', icon: User },
   { name: 'Invoice Submission', href: '/invoice-submission', icon: Settings },
-  { name: 'Leads', href: '/leads', icon: User },
   { name: 'Payments', href: '/payments', icon: Settings }];
 
 

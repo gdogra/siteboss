@@ -35,8 +35,8 @@ const PaymentEngine: React.FC<PaymentEngineProps> = ({ mode, invoice, onSuccess,
         OrderByField: 'id',
         IsAsc: false,
         Filters: [
-          { name: 'is_active', op: 'Equal', value: true }
-        ]
+        { name: 'is_active', op: 'Equal', value: true }]
+
       });
 
       if (error) throw error;
@@ -123,21 +123,21 @@ const PaymentEngine: React.FC<PaymentEngineProps> = ({ mode, invoice, onSuccess,
 
       // Record ledger entries
       const ledgerEntries = [
-        {
-          account_type: 'cash',
-          account_id: 'company_cash',
-          entry_type: 'debit',
-          amount: amount,
-          description: 'Payment received'
-        },
-        {
-          account_type: 'accounts_receivable',
-          account_id: `invoice_${invoice?.id}`,
-          entry_type: 'credit',
-          amount: amount,
-          description: 'Invoice payment'
-        }
-      ];
+      {
+        account_type: 'cash',
+        account_id: 'company_cash',
+        entry_type: 'debit',
+        amount: amount,
+        description: 'Payment received'
+      },
+      {
+        account_type: 'accounts_receivable',
+        account_id: `invoice_${invoice?.id}`,
+        entry_type: 'credit',
+        amount: amount,
+        description: 'Invoice payment'
+      }];
+
 
       const { data: ledgerData, error: ledgerError } = await window.ezsite.apis.run({
         path: 'recordLedgerEntry',
@@ -196,16 +196,16 @@ const PaymentEngine: React.FC<PaymentEngineProps> = ({ mode, invoice, onSuccess,
           {mode === 'payment' ? 'Make Payment' : 'Process Payout'}
         </CardTitle>
         <CardDescription>
-          {mode === 'payment' 
-            ? 'Secure payment processing with Stripe'
-            : 'Send payout to contractor account'
+          {mode === 'payment' ?
+          'Secure payment processing with Stripe' :
+          'Send payout to contractor account'
           }
         </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {invoice && (
-          <div className="p-4 bg-muted rounded-lg">
+        {invoice &&
+        <div className="p-4 bg-muted rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium">Invoice #{invoice.invoice_number}</span>
               <Badge variant="outline">{invoice.status}</Badge>
@@ -213,7 +213,7 @@ const PaymentEngine: React.FC<PaymentEngineProps> = ({ mode, invoice, onSuccess,
             <div className="text-2xl font-bold">{formatCurrency(invoice.total_amount)}</div>
             <div className="text-sm text-muted-foreground">{invoice.description}</div>
           </div>
-        )}
+        }
 
         <div className="space-y-4">
           <div>
@@ -226,13 +226,13 @@ const PaymentEngine: React.FC<PaymentEngineProps> = ({ mode, invoice, onSuccess,
                 value={amount / 100}
                 onChange={(e) => setAmount(Math.round(parseFloat(e.target.value || '0') * 100))}
                 className="pl-10"
-                disabled={!!invoice}
-              />
+                disabled={!!invoice} />
+
             </div>
           </div>
 
-          {mode === 'payment' && (
-            <div>
+          {mode === 'payment' &&
+          <div>
               <Label>Payment Method</Label>
               <Select value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod}>
                 <SelectTrigger>
@@ -240,15 +240,15 @@ const PaymentEngine: React.FC<PaymentEngineProps> = ({ mode, invoice, onSuccess,
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="new_card">+ Add New Card</SelectItem>
-                  {paymentMethods.map((method: any) => (
-                    <SelectItem key={method.id} value={method.stripe_payment_method_id}>
+                  {paymentMethods.map((method: any) =>
+                <SelectItem key={method.id} value={method.stripe_payment_method_id}>
                       {method.brand} •••• {method.last_four}
                     </SelectItem>
-                  ))}
+                )}
                 </SelectContent>
               </Select>
             </div>
-          )}
+          }
         </div>
 
         <div className="flex items-center gap-2 p-4 bg-blue-50 rounded-lg">
@@ -264,20 +264,20 @@ const PaymentEngine: React.FC<PaymentEngineProps> = ({ mode, invoice, onSuccess,
         <Button
           onClick={confirmPayment}
           disabled={loading || !amount}
-          className="flex-1"
-        >
+          className="flex-1">
+
           {loading && <Clock className="mr-2 h-4 w-4 animate-spin" />}
           {mode === 'payment' ? `Pay ${formatCurrency(amount)}` : `Send ${formatCurrency(amount)}`}
         </Button>
         
-        {onCancel && (
-          <Button variant="outline" onClick={onCancel}>
+        {onCancel &&
+        <Button variant="outline" onClick={onCancel}>
             <X className="h-4 w-4" />
           </Button>
-        )}
+        }
       </CardFooter>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default PaymentEngine;

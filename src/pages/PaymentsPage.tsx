@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import AuthGuard from  '@/components/AuthGuard';
-import Header from  '@/components/Header';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 import TransactionDashboard from '@/components/TransactionDashboard';
 import InvoiceManagement from '@/components/InvoiceManagement';
 import ContractorPayouts from '@/components/ContractorPayouts';
@@ -227,8 +227,8 @@ const PaymentsPage: React.FC = () => {
           </div>
         </main>
       </div>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default PaymentsPage;

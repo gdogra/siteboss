@@ -5,19 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import DataTable from  '@/components/DataTable';
+import DataTable from '@/components/DataTable';
 import { toast } from '@/hooks/use-toast';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  TrendingDown, 
-  Receipt, 
-  RefreshCw, 
+import {
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Receipt,
+  RefreshCw,
   AlertTriangle,
   CheckCircle,
   Clock,
-  XCircle
-} from 'lucide-react';
+  XCircle } from
+'lucide-react';
 
 const TransactionDashboard: React.FC = () => {
   const [transactions, setTransactions] = useState([]);
@@ -40,7 +40,7 @@ const TransactionDashboard: React.FC = () => {
     try {
       setLoading(true);
       const filters = [];
-      
+
       if (filter !== 'all') {
         filters.push({ name: 'status', op: 'Equal', value: filter });
       }
@@ -83,23 +83,23 @@ const TransactionDashboard: React.FC = () => {
       });
 
       if (error) throw error;
-      
+
       const allTransactions = data.List || [];
-      
-      const totalRevenue = allTransactions
-        .filter(t => t.transaction_type === 'payment' && t.status === 'completed')
-        .reduce((sum, t) => sum + (t.amount || 0), 0);
-      
-      const totalPayouts = allTransactions
-        .filter(t => t.transaction_type === 'payout' && t.status === 'completed')
-        .reduce((sum, t) => sum + (t.amount || 0), 0);
-      
-      const pendingPayments = allTransactions
-        .filter(t => t.status === 'pending')
-        .reduce((sum, t) => sum + (t.amount || 0), 0);
-      
-      const completedTransactions = allTransactions
-        .filter(t => t.status === 'completed').length;
+
+      const totalRevenue = allTransactions.
+      filter((t) => t.transaction_type === 'payment' && t.status === 'completed').
+      reduce((sum, t) => sum + (t.amount || 0), 0);
+
+      const totalPayouts = allTransactions.
+      filter((t) => t.transaction_type === 'payout' && t.status === 'completed').
+      reduce((sum, t) => sum + (t.amount || 0), 0);
+
+      const pendingPayments = allTransactions.
+      filter((t) => t.status === 'pending').
+      reduce((sum, t) => sum + (t.amount || 0), 0);
+
+      const completedTransactions = allTransactions.
+      filter((t) => t.status === 'completed').length;
 
       setStats({
         totalRevenue,
@@ -214,76 +214,76 @@ const TransactionDashboard: React.FC = () => {
   };
 
   const transactionColumns = [
-    {
-      key: 'transaction_id',
-      label: 'Transaction ID',
-      render: (value: string) => (
-        <code className="text-xs bg-muted px-2 py-1 rounded">{value}</code>
-      )
-    },
-    {
-      key: 'transaction_type',
-      label: 'Type',
-      render: (value: string) => (
-        <Badge variant="outline" className="capitalize">
+  {
+    key: 'transaction_id',
+    label: 'Transaction ID',
+    render: (value: string) =>
+    <code className="text-xs bg-muted px-2 py-1 rounded">{value}</code>
+
+  },
+  {
+    key: 'transaction_type',
+    label: 'Type',
+    render: (value: string) =>
+    <Badge variant="outline" className="capitalize">
           {value}
         </Badge>
-      )
-    },
-    {
-      key: 'amount',
-      label: 'Amount',
-      render: (value: number, row: any) => (
-        <div className="font-medium">
+
+  },
+  {
+    key: 'amount',
+    label: 'Amount',
+    render: (value: number, row: any) =>
+    <div className="font-medium">
           {row.transaction_type === 'payout' && '-'}
           {formatCurrency(value)}
         </div>
-      )
-    },
-    {
-      key: 'status',
-      label: 'Status',
-      render: (value: string) => (
-        <div className="flex items-center gap-2">
+
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    render: (value: string) =>
+    <div className="flex items-center gap-2">
           {getStatusIcon(value)}
           <Badge variant={getStatusVariant(value)} className="capitalize">
             {value}
           </Badge>
         </div>
-      )
-    },
-    {
-      key: 'payment_method',
-      label: 'Method',
-      render: (value: string) => (
-        <span className="capitalize">{value}</span>
-      )
-    },
-    {
-      key: 'processed_at',
-      label: 'Date',
-      render: (value: string) => (
-        <span className="text-sm">{formatDate(value)}</span>
-      )
-    },
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (_: any, row: any) => (
-        <div className="flex gap-2">
-          {row.transaction_type === 'payment' && row.status === 'completed' && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => processRefund(row)}
-            >
+
+  },
+  {
+    key: 'payment_method',
+    label: 'Method',
+    render: (value: string) =>
+    <span className="capitalize">{value}</span>
+
+  },
+  {
+    key: 'processed_at',
+    label: 'Date',
+    render: (value: string) =>
+    <span className="text-sm">{formatDate(value)}</span>
+
+  },
+  {
+    key: 'actions',
+    label: 'Actions',
+    render: (_: any, row: any) =>
+    <div className="flex gap-2">
+          {row.transaction_type === 'payment' && row.status === 'completed' &&
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() => processRefund(row)}>
+
               <RefreshCw className="h-3 w-3" />
             </Button>
-          )}
+      }
         </div>
-      )
-    }
-  ];
+
+  }];
+
 
   return (
     <div className="space-y-6">
@@ -361,8 +361,8 @@ const TransactionDashboard: React.FC = () => {
               placeholder="Search transactions..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1"
-            />
+              className="flex-1" />
+
             <Select value={filter} onValueChange={setFilter}>
               <SelectTrigger className="w-full sm:w-48">
                 <SelectValue />
@@ -385,12 +385,12 @@ const TransactionDashboard: React.FC = () => {
             data={transactions}
             columns={transactionColumns}
             loading={loading}
-            emptyMessage="No transactions found"
-          />
+            emptyMessage="No transactions found" />
+
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default TransactionDashboard;
