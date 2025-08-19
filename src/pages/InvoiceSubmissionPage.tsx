@@ -12,11 +12,11 @@ const InvoiceSubmissionPage = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Back Navigation */}
           <Link
-            to="/admin-dashboard"
+            to="/"
             className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-8 group transition-colors">
 
             <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-            Back to Dashboard
+            ← Back to Main Site
           </Link>
 
           {/* Header */}

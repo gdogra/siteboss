@@ -17,8 +17,8 @@ import {
   UserX,
   Shield,
   Clock,
-  RefreshCw
-} from 'lucide-react';
+  RefreshCw } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface User {
@@ -186,19 +186,19 @@ const UserManagement = () => {
 
   const getRoleDisplay = (roleCode: string) => {
     switch (roleCode) {
-      case 'Administrator': return 'Administrator';
-      case 'r-QpoZrh': return 'Contractor';
-      case 'GeneralUser': return 'General User';
-      default: return roleCode || 'User';
+      case 'Administrator':return 'Administrator';
+      case 'r-QpoZrh':return 'Contractor';
+      case 'GeneralUser':return 'General User';
+      default:return roleCode || 'User';
     }
   };
 
   const getRoleColor = (roleCode: string) => {
     switch (roleCode) {
-      case 'Administrator': return 'bg-red-100 text-red-800';
-      case 'r-QpoZrh': return 'bg-blue-100 text-blue-800';
-      case 'GeneralUser': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Administrator':return 'bg-red-100 text-red-800';
+      case 'r-QpoZrh':return 'bg-blue-100 text-blue-800';
+      case 'GeneralUser':return 'bg-green-100 text-green-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -213,10 +213,10 @@ const UserManagement = () => {
     });
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.role_name?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = users.filter((user) =>
+  user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  user.role_name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Check if current user is admin
@@ -228,8 +228,8 @@ const UserManagement = () => {
         <Shield className="h-16 w-16 text-gray-400 mx-auto mb-4" />
         <h3 className="text-xl font-semibold text-gray-900 mb-2">Access Restricted</h3>
         <p className="text-gray-600">You need administrator privileges to access user management.</p>
-      </div>
-    );
+      </div>);
+
   }
 
   if (loading) {
@@ -237,8 +237,8 @@ const UserManagement = () => {
       <div className="text-center py-12">
         <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
         <p className="text-gray-600">Loading users...</p>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -265,14 +265,14 @@ const UserManagement = () => {
           placeholder="Search users by name, email, or role..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
-        />
+          className="pl-10" />
+
       </div>
 
       {/* Users List */}
       <div className="grid gap-4">
-        {filteredUsers.length === 0 ? (
-          <Card>
+        {filteredUsers.length === 0 ?
+        <Card>
             <CardContent className="pt-6">
               <div className="text-center py-8">
                 <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -284,10 +284,10 @@ const UserManagement = () => {
                 </p>
               </div>
             </CardContent>
-          </Card>
-        ) : (
-          filteredUsers.map((user) => (
-            <Card key={user.id}>
+          </Card> :
+
+        filteredUsers.map((user) =>
+        <Card key={user.id}>
               <CardContent className="pt-6">
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-4">
@@ -304,14 +304,14 @@ const UserManagement = () => {
                         <Badge className={getRoleColor(user.role_code)}>
                           {getRoleDisplay(user.role_code)}
                         </Badge>
-                        {!user.is_activated && (
-                          <Badge variant="destructive">Inactive</Badge>
-                        )}
+                        {!user.is_activated &&
+                    <Badge variant="destructive">Inactive</Badge>
+                    }
                       </div>
                       <p className="text-gray-600 mb-1">{user.email}</p>
-                      {user.phone_number && (
-                        <p className="text-sm text-gray-500 mb-1">{user.phone_number}</p>
-                      )}
+                      {user.phone_number &&
+                  <p className="text-sm text-gray-500 mb-1">{user.phone_number}</p>
+                  }
                       <p className="text-xs text-gray-400">
                         Registered: {formatDate(user.create_time)}
                       </p>
@@ -321,29 +321,29 @@ const UserManagement = () => {
                   {/* Action Buttons */}
                   <div className="flex items-center gap-2">
                     <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleToggleActivation(user.id, user.is_activated)}
-                      title={user.is_activated ? 'Deactivate User' : 'Activate User'}
-                    >
-                      {user.is_activated ? (
-                        <UserX className="h-4 w-4" />
-                      ) : (
-                        <UserCheck className="h-4 w-4" />
-                      )}
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleToggleActivation(user.id, user.is_activated)}
+                  title={user.is_activated ? 'Deactivate User' : 'Activate User'}>
+
+                      {user.is_activated ?
+                  <UserX className="h-4 w-4" /> :
+
+                  <UserCheck className="h-4 w-4" />
+                  }
                     </Button>
 
                     <Dialog open={showEditDialog && selectedUser?.id === user.id} onOpenChange={(open) => {
-                      setShowEditDialog(open);
-                      if (!open) setSelectedUser(null);
-                    }}>
+                  setShowEditDialog(open);
+                  if (!open) setSelectedUser(null);
+                }}>
                       <DialogTrigger asChild>
                         <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => setSelectedUser(user)}
-                          title="Edit Role"
-                        >
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setSelectedUser(user)}
+                      title="Edit Role">
+
                           <Edit className="h-4 w-4" />
                         </Button>
                       </DialogTrigger>
@@ -370,11 +370,11 @@ const UserManagement = () => {
                                 <SelectValue placeholder="Select a role" />
                               </SelectTrigger>
                               <SelectContent>
-                                {roles.map((role) => (
-                                  <SelectItem key={role.id} value={role.id.toString()}>
+                                {roles.map((role) =>
+                            <SelectItem key={role.id} value={role.id.toString()}>
                                     {role.name} ({getRoleDisplay(role.code)})
                                   </SelectItem>
-                                ))}
+                            )}
                               </SelectContent>
                             </Select>
                           </div>
@@ -383,20 +383,20 @@ const UserManagement = () => {
                     </Dialog>
 
                     <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleDeleteUser(user.id)}
-                      title="Delete User"
-                      className="text-red-600 hover:text-red-700"
-                    >
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleDeleteUser(user.id)}
+                  title="Delete User"
+                  className="text-red-600 hover:text-red-700">
+
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          ))
-        )}
+        )
+        }
       </div>
 
       {/* Statistics */}
@@ -419,7 +419,7 @@ const UserManagement = () => {
               <div>
                 <p className="text-sm text-gray-600">Active Users</p>
                 <p className="text-2xl font-bold text-green-600">
-                  {users.filter(u => u.is_activated).length}
+                  {users.filter((u) => u.is_activated).length}
                 </p>
               </div>
               <UserCheck className="h-8 w-8 text-green-600" />
@@ -433,7 +433,7 @@ const UserManagement = () => {
               <div>
                 <p className="text-sm text-gray-600">Administrators</p>
                 <p className="text-2xl font-bold text-red-600">
-                  {users.filter(u => u.role_code === 'Administrator').length}
+                  {users.filter((u) => u.role_code === 'Administrator').length}
                 </p>
               </div>
               <Shield className="h-8 w-8 text-red-600" />
@@ -447,7 +447,7 @@ const UserManagement = () => {
               <div>
                 <p className="text-sm text-gray-600">General Users</p>
                 <p className="text-2xl font-bold text-gray-600">
-                  {users.filter(u => u.role_code === 'GeneralUser').length}
+                  {users.filter((u) => u.role_code === 'GeneralUser').length}
                 </p>
               </div>
               <Users className="h-8 w-8 text-gray-600" />
@@ -455,8 +455,8 @@ const UserManagement = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default UserManagement;

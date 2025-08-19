@@ -476,9 +476,9 @@ const AdminDashboard = () => {
               <TabsTrigger value="payments">Payments</TabsTrigger>
               <TabsTrigger value="subcontractors">Subcontractors</TabsTrigger>
               <TabsTrigger value="documents">Documents</TabsTrigger>
-              {userInfo && userInfo.Roles?.split(',').includes('Administrator') && (
-                <TabsTrigger value="users">Users</TabsTrigger>
-              )}
+              {userInfo && userInfo.Roles?.split(',').includes('Administrator') &&
+              <TabsTrigger value="users">Users</TabsTrigger>
+              }
             </TabsList>
 
             {/* Projects Tab */}
@@ -944,11 +944,11 @@ const AdminDashboard = () => {
             </TabsContent>
 
             {/* Users Tab - Admin Only */}
-            {userInfo && userInfo.Roles?.split(',').includes('Administrator') && (
-              <TabsContent value="users" className="space-y-6">
+            {userInfo && userInfo.Roles?.split(',').includes('Administrator') &&
+            <TabsContent value="users" className="space-y-6">
                 <UserManagement />
               </TabsContent>
-            )}
+            }
           </Tabs>
 
           {/* Form Modals */}

@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import HomePage from "./pages/HomePage";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import InvoiceSubmissionPage from "./pages/InvoiceSubmissionPage";
@@ -19,7 +20,7 @@ const App = () =>
       <Toaster />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/admin-login" replace />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/invoice-submission" element={<InvoiceSubmissionPage />} />
