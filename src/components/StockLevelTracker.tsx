@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
+import {
   Package,
   TrendingUp,
   TrendingDown,
@@ -20,8 +20,8 @@ import {
   Filter,
   RefreshCw,
   MapPin,
-  Calendar
-} from 'lucide-react';
+  Calendar } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import DataTable from '@/components/DataTable';
 
@@ -95,28 +95,28 @@ const StockLevelTracker: React.FC = () => {
       }
 
       const [stockResponse, itemsResponse, locationsResponse] = await Promise.all([
-        window.ezsite.apis.tablePage(35429, {
-          PageNo: 1,
-          PageSize: 1000,
-          OrderByField: "updated_at",
-          IsAsc: false,
-          Filters: filters
-        }),
-        window.ezsite.apis.tablePage(35427, {
-          PageNo: 1,
-          PageSize: 1000,
-          OrderByField: "name",
-          IsAsc: true,
-          Filters: [{ name: "is_active", op: "Equal", value: true }]
-        }),
-        window.ezsite.apis.tablePage(35428, {
-          PageNo: 1,
-          PageSize: 1000,
-          OrderByField: "name",
-          IsAsc: true,
-          Filters: [{ name: "is_active", op: "Equal", value: true }]
-        })
-      ]);
+      window.ezsite.apis.tablePage(35429, {
+        PageNo: 1,
+        PageSize: 1000,
+        OrderByField: "updated_at",
+        IsAsc: false,
+        Filters: filters
+      }),
+      window.ezsite.apis.tablePage(35427, {
+        PageNo: 1,
+        PageSize: 1000,
+        OrderByField: "name",
+        IsAsc: true,
+        Filters: [{ name: "is_active", op: "Equal", value: true }]
+      }),
+      window.ezsite.apis.tablePage(35428, {
+        PageNo: 1,
+        PageSize: 1000,
+        OrderByField: "name",
+        IsAsc: true,
+        Filters: [{ name: "is_active", op: "Equal", value: true }]
+      })]
+      );
 
       if (stockResponse.error) throw stockResponse.error;
       if (itemsResponse.error) throw itemsResponse.error;
@@ -146,9 +146,9 @@ const StockLevelTracker: React.FC = () => {
         stockData = stockData.filter((stock: StockLevel) => {
           const item = itemsData.find((i: InventoryItem) => i.id === stock.item_id);
           return item && (
-            item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.sku.toLowerCase().includes(searchTerm.toLowerCase())
-          );
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.sku.toLowerCase().includes(searchTerm.toLowerCase()));
+
         });
       }
 
@@ -176,11 +176,11 @@ const StockLevelTracker: React.FC = () => {
     try {
       if (!selectedStock) return;
 
-      const item = items.find(i => i.id === selectedStock.item_id);
+      const item = items.find((i) => i.id === selectedStock.item_id);
       if (!item) return;
 
       let newQuantity = selectedStock.quantity_on_hand;
-      
+
       switch (adjustmentForm.adjustment_type) {
         case 'increase':
           newQuantity += adjustmentForm.quantity;
@@ -206,11 +206,11 @@ const StockLevelTracker: React.FC = () => {
       if (stockError) throw stockError;
 
       // Create movement record
-      const movementQuantity = adjustmentForm.adjustment_type === 'set' 
-        ? newQuantity - selectedStock.quantity_on_hand 
-        : adjustmentForm.adjustment_type === 'increase' 
-          ? adjustmentForm.quantity 
-          : -adjustmentForm.quantity;
+      const movementQuantity = adjustmentForm.adjustment_type === 'set' ?
+      newQuantity - selectedStock.quantity_on_hand :
+      adjustmentForm.adjustment_type === 'increase' ?
+      adjustmentForm.quantity :
+      -adjustmentForm.quantity;
 
       const { error: movementError } = await window.ezsite.apis.tableCreate(35431, {
         item_id: selectedStock.item_id,
@@ -256,11 +256,11 @@ const StockLevelTracker: React.FC = () => {
   };
 
   const getItemDetails = (itemId: number) => {
-    return items.find(i => i.id === itemId);
+    return items.find((i) => i.id === itemId);
   };
 
   const getLocationName = (locationId: number) => {
-    const location = locations.find(l => l.id === locationId);
+    const location = locations.find((l) => l.id === locationId);
     return location?.name || 'Unknown Location';
   };
 
@@ -274,7 +274,7 @@ const StockLevelTracker: React.FC = () => {
   const getStockStatus = (stock: StockLevel) => {
     const item = getItemDetails(stock.item_id);
     if (!item) return 'unknown';
-    
+
     if (stock.quantity_available <= 0) return 'out';
     if (stock.quantity_available <= item.reorder_point) return 'low';
     if (stock.quantity_available > item.maximum_stock_level) return 'excess';
@@ -284,82 +284,82 @@ const StockLevelTracker: React.FC = () => {
   const getStockProgress = (stock: StockLevel) => {
     const item = getItemDetails(stock.item_id);
     if (!item || item.maximum_stock_level <= 0) return 0;
-    
-    return Math.min((stock.quantity_available / item.maximum_stock_level) * 100, 100);
+
+    return Math.min(stock.quantity_available / item.maximum_stock_level * 100, 100);
   };
 
   const columns = [
-    {
-      key: 'item_id',
-      title: 'Item',
-      render: (value: number, stock: StockLevel) => {
-        const item = getItemDetails(value);
-        return (
-          <div>
+  {
+    key: 'item_id',
+    title: 'Item',
+    render: (value: number, stock: StockLevel) => {
+      const item = getItemDetails(value);
+      return (
+        <div>
             <div className="font-medium">{item?.name || 'Unknown'}</div>
             <div className="text-sm text-gray-500">SKU: {item?.sku || 'N/A'}</div>
-          </div>
-        );
-      }
-    },
-    {
-      key: 'location_id',
-      title: 'Location',
-      render: (value: number) => getLocationName(value)
-    },
-    {
-      key: 'quantity_available',
-      title: 'Available Stock',
-      sortable: true,
-      render: (value: number, stock: StockLevel) => {
-        const item = getItemDetails(stock.item_id);
-        const status = getStockStatus(stock);
-        const statusColors = {
-          out: 'destructive',
-          low: 'secondary',
-          normal: 'default',
-          excess: 'outline',
-          unknown: 'outline'
-        };
+          </div>);
 
-        return (
-          <div className="space-y-1">
+    }
+  },
+  {
+    key: 'location_id',
+    title: 'Location',
+    render: (value: number) => getLocationName(value)
+  },
+  {
+    key: 'quantity_available',
+    title: 'Available Stock',
+    sortable: true,
+    render: (value: number, stock: StockLevel) => {
+      const item = getItemDetails(stock.item_id);
+      const status = getStockStatus(stock);
+      const statusColors = {
+        out: 'destructive',
+        low: 'secondary',
+        normal: 'default',
+        excess: 'outline',
+        unknown: 'outline'
+      };
+
+      return (
+        <div className="space-y-1">
             <Badge variant={statusColors[status] as any}>
               {value} {item?.unit_of_measure || ''}
             </Badge>
             <Progress value={getStockProgress(stock)} className="h-2" />
-          </div>
-        );
-      }
-    },
-    {
-      key: 'quantity_reserved',
-      title: 'Reserved',
-      sortable: true,
-      render: (value: number, stock: StockLevel) => {
-        const item = getItemDetails(stock.item_id);
-        return `${value} ${item?.unit_of_measure || ''}`;
-      }
-    },
-    {
-      key: 'total_value',
-      title: 'Value',
-      sortable: true,
-      render: (value: number) => formatCurrency(value)
-    },
-    {
-      key: 'last_counted_at',
-      title: 'Last Counted',
-      sortable: true,
-      render: (value: string) => 
-        value ? new Date(value).toLocaleDateString() : 'Never'
+          </div>);
+
     }
-  ];
+  },
+  {
+    key: 'quantity_reserved',
+    title: 'Reserved',
+    sortable: true,
+    render: (value: number, stock: StockLevel) => {
+      const item = getItemDetails(stock.item_id);
+      return `${value} ${item?.unit_of_measure || ''}`;
+    }
+  },
+  {
+    key: 'total_value',
+    title: 'Value',
+    sortable: true,
+    render: (value: number) => formatCurrency(value)
+  },
+  {
+    key: 'last_counted_at',
+    title: 'Last Counted',
+    sortable: true,
+    render: (value: string) =>
+    value ? new Date(value).toLocaleDateString() : 'Never'
+  }];
+
 
   const stockSummary = {
     total: stockLevels.length,
-    low: stockLevels.filter(s => getStockStatus(s) === 'low').length,
-    out: stockLevels.filter(s => getStockStatus(s) === 'out').length,
+    low: stockLevels.filter((s) => getStockStatus(s) === 'low').length,
+    out: stockLevels.filter((s) => getStockStatus(s) === 'out').length,
     totalValue: stockLevels.reduce((sum, s) => sum + s.total_value, 0)
   };
 
@@ -426,8 +426,8 @@ const StockLevelTracker: React.FC = () => {
                   placeholder="Search items..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+                  className="pl-10" />
+
               </div>
             </div>
             <div>
@@ -437,11 +437,11 @@ const StockLevelTracker: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Locations</SelectItem>
-                  {locations.map((location) => (
-                    <SelectItem key={location.id} value={location.id.toString()}>
+                  {locations.map((location) =>
+                  <SelectItem key={location.id} value={location.id.toString()}>
                       {location.name}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -491,8 +491,8 @@ const StockLevelTracker: React.FC = () => {
             title: "Stock Details",
             description: `${item?.name} - ${stock.quantity_available} available`
           });
-        }}
-      />
+        }} />
+
 
       {/* Stock Adjustment Dialog */}
       <Dialog open={showAdjustmentDialog} onOpenChange={setShowAdjustmentDialog}>
@@ -500,8 +500,8 @@ const StockLevelTracker: React.FC = () => {
           <DialogHeader>
             <DialogTitle>Adjust Stock Level</DialogTitle>
           </DialogHeader>
-          {selectedStock && (
-            <div className="space-y-4">
+          {selectedStock &&
+          <div className="space-y-4">
               <div className="p-3 bg-gray-50 rounded">
                 <h4 className="font-medium">{getItemDetails(selectedStock.item_id)?.name}</h4>
                 <p className="text-sm text-gray-600">
@@ -515,9 +515,9 @@ const StockLevelTracker: React.FC = () => {
               <div>
                 <Label htmlFor="adjustment_type">Adjustment Type</Label>
                 <Select
-                  value={adjustmentForm.adjustment_type}
-                  onValueChange={(value: any) => setAdjustmentForm({...adjustmentForm, adjustment_type: value})}
-                >
+                value={adjustmentForm.adjustment_type}
+                onValueChange={(value: any) => setAdjustmentForm({ ...adjustmentForm, adjustment_type: value })}>
+
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -534,20 +534,20 @@ const StockLevelTracker: React.FC = () => {
                   {adjustmentForm.adjustment_type === 'set' ? 'New Quantity' : 'Quantity Change'}
                 </Label>
                 <Input
-                  id="quantity"
-                  type="number"
-                  min="0"
-                  value={adjustmentForm.quantity}
-                  onChange={(e) => setAdjustmentForm({...adjustmentForm, quantity: parseInt(e.target.value)})}
-                />
+                id="quantity"
+                type="number"
+                min="0"
+                value={adjustmentForm.quantity}
+                onChange={(e) => setAdjustmentForm({ ...adjustmentForm, quantity: parseInt(e.target.value) })} />
+
               </div>
 
               <div>
                 <Label htmlFor="reason">Reason</Label>
                 <Select
-                  value={adjustmentForm.reason}
-                  onValueChange={(value) => setAdjustmentForm({...adjustmentForm, reason: value})}
-                >
+                value={adjustmentForm.reason}
+                onValueChange={(value) => setAdjustmentForm({ ...adjustmentForm, reason: value })}>
+
                   <SelectTrigger>
                     <SelectValue placeholder="Select reason" />
                   </SelectTrigger>
@@ -565,30 +565,30 @@ const StockLevelTracker: React.FC = () => {
               <div>
                 <Label htmlFor="notes">Notes (Optional)</Label>
                 <Input
-                  id="notes"
-                  value={adjustmentForm.notes}
-                  onChange={(e) => setAdjustmentForm({...adjustmentForm, notes: e.target.value})}
-                  placeholder="Additional notes"
-                />
+                id="notes"
+                value={adjustmentForm.notes}
+                onChange={(e) => setAdjustmentForm({ ...adjustmentForm, notes: e.target.value })}
+                placeholder="Additional notes" />
+
               </div>
             </div>
-          )}
+          }
 
           <div className="flex justify-end gap-2 pt-4">
             <Button variant="outline" onClick={() => setShowAdjustmentDialog(false)}>
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={handleStockAdjustment}
-              disabled={adjustmentForm.quantity <= 0 || !adjustmentForm.reason}
-            >
+              disabled={adjustmentForm.quantity <= 0 || !adjustmentForm.reason}>
+
               Apply Adjustment
             </Button>
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default StockLevelTracker;

@@ -5,17 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Shield, 
-  AlertTriangle, 
-  Lock, 
-  Eye, 
-  UserX, 
+import {
+  Shield,
+  AlertTriangle,
+  Lock,
+  Eye,
+  UserX,
   Activity,
   RefreshCw,
   TrendingUp,
-  Clock
-} from 'lucide-react';
+  Clock } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface SecurityIncident {
@@ -49,12 +49,12 @@ const SecurityIncidentTracker = () => {
         OrderByField: "created_at",
         IsAsc: false,
         Filters: [
-          {
-            name: "alert_type",
-            op: "Equal",
-            value: "security"
-          }
-        ]
+        {
+          name: "alert_type",
+          op: "Equal",
+          value: "security"
+        }]
+
       });
 
       if (error) throw error;
@@ -75,52 +75,52 @@ const SecurityIncidentTracker = () => {
   const addSampleSecurityIncidents = async () => {
     try {
       const sampleIncidents = [
-        {
-          alert_type: "security",
-          severity: "critical",
-          title: "Brute Force Attack Detected",
-          description: "Multiple failed login attempts from IP 203.0.113.42. Pattern suggests automated attack.",
-          source: "Intrusion Detection System",
-          status: "active",
-          created_at: new Date().toISOString()
-        },
-        {
-          alert_type: "security",
-          severity: "high",
-          title: "Suspicious API Access Pattern",
-          description: "Unusual API access pattern detected. Potential data scraping attempt.",
-          source: "API Monitor",
-          status: "acknowledged",
-          created_at: new Date(Date.now() - 600000).toISOString() // 10 minutes ago
-        },
-        {
-          alert_type: "security",
-          severity: "medium",
-          title: "Failed Admin Login",
-          description: "Admin login failure from unrecognized location: Singapore",
-          source: "Authentication System",
-          status: "resolved",
-          created_at: new Date(Date.now() - 1800000).toISOString() // 30 minutes ago
-        },
-        {
-          alert_type: "security",
-          severity: "high",
-          title: "SQL Injection Attempt",
-          description: "SQL injection patterns detected in request parameters",
-          source: "Web Application Firewall",
-          status: "active",
-          created_at: new Date(Date.now() - 900000).toISOString() // 15 minutes ago
-        },
-        {
-          alert_type: "security",
-          severity: "low",
-          title: "Unusual File Upload",
-          description: "File upload with suspicious extension detected and blocked",
-          source: "File Security Scanner",
-          status: "resolved",
-          created_at: new Date(Date.now() - 3600000).toISOString() // 1 hour ago
-        }
-      ];
+      {
+        alert_type: "security",
+        severity: "critical",
+        title: "Brute Force Attack Detected",
+        description: "Multiple failed login attempts from IP 203.0.113.42. Pattern suggests automated attack.",
+        source: "Intrusion Detection System",
+        status: "active",
+        created_at: new Date().toISOString()
+      },
+      {
+        alert_type: "security",
+        severity: "high",
+        title: "Suspicious API Access Pattern",
+        description: "Unusual API access pattern detected. Potential data scraping attempt.",
+        source: "API Monitor",
+        status: "acknowledged",
+        created_at: new Date(Date.now() - 600000).toISOString() // 10 minutes ago
+      },
+      {
+        alert_type: "security",
+        severity: "medium",
+        title: "Failed Admin Login",
+        description: "Admin login failure from unrecognized location: Singapore",
+        source: "Authentication System",
+        status: "resolved",
+        created_at: new Date(Date.now() - 1800000).toISOString() // 30 minutes ago
+      },
+      {
+        alert_type: "security",
+        severity: "high",
+        title: "SQL Injection Attempt",
+        description: "SQL injection patterns detected in request parameters",
+        source: "Web Application Firewall",
+        status: "active",
+        created_at: new Date(Date.now() - 900000).toISOString() // 15 minutes ago
+      },
+      {
+        alert_type: "security",
+        severity: "low",
+        title: "Unusual File Upload",
+        description: "File upload with suspicious extension detected and blocked",
+        source: "File Security Scanner",
+        status: "resolved",
+        created_at: new Date(Date.now() - 3600000).toISOString() // 1 hour ago
+      }];
+
 
       for (const incident of sampleIncidents) {
         const { error } = await window.ezsite.apis.tableCreate(35451, incident);
@@ -129,7 +129,7 @@ const SecurityIncidentTracker = () => {
 
       toast({
         title: "Success",
-        description: "Sample security incidents added successfully",
+        description: "Sample security incidents added successfully"
       });
 
       fetchSecurityIncidents();
@@ -145,20 +145,20 @@ const SecurityIncidentTracker = () => {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-800 border-red-200';
-      case 'high': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'low': return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'critical':return 'bg-red-100 text-red-800 border-red-200';
+      case 'high':return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'medium':return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low':return 'bg-blue-100 text-blue-800 border-blue-200';
+      default:return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-red-100 text-red-800';
-      case 'acknowledged': return 'bg-yellow-100 text-yellow-800';
-      case 'resolved': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active':return 'bg-red-100 text-red-800';
+      case 'acknowledged':return 'bg-yellow-100 text-yellow-800';
+      case 'resolved':return 'bg-green-100 text-green-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -172,15 +172,15 @@ const SecurityIncidentTracker = () => {
   };
 
   // Calculate security metrics
-  const criticalIncidents = securityAlerts.filter(a => a.severity === 'critical').length;
-  const activeIncidents = securityAlerts.filter(a => a.status === 'active').length;
-  const resolvedIncidents = securityAlerts.filter(a => a.status === 'resolved').length;
-  const recentIncidents = securityAlerts.filter(a => 
-    Date.now() - new Date(a.created_at).getTime() < 3600000 // Last hour
+  const criticalIncidents = securityAlerts.filter((a) => a.severity === 'critical').length;
+  const activeIncidents = securityAlerts.filter((a) => a.status === 'active').length;
+  const resolvedIncidents = securityAlerts.filter((a) => a.status === 'resolved').length;
+  const recentIncidents = securityAlerts.filter((a) =>
+  Date.now() - new Date(a.created_at).getTime() < 3600000 // Last hour
   ).length;
 
   // Mock security metrics
-  const securityScore = Math.max(0, 100 - (criticalIncidents * 20) - (activeIncidents * 10));
+  const securityScore = Math.max(0, 100 - criticalIncidents * 20 - activeIncidents * 10);
   const threatLevel = criticalIncidents > 0 ? 'High' : activeIncidents > 2 ? 'Medium' : 'Low';
 
   return (
@@ -196,11 +196,11 @@ const SecurityIncidentTracker = () => {
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          {securityAlerts.length === 0 && (
-            <Button onClick={addSampleSecurityIncidents} variant="outline" size="sm">
+          {securityAlerts.length === 0 &&
+          <Button onClick={addSampleSecurityIncidents} variant="outline" size="sm">
               Add Sample Data
             </Button>
-          )}
+          }
         </div>
       </div>
 
@@ -273,17 +273,17 @@ const SecurityIncidentTracker = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {securityAlerts.length === 0 ? (
-              <div className="text-center py-8">
+            {securityAlerts.length === 0 ?
+            <div className="text-center py-8">
                 <Shield className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No Security Incidents</h3>
                 <p className="text-gray-600 mb-4">No security incidents found. Add sample data to get started.</p>
                 <Button onClick={addSampleSecurityIncidents}>Add Sample Data</Button>
-              </div>
-            ) : (
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {securityAlerts.slice(0, 10).map((incident) => (
-                  <div key={incident.id} className={`p-4 rounded-lg border ${getSeverityColor(incident.severity)}`}>
+              </div> :
+
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+                {securityAlerts.slice(0, 10).map((incident) =>
+              <div key={incident.id} className={`p-4 rounded-lg border ${getSeverityColor(incident.severity)}`}>
                     <div className="flex items-start justify-between">
                       <div className="flex items-start space-x-3">
                         <div className="text-current">
@@ -305,9 +305,9 @@ const SecurityIncidentTracker = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+              )}
               </div>
-            )}
+            }
           </CardContent>
         </Card>
 
@@ -325,17 +325,17 @@ const SecurityIncidentTracker = () => {
                 <span className="text-sm font-medium">Critical Incidents</span>
                 <span className="text-sm font-bold text-red-600">{criticalIncidents}</span>
               </div>
-              <Progress value={(criticalIncidents / Math.max(securityAlerts.length, 1)) * 100} className="h-2" />
+              <Progress value={criticalIncidents / Math.max(securityAlerts.length, 1) * 100} className="h-2" />
             </div>
 
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Resolution Rate</span>
                 <span className="text-sm font-bold text-green-600">
-                  {securityAlerts.length > 0 ? Math.round((resolvedIncidents / securityAlerts.length) * 100) : 0}%
+                  {securityAlerts.length > 0 ? Math.round(resolvedIncidents / securityAlerts.length * 100) : 0}%
                 </span>
               </div>
-              <Progress value={securityAlerts.length > 0 ? (resolvedIncidents / securityAlerts.length) * 100 : 0} className="h-2" />
+              <Progress value={securityAlerts.length > 0 ? resolvedIncidents / securityAlerts.length * 100 : 0} className="h-2" />
             </div>
 
             <div className="pt-4 space-y-2">
@@ -343,19 +343,19 @@ const SecurityIncidentTracker = () => {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>Authentication</span>
-                  <span>{securityAlerts.filter(a => a.title.toLowerCase().includes('login') || a.title.toLowerCase().includes('auth')).length}</span>
+                  <span>{securityAlerts.filter((a) => a.title.toLowerCase().includes('login') || a.title.toLowerCase().includes('auth')).length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Injection Attacks</span>
-                  <span>{securityAlerts.filter(a => a.title.toLowerCase().includes('sql') || a.title.toLowerCase().includes('injection')).length}</span>
+                  <span>{securityAlerts.filter((a) => a.title.toLowerCase().includes('sql') || a.title.toLowerCase().includes('injection')).length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>API Security</span>
-                  <span>{securityAlerts.filter(a => a.title.toLowerCase().includes('api')).length}</span>
+                  <span>{securityAlerts.filter((a) => a.title.toLowerCase().includes('api')).length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>File Security</span>
-                  <span>{securityAlerts.filter(a => a.title.toLowerCase().includes('file') || a.title.toLowerCase().includes('upload')).length}</span>
+                  <span>{securityAlerts.filter((a) => a.title.toLowerCase().includes('file') || a.title.toLowerCase().includes('upload')).length}</span>
                 </div>
               </div>
             </div>
@@ -364,37 +364,37 @@ const SecurityIncidentTracker = () => {
       </div>
 
       {/* Security Recommendations */}
-      {criticalIncidents > 0 && (
-        <Alert className="border-red-200 bg-red-50">
+      {criticalIncidents > 0 &&
+      <Alert className="border-red-200 bg-red-50">
           <AlertTriangle className="h-4 w-4" />
           <AlertDescription>
             <strong>Critical Security Alert:</strong> You have {criticalIncidents} critical security incident(s) that require immediate attention. 
             Please review and respond to these incidents as soon as possible.
           </AlertDescription>
         </Alert>
-      )}
+      }
 
-      {activeIncidents > 0 && criticalIncidents === 0 && (
-        <Alert className="border-yellow-200 bg-yellow-50">
+      {activeIncidents > 0 && criticalIncidents === 0 &&
+      <Alert className="border-yellow-200 bg-yellow-50">
           <Lock className="h-4 w-4" />
           <AlertDescription>
             <strong>Security Notice:</strong> You have {activeIncidents} active security incident(s). 
             Regular monitoring and prompt response help maintain system security.
           </AlertDescription>
         </Alert>
-      )}
+      }
 
-      {securityAlerts.length > 0 && activeIncidents === 0 && (
-        <Alert className="border-green-200 bg-green-50">
+      {securityAlerts.length > 0 && activeIncidents === 0 &&
+      <Alert className="border-green-200 bg-green-50">
           <Shield className="h-4 w-4" />
           <AlertDescription>
             <strong>Security Status:</strong> All security incidents have been addressed. 
             Your system security appears to be in good standing.
           </AlertDescription>
         </Alert>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 export default SecurityIncidentTracker;

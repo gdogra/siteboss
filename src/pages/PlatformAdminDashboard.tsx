@@ -6,13 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Activity, 
-  AlertTriangle, 
-  Shield, 
-  TrendingUp, 
-  Server, 
-  Users, 
+import {
+  Activity,
+  AlertTriangle,
+  Shield,
+  TrendingUp,
+  Server,
+  Users,
   Settings,
   Bell,
   CheckCircle,
@@ -22,8 +22,8 @@ import {
   Cpu,
   HardDrive,
   Wifi,
-  Database
-} from 'lucide-react';
+  Database } from
+'lucide-react';
 import SystemHealthMonitor from '@/components/SystemHealthMonitor';
 import ScalingControlPanel from '@/components/ScalingControlPanel';
 import AlertManagement from '@/components/AlertManagement';
@@ -93,12 +93,12 @@ const PlatformAdminDashboard = () => {
           OrderByField: "created_at",
           IsAsc: false,
           Filters: [
-            {
-              name: "status",
-              op: "Equal",
-              value: "active"
-            }
-          ]
+          {
+            name: "status",
+            op: "Equal",
+            value: "active"
+          }]
+
         }
       );
 
@@ -124,7 +124,7 @@ const PlatformAdminDashboard = () => {
       // Calculate system health status
       const criticalMetrics = healthData?.List?.filter((m: any) => m.status === 'critical') || [];
       const warningMetrics = healthData?.List?.filter((m: any) => m.status === 'warning') || [];
-      
+
       let systemHealth: 'healthy' | 'warning' | 'critical' = 'healthy';
       if (criticalMetrics.length > 0) {
         systemHealth = 'critical';
@@ -170,19 +170,19 @@ const PlatformAdminDashboard = () => {
 
   const getHealthStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy': return 'text-green-600 bg-green-100';
-      case 'warning': return 'text-yellow-600 bg-yellow-100';
-      case 'critical': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'healthy':return 'text-green-600 bg-green-100';
+      case 'warning':return 'text-yellow-600 bg-yellow-100';
+      case 'critical':return 'text-red-600 bg-red-100';
+      default:return 'text-gray-600 bg-gray-100';
     }
   };
 
   const getHealthIcon = (status: string) => {
     switch (status) {
-      case 'healthy': return <CheckCircle className="h-5 w-5" />;
-      case 'warning': return <AlertTriangle className="h-5 w-5" />;
-      case 'critical': return <XCircle className="h-5 w-5" />;
-      default: return <Clock className="h-5 w-5" />;
+      case 'healthy':return <CheckCircle className="h-5 w-5" />;
+      case 'warning':return <AlertTriangle className="h-5 w-5" />;
+      case 'critical':return <XCircle className="h-5 w-5" />;
+      default:return <Clock className="h-5 w-5" />;
     }
   };
 
@@ -438,8 +438,8 @@ const PlatformAdminDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default PlatformAdminDashboard;

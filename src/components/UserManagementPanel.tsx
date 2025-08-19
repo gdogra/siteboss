@@ -6,16 +6,16 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { 
-  Users, 
-  UserPlus, 
-  UserMinus, 
-  Shield, 
-  Search, 
+import {
+  Users,
+  UserPlus,
+  UserMinus,
+  Shield,
+  Search,
   MoreHorizontal,
   RefreshCw,
-  Settings
-} from 'lucide-react';
+  Settings } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface User {
@@ -93,37 +93,37 @@ const UserManagementPanel = () => {
     }
   };
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.Name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         user.Email.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch = user.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.Email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = selectedRole === 'all' || user.Roles.includes(selectedRole);
     return matchesSearch && matchesRole;
   });
 
   const getUserRoleNames = (roleCodes: string) => {
     if (!roleCodes) return [];
-    const codes = roleCodes.split(',').map(code => code.trim());
-    return codes.map(code => {
-      const role = roles.find(r => r.RoleCode === code);
+    const codes = roleCodes.split(',').map((code) => code.trim());
+    return codes.map((code) => {
+      const role = roles.find((r) => r.RoleCode === code);
       return role ? role.RoleName : code;
     });
   };
 
   const getRoleBadgeColor = (roleCode: string) => {
     switch (roleCode.toLowerCase()) {
-      case 'administrator': return 'bg-red-100 text-red-800';
-      case 'generaluser': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'administrator':return 'bg-red-100 text-red-800';
+      case 'generaluser':return 'bg-blue-100 text-blue-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
   const userStats = {
     total: users.length,
-    admins: users.filter(u => u.Roles.includes('Administrator')).length,
-    generalUsers: users.filter(u => u.Roles.includes('GeneralUser')).length,
-    contractors: users.filter(u => u.Roles.includes('r-QpoZrh')).length,
-    recent: users.filter(u => 
-      Date.now() - new Date(u.CreateTime).getTime() < 7 * 24 * 60 * 60 * 1000 // Last 7 days
+    admins: users.filter((u) => u.Roles.includes('Administrator')).length,
+    generalUsers: users.filter((u) => u.Roles.includes('GeneralUser')).length,
+    contractors: users.filter((u) => u.Roles.includes('r-QpoZrh')).length,
+    recent: users.filter((u) =>
+    Date.now() - new Date(u.CreateTime).getTime() < 7 * 24 * 60 * 60 * 1000 // Last 7 days
     ).length
   };
 
@@ -194,8 +194,8 @@ const UserManagementPanel = () => {
               placeholder="Search users by name or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+              className="pl-10" />
+
           </div>
           <Select value={selectedRole} onValueChange={setSelectedRole}>
             <SelectTrigger className="w-full sm:w-48">
@@ -203,33 +203,33 @@ const UserManagementPanel = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Roles</SelectItem>
-              {roles.map((role) => (
-                <SelectItem key={role.RoleID} value={role.RoleCode}>
+              {roles.map((role) =>
+              <SelectItem key={role.RoleID} value={role.RoleCode}>
                   {role.RoleName}
                 </SelectItem>
-              ))}
+              )}
             </SelectContent>
           </Select>
         </div>
 
         {/* Users List */}
         <div className="space-y-3 max-h-96 overflow-y-auto">
-          {filteredUsers.length === 0 ? (
-            <div className="text-center py-8">
+          {filteredUsers.length === 0 ?
+          <div className="text-center py-8">
               <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 {users.length === 0 ? 'No Users Found' : 'No Matching Users'}
               </h3>
               <p className="text-gray-600">
-                {users.length === 0 
-                  ? 'No users have been registered in the system yet.'
-                  : 'No users match your current search criteria.'
-                }
+                {users.length === 0 ?
+              'No users have been registered in the system yet.' :
+              'No users match your current search criteria.'
+              }
               </p>
-            </div>
-          ) : (
-            filteredUsers.map((user) => (
-              <div key={user.ID} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+            </div> :
+
+          filteredUsers.map((user) =>
+          <div key={user.ID} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
                 <div className="flex items-center space-x-4">
                   <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
                     {user.Name.charAt(0).toUpperCase()}
@@ -238,11 +238,11 @@ const UserManagementPanel = () => {
                     <h4 className="font-medium">{user.Name}</h4>
                     <p className="text-sm text-gray-600">{user.Email}</p>
                     <div className="flex items-center space-x-2 mt-1">
-                      {getUserRoleNames(user.Roles).map((roleName, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
+                      {getUserRoleNames(user.Roles).map((roleName, index) =>
+                  <Badge key={index} variant="outline" className="text-xs">
                           {roleName}
                         </Badge>
-                      ))}
+                  )}
                     </div>
                   </div>
                 </div>
@@ -265,20 +265,20 @@ const UserManagementPanel = () => {
                   </Dialog>
                 </div>
               </div>
-            ))
-          )}
+          )
+          }
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
-const UserDetails = ({ user, roles }: { user: User; roles: Role[] }) => {
+const UserDetails = ({ user, roles }: {user: User;roles: Role[];}) => {
   const getUserRoles = () => {
     if (!user.Roles) return [];
-    const codes = user.Roles.split(',').map(code => code.trim());
-    return codes.map(code => {
-      const role = roles.find(r => r.RoleCode === code);
+    const codes = user.Roles.split(',').map((code) => code.trim());
+    return codes.map((code) => {
+      const role = roles.find((r) => r.RoleCode === code);
       return role || { RoleCode: code, RoleName: code, RoleRemark: '' };
     });
   };
@@ -307,18 +307,18 @@ const UserDetails = ({ user, roles }: { user: User; roles: Role[] }) => {
       <div>
         <label className="font-medium">Roles:</label>
         <div className="mt-2 space-y-2">
-          {getUserRoles().map((role, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+          {getUserRoles().map((role, index) =>
+          <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded">
               <div>
                 <div className="font-medium">{role.RoleName}</div>
                 <div className="text-sm text-gray-600">{role.RoleCode}</div>
-                {role.RoleRemark && (
-                  <div className="text-xs text-gray-500">{role.RoleRemark}</div>
-                )}
+                {role.RoleRemark &&
+              <div className="text-xs text-gray-500">{role.RoleRemark}</div>
+              }
               </div>
               <Badge variant="outline">Active</Badge>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -328,8 +328,8 @@ const UserDetails = ({ user, roles }: { user: User; roles: Role[] }) => {
           Contact system administrators for role changes.
         </p>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default UserManagementPanel;

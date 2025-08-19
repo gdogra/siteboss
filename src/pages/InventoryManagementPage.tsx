@@ -3,8 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import AuthGuard from  '@/components/AuthGuard';
-import Header from  '@/components/Header';
+import AuthGuard from '@/components/AuthGuard';
+import Header from '@/components/Header';
 import InventoryDashboard from '@/components/InventoryDashboard';
 import ItemManagement from '@/components/ItemManagement';
 import BarcodeManager from '@/components/BarcodeManager';
@@ -13,7 +13,7 @@ import LocationManager from '@/components/LocationManager';
 import MovementHistory from '@/components/MovementHistory';
 import ReorderManager from '@/components/ReorderManager';
 import SupplierManager from '@/components/SupplierManager';
-import { 
+import {
   LayoutDashboard,
   Package,
   ScanLine,
@@ -21,72 +21,72 @@ import {
   MapPin,
   Activity,
   AlertTriangle,
-  Building2
-} from 'lucide-react';
+  Building2 } from
+'lucide-react';
 
 const InventoryManagementPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const tabConfig = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      component: InventoryDashboard,
-      description: 'Overview and key metrics'
-    },
-    {
-      id: 'items',
-      label: 'Items',
-      icon: Package,
-      component: ItemManagement,
-      description: 'Manage inventory items'
-    },
-    {
-      id: 'barcodes',
-      label: 'Barcodes',
-      icon: ScanLine,
-      component: BarcodeManager,
-      description: 'Barcode generation and scanning'
-    },
-    {
-      id: 'stock-levels',
-      label: 'Stock Levels',
-      icon: TrendingUp,
-      component: StockLevelTracker,
-      description: 'Monitor and adjust stock'
-    },
-    {
-      id: 'locations',
-      label: 'Locations',
-      icon: MapPin,
-      component: LocationManager,
-      description: 'Manage storage locations'
-    },
-    {
-      id: 'movements',
-      label: 'Movements',
-      icon: Activity,
-      component: MovementHistory,
-      description: 'Track inventory movements'
-    },
-    {
-      id: 'reorders',
-      label: 'Reorders',
-      icon: AlertTriangle,
-      component: ReorderManager,
-      description: 'Manage reorder alerts'
-    },
-    {
-      id: 'suppliers',
-      label: 'Suppliers',
-      icon: Building2,
-      component: SupplierManager,
-      description: 'Manage suppliers'
-    }
-  ];
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: LayoutDashboard,
+    component: InventoryDashboard,
+    description: 'Overview and key metrics'
+  },
+  {
+    id: 'items',
+    label: 'Items',
+    icon: Package,
+    component: ItemManagement,
+    description: 'Manage inventory items'
+  },
+  {
+    id: 'barcodes',
+    label: 'Barcodes',
+    icon: ScanLine,
+    component: BarcodeManager,
+    description: 'Barcode generation and scanning'
+  },
+  {
+    id: 'stock-levels',
+    label: 'Stock Levels',
+    icon: TrendingUp,
+    component: StockLevelTracker,
+    description: 'Monitor and adjust stock'
+  },
+  {
+    id: 'locations',
+    label: 'Locations',
+    icon: MapPin,
+    component: LocationManager,
+    description: 'Manage storage locations'
+  },
+  {
+    id: 'movements',
+    label: 'Movements',
+    icon: Activity,
+    component: MovementHistory,
+    description: 'Track inventory movements'
+  },
+  {
+    id: 'reorders',
+    label: 'Reorders',
+    icon: AlertTriangle,
+    component: ReorderManager,
+    description: 'Manage reorder alerts'
+  },
+  {
+    id: 'suppliers',
+    label: 'Suppliers',
+    icon: Building2,
+    component: SupplierManager,
+    description: 'Manage suppliers'
+  }];
 
-  const currentTab = tabConfig.find(tab => tab.id === activeTab);
+
+  const currentTab = tabConfig.find((tab) => tab.id === activeTab);
   const ActiveComponent = currentTab?.component || InventoryDashboard;
 
   return (
@@ -122,12 +122,12 @@ const InventoryManagementPage: React.FC = () => {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="flex flex-col items-center p-3 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600"
-                    >
+                      className="flex flex-col items-center p-3 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600">
+
                       <Icon className="h-5 w-5 mb-1" />
                       <span className="text-xs font-medium">{tab.label}</span>
-                    </TabsTrigger>
-                  );
+                    </TabsTrigger>);
+
                 })}
               </TabsList>
             </div>
@@ -139,8 +139,8 @@ const InventoryManagementPage: React.FC = () => {
                 return (
                   <TabsContent key={tab.id} value={tab.id} className="mt-0">
                     <Component />
-                  </TabsContent>
-                );
+                  </TabsContent>);
+
               })}
             </div>
           </Tabs>
@@ -170,8 +170,8 @@ const InventoryManagementPage: React.FC = () => {
           </Card>
         </div>
       </div>
-    </AuthGuard>
-  );
+    </AuthGuard>);
+
 };
 
 export default InventoryManagementPage;

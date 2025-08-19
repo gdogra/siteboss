@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { 
+import {
   MapPin,
   Plus,
   Search,
@@ -21,8 +21,8 @@ import {
   Eye,
   Navigation,
   Phone,
-  User
-} from 'lucide-react';
+  User } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import DataTable from '@/components/DataTable';
 
@@ -63,13 +63,13 @@ const LocationManager: React.FC = () => {
   const { toast } = useToast();
 
   const locationTypes = [
-    { value: 'warehouse', label: 'Warehouse', icon: Building },
-    { value: 'jobsite', label: 'Job Site', icon: Factory },
-    { value: 'vehicle', label: 'Vehicle', icon: Truck },
-    { value: 'office', label: 'Office', icon: Home },
-    { value: 'supplier', label: 'Supplier', icon: Building },
-    { value: 'customer', label: 'Customer', icon: User }
-  ];
+  { value: 'warehouse', label: 'Warehouse', icon: Building },
+  { value: 'jobsite', label: 'Job Site', icon: Factory },
+  { value: 'vehicle', label: 'Vehicle', icon: Truck },
+  { value: 'office', label: 'Office', icon: Home },
+  { value: 'supplier', label: 'Supplier', icon: Building },
+  { value: 'customer', label: 'Customer', icon: User }];
+
 
   const loadData = async () => {
     try {
@@ -106,7 +106,7 @@ const LocationManager: React.FC = () => {
       if (stockError) throw stockError;
 
       // Calculate stock summaries by location
-      const stockSummaries: { [key: number]: LocationStock } = {};
+      const stockSummaries: {[key: number]: LocationStock;} = {};
       if (stockData?.List) {
         stockData.List.forEach((stock: any) => {
           if (!stockSummaries[stock.location_id]) {
@@ -212,7 +212,7 @@ const LocationManager: React.FC = () => {
   const handleDeleteLocation = async (location: Location) => {
     try {
       // Check if location has stock
-      const stockForLocation = locationStocks.find(s => s.location_id === location.id);
+      const stockForLocation = locationStocks.find((s) => s.location_id === location.id);
       if (stockForLocation && stockForLocation.total_items > 0) {
         toast({
           title: "Cannot Delete",
@@ -249,11 +249,11 @@ const LocationManager: React.FC = () => {
   };
 
   const getLocationStock = (locationId: number) => {
-    return locationStocks.find(s => s.location_id === locationId);
+    return locationStocks.find((s) => s.location_id === locationId);
   };
 
   const getTypeIcon = (type: string) => {
-    const typeConfig = locationTypes.find(t => t.value === type);
+    const typeConfig = locationTypes.find((t) => t.value === type);
     return typeConfig?.icon || MapPin;
   };
 
@@ -265,19 +265,19 @@ const LocationManager: React.FC = () => {
   };
 
   const getParentLocationName = (parentId: number) => {
-    const parent = locations.find(l => l.id === parentId);
+    const parent = locations.find((l) => l.id === parentId);
     return parent?.name || '';
   };
 
   const columns = [
-    {
-      key: 'name',
-      title: 'Location',
-      sortable: true,
-      render: (value: string, location: Location) => {
-        const Icon = getTypeIcon(location.type);
-        return (
-          <div className="flex items-center space-x-3">
+  {
+    key: 'name',
+    title: 'Location',
+    sortable: true,
+    render: (value: string, location: Location) => {
+      const Icon = getTypeIcon(location.type);
+      return (
+        <div className="flex items-center space-x-3">
             <Icon className="h-5 w-5 text-gray-400" />
             <div>
               <div className="font-medium">{value}</div>
@@ -285,115 +285,115 @@ const LocationManager: React.FC = () => {
                 Code: {location.code} | {location.type}
               </div>
             </div>
-          </div>
-        );
-      }
-    },
-    {
-      key: 'address',
-      title: 'Address',
-      render: (value: string, location: Location) => (
-        <div>
+          </div>);
+
+    }
+  },
+  {
+    key: 'address',
+    title: 'Address',
+    render: (value: string, location: Location) =>
+    <div>
           <div className="text-sm">{value || 'No address'}</div>
-          {location.gps_coordinates && (
-            <div className="text-xs text-gray-500 flex items-center mt-1">
+          {location.gps_coordinates &&
+      <div className="text-xs text-gray-500 flex items-center mt-1">
               <Navigation className="h-3 w-3 mr-1" />
               {location.gps_coordinates}
             </div>
-          )}
+      }
         </div>
-      )
-    },
-    {
-      key: 'contact_person',
-      title: 'Contact',
-      render: (value: string, location: Location) => (
-        <div>
+
+  },
+  {
+    key: 'contact_person',
+    title: 'Contact',
+    render: (value: string, location: Location) =>
+    <div>
           <div className="text-sm">{value || 'No contact'}</div>
-          {location.contact_phone && (
-            <div className="text-xs text-gray-500 flex items-center mt-1">
+          {location.contact_phone &&
+      <div className="text-xs text-gray-500 flex items-center mt-1">
               <Phone className="h-3 w-3 mr-1" />
               {location.contact_phone}
             </div>
-          )}
+      }
         </div>
-      )
-    },
-    {
-      key: 'id',
-      title: 'Inventory',
-      render: (value: number) => {
-        const stock = getLocationStock(value);
-        return (
-          <div>
+
+  },
+  {
+    key: 'id',
+    title: 'Inventory',
+    render: (value: number) => {
+      const stock = getLocationStock(value);
+      return (
+        <div>
             <div className="text-sm font-medium">
               {stock?.unique_items || 0} items
             </div>
             <div className="text-xs text-gray-500">
               {formatCurrency(stock?.total_value || 0)}
             </div>
-          </div>
-        );
-      }
-    },
-    {
-      key: 'parent_location_id',
-      title: 'Parent Location',
-      render: (value: number) => (
-        <div className="text-sm">
+          </div>);
+
+    }
+  },
+  {
+    key: 'parent_location_id',
+    title: 'Parent Location',
+    render: (value: number) =>
+    <div className="text-sm">
           {value ? getParentLocationName(value) : 'None'}
         </div>
-      )
-    },
-    {
-      key: 'is_active',
-      title: 'Status',
-      render: (value: boolean) => (
-        <Badge variant={value ? "default" : "secondary"}>
+
+  },
+  {
+    key: 'is_active',
+    title: 'Status',
+    render: (value: boolean) =>
+    <Badge variant={value ? "default" : "secondary"}>
           {value ? 'Active' : 'Inactive'}
         </Badge>
-      )
-    }
-  ];
 
-  const LocationForm = ({ isEdit = false }: { isEdit?: boolean }) => (
-    <div className="space-y-4 max-h-96 overflow-y-auto">
+  }];
+
+
+  const LocationForm = ({ isEdit = false }: {isEdit?: boolean;}) =>
+  <div className="space-y-4 max-h-96 overflow-y-auto">
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="name">Location Name *</Label>
           <Input
-            id="name"
-            value={formData.name || ''}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Enter location name"
-          />
+          id="name"
+          value={formData.name || ''}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          placeholder="Enter location name" />
+
         </div>
         <div>
           <Label htmlFor="code">Location Code</Label>
           <Input
-            id="code"
-            value={formData.code || ''}
-            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-            placeholder="Auto-generated if empty"
-          />
+          id="code"
+          value={formData.code || ''}
+          onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+          placeholder="Auto-generated if empty" />
+
         </div>
       </div>
 
       <div>
         <Label htmlFor="type">Location Type *</Label>
         <Select
-          value={formData.type || ''}
-          onValueChange={(value) => setFormData({ ...formData, type: value })}
-        >
+        value={formData.type || ''}
+        onValueChange={(value) => setFormData({ ...formData, type: value })}>
+
           <SelectTrigger>
             <SelectValue placeholder="Select type" />
           </SelectTrigger>
           <SelectContent>
-            {locationTypes.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
+            {locationTypes.map((type) =>
+          <SelectItem key={type.value} value={type.value}>
                 {type.label}
               </SelectItem>
-            ))}
+          )}
           </SelectContent>
         </Select>
       </div>
@@ -401,78 +401,78 @@ const LocationManager: React.FC = () => {
       <div>
         <Label htmlFor="address">Address</Label>
         <Textarea
-          id="address"
-          value={formData.address || ''}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          placeholder="Enter address"
-          rows={2}
-        />
+        id="address"
+        value={formData.address || ''}
+        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+        placeholder="Enter address"
+        rows={2} />
+
       </div>
 
       <div>
         <Label htmlFor="gps">GPS Coordinates</Label>
         <Input
-          id="gps"
-          value={formData.gps_coordinates || ''}
-          onChange={(e) => setFormData({ ...formData, gps_coordinates: e.target.value })}
-          placeholder="e.g., 40.7128, -74.0060"
-        />
+        id="gps"
+        value={formData.gps_coordinates || ''}
+        onChange={(e) => setFormData({ ...formData, gps_coordinates: e.target.value })}
+        placeholder="e.g., 40.7128, -74.0060" />
+
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="contact_person">Contact Person</Label>
           <Input
-            id="contact_person"
-            value={formData.contact_person || ''}
-            onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-            placeholder="Contact name"
-          />
+          id="contact_person"
+          value={formData.contact_person || ''}
+          onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
+          placeholder="Contact name" />
+
         </div>
         <div>
           <Label htmlFor="contact_phone">Contact Phone</Label>
           <Input
-            id="contact_phone"
-            value={formData.contact_phone || ''}
-            onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
-            placeholder="Phone number"
-          />
+          id="contact_phone"
+          value={formData.contact_phone || ''}
+          onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+          placeholder="Phone number" />
+
         </div>
       </div>
 
       <div>
         <Label htmlFor="parent">Parent Location</Label>
         <Select
-          value={formData.parent_location_id?.toString() || ''}
-          onValueChange={(value) => setFormData({ ...formData, parent_location_id: value ? parseInt(value) : undefined })}
-        >
+        value={formData.parent_location_id?.toString() || ''}
+        onValueChange={(value) => setFormData({ ...formData, parent_location_id: value ? parseInt(value) : undefined })}>
+
           <SelectTrigger>
             <SelectValue placeholder="Select parent location" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="">None</SelectItem>
-            {locations.filter(l => l.id !== selectedLocation?.id).map((location) => (
-              <SelectItem key={location.id} value={location.id.toString()}>
+            {locations.filter((l) => l.id !== selectedLocation?.id).map((location) =>
+          <SelectItem key={location.id} value={location.id.toString()}>
                 {location.name} ({location.code})
               </SelectItem>
-            ))}
+          )}
           </SelectContent>
         </Select>
       </div>
 
       <div className="flex items-center space-x-2">
         <Switch
-          id="is_active"
-          checked={formData.is_active !== false}
-          onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-        />
+        id="is_active"
+        checked={formData.is_active !== false}
+        onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })} />
+
         <Label htmlFor="is_active">Active</Label>
       </div>
-    </div>
-  );
+    </div>;
+
 
   const totalLocations = locations.length;
-  const activeLocations = locations.filter(l => l.is_active).length;
+  const activeLocations = locations.filter((l) => l.is_active).length;
   const totalInventoryValue = locationStocks.reduce((sum, s) => sum + s.total_value, 0);
   const totalInventoryItems = locationStocks.reduce((sum, s) => sum + s.total_items, 0);
 
@@ -555,8 +555,8 @@ const LocationManager: React.FC = () => {
                   placeholder="Search locations..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+                  className="pl-10" />
+
               </div>
             </div>
             <div className="w-48">
@@ -566,11 +566,11 @@ const LocationManager: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Types</SelectItem>
-                  {locationTypes.map((type) => (
-                    <SelectItem key={type.value} value={type.value}>
+                  {locationTypes.map((type) =>
+                  <SelectItem key={type.value} value={type.value}>
                       {type.label}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -596,8 +596,8 @@ const LocationManager: React.FC = () => {
             title: "Location Details",
             description: `${location.name} - ${stock?.unique_items || 0} unique items`
           });
-        }}
-      />
+        }} />
+
 
       {/* Edit Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
@@ -616,8 +616,8 @@ const LocationManager: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default LocationManager;

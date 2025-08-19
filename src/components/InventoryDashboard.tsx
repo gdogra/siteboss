@@ -3,20 +3,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Package, 
-  AlertTriangle, 
-  TrendingUp, 
-  MapPin, 
-  Barcode, 
+import {
+  Package,
+  AlertTriangle,
+  TrendingUp,
+  MapPin,
+  Barcode,
   ShoppingCart,
   DollarSign,
   Activity,
   Plus,
   Search,
   Filter,
-  Download
-} from 'lucide-react';
+  Download } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import StatsCard from '@/components/StatsCard';
 
@@ -137,7 +137,7 @@ const InventoryDashboard: React.FC = () => {
         const item = itemsMap.get(movement.item_id);
         const fromLocation = locationsMap.get(movement.from_location_id);
         const toLocation = locationsMap.get(movement.to_location_id);
-        
+
         return {
           id: movement.id,
           itemName: item?.name || 'Unknown',
@@ -190,14 +190,14 @@ const InventoryDashboard: React.FC = () => {
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-gray-200 rounded w-1/4"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-32 bg-gray-200 rounded"></div>
-            ))}
+            {[...Array(4)].map((_, i) =>
+            <div key={i} className="h-32 bg-gray-200 rounded"></div>
+            )}
           </div>
           <div className="h-96 bg-gray-200 rounded"></div>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -227,29 +227,29 @@ const InventoryDashboard: React.FC = () => {
           value={stats.totalItems.toLocaleString()}
           icon={Package}
           description="Active inventory items"
-          color="blue"
-        />
+          color="blue" />
+
         <StatsCard
           title="Total Value"
           value={formatCurrency(stats.totalValue)}
           icon={DollarSign}
           description="Current inventory value"
-          color="green"
-        />
+          color="green" />
+
         <StatsCard
           title="Low Stock Alerts"
           value={stats.lowStockItems}
           icon={AlertTriangle}
           description="Items below reorder point"
-          color={stats.lowStockItems > 0 ? "red" : "green"}
-        />
+          color={stats.lowStockItems > 0 ? "red" : "green"} />
+
         <StatsCard
           title="Locations"
           value={stats.totalLocations}
           icon={MapPin}
           description="Active storage locations"
-          color="default"
-        />
+          color="default" />
+
       </div>
 
       {/* Main Content Tabs */}
@@ -336,12 +336,12 @@ const InventoryDashboard: React.FC = () => {
               </div>
             </CardHeader>
             <CardContent>
-              {lowStockItems.length === 0 ? (
-                <p className="text-center text-gray-500 py-4">No low stock items at this time</p>
-              ) : (
-                <div className="space-y-3">
-                  {lowStockItems.slice(0, 5).map((item) => (
-                    <div key={item.id} className="flex justify-between items-center p-3 border rounded-lg">
+              {lowStockItems.length === 0 ?
+              <p className="text-center text-gray-500 py-4">No low stock items at this time</p> :
+
+              <div className="space-y-3">
+                  {lowStockItems.slice(0, 5).map((item) =>
+                <div key={item.id} className="flex justify-between items-center p-3 border rounded-lg">
                       <div>
                         <h4 className="font-medium">{item.name}</h4>
                         <p className="text-sm text-gray-600">SKU: {item.sku} | {item.location}</p>
@@ -353,14 +353,14 @@ const InventoryDashboard: React.FC = () => {
                         <p className="text-xs text-gray-500">Current / Minimum</p>
                       </div>
                     </div>
-                  ))}
-                  {lowStockItems.length > 5 && (
-                    <Button variant="ghost" className="w-full">
+                )}
+                  {lowStockItems.length > 5 &&
+                <Button variant="ghost" className="w-full">
                       View All {lowStockItems.length} Low Stock Items
                     </Button>
-                  )}
+                }
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -371,12 +371,12 @@ const InventoryDashboard: React.FC = () => {
               <CardTitle>Recent Inventory Movements</CardTitle>
             </CardHeader>
             <CardContent>
-              {recentMovements.length === 0 ? (
-                <p className="text-center text-gray-500 py-4">No recent movements</p>
-              ) : (
-                <div className="space-y-3">
-                  {recentMovements.map((movement) => (
-                    <div key={movement.id} className="flex justify-between items-center p-3 border rounded-lg">
+              {recentMovements.length === 0 ?
+              <p className="text-center text-gray-500 py-4">No recent movements</p> :
+
+              <div className="space-y-3">
+                  {recentMovements.map((movement) =>
+                <div key={movement.id} className="flex justify-between items-center p-3 border rounded-lg">
                       <div className="flex items-center space-x-3">
                         <Activity className="h-4 w-4 text-blue-500" />
                         <div>
@@ -391,9 +391,9 @@ const InventoryDashboard: React.FC = () => {
                         <p className="text-xs text-gray-500 mt-1">{movement.date}</p>
                       </div>
                     </div>
-                  ))}
+                )}
                 </div>
-              )}
+              }
             </CardContent>
           </Card>
         </TabsContent>
@@ -444,8 +444,8 @@ const InventoryDashboard: React.FC = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default InventoryDashboard;

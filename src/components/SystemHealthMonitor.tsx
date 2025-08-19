@@ -61,51 +61,51 @@ const SystemHealthMonitor = () => {
   const addSampleMetrics = async () => {
     try {
       const sampleMetrics = [
-        {
-          metric_name: "CPU Usage",
-          metric_value: Math.random() * 100,
-          metric_unit: "%",
-          category: "System",
-          threshold_warning: 70,
-          threshold_critical: 90,
-          status: "healthy",
-          timestamp: new Date().toISOString(),
-          server_instance: "web-01"
-        },
-        {
-          metric_name: "Memory Usage",
-          metric_value: Math.random() * 100,
-          metric_unit: "%",
-          category: "System",
-          threshold_warning: 80,
-          threshold_critical: 95,
-          status: "healthy",
-          timestamp: new Date().toISOString(),
-          server_instance: "web-01"
-        },
-        {
-          metric_name: "Disk Usage",
-          metric_value: Math.random() * 100,
-          metric_unit: "%",
-          category: "Storage",
-          threshold_warning: 85,
-          threshold_critical: 95,
-          status: "healthy",
-          timestamp: new Date().toISOString(),
-          server_instance: "web-01"
-        },
-        {
-          metric_name: "Response Time",
-          metric_value: Math.random() * 1000 + 50,
-          metric_unit: "ms",
-          category: "Performance",
-          threshold_warning: 500,
-          threshold_critical: 1000,
-          status: "healthy",
-          timestamp: new Date().toISOString(),
-          server_instance: "web-01"
-        }
-      ];
+      {
+        metric_name: "CPU Usage",
+        metric_value: Math.random() * 100,
+        metric_unit: "%",
+        category: "System",
+        threshold_warning: 70,
+        threshold_critical: 90,
+        status: "healthy",
+        timestamp: new Date().toISOString(),
+        server_instance: "web-01"
+      },
+      {
+        metric_name: "Memory Usage",
+        metric_value: Math.random() * 100,
+        metric_unit: "%",
+        category: "System",
+        threshold_warning: 80,
+        threshold_critical: 95,
+        status: "healthy",
+        timestamp: new Date().toISOString(),
+        server_instance: "web-01"
+      },
+      {
+        metric_name: "Disk Usage",
+        metric_value: Math.random() * 100,
+        metric_unit: "%",
+        category: "Storage",
+        threshold_warning: 85,
+        threshold_critical: 95,
+        status: "healthy",
+        timestamp: new Date().toISOString(),
+        server_instance: "web-01"
+      },
+      {
+        metric_name: "Response Time",
+        metric_value: Math.random() * 1000 + 50,
+        metric_unit: "ms",
+        category: "Performance",
+        threshold_warning: 500,
+        threshold_critical: 1000,
+        status: "healthy",
+        timestamp: new Date().toISOString(),
+        server_instance: "web-01"
+      }];
+
 
       for (const metric of sampleMetrics) {
         // Update status based on thresholds
@@ -121,7 +121,7 @@ const SystemHealthMonitor = () => {
 
       toast({
         title: "Success",
-        description: "Sample health metrics added successfully",
+        description: "Sample health metrics added successfully"
       });
 
       fetchHealthMetrics();
@@ -137,26 +137,26 @@ const SystemHealthMonitor = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy': return 'bg-green-500';
-      case 'warning': return 'bg-yellow-500';
-      case 'critical': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'healthy':return 'bg-green-500';
+      case 'warning':return 'bg-yellow-500';
+      case 'critical':return 'bg-red-500';
+      default:return 'bg-gray-500';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'healthy': return <CheckCircle className="h-4 w-4" />;
-      case 'warning': return <AlertTriangle className="h-4 w-4" />;
-      case 'critical': return <AlertTriangle className="h-4 w-4" />;
-      default: return <CheckCircle className="h-4 w-4" />;
+      case 'healthy':return <CheckCircle className="h-4 w-4" />;
+      case 'warning':return <AlertTriangle className="h-4 w-4" />;
+      case 'critical':return <AlertTriangle className="h-4 w-4" />;
+      default:return <CheckCircle className="h-4 w-4" />;
     }
   };
 
   const getProgressValue = (value: number, category: string) => {
     if (category === "Performance") {
       // For performance metrics like response time, lower is better
-      return Math.min((value / 1000) * 100, 100);
+      return Math.min(value / 1000 * 100, 100);
     }
     return Math.min(value, 100);
   };
@@ -191,8 +191,8 @@ const SystemHealthMonitor = () => {
         </div>
       </div>
 
-      {metrics.length === 0 ? (
-        <Card>
+      {metrics.length === 0 ?
+      <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <div className="text-gray-400 mb-4">
               <AlertTriangle className="h-12 w-12" />
@@ -203,10 +203,10 @@ const SystemHealthMonitor = () => {
             </p>
             <Button onClick={addSampleMetrics}>Add Sample Metrics</Button>
           </CardContent>
-        </Card>
-      ) : (
-        Object.entries(groupedMetrics).map(([category, categoryMetrics]) => (
-          <Card key={category}>
+        </Card> :
+
+      Object.entries(groupedMetrics).map(([category, categoryMetrics]) =>
+      <Card key={category}>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>{category} Metrics</span>
@@ -215,8 +215,8 @@ const SystemHealthMonitor = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {categoryMetrics.map((metric) => (
-                  <div key={metric.id} className="space-y-3">
+                {categoryMetrics.map((metric) =>
+            <div key={metric.id} className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <div className={`w-3 h-3 rounded-full ${getStatusColor(metric.status)}`} />
@@ -234,10 +234,10 @@ const SystemHealthMonitor = () => {
                         <span className="text-gray-500">{metric.server_instance}</span>
                       </div>
                       
-                      <Progress 
-                        value={getProgressValue(metric.metric_value, metric.category)} 
-                        className="h-2"
-                      />
+                      <Progress
+                  value={getProgressValue(metric.metric_value, metric.category)}
+                  className="h-2" />
+
                       
                       <div className="flex justify-between text-xs text-gray-500">
                         <span>Warning: {metric.threshold_warning}{metric.metric_unit}</span>
@@ -249,14 +249,14 @@ const SystemHealthMonitor = () => {
                       Updated: {new Date(metric.timestamp).toLocaleTimeString()}
                     </div>
                   </div>
-                ))}
+            )}
               </div>
             </CardContent>
           </Card>
-        ))
-      )}
-    </div>
-  );
+      )
+      }
+    </div>);
+
 };
 
 export default SystemHealthMonitor;

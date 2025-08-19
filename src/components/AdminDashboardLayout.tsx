@@ -5,18 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { 
-  Monitor, 
-  TrendingUp, 
-  AlertTriangle, 
-  Shield, 
-  Users, 
-  Settings, 
+import {
+  Monitor,
+  TrendingUp,
+  AlertTriangle,
+  Shield,
+  Users,
+  Settings,
   Activity,
   Server,
   Bell,
-  LogOut
-} from 'lucide-react';
+  LogOut } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import SystemHealthMonitor from '@/components/SystemHealthMonitor';
 import ScalingControlPanel from '@/components/ScalingControlPanel';
@@ -60,8 +60,8 @@ const AdminDashboardLayout: React.FC = () => {
         PageNo: 1,
         PageSize: 1,
         Filters: [
-          { name: "status", op: "Equal", value: "open" }
-        ]
+        { name: "status", op: "Equal", value: "open" }]
+
       });
       if (error) throw error;
       setAlertCount(data.VirtualCount || 0);
@@ -85,51 +85,51 @@ const AdminDashboardLayout: React.FC = () => {
   };
 
   const tabConfig = [
-    {
-      id: 'overview',
-      label: 'Overview',
-      icon: Monitor,
-      component: SystemHealthMonitor
-    },
-    {
-      id: 'scaling',
-      label: 'Scaling',
-      icon: TrendingUp,
-      component: ScalingControlPanel
-    },
-    {
-      id: 'alerts',
-      label: 'Alerts',
-      icon: AlertTriangle,
-      badge: alertCount > 0 ? alertCount : undefined,
-      component: AlertManagement
-    },
-    {
-      id: 'security',
-      label: 'Security',
-      icon: Shield,
-      component: SecurityIncidentTracker
-    },
-    {
-      id: 'users',
-      label: 'Users',
-      icon: Users,
-      component: UserManagementPanel
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      icon: Settings,
-      component: SystemConfigurationPanel
-    }
-  ];
+  {
+    id: 'overview',
+    label: 'Overview',
+    icon: Monitor,
+    component: SystemHealthMonitor
+  },
+  {
+    id: 'scaling',
+    label: 'Scaling',
+    icon: TrendingUp,
+    component: ScalingControlPanel
+  },
+  {
+    id: 'alerts',
+    label: 'Alerts',
+    icon: AlertTriangle,
+    badge: alertCount > 0 ? alertCount : undefined,
+    component: AlertManagement
+  },
+  {
+    id: 'security',
+    label: 'Security',
+    icon: Shield,
+    component: SecurityIncidentTracker
+  },
+  {
+    id: 'users',
+    label: 'Users',
+    icon: Users,
+    component: UserManagementPanel
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    icon: Settings,
+    component: SystemConfigurationPanel
+  }];
+
 
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    );
+      </div>);
+
   }
 
   if (user.role_code !== 'Administrator') {
@@ -139,8 +139,8 @@ const AdminDashboardLayout: React.FC = () => {
           <h1 className="text-xl font-semibold mb-2">Access Denied</h1>
           <p className="text-gray-600">You don't have permission to access this dashboard.</p>
         </Card>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -153,11 +153,11 @@ const AdminDashboardLayout: React.FC = () => {
               <Server className="h-6 w-6 text-blue-600" />
               <h1 className="text-xl font-semibold text-gray-900">Platform Administration</h1>
             </div>
-            {alertCount > 0 && (
-              <Badge variant="destructive" className="animate-pulse">
+            {alertCount > 0 &&
+            <Badge variant="destructive" className="animate-pulse">
                 {alertCount} Active Alerts
               </Badge>
-            )}
+            }
           </div>
           
           <div className="flex items-center space-x-4">
@@ -187,17 +187,17 @@ const AdminDashboardLayout: React.FC = () => {
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="flex items-center space-x-2 px-4 py-2 rounded-md"
-                >
+                  className="flex items-center space-x-2 px-4 py-2 rounded-md">
+
                   <Icon className="h-4 w-4" />
                   <span className="font-medium">{tab.label}</span>
-                  {tab.badge && (
-                    <Badge variant="secondary" className="ml-1 text-xs">
+                  {tab.badge &&
+                  <Badge variant="secondary" className="ml-1 text-xs">
                       {tab.badge}
                     </Badge>
-                  )}
-                </TabsTrigger>
-              );
+                  }
+                </TabsTrigger>);
+
             })}
           </TabsList>
 
@@ -206,13 +206,13 @@ const AdminDashboardLayout: React.FC = () => {
             return (
               <TabsContent key={tab.id} value={tab.id} className="space-y-6">
                 <Component />
-              </TabsContent>
-            );
+              </TabsContent>);
+
           })}
         </Tabs>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminDashboardLayout;

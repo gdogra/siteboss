@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Menu, User, LogOut, Settings, Home } from 'lucide-react';
+import { Menu, User, LogOut, Settings, Home, FileText } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 

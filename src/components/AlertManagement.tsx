@@ -7,16 +7,16 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { 
-  AlertTriangle, 
-  CheckCircle, 
-  Clock, 
-  User, 
+import {
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  User,
   RefreshCw,
   Plus,
   Eye,
-  MessageSquare
-} from 'lucide-react';
+  MessageSquare } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface SystemAlert {
@@ -52,7 +52,7 @@ const AlertManagement = () => {
     setLoading(true);
     try {
       const filters = [];
-      
+
       if (filterStatus !== 'all') {
         filters.push({
           name: "status",
@@ -60,7 +60,7 @@ const AlertManagement = () => {
           value: filterStatus
         });
       }
-      
+
       if (filterSeverity !== 'all') {
         filters.push({
           name: "severity",
@@ -95,59 +95,59 @@ const AlertManagement = () => {
   const addSampleAlerts = async () => {
     try {
       const sampleAlerts = [
-        {
-          alert_type: "security",
-          severity: "critical",
-          title: "Multiple Failed Login Attempts",
-          description: "Detected 15 failed login attempts from IP 192.168.1.100 within 5 minutes",
-          source: "Authentication System",
-          status: "active",
-          assigned_to: "",
-          created_at: new Date().toISOString(),
-          acknowledged_at: "",
-          resolved_at: "",
-          resolution_notes: ""
-        },
-        {
-          alert_type: "performance",
-          severity: "high",
-          title: "High CPU Usage Detected",
-          description: "CPU usage exceeded 90% threshold on server web-01",
-          source: "System Monitor",
-          status: "active",
-          assigned_to: "",
-          created_at: new Date(Date.now() - 300000).toISOString(), // 5 minutes ago
-          acknowledged_at: "",
-          resolved_at: "",
-          resolution_notes: ""
-        },
-        {
-          alert_type: "error",
-          severity: "medium",
-          title: "Database Connection Pool Full",
-          description: "All database connections in use, new requests may be delayed",
-          source: "Database Monitor",
-          status: "acknowledged",
-          assigned_to: "admin",
-          created_at: new Date(Date.now() - 600000).toISOString(), // 10 minutes ago
-          acknowledged_at: new Date(Date.now() - 300000).toISOString(),
-          resolved_at: "",
-          resolution_notes: ""
-        },
-        {
-          alert_type: "performance",
-          severity: "low",
-          title: "Disk Space Warning",
-          description: "Disk usage on /var partition reached 80%",
-          source: "System Monitor",
-          status: "resolved",
-          assigned_to: "admin",
-          created_at: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
-          acknowledged_at: new Date(Date.now() - 3000000).toISOString(),
-          resolved_at: new Date(Date.now() - 1800000).toISOString(), // 30 minutes ago
-          resolution_notes: "Cleaned up old log files and temporary data"
-        }
-      ];
+      {
+        alert_type: "security",
+        severity: "critical",
+        title: "Multiple Failed Login Attempts",
+        description: "Detected 15 failed login attempts from IP 192.168.1.100 within 5 minutes",
+        source: "Authentication System",
+        status: "active",
+        assigned_to: "",
+        created_at: new Date().toISOString(),
+        acknowledged_at: "",
+        resolved_at: "",
+        resolution_notes: ""
+      },
+      {
+        alert_type: "performance",
+        severity: "high",
+        title: "High CPU Usage Detected",
+        description: "CPU usage exceeded 90% threshold on server web-01",
+        source: "System Monitor",
+        status: "active",
+        assigned_to: "",
+        created_at: new Date(Date.now() - 300000).toISOString(), // 5 minutes ago
+        acknowledged_at: "",
+        resolved_at: "",
+        resolution_notes: ""
+      },
+      {
+        alert_type: "error",
+        severity: "medium",
+        title: "Database Connection Pool Full",
+        description: "All database connections in use, new requests may be delayed",
+        source: "Database Monitor",
+        status: "acknowledged",
+        assigned_to: "admin",
+        created_at: new Date(Date.now() - 600000).toISOString(), // 10 minutes ago
+        acknowledged_at: new Date(Date.now() - 300000).toISOString(),
+        resolved_at: "",
+        resolution_notes: ""
+      },
+      {
+        alert_type: "performance",
+        severity: "low",
+        title: "Disk Space Warning",
+        description: "Disk usage on /var partition reached 80%",
+        source: "System Monitor",
+        status: "resolved",
+        assigned_to: "admin",
+        created_at: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+        acknowledged_at: new Date(Date.now() - 3000000).toISOString(),
+        resolved_at: new Date(Date.now() - 1800000).toISOString(), // 30 minutes ago
+        resolution_notes: "Cleaned up old log files and temporary data"
+      }];
+
 
       for (const alert of sampleAlerts) {
         const { error } = await window.ezsite.apis.tableCreate(35451, alert);
@@ -156,7 +156,7 @@ const AlertManagement = () => {
 
       toast({
         title: "Success",
-        description: "Sample alerts added successfully",
+        description: "Sample alerts added successfully"
       });
 
       fetchAlerts();
@@ -183,7 +183,7 @@ const AlertManagement = () => {
 
       toast({
         title: "Alert Acknowledged",
-        description: "Alert has been acknowledged and assigned to you",
+        description: "Alert has been acknowledged and assigned to you"
       });
 
       fetchAlerts();
@@ -210,7 +210,7 @@ const AlertManagement = () => {
 
       toast({
         title: "Alert Resolved",
-        description: "Alert has been marked as resolved",
+        description: "Alert has been marked as resolved"
       });
 
       fetchAlerts();
@@ -227,38 +227,38 @@ const AlertManagement = () => {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-800';
-      case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'critical':return 'bg-red-100 text-red-800';
+      case 'high':return 'bg-orange-100 text-orange-800';
+      case 'medium':return 'bg-yellow-100 text-yellow-800';
+      case 'low':return 'bg-blue-100 text-blue-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-red-100 text-red-800';
-      case 'acknowledged': return 'bg-yellow-100 text-yellow-800';
-      case 'resolved': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active':return 'bg-red-100 text-red-800';
+      case 'acknowledged':return 'bg-yellow-100 text-yellow-800';
+      case 'resolved':return 'bg-green-100 text-green-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'active': return <AlertTriangle className="h-4 w-4" />;
-      case 'acknowledged': return <Clock className="h-4 w-4" />;
-      case 'resolved': return <CheckCircle className="h-4 w-4" />;
-      default: return <Clock className="h-4 w-4" />;
+      case 'active':return <AlertTriangle className="h-4 w-4" />;
+      case 'acknowledged':return <Clock className="h-4 w-4" />;
+      case 'resolved':return <CheckCircle className="h-4 w-4" />;
+      default:return <Clock className="h-4 w-4" />;
     }
   };
 
   const alertCounts = {
     total: alerts.length,
-    active: alerts.filter(a => a.status === 'active').length,
-    acknowledged: alerts.filter(a => a.status === 'acknowledged').length,
-    resolved: alerts.filter(a => a.status === 'resolved').length,
-    critical: alerts.filter(a => a.severity === 'critical').length
+    active: alerts.filter((a) => a.status === 'active').length,
+    acknowledged: alerts.filter((a) => a.status === 'acknowledged').length,
+    resolved: alerts.filter((a) => a.status === 'resolved').length,
+    critical: alerts.filter((a) => a.severity === 'critical').length
   };
 
   return (
@@ -274,11 +274,11 @@ const AlertManagement = () => {
             <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          {alerts.length === 0 && (
-            <Button onClick={addSampleAlerts} variant="outline" size="sm">
+          {alerts.length === 0 &&
+          <Button onClick={addSampleAlerts} variant="outline" size="sm">
               Add Sample Alerts
             </Button>
-          )}
+          }
         </div>
       </div>
 
@@ -351,8 +351,8 @@ const AlertManagement = () => {
       </div>
 
       {/* Alerts List */}
-      {alerts.length === 0 ? (
-        <Card>
+      {alerts.length === 0 ?
+      <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <div className="text-gray-400 mb-4">
               <AlertTriangle className="h-12 w-12" />
@@ -363,16 +363,16 @@ const AlertManagement = () => {
             </p>
             <Button onClick={addSampleAlerts}>Add Sample Alerts</Button>
           </CardContent>
-        </Card>
-      ) : (
-        <Card>
+        </Card> :
+
+      <Card>
           <CardHeader>
             <CardTitle>System Alerts</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {alerts.map((alert) => (
-                <div key={alert.id} className="border rounded-lg p-4 hover:bg-gray-50">
+              {alerts.map((alert) =>
+            <div key={alert.id} className="border rounded-lg p-4 hover:bg-gray-50">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 space-y-2">
                       <div className="flex items-center space-x-3">
@@ -392,12 +392,12 @@ const AlertManagement = () => {
                       <div className="flex items-center space-x-4 text-sm text-gray-500">
                         <span>Source: {alert.source}</span>
                         <span>Created: {new Date(alert.created_at).toLocaleString()}</span>
-                        {alert.assigned_to && (
-                          <span className="flex items-center">
+                        {alert.assigned_to &&
+                    <span className="flex items-center">
                             <User className="h-3 w-3 mr-1" />
                             Assigned to: {alert.assigned_to}
                           </span>
-                        )}
+                    }
                       </div>
                     </div>
                     
@@ -417,27 +417,27 @@ const AlertManagement = () => {
                         </DialogContent>
                       </Dialog>
                       
-                      {alert.status === 'active' && (
-                        <Button 
-                          size="sm"
-                          onClick={() => acknowledgeAlert(alert.id)}
-                        >
+                      {alert.status === 'active' &&
+                  <Button
+                    size="sm"
+                    onClick={() => acknowledgeAlert(alert.id)}>
+
                           Acknowledge
                         </Button>
-                      )}
+                  }
                     </div>
                   </div>
                 </div>
-              ))}
+            )}
             </div>
           </CardContent>
         </Card>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
-const AlertDetails = ({ alert, onResolve }: { alert: SystemAlert; onResolve: (id: number, notes: string) => void }) => {
+const AlertDetails = ({ alert, onResolve }: {alert: SystemAlert;onResolve: (id: number, notes: string) => void;}) => {
   const [resolutionNotes, setResolutionNotes] = useState('');
 
   return (
@@ -475,66 +475,66 @@ const AlertDetails = ({ alert, onResolve }: { alert: SystemAlert; onResolve: (id
           <label className="font-medium">Created:</label>
           <div>{new Date(alert.created_at).toLocaleString()}</div>
         </div>
-        {alert.acknowledged_at && (
-          <div>
+        {alert.acknowledged_at &&
+        <div>
             <label className="font-medium">Acknowledged:</label>
             <div>{new Date(alert.acknowledged_at).toLocaleString()}</div>
           </div>
-        )}
-        {alert.resolved_at && (
-          <div>
+        }
+        {alert.resolved_at &&
+        <div>
             <label className="font-medium">Resolved:</label>
             <div>{new Date(alert.resolved_at).toLocaleString()}</div>
           </div>
-        )}
+        }
       </div>
 
-      {alert.resolution_notes && (
-        <div>
+      {alert.resolution_notes &&
+      <div>
           <label className="font-medium">Resolution Notes:</label>
           <p className="text-gray-600 mt-1 p-3 bg-gray-50 rounded">{alert.resolution_notes}</p>
         </div>
-      )}
+      }
 
-      {alert.status !== 'resolved' && (
-        <div className="space-y-3 pt-4 border-t">
+      {alert.status !== 'resolved' &&
+      <div className="space-y-3 pt-4 border-t">
           <label className="font-medium">Resolution Notes:</label>
           <Textarea
-            placeholder="Enter resolution notes..."
-            value={resolutionNotes}
-            onChange={(e) => setResolutionNotes(e.target.value)}
-            rows={3}
-          />
-          <Button 
-            onClick={() => onResolve(alert.id, resolutionNotes)}
-            disabled={!resolutionNotes.trim()}
-            className="w-full"
-          >
+          placeholder="Enter resolution notes..."
+          value={resolutionNotes}
+          onChange={(e) => setResolutionNotes(e.target.value)}
+          rows={3} />
+
+          <Button
+          onClick={() => onResolve(alert.id, resolutionNotes)}
+          disabled={!resolutionNotes.trim()}
+          className="w-full">
+
             <CheckCircle className="h-4 w-4 mr-2" />
             Mark as Resolved
           </Button>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 };
 
 const getSeverityColor = (severity: string) => {
   switch (severity) {
-    case 'critical': return 'bg-red-100 text-red-800';
-    case 'high': return 'bg-orange-100 text-orange-800';
-    case 'medium': return 'bg-yellow-100 text-yellow-800';
-    case 'low': return 'bg-blue-100 text-blue-800';
-    default: return 'bg-gray-100 text-gray-800';
+    case 'critical':return 'bg-red-100 text-red-800';
+    case 'high':return 'bg-orange-100 text-orange-800';
+    case 'medium':return 'bg-yellow-100 text-yellow-800';
+    case 'low':return 'bg-blue-100 text-blue-800';
+    default:return 'bg-gray-100 text-gray-800';
   }
 };
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'active': return 'bg-red-100 text-red-800';
-    case 'acknowledged': return 'bg-yellow-100 text-yellow-800';
-    case 'resolved': return 'bg-green-100 text-green-800';
-    default: return 'bg-gray-100 text-gray-800';
+    case 'active':return 'bg-red-100 text-red-800';
+    case 'acknowledged':return 'bg-yellow-100 text-yellow-800';
+    case 'resolved':return 'bg-green-100 text-green-800';
+    default:return 'bg-gray-100 text-gray-800';
   }
 };
 

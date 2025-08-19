@@ -161,6 +161,25 @@ const HomePage = () => {
                 </Card>);
 
             })}
+            
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-blue-600" />
+                </div>
+                <CardTitle className="text-xl font-semibold">Proposals</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <CardDescription className="text-gray-600 leading-relaxed">
+                  Create, manage, and track your business proposals
+                </CardDescription>
+                <Button asChild className="mt-4 w-full">
+                  <Link to="/proposals">Manage Proposals</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+
           </div>
         </div>
       </section>

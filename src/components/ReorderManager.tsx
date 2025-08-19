@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { 
+import {
   AlertTriangle,
   ShoppingCart,
   Plus,
@@ -23,8 +23,8 @@ import {
   XCircle,
   FileText,
   Send,
-  RefreshCw
-} from 'lucide-react';
+  RefreshCw } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import DataTable from '@/components/DataTable';
 
@@ -88,28 +88,28 @@ const ReorderManager: React.FC = () => {
 
       // Load inventory items with stock levels
       const [itemsResponse, stockResponse, locationsResponse] = await Promise.all([
-        window.ezsite.apis.tablePage(35427, {
-          PageNo: 1,
-          PageSize: 1000,
-          OrderByField: "name",
-          IsAsc: true,
-          Filters: [{ name: "is_active", op: "Equal", value: true }]
-        }),
-        window.ezsite.apis.tablePage(35429, {
-          PageNo: 1,
-          PageSize: 1000,
-          OrderByField: "item_id",
-          IsAsc: true,
-          Filters: []
-        }),
-        window.ezsite.apis.tablePage(35428, {
-          PageNo: 1,
-          PageSize: 1000,
-          OrderByField: "name",
-          IsAsc: true,
-          Filters: [{ name: "is_active", op: "Equal", value: true }]
-        })
-      ]);
+      window.ezsite.apis.tablePage(35427, {
+        PageNo: 1,
+        PageSize: 1000,
+        OrderByField: "name",
+        IsAsc: true,
+        Filters: [{ name: "is_active", op: "Equal", value: true }]
+      }),
+      window.ezsite.apis.tablePage(35429, {
+        PageNo: 1,
+        PageSize: 1000,
+        OrderByField: "item_id",
+        IsAsc: true,
+        Filters: []
+      }),
+      window.ezsite.apis.tablePage(35428, {
+        PageNo: 1,
+        PageSize: 1000,
+        OrderByField: "name",
+        IsAsc: true,
+        Filters: [{ name: "is_active", op: "Equal", value: true }]
+      })]
+      );
 
       if (itemsResponse.error) throw itemsResponse.error;
       if (stockResponse.error) throw stockResponse.error;
@@ -126,19 +126,19 @@ const ReorderManager: React.FC = () => {
 
       items.forEach((item: any) => {
         const itemStocks = stockLevels.filter((s: any) => s.item_id === item.id);
-        
+
         itemStocks.forEach((stock: any) => {
           if (stock.quantity_available <= item.reorder_point) {
             const location = locationsMap.get(stock.location_id);
-            const daysOutOfStock = stock.quantity_available <= 0 ? 
-              Math.floor((Date.now() - new Date(stock.last_movement_at || Date.now()).getTime()) / (1000 * 60 * 60 * 24)) : 
-              undefined;
+            const daysOutOfStock = stock.quantity_available <= 0 ?
+            Math.floor((Date.now() - new Date(stock.last_movement_at || Date.now()).getTime()) / (1000 * 60 * 60 * 24)) :
+            undefined;
 
             let priority: 'high' | 'medium' | 'low' = 'medium';
-            if (stock.quantity_available <= 0) priority = 'high';
-            else if (stock.quantity_available <= item.reorder_point * 0.5) priority = 'high';
-            else if (stock.quantity_available <= item.reorder_point * 0.8) priority = 'medium';
-            else priority = 'low';
+            if (stock.quantity_available <= 0) priority = 'high';else
+            if (stock.quantity_available <= item.reorder_point * 0.5) priority = 'high';else
+            if (stock.quantity_available <= item.reorder_point * 0.8) priority = 'medium';else
+            priority = 'low';
 
             reorderNeeded.push({
               id: stock.id,
@@ -191,8 +191,8 @@ const ReorderManager: React.FC = () => {
         OrderByField: "order_date",
         IsAsc: false,
         Filters: [
-          { name: "status", op: "StringContains", value: "pending" }
-        ]
+        { name: "status", op: "StringContains", value: "pending" }]
+
       });
 
       if (error) throw error;
@@ -236,15 +236,15 @@ const ReorderManager: React.FC = () => {
         return;
       }
 
-      const supplier = suppliers.find(s => s.id.toString() === selectedSupplier);
+      const supplier = suppliers.find((s) => s.id.toString() === selectedSupplier);
       if (!supplier) return;
 
       // Generate PO number
       const poNumber = `PO-${Date.now().toString().slice(-6)}`;
-      
+
       // Calculate totals
-      const subtotal = selectedItems.reduce((sum, item) => 
-        sum + (item.unit_cost * item.reorder_quantity), 0
+      const subtotal = selectedItems.reduce((sum, item) =>
+      sum + item.unit_cost * item.reorder_quantity, 0
       );
       const taxAmount = subtotal * 0.08; // 8% tax
       const totalAmount = subtotal + taxAmount;
@@ -255,8 +255,8 @@ const ReorderManager: React.FC = () => {
         supplier_id: supplier.id,
         status: 'draft',
         order_date: new Date().toISOString(),
-        expected_delivery_date: poFormData.expected_delivery_date || 
-          new Date(Date.now() + supplier.lead_time_days * 24 * 60 * 60 * 1000).toISOString(),
+        expected_delivery_date: poFormData.expected_delivery_date ||
+        new Date(Date.now() + supplier.lead_time_days * 24 * 60 * 60 * 1000).toISOString(),
         subtotal: subtotal,
         tax_amount: taxAmount,
         total_amount: totalAmount,
@@ -317,47 +317,47 @@ const ReorderManager: React.FC = () => {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'destructive';
-      case 'medium': return 'secondary';
-      case 'low': return 'outline';
-      default: return 'outline';
+      case 'high':return 'destructive';
+      case 'medium':return 'secondary';
+      case 'low':return 'outline';
+      default:return 'outline';
     }
   };
 
   const reorderColumns = [
-    {
-      key: 'priority',
-      title: 'Priority',
-      render: (value: string, item: ReorderItem) => (
-        <div className="flex items-center space-x-2">
+  {
+    key: 'priority',
+    title: 'Priority',
+    render: (value: string, item: ReorderItem) =>
+    <div className="flex items-center space-x-2">
           <Badge variant={getPriorityColor(value) as any}>
             {value.toUpperCase()}
           </Badge>
-          {item.days_out_of_stock && (
-            <Badge variant="destructive" className="text-xs">
+          {item.days_out_of_stock &&
+      <Badge variant="destructive" className="text-xs">
               {item.days_out_of_stock}d out
             </Badge>
-          )}
+      }
         </div>
-      )
-    },
-    {
-      key: 'item_name',
-      title: 'Item',
-      render: (value: string, item: ReorderItem) => (
-        <div>
+
+  },
+  {
+    key: 'item_name',
+    title: 'Item',
+    render: (value: string, item: ReorderItem) =>
+    <div>
           <div className="font-medium">{value}</div>
           <div className="text-sm text-gray-500">
             SKU: {item.item_sku} | {item.location_name}
           </div>
         </div>
-      )
-    },
-    {
-      key: 'current_stock',
-      title: 'Current Stock',
-      render: (value: number, item: ReorderItem) => (
-        <div className="text-center">
+
+  },
+  {
+    key: 'current_stock',
+    title: 'Current Stock',
+    render: (value: number, item: ReorderItem) =>
+    <div className="text-center">
           <div className={`font-medium ${value <= 0 ? 'text-red-600' : 'text-orange-600'}`}>
             {value}
           </div>
@@ -365,81 +365,81 @@ const ReorderManager: React.FC = () => {
             Min: {item.reorder_point}
           </div>
         </div>
-      )
-    },
-    {
-      key: 'reorder_quantity',
-      title: 'Suggested Order',
-      render: (value: number, item: ReorderItem) => (
-        <div className="text-center">
+
+  },
+  {
+    key: 'reorder_quantity',
+    title: 'Suggested Order',
+    render: (value: number, item: ReorderItem) =>
+    <div className="text-center">
           <div className="font-medium">{value} {item.unit_of_measure}</div>
           <div className="text-xs text-gray-500">
             {formatCurrency(item.unit_cost * value)}
           </div>
         </div>
-      )
-    },
-    {
-      key: 'supplier_name',
-      title: 'Supplier',
-      render: (value: string, item: ReorderItem) => (
-        <div>
+
+  },
+  {
+    key: 'supplier_name',
+    title: 'Supplier',
+    render: (value: string, item: ReorderItem) =>
+    <div>
           <div className="text-sm">{value}</div>
           <div className="text-xs text-gray-500">
             {item.lead_time_days} day lead time
           </div>
         </div>
-      )
-    }
-  ];
+
+  }];
+
 
   const poColumns = [
-    {
-      key: 'po_number',
-      title: 'PO Number',
-      render: (value: string) => (
-        <div className="font-mono text-sm">{value}</div>
-      )
-    },
-    {
-      key: 'supplier_name',
-      title: 'Supplier',
-      render: (value: string) => (
-        <div className="text-sm">{value}</div>
-      )
-    },
-    {
-      key: 'order_date',
-      title: 'Order Date',
-      render: (value: string) => new Date(value).toLocaleDateString()
-    },
-    {
-      key: 'expected_delivery_date',
-      title: 'Expected Delivery',
-      render: (value: string) => new Date(value).toLocaleDateString()
-    },
-    {
-      key: 'total_amount',
-      title: 'Amount',
-      render: (value: number) => formatCurrency(value)
-    },
-    {
-      key: 'status',
-      title: 'Status',
-      render: (value: string) => (
-        <Badge variant={value === 'pending' ? 'secondary' : 'default'}>
+  {
+    key: 'po_number',
+    title: 'PO Number',
+    render: (value: string) =>
+    <div className="font-mono text-sm">{value}</div>
+
+  },
+  {
+    key: 'supplier_name',
+    title: 'Supplier',
+    render: (value: string) =>
+    <div className="text-sm">{value}</div>
+
+  },
+  {
+    key: 'order_date',
+    title: 'Order Date',
+    render: (value: string) => new Date(value).toLocaleDateString()
+  },
+  {
+    key: 'expected_delivery_date',
+    title: 'Expected Delivery',
+    render: (value: string) => new Date(value).toLocaleDateString()
+  },
+  {
+    key: 'total_amount',
+    title: 'Amount',
+    render: (value: number) => formatCurrency(value)
+  },
+  {
+    key: 'status',
+    title: 'Status',
+    render: (value: string) =>
+    <Badge variant={value === 'pending' ? 'secondary' : 'default'}>
           {value}
         </Badge>
-      )
-    }
-  ];
+
+  }];
+
 
   const summaryStats = {
     totalReorderItems: reorderItems.length,
-    highPriority: reorderItems.filter(item => item.priority === 'high').length,
-    outOfStock: reorderItems.filter(item => item.current_stock <= 0).length,
-    estimatedOrderValue: reorderItems.reduce((sum, item) => 
-      sum + (item.unit_cost * item.reorder_quantity), 0
+    highPriority: reorderItems.filter((item) => item.priority === 'high').length,
+    outOfStock: reorderItems.filter((item) => item.current_stock <= 0).length,
+    estimatedOrderValue: reorderItems.reduce((sum, item) =>
+    sum + item.unit_cost * item.reorder_quantity, 0
     ),
     pendingOrders: purchaseOrders.length,
     pendingOrderValue: purchaseOrders.reduce((sum, po) => sum + po.total_amount, 0)
@@ -473,12 +473,12 @@ const ReorderManager: React.FC = () => {
                 <div>
                   <Label>Selected Items ({selectedItems.length})</Label>
                   <div className="mt-2 space-y-2 max-h-32 overflow-y-auto">
-                    {selectedItems.map((item) => (
-                      <div key={item.id} className="flex justify-between items-center text-sm p-2 bg-gray-50 rounded">
+                    {selectedItems.map((item) =>
+                    <div key={item.id} className="flex justify-between items-center text-sm p-2 bg-gray-50 rounded">
                         <span>{item.item_name}</span>
                         <span>{item.reorder_quantity} × {formatCurrency(item.unit_cost)}</span>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
 
@@ -489,11 +489,11 @@ const ReorderManager: React.FC = () => {
                       <SelectValue placeholder="Select supplier" />
                     </SelectTrigger>
                     <SelectContent>
-                      {suppliers.map((supplier) => (
-                        <SelectItem key={supplier.id} value={supplier.id.toString()}>
+                      {suppliers.map((supplier) =>
+                      <SelectItem key={supplier.id} value={supplier.id.toString()}>
                           {supplier.name} ({supplier.lead_time_days} day lead time)
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -504,8 +504,8 @@ const ReorderManager: React.FC = () => {
                     id="delivery_date"
                     type="date"
                     value={poFormData.expected_delivery_date}
-                    onChange={(e) => setPOFormData({...poFormData, expected_delivery_date: e.target.value})}
-                  />
+                    onChange={(e) => setPOFormData({ ...poFormData, expected_delivery_date: e.target.value })} />
+
                 </div>
 
                 <div>
@@ -513,18 +513,18 @@ const ReorderManager: React.FC = () => {
                   <Textarea
                     id="notes"
                     value={poFormData.notes}
-                    onChange={(e) => setPOFormData({...poFormData, notes: e.target.value})}
+                    onChange={(e) => setPOFormData({ ...poFormData, notes: e.target.value })}
                     placeholder="Additional notes for the purchase order"
-                    rows={3}
-                  />
+                    rows={3} />
+
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded">
                   <div className="flex justify-between text-sm">
                     <span>Estimated Total:</span>
                     <span className="font-medium">
-                      {formatCurrency(selectedItems.reduce((sum, item) => 
-                        sum + (item.unit_cost * item.reorder_quantity), 0
+                      {formatCurrency(selectedItems.reduce((sum, item) =>
+                      sum + item.unit_cost * item.reorder_quantity, 0
                       ))}
                     </span>
                   </div>
@@ -535,10 +535,10 @@ const ReorderManager: React.FC = () => {
                 <Button variant="outline" onClick={() => setShowCreatePODialog(false)}>
                   Cancel
                 </Button>
-                <Button 
+                <Button
                   onClick={handleCreatePO}
-                  disabled={!selectedSupplier || selectedItems.length === 0}
-                >
+                  disabled={!selectedSupplier || selectedItems.length === 0}>
+
                   Create Purchase Order
                 </Button>
               </div>
@@ -604,8 +604,8 @@ const ReorderManager: React.FC = () => {
       </div>
 
       {/* Alert for critical items */}
-      {summaryStats.highPriority > 0 && (
-        <Alert>
+      {summaryStats.highPriority > 0 &&
+      <Alert>
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Critical Inventory Alert</AlertTitle>
           <AlertDescription>
@@ -613,7 +613,7 @@ const ReorderManager: React.FC = () => {
             {summaryStats.outOfStock > 0 && ` ${summaryStats.outOfStock} items are completely out of stock.`}
           </AlertDescription>
         </Alert>
-      )}
+      }
 
       {/* Tabs */}
       <Tabs defaultValue="reorder" className="space-y-4">
@@ -633,14 +633,14 @@ const ReorderManager: React.FC = () => {
             columns={reorderColumns}
             loading={loading}
             onView={(item) => {
-              const isSelected = selectedItems.some(si => si.id === item.id);
+              const isSelected = selectedItems.some((si) => si.id === item.id);
               if (isSelected) {
-                setSelectedItems(selectedItems.filter(si => si.id !== item.id));
+                setSelectedItems(selectedItems.filter((si) => si.id !== item.id));
               } else {
                 setSelectedItems([...selectedItems, item]);
               }
-            }}
-          />
+            }} />
+
         </TabsContent>
 
         <TabsContent value="purchase-orders" className="space-y-4">
@@ -654,12 +654,12 @@ const ReorderManager: React.FC = () => {
                 title: "Purchase Order Details",
                 description: `${po.po_number} - ${formatCurrency(po.total_amount)}`
               });
-            }}
-          />
+            }} />
+
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ReorderManager;

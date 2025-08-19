@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
+import {
   Building2,
   Plus,
   Search,
@@ -24,8 +24,8 @@ import {
   FileText,
   Edit,
   Trash2,
-  Eye
-} from 'lucide-react';
+  Eye } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import DataTable from '@/components/DataTable';
 
@@ -110,7 +110,7 @@ const SupplierManager: React.FC = () => {
       if (poError) throw poError;
 
       // Calculate supplier statistics
-      const statsMap: { [key: number]: SupplierStats } = {};
+      const statsMap: {[key: number]: SupplierStats;} = {};
       const purchaseOrders = purchaseOrdersData?.List || [];
 
       purchaseOrders.forEach((po: any) => {
@@ -128,7 +128,7 @@ const SupplierManager: React.FC = () => {
         const stats = statsMap[po.supplier_id];
         stats.total_orders++;
         stats.total_value += po.total_amount || 0;
-        
+
         if (new Date(po.order_date) > new Date(stats.last_order_date)) {
           stats.last_order_date = po.order_date;
         }
@@ -138,13 +138,13 @@ const SupplierManager: React.FC = () => {
           const expectedDate = new Date(po.expected_delivery_date);
           const actualDate = new Date(po.actual_delivery_date);
           const deliveryTime = Math.ceil((actualDate.getTime() - expectedDate.getTime()) / (1000 * 60 * 60 * 24));
-          
+
           stats.average_delivery_time = (stats.average_delivery_time + Math.abs(deliveryTime)) / 2;
-          
+
           if (actualDate <= expectedDate) {
-            stats.on_time_delivery_rate = ((stats.on_time_delivery_rate * (stats.total_orders - 1)) + 1) / stats.total_orders;
+            stats.on_time_delivery_rate = (stats.on_time_delivery_rate * (stats.total_orders - 1) + 1) / stats.total_orders;
           } else {
-            stats.on_time_delivery_rate = (stats.on_time_delivery_rate * (stats.total_orders - 1)) / stats.total_orders;
+            stats.on_time_delivery_rate = stats.on_time_delivery_rate * (stats.total_orders - 1) / stats.total_orders;
           }
         }
       });
@@ -241,7 +241,7 @@ const SupplierManager: React.FC = () => {
   const handleDeleteSupplier = async (supplier: Supplier) => {
     try {
       // Check if supplier has any purchase orders
-      const stats = supplierStats.find(s => s.supplier_id === supplier.id);
+      const stats = supplierStats.find((s) => s.supplier_id === supplier.id);
       if (stats && stats.total_orders > 0) {
         toast({
           title: "Cannot Delete",
@@ -278,42 +278,42 @@ const SupplierManager: React.FC = () => {
   };
 
   const getSupplierStats = (supplierId: number) => {
-    return supplierStats.find(s => s.supplier_id === supplierId);
+    return supplierStats.find((s) => s.supplier_id === supplierId);
   };
 
   const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`h-3 w-3 ${
-          i < rating 
-            ? 'text-yellow-400 fill-yellow-400' 
-            : 'text-gray-300'
-        }`}
-      />
-    ));
+    return Array.from({ length: 5 }, (_, i) =>
+    <Star
+      key={i}
+      className={`h-3 w-3 ${
+      i < rating ?
+      'text-yellow-400 fill-yellow-400' :
+      'text-gray-300'}`
+      } />
+
+    );
   };
 
   const columns = [
-    {
-      key: 'name',
-      title: 'Supplier',
-      sortable: true,
-      render: (value: string, supplier: Supplier) => (
-        <div className="flex items-center space-x-3">
+  {
+    key: 'name',
+    title: 'Supplier',
+    sortable: true,
+    render: (value: string, supplier: Supplier) =>
+    <div className="flex items-center space-x-3">
           <Building2 className="h-5 w-5 text-gray-400" />
           <div>
             <div className="font-medium">{value}</div>
             <div className="text-sm text-gray-500">{supplier.contact_person}</div>
           </div>
         </div>
-      )
-    },
-    {
-      key: 'email',
-      title: 'Contact',
-      render: (value: string, supplier: Supplier) => (
-        <div>
+
+  },
+  {
+    key: 'email',
+    title: 'Contact',
+    render: (value: string, supplier: Supplier) =>
+    <div>
           <div className="text-sm flex items-center">
             <Mail className="h-3 w-3 mr-1 text-gray-400" />
             {value || 'No email'}
@@ -323,84 +323,84 @@ const SupplierManager: React.FC = () => {
             {supplier.phone || 'No phone'}
           </div>
         </div>
-      )
-    },
-    {
-      key: 'rating',
-      title: 'Rating',
-      sortable: true,
-      render: (value: number) => (
-        <div className="flex items-center space-x-1">
+
+  },
+  {
+    key: 'rating',
+    title: 'Rating',
+    sortable: true,
+    render: (value: number) =>
+    <div className="flex items-center space-x-1">
           {renderStars(value)}
           <span className="text-sm text-gray-600 ml-2">({value})</span>
         </div>
-      )
-    },
-    {
-      key: 'lead_time_days',
-      title: 'Lead Time',
-      sortable: true,
-      render: (value: number) => (
-        <div className="flex items-center text-sm">
+
+  },
+  {
+    key: 'lead_time_days',
+    title: 'Lead Time',
+    sortable: true,
+    render: (value: number) =>
+    <div className="flex items-center text-sm">
           <Clock className="h-3 w-3 mr-1 text-gray-400" />
           {value} days
         </div>
-      )
-    },
-    {
-      key: 'id',
-      title: 'Performance',
-      render: (value: number) => {
-        const stats = getSupplierStats(value);
-        return (
-          <div>
+
+  },
+  {
+    key: 'id',
+    title: 'Performance',
+    render: (value: number) => {
+      const stats = getSupplierStats(value);
+      return (
+        <div>
             <div className="text-sm font-medium">
               {stats ? `${stats.total_orders} orders` : '0 orders'}
             </div>
             <div className="text-xs text-gray-500">
               {stats ? formatCurrency(stats.total_value) : '$0.00'}
             </div>
-          </div>
-        );
-      }
-    },
-    {
-      key: 'minimum_order_amount',
-      title: 'Min Order',
-      sortable: true,
-      render: (value: number) => formatCurrency(value)
-    },
-    {
-      key: 'is_active',
-      title: 'Status',
-      render: (value: boolean) => (
-        <Badge variant={value ? "default" : "secondary"}>
+          </div>);
+
+    }
+  },
+  {
+    key: 'minimum_order_amount',
+    title: 'Min Order',
+    sortable: true,
+    render: (value: number) => formatCurrency(value)
+  },
+  {
+    key: 'is_active',
+    title: 'Status',
+    render: (value: boolean) =>
+    <Badge variant={value ? "default" : "secondary"}>
           {value ? 'Active' : 'Inactive'}
         </Badge>
-      )
-    }
-  ];
 
-  const SupplierForm = ({ isEdit = false }: { isEdit?: boolean }) => (
-    <div className="space-y-4 max-h-96 overflow-y-auto">
+  }];
+
+
+  const SupplierForm = ({ isEdit = false }: {isEdit?: boolean;}) =>
+  <div className="space-y-4 max-h-96 overflow-y-auto">
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="name">Supplier Name *</Label>
           <Input
-            id="name"
-            value={formData.name || ''}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Enter supplier name"
-          />
+          id="name"
+          value={formData.name || ''}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          placeholder="Enter supplier name" />
+
         </div>
         <div>
           <Label htmlFor="contact_person">Contact Person</Label>
           <Input
-            id="contact_person"
-            value={formData.contact_person || ''}
-            onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-            placeholder="Contact person name"
-          />
+          id="contact_person"
+          value={formData.contact_person || ''}
+          onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
+          placeholder="Contact person name" />
+
         </div>
       </div>
 
@@ -408,65 +408,65 @@ const SupplierManager: React.FC = () => {
         <div>
           <Label htmlFor="email">Email</Label>
           <Input
-            id="email"
-            type="email"
-            value={formData.email || ''}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            placeholder="supplier@example.com"
-          />
+          id="email"
+          type="email"
+          value={formData.email || ''}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          placeholder="supplier@example.com" />
+
         </div>
         <div>
           <Label htmlFor="phone">Phone</Label>
           <Input
-            id="phone"
-            value={formData.phone || ''}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            placeholder="(555) 123-4567"
-          />
+          id="phone"
+          value={formData.phone || ''}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          placeholder="(555) 123-4567" />
+
         </div>
       </div>
 
       <div>
         <Label htmlFor="address">Address</Label>
         <Textarea
-          id="address"
-          value={formData.address || ''}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          placeholder="Enter full address"
-          rows={2}
-        />
+        id="address"
+        value={formData.address || ''}
+        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+        placeholder="Enter full address"
+        rows={2} />
+
       </div>
 
       <div>
         <Label htmlFor="website">Website</Label>
         <Input
-          id="website"
-          value={formData.website || ''}
-          onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-          placeholder="https://supplier.com"
-        />
+        id="website"
+        value={formData.website || ''}
+        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+        placeholder="https://supplier.com" />
+
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="payment_terms">Payment Terms</Label>
           <Input
-            id="payment_terms"
-            value={formData.payment_terms || ''}
-            onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
-            placeholder="Net 30, COD, etc."
-          />
+          id="payment_terms"
+          value={formData.payment_terms || ''}
+          onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
+          placeholder="Net 30, COD, etc." />
+
         </div>
         <div>
           <Label htmlFor="lead_time_days">Lead Time (Days)</Label>
           <Input
-            id="lead_time_days"
-            type="number"
-            min="0"
-            value={formData.lead_time_days || ''}
-            onChange={(e) => setFormData({ ...formData, lead_time_days: parseInt(e.target.value) })}
-            placeholder="7"
-          />
+          id="lead_time_days"
+          type="number"
+          min="0"
+          value={formData.lead_time_days || ''}
+          onChange={(e) => setFormData({ ...formData, lead_time_days: parseInt(e.target.value) })}
+          placeholder="7" />
+
         </div>
       </div>
 
@@ -474,34 +474,34 @@ const SupplierManager: React.FC = () => {
         <div>
           <Label htmlFor="minimum_order_amount">Min Order ($)</Label>
           <Input
-            id="minimum_order_amount"
-            type="number"
-            step="0.01"
-            min="0"
-            value={formData.minimum_order_amount ? (formData.minimum_order_amount / 100).toFixed(2) : ''}
-            onChange={(e) => setFormData({ ...formData, minimum_order_amount: Math.round(parseFloat(e.target.value) * 100) })}
-            placeholder="0.00"
-          />
+          id="minimum_order_amount"
+          type="number"
+          step="0.01"
+          min="0"
+          value={formData.minimum_order_amount ? (formData.minimum_order_amount / 100).toFixed(2) : ''}
+          onChange={(e) => setFormData({ ...formData, minimum_order_amount: Math.round(parseFloat(e.target.value) * 100) })}
+          placeholder="0.00" />
+
         </div>
         <div>
           <Label htmlFor="discount_percentage">Discount %</Label>
           <Input
-            id="discount_percentage"
-            type="number"
-            step="0.1"
-            min="0"
-            max="100"
-            value={formData.discount_percentage || ''}
-            onChange={(e) => setFormData({ ...formData, discount_percentage: parseFloat(e.target.value) })}
-            placeholder="0.0"
-          />
+          id="discount_percentage"
+          type="number"
+          step="0.1"
+          min="0"
+          max="100"
+          value={formData.discount_percentage || ''}
+          onChange={(e) => setFormData({ ...formData, discount_percentage: parseFloat(e.target.value) })}
+          placeholder="0.0" />
+
         </div>
         <div>
           <Label htmlFor="rating">Rating (1-5)</Label>
           <Select
-            value={formData.rating?.toString() || '0'}
-            onValueChange={(value) => setFormData({ ...formData, rating: parseInt(value) })}
-          >
+          value={formData.rating?.toString() || '0'}
+          onValueChange={(value) => setFormData({ ...formData, rating: parseInt(value) })}>
+
             <SelectTrigger>
               <SelectValue placeholder="Rating" />
             </SelectTrigger>
@@ -519,20 +519,20 @@ const SupplierManager: React.FC = () => {
 
       <div className="flex items-center space-x-2">
         <Switch
-          id="is_active"
-          checked={formData.is_active !== false}
-          onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-        />
+        id="is_active"
+        checked={formData.is_active !== false}
+        onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })} />
+
         <Label htmlFor="is_active">Active</Label>
       </div>
-    </div>
-  );
+    </div>;
+
 
   const totalSuppliers = suppliers.length;
-  const activeSuppliers = suppliers.filter(s => s.is_active).length;
-  const averageRating = suppliers.length > 0 
-    ? suppliers.reduce((sum, s) => sum + s.rating, 0) / suppliers.length 
-    : 0;
+  const activeSuppliers = suppliers.filter((s) => s.is_active).length;
+  const averageRating = suppliers.length > 0 ?
+  suppliers.reduce((sum, s) => sum + s.rating, 0) / suppliers.length :
+  0;
   const totalOrderValue = supplierStats.reduce((sum, s) => sum + s.total_value, 0);
 
   return (
@@ -614,8 +614,8 @@ const SupplierManager: React.FC = () => {
                   placeholder="Search suppliers..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+                  className="pl-10" />
+
               </div>
             </div>
             <div>
@@ -672,8 +672,8 @@ const SupplierManager: React.FC = () => {
             title: "Supplier Details",
             description: `${supplier.name} - ${stats ? `${stats.total_orders} orders` : 'No orders'}`
           });
-        }}
-      />
+        }} />
+
 
       {/* Edit Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
@@ -692,8 +692,8 @@ const SupplierManager: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SupplierManager;

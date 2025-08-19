@@ -9,19 +9,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  Package, 
+import {
+  Plus,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+  Eye,
+  Package,
   Barcode,
   Upload,
   Download,
-  AlertTriangle
-} from 'lucide-react';
+  AlertTriangle } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import DataTable from '@/components/DataTable';
 
@@ -219,128 +219,128 @@ const ItemManagement: React.FC = () => {
   };
 
   const getCategoryName = (categoryId: number) => {
-    const category = categories.find(c => c.id === categoryId);
+    const category = categories.find((c) => c.id === categoryId);
     return category?.name || 'Uncategorized';
   };
 
   const columns = [
-    {
-      key: 'sku',
-      title: 'SKU',
-      sortable: true,
-      render: (value: string, item: InventoryItem) => (
-        <div className="font-mono text-sm">{value}</div>
-      )
-    },
-    {
-      key: 'name',
-      title: 'Item Name',
-      sortable: true,
-      render: (value: string, item: InventoryItem) => (
-        <div>
+  {
+    key: 'sku',
+    title: 'SKU',
+    sortable: true,
+    render: (value: string, item: InventoryItem) =>
+    <div className="font-mono text-sm">{value}</div>
+
+  },
+  {
+    key: 'name',
+    title: 'Item Name',
+    sortable: true,
+    render: (value: string, item: InventoryItem) =>
+    <div>
           <div className="font-medium">{value}</div>
           <div className="text-sm text-gray-500">{getCategoryName(item.category_id)}</div>
         </div>
-      )
-    },
-    {
-      key: 'manufacturer',
-      title: 'Manufacturer',
-      sortable: true
-    },
-    {
-      key: 'unit_cost',
-      title: 'Cost',
-      sortable: true,
-      render: (value: number) => formatCurrency(value)
-    },
-    {
-      key: 'unit_price',
-      title: 'Price',
-      sortable: true,
-      render: (value: number) => formatCurrency(value)
-    },
-    {
-      key: 'reorder_point',
-      title: 'Reorder Point',
-      sortable: true,
-      render: (value: number, item: InventoryItem) => (
-        <Badge variant={value > 0 ? "default" : "secondary"}>
+
+  },
+  {
+    key: 'manufacturer',
+    title: 'Manufacturer',
+    sortable: true
+  },
+  {
+    key: 'unit_cost',
+    title: 'Cost',
+    sortable: true,
+    render: (value: number) => formatCurrency(value)
+  },
+  {
+    key: 'unit_price',
+    title: 'Price',
+    sortable: true,
+    render: (value: number) => formatCurrency(value)
+  },
+  {
+    key: 'reorder_point',
+    title: 'Reorder Point',
+    sortable: true,
+    render: (value: number, item: InventoryItem) =>
+    <Badge variant={value > 0 ? "default" : "secondary"}>
           {value} {item.unit_of_measure}
         </Badge>
-      )
-    },
-    {
-      key: 'is_active',
-      title: 'Status',
-      render: (value: boolean) => (
-        <Badge variant={value ? "default" : "secondary"}>
+
+  },
+  {
+    key: 'is_active',
+    title: 'Status',
+    render: (value: boolean) =>
+    <Badge variant={value ? "default" : "secondary"}>
           {value ? 'Active' : 'Inactive'}
         </Badge>
-      )
-    }
-  ];
 
-  const ItemForm = ({ isEdit = false }: { isEdit?: boolean }) => (
-    <div className="space-y-4 max-h-96 overflow-y-auto">
+  }];
+
+
+  const ItemForm = ({ isEdit = false }: {isEdit?: boolean;}) =>
+  <div className="space-y-4 max-h-96 overflow-y-auto">
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="sku">SKU *</Label>
           <Input
-            id="sku"
-            value={formData.sku || ''}
-            onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-            placeholder="Enter SKU"
-          />
+          id="sku"
+          value={formData.sku || ''}
+          onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+          placeholder="Enter SKU" />
+
         </div>
         <div>
           <Label htmlFor="name">Item Name *</Label>
           <Input
-            id="name"
-            value={formData.name || ''}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Enter item name"
-          />
+          id="name"
+          value={formData.name || ''}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          placeholder="Enter item name" />
+
         </div>
       </div>
 
       <div>
         <Label htmlFor="description">Description</Label>
         <Textarea
-          id="description"
-          value={formData.description || ''}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          placeholder="Enter description"
-        />
+        id="description"
+        value={formData.description || ''}
+        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+        placeholder="Enter description" />
+
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="category">Category</Label>
           <Select
-            value={formData.category_id?.toString() || ''}
-            onValueChange={(value) => setFormData({ ...formData, category_id: parseInt(value) })}
-          >
+          value={formData.category_id?.toString() || ''}
+          onValueChange={(value) => setFormData({ ...formData, category_id: parseInt(value) })}>
+
             <SelectTrigger>
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((category) => (
-                <SelectItem key={category.id} value={category.id.toString()}>
+              {categories.map((category) =>
+            <SelectItem key={category.id} value={category.id.toString()}>
                   {category.name}
                 </SelectItem>
-              ))}
+            )}
             </SelectContent>
           </Select>
         </div>
         <div>
           <Label htmlFor="manufacturer">Manufacturer</Label>
           <Input
-            id="manufacturer"
-            value={formData.manufacturer || ''}
-            onChange={(e) => setFormData({ ...formData, manufacturer: e.target.value })}
-            placeholder="Enter manufacturer"
-          />
+          id="manufacturer"
+          value={formData.manufacturer || ''}
+          onChange={(e) => setFormData({ ...formData, manufacturer: e.target.value })}
+          placeholder="Enter manufacturer" />
+
         </div>
       </div>
 
@@ -348,33 +348,33 @@ const ItemManagement: React.FC = () => {
         <div>
           <Label htmlFor="unit_cost">Unit Cost ($)</Label>
           <Input
-            id="unit_cost"
-            type="number"
-            step="0.01"
-            value={formData.unit_cost ? (formData.unit_cost / 100).toFixed(2) : ''}
-            onChange={(e) => setFormData({ ...formData, unit_cost: Math.round(parseFloat(e.target.value) * 100) })}
-            placeholder="0.00"
-          />
+          id="unit_cost"
+          type="number"
+          step="0.01"
+          value={formData.unit_cost ? (formData.unit_cost / 100).toFixed(2) : ''}
+          onChange={(e) => setFormData({ ...formData, unit_cost: Math.round(parseFloat(e.target.value) * 100) })}
+          placeholder="0.00" />
+
         </div>
         <div>
           <Label htmlFor="unit_price">Unit Price ($)</Label>
           <Input
-            id="unit_price"
-            type="number"
-            step="0.01"
-            value={formData.unit_price ? (formData.unit_price / 100).toFixed(2) : ''}
-            onChange={(e) => setFormData({ ...formData, unit_price: Math.round(parseFloat(e.target.value) * 100) })}
-            placeholder="0.00"
-          />
+          id="unit_price"
+          type="number"
+          step="0.01"
+          value={formData.unit_price ? (formData.unit_price / 100).toFixed(2) : ''}
+          onChange={(e) => setFormData({ ...formData, unit_price: Math.round(parseFloat(e.target.value) * 100) })}
+          placeholder="0.00" />
+
         </div>
         <div>
           <Label htmlFor="unit_of_measure">Unit of Measure</Label>
           <Input
-            id="unit_of_measure"
-            value={formData.unit_of_measure || ''}
-            onChange={(e) => setFormData({ ...formData, unit_of_measure: e.target.value })}
-            placeholder="e.g., EA, BOX, LB"
-          />
+          id="unit_of_measure"
+          value={formData.unit_of_measure || ''}
+          onChange={(e) => setFormData({ ...formData, unit_of_measure: e.target.value })}
+          placeholder="e.g., EA, BOX, LB" />
+
         </div>
       </div>
 
@@ -382,35 +382,35 @@ const ItemManagement: React.FC = () => {
         <div>
           <Label htmlFor="reorder_point">Reorder Point</Label>
           <Input
-            id="reorder_point"
-            type="number"
-            value={formData.reorder_point || ''}
-            onChange={(e) => setFormData({ ...formData, reorder_point: parseInt(e.target.value) })}
-            placeholder="0"
-          />
+          id="reorder_point"
+          type="number"
+          value={formData.reorder_point || ''}
+          onChange={(e) => setFormData({ ...formData, reorder_point: parseInt(e.target.value) })}
+          placeholder="0" />
+
         </div>
         <div>
           <Label htmlFor="reorder_quantity">Reorder Quantity</Label>
           <Input
-            id="reorder_quantity"
-            type="number"
-            value={formData.reorder_quantity || ''}
-            onChange={(e) => setFormData({ ...formData, reorder_quantity: parseInt(e.target.value) })}
-            placeholder="0"
-          />
+          id="reorder_quantity"
+          type="number"
+          value={formData.reorder_quantity || ''}
+          onChange={(e) => setFormData({ ...formData, reorder_quantity: parseInt(e.target.value) })}
+          placeholder="0" />
+
         </div>
       </div>
 
       <div className="flex items-center space-x-2">
         <Switch
-          id="is_active"
-          checked={formData.is_active !== false}
-          onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-        />
+        id="is_active"
+        checked={formData.is_active !== false}
+        onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })} />
+
         <Label htmlFor="is_active">Active</Label>
       </div>
-    </div>
-  );
+    </div>;
+
 
   return (
     <div className="p-6 space-y-6">
@@ -461,8 +461,8 @@ const ItemManagement: React.FC = () => {
                   placeholder="Search items..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+                  className="pl-10" />
+
               </div>
             </div>
             <div className="w-48">
@@ -472,11 +472,11 @@ const ItemManagement: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((category) => (
-                    <SelectItem key={category.id} value={category.id.toString()}>
+                  {categories.map((category) =>
+                  <SelectItem key={category.id} value={category.id.toString()}>
                       {category.name}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -506,8 +506,8 @@ const ItemManagement: React.FC = () => {
             title: "View Item",
             description: `Viewing details for ${item.name}`
           });
-        }}
-      />
+        }} />
+
 
       {/* Edit Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
@@ -526,8 +526,8 @@ const ItemManagement: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ItemManagement;

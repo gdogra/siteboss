@@ -25,6 +25,10 @@ import CustomerPortalDashboard from "./pages/CustomerPortalDashboard";
 
 const PlatformAdminDashboard = React.lazy(() => import("./pages/PlatformAdminDashboard"));
 const InventoryManagementPage = React.lazy(() => import("./pages/InventoryManagementPage"));
+const ProposalManagementPage = React.lazy(() => import("./pages/ProposalManagementPage"));
+const ProposalViewPage = React.lazy(() => import("./pages/ProposalViewPage"));
+const AdvancedTimeTrackingPage = React.lazy(() => import("./pages/AdvancedTimeTrackingPage"));
+const PermitManagementPage = React.lazy(() => import("./pages/PermitManagementPage"));
 import ClientAuthGuard from "./components/ClientAuthGuard";
 import FloatingChatWidget from "./components/FloatingChatWidget";
 
@@ -94,6 +98,22 @@ const App = () =>
               <InventoryManagementPage />
             </React.Suspense>
           } />
+          <Route path="/proposals" element={
+          <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div></div>}>
+              <ProposalManagementPage />
+            </React.Suspense>
+          } />
+          <Route path="/proposal/:id/view" element={
+          <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div></div>}>
+              <ProposalViewPage />
+            </React.Suspense>
+          } />
+          <Route path="/permit-management" element={
+          <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div></div>}>
+              <PermitManagementPage />
+            </React.Suspense>
+          } />
+          <Route path="/advanced-time-tracking" element={<AdvancedTimeTrackingPage />} />
           <Route path="/client-messages" element={<Navigate to="/client/messages" replace />} />
           
           <Route path="*" element={<NotFound />} />

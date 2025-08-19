@@ -9,18 +9,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Settings, 
-  Save, 
-  RefreshCw, 
-  Database, 
-  Globe, 
-  Shield, 
+import {
+  Settings,
+  Save,
+  RefreshCw,
+  Database,
+  Globe,
+  Shield,
   Bell,
   Mail,
   Server,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle } from
+'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface SystemConfig {
@@ -60,7 +60,7 @@ const SystemConfigurationPanel = () => {
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
   const handleConfigChange = (key: keyof SystemConfig, value: any) => {
-    setConfig(prev => ({ ...prev, [key]: value }));
+    setConfig((prev) => ({ ...prev, [key]: value }));
   };
 
   const saveConfiguration = async () => {
@@ -68,12 +68,12 @@ const SystemConfigurationPanel = () => {
     try {
       // In a real implementation, this would save to a system_settings table
       // For now, we'll simulate the save operation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setLastSaved(new Date());
       toast({
         title: "Configuration Saved",
-        description: "System configuration has been updated successfully.",
+        description: "System configuration has been updated successfully."
       });
     } catch (error) {
       console.error('Error saving configuration:', error);
@@ -105,7 +105,7 @@ const SystemConfigurationPanel = () => {
     });
     toast({
       title: "Reset Complete",
-      description: "Configuration has been reset to defaults",
+      description: "Configuration has been reset to defaults"
     });
   };
 
@@ -118,11 +118,11 @@ const SystemConfigurationPanel = () => {
             System Configuration
           </CardTitle>
           <div className="flex items-center space-x-2">
-            {lastSaved && (
-              <span className="text-xs text-gray-500">
+            {lastSaved &&
+            <span className="text-xs text-gray-500">
                 Last saved: {lastSaved.toLocaleTimeString()}
               </span>
-            )}
+            }
             <Button onClick={resetToDefaults} variant="outline" size="sm">
               <RefreshCw className="h-4 w-4 mr-2" />
               Reset
@@ -163,8 +163,8 @@ const SystemConfigurationPanel = () => {
                   id="siteName"
                   value={config.siteName}
                   onChange={(e) => handleConfigChange('siteName', e.target.value)}
-                  placeholder="Enter site name"
-                />
+                  placeholder="Enter site name" />
+
               </div>
               
               <div>
@@ -174,8 +174,8 @@ const SystemConfigurationPanel = () => {
                   value={config.siteDescription}
                   onChange={(e) => handleConfigChange('siteDescription', e.target.value)}
                   placeholder="Enter site description"
-                  rows={3}
-                />
+                  rows={3} />
+
               </div>
               
               <div>
@@ -185,16 +185,16 @@ const SystemConfigurationPanel = () => {
                   type="email"
                   value={config.adminEmail}
                   onChange={(e) => handleConfigChange('adminEmail', e.target.value)}
-                  placeholder="admin@example.com"
-                />
+                  placeholder="admin@example.com" />
+
               </div>
 
               <div>
                 <Label htmlFor="defaultUserRole">Default User Role</Label>
-                <Select 
-                  value={config.defaultUserRole} 
-                  onValueChange={(value) => handleConfigChange('defaultUserRole', value)}
-                >
+                <Select
+                  value={config.defaultUserRole}
+                  onValueChange={(value) => handleConfigChange('defaultUserRole', value)}>
+
                   <SelectTrigger>
                     <SelectValue placeholder="Select default role" />
                   </SelectTrigger>
@@ -217,8 +217,8 @@ const SystemConfigurationPanel = () => {
                 <Switch
                   id="registrationEnabled"
                   checked={config.registrationEnabled}
-                  onCheckedChange={(checked) => handleConfigChange('registrationEnabled', checked)}
-                />
+                  onCheckedChange={(checked) => handleConfigChange('registrationEnabled', checked)} />
+
               </div>
 
               <div className="flex items-center justify-between">
@@ -229,8 +229,8 @@ const SystemConfigurationPanel = () => {
                 <Switch
                   id="maintenanceMode"
                   checked={config.maintenanceMode}
-                  onCheckedChange={(checked) => handleConfigChange('maintenanceMode', checked)}
-                />
+                  onCheckedChange={(checked) => handleConfigChange('maintenanceMode', checked)} />
+
               </div>
 
               <div>
@@ -241,8 +241,8 @@ const SystemConfigurationPanel = () => {
                   min="5"
                   max="480"
                   value={config.sessionTimeout}
-                  onChange={(e) => handleConfigChange('sessionTimeout', parseInt(e.target.value))}
-                />
+                  onChange={(e) => handleConfigChange('sessionTimeout', parseInt(e.target.value))} />
+
               </div>
 
               <div>
@@ -252,18 +252,18 @@ const SystemConfigurationPanel = () => {
                   type="number"
                   min="1"
                   value={config.maxUsers}
-                  onChange={(e) => handleConfigChange('maxUsers', parseInt(e.target.value))}
-                />
+                  onChange={(e) => handleConfigChange('maxUsers', parseInt(e.target.value))} />
+
               </div>
 
-              {config.maintenanceMode && (
-                <Alert>
+              {config.maintenanceMode &&
+              <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>
                     Maintenance mode is enabled. Users will not be able to access the site.
                   </AlertDescription>
                 </Alert>
-              )}
+              }
             </div>
           </TabsContent>
 
@@ -277,8 +277,8 @@ const SystemConfigurationPanel = () => {
                 <Switch
                   id="emailNotifications"
                   checked={config.emailNotifications}
-                  onCheckedChange={(checked) => handleConfigChange('emailNotifications', checked)}
-                />
+                  onCheckedChange={(checked) => handleConfigChange('emailNotifications', checked)} />
+
               </div>
 
               <div className="space-y-4">
@@ -315,8 +315,8 @@ const SystemConfigurationPanel = () => {
                 <Switch
                   id="backupEnabled"
                   checked={config.backupEnabled}
-                  onCheckedChange={(checked) => handleConfigChange('backupEnabled', checked)}
-                />
+                  onCheckedChange={(checked) => handleConfigChange('backupEnabled', checked)} />
+
               </div>
 
               <div className="flex items-center justify-between">
@@ -327,16 +327,16 @@ const SystemConfigurationPanel = () => {
                 <Switch
                   id="debugMode"
                   checked={config.debugMode}
-                  onCheckedChange={(checked) => handleConfigChange('debugMode', checked)}
-                />
+                  onCheckedChange={(checked) => handleConfigChange('debugMode', checked)} />
+
               </div>
 
               <div>
                 <Label htmlFor="logLevel">Log Level</Label>
-                <Select 
-                  value={config.logLevel} 
-                  onValueChange={(value) => handleConfigChange('logLevel', value)}
-                >
+                <Select
+                  value={config.logLevel}
+                  onValueChange={(value) => handleConfigChange('logLevel', value)}>
+
                   <SelectTrigger>
                     <SelectValue placeholder="Select log level" />
                   </SelectTrigger>
@@ -357,24 +357,24 @@ const SystemConfigurationPanel = () => {
                   min="100"
                   max="10000"
                   value={config.apiRateLimit}
-                  onChange={(e) => handleConfigChange('apiRateLimit', parseInt(e.target.value))}
-                />
+                  onChange={(e) => handleConfigChange('apiRateLimit', parseInt(e.target.value))} />
+
               </div>
 
-              {config.debugMode && (
-                <Alert>
+              {config.debugMode &&
+              <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>
                     Debug mode is enabled. This may impact performance and should not be used in production.
                   </AlertDescription>
                 </Alert>
-              )}
+              }
             </div>
           </TabsContent>
         </Tabs>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default SystemConfigurationPanel;
