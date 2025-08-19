@@ -16,8 +16,8 @@ import {
   FileText,
   Clock,
   TrendingUp,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle } from
+'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
@@ -26,6 +26,7 @@ import LogForm from '@/components/LogForm';
 import PaymentForm from '@/components/PaymentForm';
 import SubcontractorForm from '@/components/SubcontractorForm';
 import DocumentForm from '@/components/DocumentForm';
+import WorkPeriodForm from '@/components/WorkPeriodForm';
 
 interface Project {
   id: number;
@@ -79,12 +80,26 @@ interface Document {
   is_client_visible: boolean;
 }
 
+interface WorkPeriod {
+  id: number;
+  project_id: number;
+  start_date: string;
+  end_date: string;
+  description: string;
+  status: string;
+  team_members: string;
+  estimated_hours: number;
+  actual_hours: number;
+  created_at: string;
+}
+
 const AdminDashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [recentLogs, setRecentLogs] = useState<Log[]>([]);
   const [recentPayments, setRecentPayments] = useState<Payment[]>([]);
   const [subcontractors, setSubcontractors] = useState<Subcontractor[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
+  const [workPeriods, setWorkPeriods] = useState<WorkPeriod[]>([]);
   const [stats, setStats] = useState({
     totalProjects: 0,
     activeProjects: 0,
@@ -102,6 +117,7 @@ const AdminDashboard = () => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showSubcontractorForm, setShowSubcontractorForm] = useState(false);
   const [showDocumentForm, setShowDocumentForm] = useState(false);
+  const [showWorkPeriodForm, setShowWorkPeriodForm] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
 
   const navigate = useNavigate();
@@ -190,20 +206,31 @@ const AdminDashboard = () => {
       if (documentsResponse.error) throw documentsResponse.error;
       setDocuments(documentsResponse.data?.List || []);
 
+      // Load work periods
+      const workPeriodsResponse = await window.ezsite.apis.tablePage(33268, {
+        PageNo: 1,
+        PageSize: 20,
+        OrderByField: 'start_date',
+        IsAsc: false
+      });
+
+      if (workPeriodsResponse.error) throw workPeriodsResponse.error;
+      setWorkPeriods(workPeriodsResponse.data?.List || []);
+
       // Calculate stats
       const activeProjects = projectsData.filter((p: Project) => p.status === 'In Progress').length;
       const completedProjects = projectsData.filter((p: Project) => p.status === 'Completed').length;
-      const totalRevenue = projectsData
-        .filter((p: Project) => p.status === 'Completed')
-        .reduce((sum: number, p: Project) => sum + (p.budget || 0), 0);
+      const totalRevenue = projectsData.
+      filter((p: Project) => p.status === 'Completed').
+      reduce((sum: number, p: Project) => sum + (p.budget || 0), 0);
 
       setStats({
         totalProjects: projectsData.length,
         activeProjects,
         completedProjects,
         totalRevenue,
-        pendingPayments: (paymentsResponse.data?.List || [])
-          .filter((p: Payment) => p.status === 'Pending').length
+        pendingPayments: (paymentsResponse.data?.List || []).
+        filter((p: Payment) => p.status === 'Pending').length
       });
 
     } catch (error) {
@@ -220,11 +247,11 @@ const AdminDashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Planning': return 'bg-blue-100 text-blue-800';
-      case 'In Progress': return 'bg-green-100 text-green-800';
-      case 'Completed': return 'bg-gray-100 text-gray-800';
-      case 'On Hold': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Planning':return 'bg-blue-100 text-blue-800';
+      case 'In Progress':return 'bg-green-100 text-green-800';
+      case 'Completed':return 'bg-gray-100 text-gray-800';
+      case 'On Hold':return 'bg-yellow-100 text-yellow-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -258,6 +285,9 @@ const AdminDashboard = () => {
       case 'document':
         setShowDocumentForm(true);
         break;
+      case 'workperiod':
+        setShowWorkPeriodForm(true);
+        break;
     }
   };
 
@@ -281,6 +311,9 @@ const AdminDashboard = () => {
           break;
         case 'document':
           tableId = 32236;
+          break;
+        case 'workperiod':
+          tableId = 33268;
           break;
         default:
           return;
@@ -311,6 +344,7 @@ const AdminDashboard = () => {
     setShowPaymentForm(false);
     setShowSubcontractorForm(false);
     setShowDocumentForm(false);
+    setShowWorkPeriodForm(false);
     setEditingItem(null);
   };
 
@@ -344,8 +378,8 @@ const AdminDashboard = () => {
           <Clock className="h-8 w-8 animate-spin mx-auto mb-4" />
           <p>Loading dashboard...</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -358,8 +392,8 @@ const AdminDashboard = () => {
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-2">
               <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-              {userInfo && (
-                <div className="flex items-center gap-3">
+              {userInfo &&
+              <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
                     <AvatarFallback>
                       {userInfo.Name?.slice(0, 2).toUpperCase() || userInfo.Email?.slice(0, 2).toUpperCase() || 'U'}
@@ -374,7 +408,7 @@ const AdminDashboard = () => {
                     </Badge>
                   </div>
                 </div>
-              )}
+              }
             </div>
             <p className="text-gray-600">Manage your construction projects and operations</p>
           </div>
@@ -434,8 +468,9 @@ const AdminDashboard = () => {
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="projects" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="projects">Projects</TabsTrigger>
+              <TabsTrigger value="workperiods">Work Periods</TabsTrigger>
               <TabsTrigger value="logs">Daily Logs</TabsTrigger>
               <TabsTrigger value="payments">Payments</TabsTrigger>
               <TabsTrigger value="subcontractors">Subcontractors</TabsTrigger>
@@ -453,8 +488,8 @@ const AdminDashboard = () => {
               </div>
 
               <div className="grid gap-6">
-                {projects.length === 0 ? (
-                  <Card>
+                {projects.length === 0 ?
+                <Card>
                     <CardContent className="pt-6">
                       <div className="text-center py-8">
                         <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -466,10 +501,10 @@ const AdminDashboard = () => {
                         </Button>
                       </div>
                     </CardContent>
-                  </Card>
-                ) : (
-                  projects.map((project) => (
-                    <Card key={project.id}>
+                  </Card> :
+
+                projects.map((project) =>
+                <Card key={project.id}>
                       <CardHeader>
                         <div className="flex justify-between items-start">
                           <div>
@@ -517,8 +552,122 @@ const AdminDashboard = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  ))
-                )}
+                )
+                }
+              </div>
+            </TabsContent>
+
+            {/* Work Periods Tab */}
+            <TabsContent value="workperiods" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Work Periods</h2>
+                <Button onClick={() => setShowWorkPeriodForm(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Work Period
+                </Button>
+              </div>
+
+              <div className="grid gap-4">
+                {workPeriods.length === 0 ?
+                <Card>
+                    <CardContent className="pt-6">
+                      <div className="text-center py-8">
+                        <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-gray-900 mb-2">No work periods yet</h3>
+                        <p className="text-gray-500 mb-4">Schedule work periods with date ranges and team assignments.</p>
+                        <Button onClick={() => setShowWorkPeriodForm(true)}>
+                          <Plus className="h-4 w-4 mr-2" />
+                          Create Work Period
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card> :
+
+                workPeriods.map((workPeriod) => {
+                  const getStatusColor = (status: string) => {
+                    switch (status) {
+                      case 'Planned': return 'bg-blue-100 text-blue-800';
+                      case 'Active': return 'bg-green-100 text-green-800';
+                      case 'Completed': return 'bg-gray-100 text-gray-800';
+                      case 'Cancelled': return 'bg-red-100 text-red-800';
+                      default: return 'bg-gray-100 text-gray-800';
+                    }
+                  };
+
+                  const getDaysBetween = (startDate: string, endDate: string) => {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    const diffTime = Math.abs(end.getTime() - start.getTime());
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                  };
+
+                  return (
+                    <Card key={workPeriod.id}>
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <CardTitle className="text-lg">
+                              Project ID: {workPeriod.project_id}
+                            </CardTitle>
+                            <CardDescription className="mt-1">
+                              {formatDate(workPeriod.start_date)} - {formatDate(workPeriod.end_date)}
+                              <span className="ml-2 text-sm">
+                                ({getDaysBetween(workPeriod.start_date, workPeriod.end_date)} days)
+                              </span>
+                            </CardDescription>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge className={getStatusColor(workPeriod.status)}>
+                              {workPeriod.status}
+                            </Badge>
+                            <div className="flex gap-1">
+                              <Button size="sm" variant="outline" title="View Work Period">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => handleEdit('workperiod', workPeriod)} title="Edit Work Period">
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => handleDelete('workperiod', workPeriod.id)} title="Delete Work Period">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        {workPeriod.description && (
+                          <div className="mb-4">
+                            <p className="text-sm text-gray-600 mb-1">Description</p>
+                            <p className="text-sm">{workPeriod.description}</p>
+                          </div>
+                        )}
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          {workPeriod.team_members && (
+                            <div>
+                              <p className="text-sm text-gray-600">Team Members</p>
+                              <p className="font-medium text-sm">{workPeriod.team_members}</p>
+                            </div>
+                          )}
+                          <div>
+                            <p className="text-sm text-gray-600">Estimated Hours</p>
+                            <p className="font-medium">{workPeriod.estimated_hours || 0}h</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-600">Actual Hours</p>
+                            <p className="font-medium">{workPeriod.actual_hours || 0}h</p>
+                            {workPeriod.estimated_hours > 0 && (
+                              <p className="text-xs text-gray-500">
+                                {((workPeriod.actual_hours || 0) / workPeriod.estimated_hours * 100).toFixed(1)}% of estimate
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })
+                }
               </div>
             </TabsContent>
 
@@ -533,8 +682,8 @@ const AdminDashboard = () => {
               </div>
 
               <div className="grid gap-4">
-                {recentLogs.length === 0 ? (
-                  <Card>
+                {recentLogs.length === 0 ?
+                <Card>
                     <CardContent className="pt-6">
                       <div className="text-center py-8">
                         <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -546,10 +695,10 @@ const AdminDashboard = () => {
                         </Button>
                       </div>
                     </CardContent>
-                  </Card>
-                ) : (
-                  recentLogs.map((log) => (
-                    <Card key={log.id}>
+                  </Card> :
+
+                recentLogs.map((log) =>
+                <Card key={log.id}>
                       <CardContent className="pt-6">
                         <div className="flex justify-between items-start mb-4">
                           <div>
@@ -585,16 +734,16 @@ const AdminDashboard = () => {
                             <p className="font-medium">{formatCurrency(log.materials_cost)}</p>
                           </div>
                         </div>
-                        {log.activities && (
-                          <div>
+                        {log.activities &&
+                    <div>
                             <p className="text-sm text-gray-600 mb-1">Activities</p>
                             <p className="text-sm">{log.activities}</p>
                           </div>
-                        )}
+                    }
                       </CardContent>
                     </Card>
-                  ))
-                )}
+                )
+                }
               </div>
             </TabsContent>
 
@@ -609,8 +758,8 @@ const AdminDashboard = () => {
               </div>
 
               <div className="grid gap-4">
-                {recentPayments.length === 0 ? (
-                  <Card>
+                {recentPayments.length === 0 ?
+                <Card>
                     <CardContent className="pt-6">
                       <div className="text-center py-8">
                         <DollarSign className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -622,10 +771,10 @@ const AdminDashboard = () => {
                         </Button>
                       </div>
                     </CardContent>
-                  </Card>
-                ) : (
-                  recentPayments.map((payment) => (
-                    <Card key={payment.id}>
+                  </Card> :
+
+                recentPayments.map((payment) =>
+                <Card key={payment.id}>
                       <CardContent className="pt-6">
                         <div className="flex justify-between items-start">
                           <div>
@@ -653,8 +802,8 @@ const AdminDashboard = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  ))
-                )}
+                )
+                }
               </div>
             </TabsContent>
 
@@ -669,8 +818,8 @@ const AdminDashboard = () => {
               </div>
 
               <div className="grid gap-4">
-                {subcontractors.length === 0 ? (
-                  <Card>
+                {subcontractors.length === 0 ?
+                <Card>
                     <CardContent className="pt-6">
                       <div className="text-center py-8">
                         <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -682,10 +831,10 @@ const AdminDashboard = () => {
                         </Button>
                       </div>
                     </CardContent>
-                  </Card>
-                ) : (
-                  subcontractors.map((subcontractor) => (
-                    <Card key={subcontractor.id}>
+                  </Card> :
+
+                subcontractors.map((subcontractor) =>
+                <Card key={subcontractor.id}>
                       <CardContent className="pt-6">
                         <div className="flex items-start justify-between">
                           <div className="flex items-start gap-4">
@@ -718,8 +867,8 @@ const AdminDashboard = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  ))
-                )}
+                )
+                }
               </div>
             </TabsContent>
 
@@ -734,8 +883,8 @@ const AdminDashboard = () => {
               </div>
 
               <div className="grid gap-4">
-                {documents.length === 0 ? (
-                  <Card>
+                {documents.length === 0 ?
+                <Card>
                     <CardContent className="pt-6">
                       <div className="text-center py-8">
                         <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -747,10 +896,10 @@ const AdminDashboard = () => {
                         </Button>
                       </div>
                     </CardContent>
-                  </Card>
-                ) : (
-                  documents.map((doc) => (
-                    <Card key={doc.id}>
+                  </Card> :
+
+                documents.map((doc) =>
+                <Card key={doc.id}>
                       <CardContent className="pt-6">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
@@ -760,19 +909,19 @@ const AdminDashboard = () => {
                                 <Badge className="text-xs">
                                   {doc.category}
                                 </Badge>
-                                {doc.is_client_visible && (
-                                  <Badge variant="outline" className="text-xs">
+                                {doc.is_client_visible &&
+                            <Badge variant="outline" className="text-xs">
                                     Client Visible
                                   </Badge>
-                                )}
+                            }
                               </div>
                             </div>
                             <p className="text-sm text-gray-600 mb-2">
                               Project ID: {doc.project_id} • Uploaded: {formatDate(doc.upload_date)}
                             </p>
-                            {doc.description && (
-                              <p className="text-sm text-gray-500">{doc.description}</p>
-                            )}
+                            {doc.description &&
+                        <p className="text-sm text-gray-500">{doc.description}</p>
+                        }
                           </div>
                           <div className="flex gap-1 ml-4">
                             <Button size="sm" variant="outline" onClick={() => handleEdit('document', doc)} title="Edit Document">
@@ -785,56 +934,64 @@ const AdminDashboard = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  ))
-                )}
+                )
+                }
               </div>
             </TabsContent>
           </Tabs>
 
           {/* Form Modals */}
-          {showProjectForm && (
-            <ProjectForm
-              project={editingItem}
-              onClose={closeForm}
-              onSuccess={onFormSuccess}
-            />
-          )}
+          {showProjectForm &&
+          <ProjectForm
+            project={editingItem}
+            onClose={closeForm}
+            onSuccess={onFormSuccess} />
 
-          {showLogForm && (
-            <LogForm
-              log={editingItem}
-              onClose={closeForm}
-              onSuccess={onFormSuccess}
-            />
-          )}
+          }
 
-          {showPaymentForm && (
-            <PaymentForm
-              payment={editingItem}
-              onClose={closeForm}
-              onSuccess={onFormSuccess}
-            />
-          )}
+          {showLogForm &&
+          <LogForm
+            log={editingItem}
+            onClose={closeForm}
+            onSuccess={onFormSuccess} />
 
-          {showSubcontractorForm && (
-            <SubcontractorForm
-              subcontractor={editingItem}
-              onClose={closeForm}
-              onSuccess={onFormSuccess}
-            />
-          )}
+          }
 
-          {showDocumentForm && (
-            <DocumentForm
-              document={editingItem}
-              onClose={closeForm}
-              onSuccess={onFormSuccess}
-            />
-          )}
+          {showPaymentForm &&
+          <PaymentForm
+            payment={editingItem}
+            onClose={closeForm}
+            onSuccess={onFormSuccess} />
+
+          }
+
+          {showSubcontractorForm &&
+          <SubcontractorForm
+            subcontractor={editingItem}
+            onClose={closeForm}
+            onSuccess={onFormSuccess} />
+
+          }
+
+          {showDocumentForm &&
+          <DocumentForm
+            document={editingItem}
+            onClose={closeForm}
+            onSuccess={onFormSuccess} />
+
+          }
+
+          {showWorkPeriodForm &&
+          <WorkPeriodForm
+            workPeriod={editingItem}
+            onClose={closeForm}
+            onSuccess={onFormSuccess} />
+
+          }
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminDashboard;

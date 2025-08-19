@@ -24,9 +24,9 @@ const Header = () => {
   const { toast } = useToast();
 
   const adminNavItems = [
-    { name: 'Dashboard', href: '/admin-dashboard', icon: Home },
-    { name: 'Invoice Submission', href: '/invoice-submission', icon: Settings }
-  ];
+  { name: 'Dashboard', href: '/admin-dashboard', icon: Home },
+  { name: 'Invoice Submission', href: '/invoice-submission', icon: Settings }];
+
 
   useEffect(() => {
     checkAuthStatus();
@@ -105,30 +105,30 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          {isLoggedIn && (
-            <nav className="hidden md:flex space-x-6">
+          {isLoggedIn &&
+          <nav className="hidden md:flex space-x-6">
               {adminNavItems.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`flex items-center space-x-2 text-sm font-medium transition-colors hover:text-blue-600 ${
-                      isActive(item.href) ? 'text-blue-600' : 'text-gray-700'
-                    }`}
-                  >
+              const IconComponent = item.icon;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`flex items-center space-x-2 text-sm font-medium transition-colors hover:text-blue-600 ${
+                  isActive(item.href) ? 'text-blue-600' : 'text-gray-700'}`
+                  }>
+
                     <IconComponent className="h-4 w-4" />
                     <span>{item.name}</span>
-                  </Link>
-                );
-              })}
+                  </Link>);
+
+            })}
             </nav>
-          )}
+          }
 
           {/* User Info and Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            {isLoggedIn && userInfo ? (
-              <div className="flex items-center space-x-3">
+            {isLoggedIn && userInfo ?
+            <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
                   <Avatar className="h-8 w-8">
                     <AvatarFallback className="text-xs">
@@ -148,12 +148,12 @@ const Header = () => {
                   <LogOut className="h-4 w-4 mr-1" />
                   Logout
                 </Button>
-              </div>
-            ) : (
-              <Link to="/admin-login">
+              </div> :
+
+            <Link to="/admin-login">
                 <Button variant="outline" size="sm">Login</Button>
               </Link>
-            )}
+            }
           </div>
 
           {/* Mobile Menu */}
@@ -173,18 +173,18 @@ const Header = () => {
                       to={item.href}
                       onClick={() => setIsOpen(false)}
                       className={`flex items-center space-x-2 text-lg font-medium transition-colors hover:text-blue-600 ${
-                        isActive(item.href) ? 'text-blue-600' : 'text-gray-700'
-                      }`}
-                    >
+                      isActive(item.href) ? 'text-blue-600' : 'text-gray-700'}`
+                      }>
+
                       <IconComponent className="h-5 w-5" />
                       <span>{item.name}</span>
-                    </Link>
-                  );
+                    </Link>);
+
                 })}
                 
                 <div className="pt-6 border-t space-y-4">
-                  {isLoggedIn && userInfo ? (
-                    <>
+                  {isLoggedIn && userInfo ?
+                  <>
                       <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                         <Avatar className="h-10 w-10">
                           <AvatarFallback>
@@ -201,26 +201,26 @@ const Header = () => {
                         </div>
                       </div>
                       <Button variant="outline" className="w-full" onClick={() => {
-                        handleLogout();
-                        setIsOpen(false);
-                      }}>
+                      handleLogout();
+                      setIsOpen(false);
+                    }}>
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout
                       </Button>
-                    </>
-                  ) : (
-                    <Link to="/admin-login" onClick={() => setIsOpen(false)}>
+                    </> :
+
+                  <Link to="/admin-login" onClick={() => setIsOpen(false)}>
                       <Button variant="outline" className="w-full">Login</Button>
                     </Link>
-                  )}
+                  }
                 </div>
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </div>
-    </header>
-  );
+    </header>);
+
 };
 
 export default Header;
