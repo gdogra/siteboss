@@ -3,18 +3,19 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import ScheduleVisitModal from '@/components/ScheduleVisitModal';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Services', href: '/services' },
-    { name: 'Contact', href: '/contact' },
-  ];
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Services', href: '/services' },
+  { name: 'Contact', href: '/contact' }];
+
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -35,17 +36,17 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  isActive(item.href) ? 'text-primary' : 'text-gray-700'
-                }`}
-              >
+            {navItems.map((item) =>
+            <Link
+              key={item.name}
+              to={item.href}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+              isActive(item.href) ? 'text-primary' : 'text-gray-700'}`
+              }>
+
                 {item.name}
               </Link>
-            ))}
+            )}
           </nav>
 
           {/* CTA Button */}
@@ -53,9 +54,11 @@ const Header = () => {
             <Link to="/admin">
               <Button variant="outline" size="sm">Admin Portal</Button>
             </Link>
-            <Button className="luxury-gradient text-white hover:opacity-90">
-              Schedule Visit
-            </Button>
+            <ScheduleVisitModal>
+              <Button className="luxury-gradient text-white hover:opacity-90">
+                Schedule Visit
+              </Button>
+            </ScheduleVisitModal>
           </div>
 
           {/* Mobile Menu */}
@@ -67,33 +70,35 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-80">
               <div className="flex flex-col space-y-6 mt-8">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={`text-lg font-medium transition-colors hover:text-primary ${
-                      isActive(item.href) ? 'text-primary' : 'text-gray-700'
-                    }`}
-                  >
+                {navItems.map((item) =>
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-lg font-medium transition-colors hover:text-primary ${
+                  isActive(item.href) ? 'text-primary' : 'text-gray-700'}`
+                  }>
+
                     {item.name}
                   </Link>
-                ))}
+                )}
                 <div className="pt-6 border-t space-y-4">
                   <Link to="/admin" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full">Admin Portal</Button>
                   </Link>
-                  <Button className="w-full luxury-gradient text-white hover:opacity-90">
-                    Schedule Visit
-                  </Button>
+                  <ScheduleVisitModal>
+                    <Button className="w-full luxury-gradient text-white hover:opacity-90">
+                      Schedule Visit
+                    </Button>
+                  </ScheduleVisitModal>
                 </div>
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </div>
-    </header>
-  );
+    </header>);
+
 };
 
 export default Header;

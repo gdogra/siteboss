@@ -4,11 +4,11 @@ import { Award, Users, MapPin, Calendar } from 'lucide-react';
 
 const About = () => {
   const stats = [
-    { icon: Award, label: 'Awards Won', value: '25+' },
-    { icon: Users, label: 'Happy Families', value: '500+' },
-    { icon: MapPin, label: 'Prime Locations', value: '12' },
-    { icon: Calendar, label: 'Years Experience', value: '15' },
-  ];
+  { icon: Award, label: 'Awards Won', value: '25+' },
+  { icon: Users, label: 'Happy Families', value: '500+' },
+  { icon: MapPin, label: 'Prime Locations', value: '12' },
+  { icon: Calendar, label: 'Years Experience', value: '15' }];
+
 
   return (
     <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
@@ -19,8 +19,8 @@ const About = () => {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
+            transition={{ duration: 0.8 }}>
+
             <h2 className="font-heading text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Crafting Dreams into
               <span className="text-transparent bg-clip-text luxury-gradient block">
@@ -42,14 +42,14 @@ const About = () => {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-6">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
+              {stats.map((stat, index) =>
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}>
+
                   <Card className="border-0 shadow-lg">
                     <CardContent className="p-6 text-center">
                       <stat.icon className="h-8 w-8 text-primary mx-auto mb-3" />
@@ -60,7 +60,7 @@ const About = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              ))}
+              )}
             </div>
           </motion.div>
 
@@ -70,14 +70,14 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative"
-          >
+            className="relative">
+
             <div className="relative h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
                 alt="Luxury development"
-                className="w-full h-full object-cover"
-              />
+                className="w-full h-full object-cover" />
+
               
               {/* Floating Card */}
               <motion.div
@@ -85,8 +85,8 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-xl border"
-              >
+                className="absolute -bottom-6 -left-6 bg-white p-6 rounded-xl shadow-xl border">
+
                 <h4 className="font-heading text-lg font-semibold text-gray-900 mb-2">
                   Premium Quality
                 </h4>
@@ -98,8 +98,8 @@ const About = () => {
           </motion.div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default About;

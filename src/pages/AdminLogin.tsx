@@ -19,18 +19,18 @@ const AdminLogin = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Simple validation for demo
     if (formData.email && formData.password) {
       toast({
         title: "Login Successful!",
-        description: `Welcome back, ${userType}!`,
+        description: `Welcome back, ${userType}!`
       });
-      
+
       // Store user type in localStorage for demo
       localStorage.setItem('userType', userType);
       localStorage.setItem('isLoggedIn', 'true');
-      
+
       navigate('/admin/dashboard');
     } else {
       toast({
@@ -63,10 +63,10 @@ const AdminLogin = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to Home */}
-        <Link 
-          to="/" 
-          className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8 group"
-        >
+        <Link
+          to="/"
+          className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8 group">
+
           <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Home
         </Link>
@@ -89,22 +89,22 @@ const AdminLogin = () => {
                 type="button"
                 onClick={() => setUserType('admin')}
                 className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  userType === 'admin'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
+                userType === 'admin' ?
+                'bg-white text-gray-900 shadow-sm' :
+                'text-gray-600 hover:text-gray-900'}`
+                }>
+
                 Administrator
               </button>
               <button
                 type="button"
                 onClick={() => setUserType('contractor')}
                 className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  userType === 'contractor'
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
+                userType === 'contractor' ?
+                'bg-white text-gray-900 shadow-sm' :
+                'text-gray-600 hover:text-gray-900'}`
+                }>
+
                 Contractor
               </button>
             </div>
@@ -120,8 +120,8 @@ const AdminLogin = () => {
                   onChange={handleInputChange}
                   required
                   className="mt-2"
-                  placeholder="your.email@example.com"
-                />
+                  placeholder="your.email@example.com" />
+
               </div>
 
               <div>
@@ -135,22 +135,22 @@ const AdminLogin = () => {
                     onChange={handleInputChange}
                     required
                     className="pr-10"
-                    placeholder="Enter your password"
-                  />
+                    placeholder="Enter your password" />
+
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
               </div>
 
-              <Button 
+              <Button
                 type="submit"
-                className="w-full luxury-gradient text-white hover:opacity-90 py-3"
-              >
+                className="w-full luxury-gradient text-white hover:opacity-90 py-3">
+
                 Sign In as {userType === 'admin' ? 'Administrator' : 'Contractor'}
               </Button>
             </form>
@@ -161,32 +161,32 @@ const AdminLogin = () => {
               <div className="space-y-2">
                 <button
                   onClick={() => fillDemoCredentials('admin')}
-                  className="block w-full text-left text-xs text-blue-700 hover:text-blue-900 p-2 bg-white rounded border hover:bg-blue-50 transition-colors"
-                >
+                  className="block w-full text-left text-xs text-blue-700 hover:text-blue-900 p-2 bg-white rounded border hover:bg-blue-50 transition-colors">
+
                   <strong>Admin:</strong> admin@lagunabaydeveloping.com / admin123
                 </button>
                 <button
                   onClick={() => fillDemoCredentials('contractor')}
-                  className="block w-full text-left text-xs text-blue-700 hover:text-blue-900 p-2 bg-white rounded border hover:bg-blue-50 transition-colors"
-                >
+                  className="block w-full text-left text-xs text-blue-700 hover:text-blue-900 p-2 bg-white rounded border hover:bg-blue-50 transition-colors">
+
                   <strong>Contractor:</strong> contractor@example.com / contractor123
                 </button>
               </div>
             </div>
 
             <div className="mt-6 text-center">
-              <Link 
-                to="/admin/forgot-password" 
-                className="text-sm text-gray-600 hover:text-gray-900"
-              >
+              <Link
+                to="/admin/forgot-password"
+                className="text-sm text-gray-600 hover:text-gray-900">
+
                 Forgot your password?
               </Link>
             </div>
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminLogin;

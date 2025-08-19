@@ -17,26 +17,26 @@ const InvoiceSubmissionForm = () => {
     workPeriod: '',
     category: ''
   });
-  
+
   const [files, setFiles] = useState<File[]>([]);
   const { toast } = useToast();
 
   const projects = [
-    'Oceanview Residences',
-    'Sunset Villas',
-    'Marina Heights',
-    'Coastal Gardens'
-  ];
+  'Oceanview Residences',
+  'Sunset Villas',
+  'Marina Heights',
+  'Coastal Gardens'];
+
 
   const categories = [
-    'Construction',
-    'Electrical',
-    'Plumbing',
-    'HVAC',
-    'Landscaping',
-    'Interior Design',
-    'Other'
-  ];
+  'Construction',
+  'Electrical',
+  'Plumbing',
+  'HVAC',
+  'Landscaping',
+  'Interior Design',
+  'Other'];
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -48,21 +48,21 @@ const InvoiceSubmissionForm = () => {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
-      setFiles(prev => [...prev, ...newFiles]);
+      setFiles((prev) => [...prev, ...newFiles]);
     }
   };
 
   const removeFile = (index: number) => {
-    setFiles(prev => prev.filter((_, i) => i !== index));
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
       title: "Invoice Submitted!",
-      description: "Your invoice has been submitted for review and will be processed within 2-3 business days.",
+      description: "Your invoice has been submitted for review and will be processed within 2-3 business days."
     });
-    
+
     // Reset form
     setFormData({
       projectName: '',
@@ -89,19 +89,19 @@ const InvoiceSubmissionForm = () => {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <Label htmlFor="projectName">Project *</Label>
-              <Select 
-                value={formData.projectName} 
-                onValueChange={(value) => setFormData({...formData, projectName: value})}
-              >
+              <Select
+                value={formData.projectName}
+                onValueChange={(value) => setFormData({ ...formData, projectName: value })}>
+
                 <SelectTrigger className="mt-2">
                   <SelectValue placeholder="Select project" />
                 </SelectTrigger>
                 <SelectContent>
-                  {projects.map((project) => (
-                    <SelectItem key={project} value={project}>
+                  {projects.map((project) =>
+                  <SelectItem key={project} value={project}>
                       {project}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -115,8 +115,8 @@ const InvoiceSubmissionForm = () => {
                 onChange={handleInputChange}
                 required
                 className="mt-2"
-                placeholder="INV-2024-001"
-              />
+                placeholder="INV-2024-001" />
+
             </div>
           </div>
 
@@ -132,25 +132,25 @@ const InvoiceSubmissionForm = () => {
                 onChange={handleInputChange}
                 required
                 className="mt-2"
-                placeholder="0.00"
-              />
+                placeholder="0.00" />
+
             </div>
             
             <div>
               <Label htmlFor="category">Service Category *</Label>
-              <Select 
-                value={formData.category} 
-                onValueChange={(value) => setFormData({...formData, category: value})}
-              >
+              <Select
+                value={formData.category}
+                onValueChange={(value) => setFormData({ ...formData, category: value })}>
+
                 <SelectTrigger className="mt-2">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
+                  {categories.map((category) =>
+                  <SelectItem key={category} value={category}>
                       {category}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -165,8 +165,8 @@ const InvoiceSubmissionForm = () => {
               onChange={handleInputChange}
               required
               className="mt-2"
-              placeholder="January 1-15, 2024"
-            />
+              placeholder="January 1-15, 2024" />
+
           </div>
 
           <div>
@@ -178,8 +178,8 @@ const InvoiceSubmissionForm = () => {
               onChange={handleInputChange}
               required
               className="mt-2 min-h-24"
-              placeholder="Detailed description of work completed..."
-            />
+              placeholder="Detailed description of work completed..." />
+
           </div>
 
           {/* File Upload */}
@@ -199,21 +199,21 @@ const InvoiceSubmissionForm = () => {
                 accept=".pdf,.jpg,.jpeg,.png"
                 onChange={handleFileUpload}
                 className="hidden"
-                id="file-upload"
-              />
-              <Label 
-                htmlFor="file-upload" 
-                className="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-              >
+                id="file-upload" />
+
+              <Label
+                htmlFor="file-upload"
+                className="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+
                 Select Files
               </Label>
             </div>
 
             {/* Uploaded Files */}
-            {files.length > 0 && (
-              <div className="mt-4 space-y-2">
-                {files.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            {files.length > 0 &&
+            <div className="mt-4 space-y-2">
+                {files.map((file, index) =>
+              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center">
                       <FileText className="h-4 w-4 text-gray-400 mr-2" />
                       <span className="text-sm text-gray-700">{file.name}</span>
@@ -222,29 +222,29 @@ const InvoiceSubmissionForm = () => {
                       </span>
                     </div>
                     <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeFile(index)}
-                    >
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeFile(index)}>
+
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
-                ))}
+              )}
               </div>
-            )}
+            }
           </div>
 
           <div className="flex gap-4">
-            <Button 
-              type="submit" 
-              className="flex-1 luxury-gradient text-white hover:opacity-90"
-            >
+            <Button
+              type="submit"
+              className="flex-1 luxury-gradient text-white hover:opacity-90">
+
               Submit Invoice
             </Button>
-            <Button 
-              type="button" 
-              variant="outline" 
+            <Button
+              type="button"
+              variant="outline"
               className="flex-1"
               onClick={() => {
                 setFormData({
@@ -256,15 +256,15 @@ const InvoiceSubmissionForm = () => {
                   category: ''
                 });
                 setFiles([]);
-              }}
-            >
+              }}>
+
               Clear Form
             </Button>
           </div>
         </form>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default InvoiceSubmissionForm;

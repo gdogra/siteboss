@@ -18,8 +18,8 @@ const HomePage = () => {
         <Contact />
       </main>
       <Footer />
-    </div>
-  );
+    </div>);
+
 };
 
 export default HomePage;

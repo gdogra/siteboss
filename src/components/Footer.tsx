@@ -4,37 +4,37 @@ import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin } from 'luc
 const Footer = () => {
   const footerLinks = {
     company: [
-      { name: 'About Us', href: '/about' },
-      { name: 'Our Team', href: '/team' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Press', href: '/press' }
-    ],
+    { name: 'About Us', href: '/about' },
+    { name: 'Our Team', href: '/team' },
+    { name: 'Careers', href: '/careers' },
+    { name: 'Press', href: '/press' }],
+
     projects: [
-      { name: 'Oceanview Residences', href: '/projects/oceanview' },
-      { name: 'Sunset Villas', href: '/projects/sunset' },
-      { name: 'Marina Heights', href: '/projects/marina' },
-      { name: 'All Projects', href: '/projects' }
-    ],
+    { name: 'Oceanview Residences', href: '/projects/oceanview' },
+    { name: 'Sunset Villas', href: '/projects/sunset' },
+    { name: 'Marina Heights', href: '/projects/marina' },
+    { name: 'All Projects', href: '/projects' }],
+
     services: [
-      { name: 'Luxury Development', href: '/services/development' },
-      { name: 'Investment Advisory', href: '/services/advisory' },
-      { name: 'Property Management', href: '/services/management' },
-      { name: 'Custom Design', href: '/services/design' }
-    ],
+    { name: 'Luxury Development', href: '/services/development' },
+    { name: 'Investment Advisory', href: '/services/advisory' },
+    { name: 'Property Management', href: '/services/management' },
+    { name: 'Custom Design', href: '/services/design' }],
+
     legal: [
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
-      { name: 'Cookie Policy', href: '/cookies' },
-      { name: 'Accessibility', href: '/accessibility' }
-    ]
+    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Terms of Service', href: '/terms' },
+    { name: 'Cookie Policy', href: '/cookies' },
+    { name: 'Accessibility', href: '/accessibility' }]
+
   };
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' }
-  ];
+  { icon: Facebook, href: '#', label: 'Facebook' },
+  { icon: Instagram, href: '#', label: 'Instagram' },
+  { icon: Twitter, href: '#', label: 'Twitter' },
+  { icon: Linkedin, href: '#', label: 'LinkedIn' }];
+
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -77,48 +77,48 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-white mb-4">Company</h3>
             <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href} 
-                    className="text-gray-300 hover:text-white transition-colors text-sm"
-                  >
+              {footerLinks.company.map((link) =>
+              <li key={link.name}>
+                  <Link
+                  to={link.href}
+                  className="text-gray-300 hover:text-white transition-colors text-sm">
+
                     {link.name}
                   </Link>
                 </li>
-              ))}
+              )}
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-white mb-4">Projects</h3>
             <ul className="space-y-2">
-              {footerLinks.projects.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href} 
-                    className="text-gray-300 hover:text-white transition-colors text-sm"
-                  >
+              {footerLinks.projects.map((link) =>
+              <li key={link.name}>
+                  <Link
+                  to={link.href}
+                  className="text-gray-300 hover:text-white transition-colors text-sm">
+
                     {link.name}
                   </Link>
                 </li>
-              ))}
+              )}
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-white mb-4">Services</h3>
             <ul className="space-y-2">
-              {footerLinks.services.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.href} 
-                    className="text-gray-300 hover:text-white transition-colors text-sm"
-                  >
+              {footerLinks.services.map((link) =>
+              <li key={link.name}>
+                  <Link
+                  to={link.href}
+                  className="text-gray-300 hover:text-white transition-colors text-sm">
+
                     {link.name}
                   </Link>
                 </li>
-              ))}
+              )}
             </ul>
           </div>
         </div>
@@ -136,8 +136,8 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary"
-              />
+                className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary" />
+
               <button className="luxury-gradient text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity">
                 Subscribe
               </button>
@@ -155,40 +155,40 @@ const Footer = () => {
             <div className="flex items-center gap-6">
               {/* Social Links */}
               <div className="flex gap-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    className="text-gray-400 hover:text-white transition-colors"
-                    aria-label={social.label}
-                  >
+                {socialLinks.map((social) =>
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="text-gray-400 hover:text-white transition-colors"
+                  aria-label={social.label}>
+
                     <social.icon className="h-5 w-5" />
                   </a>
-                ))}
+                )}
               </div>
               
               {/* Legal Links */}
               <div className="flex gap-4 text-sm">
-                {footerLinks.legal.map((link, index) => (
-                  <span key={link.name} className="flex items-center">
-                    <Link 
-                      to={link.href} 
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
+                {footerLinks.legal.map((link, index) =>
+                <span key={link.name} className="flex items-center">
+                    <Link
+                    to={link.href}
+                    className="text-gray-400 hover:text-white transition-colors">
+
                       {link.name}
                     </Link>
-                    {index < footerLinks.legal.length - 1 && (
-                      <span className="text-gray-600 ml-4">|</span>
-                    )}
+                    {index < footerLinks.legal.length - 1 &&
+                  <span className="text-gray-600 ml-4">|</span>
+                  }
                   </span>
-                ))}
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
 
 export default Footer;
