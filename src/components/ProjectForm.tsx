@@ -26,7 +26,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
     address: project?.address || '',
     status: project?.status || 'Planning',
     budget: project?.budget || 0,
-    description: project?.description || '',
+    description: project?.description || ''
   });
   const [startDate, setStartDate] = useState<Date | undefined>(
     project?.start_date ? new Date(project.start_date) : undefined
@@ -38,7 +38,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -72,7 +72,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
 
       toast({
         title: "Success",
-        description: `Project ${project?.id ? 'updated' : 'created'} successfully`,
+        description: `Project ${project?.id ? 'updated' : 'created'} successfully`
       });
 
       onSuccess();
@@ -82,7 +82,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
       toast({
         title: "Error",
         description: `Failed to ${project?.id ? 'update' : 'create'} project`,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -110,15 +110,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   placeholder="Kitchen Renovation"
-                  required
-                />
+                  required />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value) => handleInputChange('status', value)}
-                >
+                  onValueChange={(value) => handleInputChange('status', value)}>
+
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -140,8 +140,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                   value={formData.client_name}
                   onChange={(e) => handleInputChange('client_name', e.target.value)}
                   placeholder="John Smith"
-                  required
-                />
+                  required />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="client_email">Client Email *</Label>
@@ -151,8 +151,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                   value={formData.client_email}
                   onChange={(e) => handleInputChange('client_email', e.target.value)}
                   placeholder="john@example.com"
-                  required
-                />
+                  required />
+
               </div>
             </div>
 
@@ -163,8 +163,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                   id="client_phone"
                   value={formData.client_phone}
                   onChange={(e) => handleInputChange('client_phone', e.target.value)}
-                  placeholder="(555) 123-4567"
-                />
+                  placeholder="(555) 123-4567" />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="budget">Budget</Label>
@@ -175,8 +175,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                   onChange={(e) => handleInputChange('budget', Number(e.target.value))}
                   placeholder="25000"
                   min="0"
-                  step="0.01"
-                />
+                  step="0.01" />
+
               </div>
             </div>
 
@@ -187,8 +187,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                 value={formData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 placeholder="123 Main St, City, State 12345"
-                required
-              />
+                required />
+
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -198,8 +198,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
-                    >
+                      className="w-full justify-start text-left font-normal">
+
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {startDate ? format(startDate, "PPP") : "Pick a date"}
                     </Button>
@@ -209,8 +209,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                       mode="single"
                       selected={startDate}
                       onSelect={setStartDate}
-                      initialFocus
-                    />
+                      initialFocus />
+
                   </PopoverContent>
                 </Popover>
               </div>
@@ -220,8 +220,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
-                    >
+                      className="w-full justify-start text-left font-normal">
+
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {endDate ? format(endDate, "PPP") : "Pick a date"}
                     </Button>
@@ -231,8 +231,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                       mode="single"
                       selected={endDate}
                       onSelect={setEndDate}
-                      initialFocus
-                    />
+                      initialFocus />
+
                   </PopoverContent>
                 </Popover>
               </div>
@@ -245,8 +245,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
                 value={formData.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
                 placeholder="Project details and requirements..."
-                rows={4}
-              />
+                rows={4} />
+
             </div>
 
             <div className="flex justify-end gap-3 pt-4">
@@ -260,8 +260,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onClose, onSuccess }
           </form>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ProjectForm;

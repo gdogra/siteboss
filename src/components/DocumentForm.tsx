@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { X, Upload } from 'lucide-react';
+import { Upload, X, File } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface DocumentFormProps {
@@ -22,8 +22,7 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
     title: document?.title || '',
     category: document?.category || 'Other',
     description: document?.description || '',
-    is_client_visible: document?.is_client_visible !== undefined ? document.is_client_visible : true,
-    file_id: document?.file_id || 0,
+    is_client_visible: document?.is_client_visible !== undefined ? document.is_client_visible : true
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -50,7 +49,7 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
   };
 
   const handleInputChange = (field: string, value: string | number | boolean) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -65,10 +64,29 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.title.trim()) {
+      toast({
+        title: "Error",
+        description: "Title is required",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!document?.id && !selectedFile) {
+      toast({
+        title: "Error",
+        description: "Please select a file to upload",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
-      let fileId = formData.file_id;
+      let fileId = document?.file_id || 0;
 
       // Upload file if provided
       if (selectedFile) {
@@ -85,7 +103,7 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
         ...formData,
         project_id: Number(formData.project_id),
         file_id: fileId,
-        upload_date: new Date().toISOString()
+        upload_date: document?.upload_date || new Date().toISOString()
       };
 
       let response;
@@ -104,7 +122,7 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
 
       toast({
         title: "Success",
-        description: `Document ${document?.id ? 'updated' : 'uploaded'} successfully`,
+        description: `Document ${document?.id ? 'updated' : 'uploaded'} successfully`
       });
 
       onSuccess();
@@ -114,7 +132,7 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
       toast({
         title: "Error",
         description: `Failed to ${document?.id ? 'update' : 'upload'} document`,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -167,7 +185,6 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
                     <SelectItem value="Vendor">Vendor</SelectItem>
                     <SelectItem value="Contract">Contract</SelectItem>
                     <SelectItem value="Photo">Photo</SelectItem>
-                    <SelectItem value="Invoice">Invoice</SelectItem>
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
@@ -175,12 +192,12 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="title">Document Title *</Label>
+              <Label htmlFor="title">Title *</Label>
               <Input
                 id="title"
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
-                placeholder="Building Permit, Vendor Contract, etc."
+                placeholder="Building Permit, Electrical Invoice..."
                 required
               />
             </div>
@@ -191,28 +208,50 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
                 id="description"
                 value={formData.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
-                placeholder="Document description and notes..."
+                placeholder="Document description..."
                 rows={3}
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="file">File Upload {!document?.id && '*'}</Label>
-              <div className="flex items-center gap-3">
-                <Input
-                  id="file"
-                  type="file"
-                  onChange={handleFileChange}
-                  accept="image/*,.pdf,.doc,.docx"
-                  className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium"
-                  required={!document?.id}
-                />
-                <Upload className="h-4 w-4 text-gray-400" />
+            {!document?.id && (
+              <div className="space-y-2">
+                <Label htmlFor="file">File Upload *</Label>
+                <div className="flex items-center gap-3">
+                  <Input
+                    id="file"
+                    type="file"
+                    onChange={handleFileChange}
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium"
+                    required
+                  />
+                  <Upload className="h-4 w-4 text-gray-400" />
+                </div>
+                <p className="text-xs text-gray-500">
+                  Accepted formats: PDF, DOC, DOCX, JPG, JPEG, PNG, GIF
+                </p>
               </div>
-              <p className="text-xs text-gray-500">
-                Supported formats: Images, PDF, Word documents
-              </p>
-            </div>
+            )}
+
+            {document?.id && (
+              <div className="space-y-2">
+                <Label>Current File</Label>
+                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-md">
+                  <File className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm">File ID: {document.file_id}</span>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="new_file">Replace File (Optional)</Label>
+                  <Input
+                    id="new_file"
+                    type="file"
+                    onChange={handleFileChange}
+                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif"
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium"
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="flex items-center space-x-2">
               <Switch
@@ -220,7 +259,7 @@ const DocumentForm: React.FC<DocumentFormProps> = ({ document, onClose, onSucces
                 checked={formData.is_client_visible}
                 onCheckedChange={(checked) => handleInputChange('is_client_visible', checked)}
               />
-              <Label htmlFor="client_visible">Visible to clients</Label>
+              <Label htmlFor="client_visible">Client can view this document</Label>
             </div>
 
             <div className="flex justify-end gap-3 pt-4">

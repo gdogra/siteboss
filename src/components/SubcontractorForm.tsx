@@ -21,13 +21,13 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
     specialty: subcontractor?.specialty || '',
     hourly_rate: subcontractor?.hourly_rate || 0,
     address: subcontractor?.address || '',
-    notes: subcontractor?.notes || '',
+    notes: subcontractor?.notes || ''
   });
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -35,6 +35,16 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.name.trim()) {
+      toast({
+        title: "Error",
+        description: "Name is required",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -59,7 +69,7 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
 
       toast({
         title: "Success",
-        description: `Subcontractor ${subcontractor?.id ? 'updated' : 'added'} successfully`,
+        description: `Subcontractor ${subcontractor?.id ? 'updated' : 'added'} successfully`
       });
 
       onSuccess();
@@ -69,7 +79,7 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
       toast({
         title: "Error",
         description: `Failed to ${subcontractor?.id ? 'update' : 'add'} subcontractor`,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -120,7 +130,7 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="contractor@example.com"
+                  placeholder="contact@abcplumbing.com"
                 />
               </div>
               <div className="space-y-2">
@@ -142,20 +152,21 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                   type="number"
                   value={formData.hourly_rate}
                   onChange={(e) => handleInputChange('hourly_rate', Number(e.target.value))}
-                  placeholder="75"
+                  placeholder="50"
                   min="0"
                   step="0.01"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange('address', e.target.value)}
-                  placeholder="123 Business St, City, State"
-                />
-              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => handleInputChange('address', e.target.value)}
+                placeholder="123 Business St, City, State 12345"
+              />
             </div>
 
             <div className="space-y-2">
@@ -165,7 +176,7 @@ const SubcontractorForm: React.FC<SubcontractorFormProps> = ({ subcontractor, on
                 value={formData.notes}
                 onChange={(e) => handleInputChange('notes', e.target.value)}
                 placeholder="Additional notes about this subcontractor..."
-                rows={4}
+                rows={3}
               />
             </div>
 

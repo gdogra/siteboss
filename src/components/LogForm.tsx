@@ -30,7 +30,7 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
     subcontractor_id: log?.subcontractor_id || 0,
     activities: log?.activities || '',
     notes: log?.notes || '',
-    receipt_file_id: log?.receipt_file_id || 0,
+    receipt_file_id: log?.receipt_file_id || 0
   });
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     log?.date ? new Date(log.date) : new Date()
@@ -77,7 +77,7 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
   };
 
   const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -135,7 +135,7 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
 
       toast({
         title: "Success",
-        description: `Log entry ${log?.id ? 'updated' : 'created'} successfully`,
+        description: `Log entry ${log?.id ? 'updated' : 'created'} successfully`
       });
 
       onSuccess();
@@ -145,7 +145,7 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
       toast({
         title: "Error",
         description: `Failed to ${log?.id ? 'update' : 'create'} log entry`,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -170,17 +170,17 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                 <Label htmlFor="project_id">Project *</Label>
                 <Select
                   value={formData.project_id.toString()}
-                  onValueChange={(value) => handleInputChange('project_id', Number(value))}
-                >
+                  onValueChange={(value) => handleInputChange('project_id', Number(value))}>
+
                   <SelectTrigger>
                     <SelectValue placeholder="Select project" />
                   </SelectTrigger>
                   <SelectContent>
-                    {projects.map((project) => (
-                      <SelectItem key={project.id} value={project.id.toString()}>
+                    {projects.map((project) =>
+                    <SelectItem key={project.id} value={project.id.toString()}>
                         {project.name}
                       </SelectItem>
-                    ))}
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -190,8 +190,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
-                    >
+                      className="w-full justify-start text-left font-normal">
+
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
                     </Button>
@@ -201,8 +201,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                       mode="single"
                       selected={selectedDate}
                       onSelect={setSelectedDate}
-                      initialFocus
-                    />
+                      initialFocus />
+
                   </PopoverContent>
                 </Popover>
               </div>
@@ -218,8 +218,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                   onChange={(e) => handleInputChange('labor_hours', Number(e.target.value))}
                   placeholder="8"
                   min="0"
-                  step="0.5"
-                />
+                  step="0.5" />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="labor_cost">Labor Cost</Label>
@@ -230,8 +230,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                   onChange={(e) => handleInputChange('labor_cost', Number(e.target.value))}
                   placeholder="400"
                   min="0"
-                  step="0.01"
-                />
+                  step="0.01" />
+
               </div>
             </div>
 
@@ -242,8 +242,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                 value={formData.materials_description}
                 onChange={(e) => handleInputChange('materials_description', e.target.value)}
                 placeholder="2x4 lumber, drywall, screws..."
-                rows={2}
-              />
+                rows={2} />
+
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -256,8 +256,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                   onChange={(e) => handleInputChange('materials_cost', Number(e.target.value))}
                   placeholder="150"
                   min="0"
-                  step="0.01"
-                />
+                  step="0.01" />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="vendor">Vendor</Label>
@@ -265,8 +265,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                   id="vendor"
                   value={formData.vendor}
                   onChange={(e) => handleInputChange('vendor', e.target.value)}
-                  placeholder="Home Depot, Lowe's..."
-                />
+                  placeholder="Home Depot, Lowe's..." />
+
               </div>
             </div>
 
@@ -274,18 +274,18 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
               <Label htmlFor="subcontractor_id">Subcontractor</Label>
               <Select
                 value={formData.subcontractor_id.toString()}
-                onValueChange={(value) => handleInputChange('subcontractor_id', Number(value))}
-              >
+                onValueChange={(value) => handleInputChange('subcontractor_id', Number(value))}>
+
                 <SelectTrigger>
                   <SelectValue placeholder="Select subcontractor (optional)" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="0">None</SelectItem>
-                  {subcontractors.map((sub) => (
-                    <SelectItem key={sub.id} value={sub.id.toString()}>
+                  {subcontractors.map((sub) =>
+                  <SelectItem key={sub.id} value={sub.id.toString()}>
                       {sub.name} - {sub.specialty}
                     </SelectItem>
-                  ))}
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -297,8 +297,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                 value={formData.activities}
                 onChange={(e) => handleInputChange('activities', e.target.value)}
                 placeholder="Framing, drywall installation, electrical rough-in..."
-                rows={3}
-              />
+                rows={3} />
+
             </div>
 
             <div className="space-y-2">
@@ -308,8 +308,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                 value={formData.notes}
                 onChange={(e) => handleInputChange('notes', e.target.value)}
                 placeholder="Additional notes and observations..."
-                rows={2}
-              />
+                rows={2} />
+
             </div>
 
             <div className="space-y-2">
@@ -320,8 +320,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
                   type="file"
                   onChange={handleFileChange}
                   accept="image/*,.pdf"
-                  className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium"
-                />
+                  className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium" />
+
                 <Upload className="h-4 w-4 text-gray-400" />
               </div>
               <p className="text-xs text-gray-500">Upload receipt images or PDFs</p>
@@ -338,8 +338,8 @@ const LogForm: React.FC<LogFormProps> = ({ log, onClose, onSuccess }) => {
           </form>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default LogForm;

@@ -27,7 +27,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
     check_number: payment?.check_number || '',
     description: payment?.description || '',
     recipient: payment?.recipient || '',
-    status: payment?.status || 'Pending',
+    status: payment?.status || 'Pending'
   });
   const [datePaid, setDatePaid] = useState<Date | undefined>(
     payment?.date_paid ? new Date(payment.date_paid) : new Date()
@@ -56,7 +56,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
   };
 
   const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -91,7 +91,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
 
       toast({
         title: "Success",
-        description: `Payment ${payment?.id ? 'updated' : 'recorded'} successfully`,
+        description: `Payment ${payment?.id ? 'updated' : 'recorded'} successfully`
       });
 
       onSuccess();
@@ -101,7 +101,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
       toast({
         title: "Error",
         description: `Failed to ${payment?.id ? 'update' : 'record'} payment`,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -126,17 +126,17 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                 <Label htmlFor="project_id">Project *</Label>
                 <Select
                   value={formData.project_id.toString()}
-                  onValueChange={(value) => handleInputChange('project_id', Number(value))}
-                >
+                  onValueChange={(value) => handleInputChange('project_id', Number(value))}>
+
                   <SelectTrigger>
                     <SelectValue placeholder="Select project" />
                   </SelectTrigger>
                   <SelectContent>
-                    {projects.map((project) => (
-                      <SelectItem key={project.id} value={project.id.toString()}>
+                    {projects.map((project) =>
+                    <SelectItem key={project.id} value={project.id.toString()}>
                         {project.name}
                       </SelectItem>
-                    ))}
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -144,8 +144,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                 <Label htmlFor="payment_type">Payment Type</Label>
                 <Select
                   value={formData.payment_type}
-                  onValueChange={(value) => handleInputChange('payment_type', value)}
-                >
+                  onValueChange={(value) => handleInputChange('payment_type', value)}>
+
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -171,15 +171,15 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                   placeholder="1500"
                   min="0"
                   step="0.01"
-                  required
-                />
+                  required />
+
               </div>
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value) => handleInputChange('status', value)}
-                >
+                  onValueChange={(value) => handleInputChange('status', value)}>
+
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -199,8 +199,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                   id="check_number"
                   value={formData.check_number}
                   onChange={(e) => handleInputChange('check_number', e.target.value)}
-                  placeholder="1001"
-                />
+                  placeholder="1001" />
+
               </div>
               <div className="space-y-2">
                 <Label>Date Paid</Label>
@@ -208,8 +208,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
-                    >
+                      className="w-full justify-start text-left font-normal">
+
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {datePaid ? format(datePaid, "PPP") : "Pick a date"}
                     </Button>
@@ -219,8 +219,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                       mode="single"
                       selected={datePaid}
                       onSelect={setDatePaid}
-                      initialFocus
-                    />
+                      initialFocus />
+
                   </PopoverContent>
                 </Popover>
               </div>
@@ -232,8 +232,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                 id="recipient"
                 value={formData.recipient}
                 onChange={(e) => handleInputChange('recipient', e.target.value)}
-                placeholder="Home Depot, John Smith, ABC Plumbing..."
-              />
+                placeholder="Home Depot, John Smith, ABC Plumbing..." />
+
             </div>
 
             <div className="space-y-2">
@@ -243,8 +243,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
                 value={formData.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
                 placeholder="Payment for materials, labor, etc..."
-                rows={3}
-              />
+                rows={3} />
+
             </div>
 
             <div className="flex justify-end gap-3 pt-4">
@@ -258,8 +258,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ payment, onClose, onSuccess }
           </form>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>);
+
 };
 
 export default PaymentForm;

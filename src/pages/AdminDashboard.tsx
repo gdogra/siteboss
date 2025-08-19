@@ -4,20 +4,20 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Building2, 
-  Users, 
-  DollarSign, 
-  Calendar, 
-  Plus, 
-  Eye, 
-  Edit, 
+import {
+  Building2,
+  Users,
+  DollarSign,
+  Calendar,
+  Plus,
+  Eye,
+  Edit,
   Trash2,
   FileText,
   Clock,
   TrendingUp,
-  AlertCircle
-} from 'lucide-react';
+  AlertCircle } from
+'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import ProjectForm from '@/components/ProjectForm';
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  
+
   // Form modals state
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [showLogForm, setShowLogForm] = useState(false);
@@ -101,18 +101,36 @@ const AdminDashboard = () => {
   const [showSubcontractorForm, setShowSubcontractorForm] = useState(false);
   const [showDocumentForm, setShowDocumentForm] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
-  
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    loadDashboardData();
+    checkAuthAndLoadData();
   }, []);
+
+  const checkAuthAndLoadData = async () => {
+    try {
+      const response = await window.ezsite.apis.getUserInfo();
+      if (response.error) {
+        throw new Error('Not authenticated');
+      }
+      loadDashboardData();
+    } catch (error) {
+      console.error('Authentication check failed:', error);
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to access the admin dashboard",
+        variant: "destructive"
+      });
+      navigate('/admin-login');
+    }
+  };
 
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Load projects
       const projectsResponse = await window.ezsite.apis.tablePage(32232, {
         PageNo: 1,
@@ -172,17 +190,17 @@ const AdminDashboard = () => {
       // Calculate stats
       const activeProjects = projectsData.filter((p: Project) => p.status === 'In Progress').length;
       const completedProjects = projectsData.filter((p: Project) => p.status === 'Completed').length;
-      const totalRevenue = projectsData
-        .filter((p: Project) => p.status === 'Completed')
-        .reduce((sum: number, p: Project) => sum + (p.budget || 0), 0);
+      const totalRevenue = projectsData.
+      filter((p: Project) => p.status === 'Completed').
+      reduce((sum: number, p: Project) => sum + (p.budget || 0), 0);
 
       setStats({
         totalProjects: projectsData.length,
         activeProjects,
         completedProjects,
         totalRevenue,
-        pendingPayments: (paymentsResponse.data?.List || [])
-          .filter((p: Payment) => p.status === 'Pending').length
+        pendingPayments: (paymentsResponse.data?.List || []).
+        filter((p: Payment) => p.status === 'Pending').length
       });
 
     } catch (error) {
@@ -190,7 +208,7 @@ const AdminDashboard = () => {
       toast({
         title: "Error",
         description: "Failed to load dashboard data",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
@@ -199,11 +217,11 @@ const AdminDashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Planning': return 'bg-blue-100 text-blue-800';
-      case 'In Progress': return 'bg-green-100 text-green-800';
-      case 'Completed': return 'bg-gray-100 text-gray-800';
-      case 'On Hold': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Planning':return 'bg-blue-100 text-blue-800';
+      case 'In Progress':return 'bg-green-100 text-green-800';
+      case 'Completed':return 'bg-gray-100 text-gray-800';
+      case 'On Hold':return 'bg-yellow-100 text-yellow-800';
+      default:return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -270,7 +288,7 @@ const AdminDashboard = () => {
 
       toast({
         title: "Success",
-        description: "Item deleted successfully",
+        description: "Item deleted successfully"
       });
 
       loadDashboardData();
@@ -279,7 +297,7 @@ const AdminDashboard = () => {
       toast({
         title: "Error",
         description: "Failed to delete item",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -293,6 +311,16 @@ const AdminDashboard = () => {
     setEditingItem(null);
   };
 
+  const handleLogout = async () => {
+    try {
+      await window.ezsite.apis.logout();
+      navigate('/admin-login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      navigate('/admin-login');
+    }
+  };
+
   const onFormSuccess = () => {
     loadDashboardData();
   };
@@ -304,8 +332,8 @@ const AdminDashboard = () => {
           <Clock className="h-8 w-8 animate-spin mx-auto mb-4" />
           <p>Loading dashboard...</p>
         </div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -321,7 +349,7 @@ const AdminDashboard = () => {
               <Button onClick={() => navigate('/')}>
                 Back to Site
               </Button>
-              <Button onClick={() => navigate('/admin-login')} variant="outline">
+              <Button onClick={handleLogout} variant="outline">
                 Logout
               </Button>
             </div>
@@ -404,8 +432,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-6">
-              {projects.length === 0 ? (
-                <Card>
+              {projects.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -417,10 +445,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                projects.map((project) => (
-                  <Card key={project.id}>
+                </Card> :
+
+              projects.map((project) =>
+              <Card key={project.id}>
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
@@ -468,8 +496,8 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -484,8 +512,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {recentLogs.length === 0 ? (
-                <Card>
+              {recentLogs.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -497,10 +525,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                recentLogs.map((log) => (
-                  <Card key={log.id}>
+                </Card> :
+
+              recentLogs.map((log) =>
+              <Card key={log.id}>
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
@@ -536,16 +564,16 @@ const AdminDashboard = () => {
                           <p className="font-medium">{formatCurrency(log.materials_cost)}</p>
                         </div>
                       </div>
-                      {log.activities && (
-                        <div>
+                      {log.activities &&
+                  <div>
                           <p className="text-sm text-gray-600 mb-1">Activities</p>
                           <p className="text-sm">{log.activities}</p>
                         </div>
-                      )}
+                  }
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -560,8 +588,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {recentPayments.length === 0 ? (
-                <Card>
+              {recentPayments.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <DollarSign className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -573,10 +601,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                recentPayments.map((payment) => (
-                  <Card key={payment.id}>
+                </Card> :
+
+              recentPayments.map((payment) =>
+              <Card key={payment.id}>
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start">
                         <div>
@@ -604,8 +632,8 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -620,8 +648,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {subcontractors.length === 0 ? (
-                <Card>
+              {subcontractors.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -633,16 +661,16 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                subcontractors.map((subcontractor) => (
-                  <Card key={subcontractor.id}>
+                </Card> :
+
+              subcontractors.map((subcontractor) =>
+              <Card key={subcontractor.id}>
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
                           <Avatar>
                             <AvatarFallback>
-                              {subcontractor.name.split(' ').map(n => n[0]).join('')}
+                              {subcontractor.name.split(' ').map((n) => n[0]).join('')}
                             </AvatarFallback>
                           </Avatar>
                           <div>
@@ -669,8 +697,8 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
 
@@ -685,8 +713,8 @@ const AdminDashboard = () => {
             </div>
 
             <div className="grid gap-4">
-              {documents.length === 0 ? (
-                <Card>
+              {documents.length === 0 ?
+              <Card>
                   <CardContent className="pt-6">
                     <div className="text-center py-8">
                       <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -698,10 +726,10 @@ const AdminDashboard = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ) : (
-                documents.map((doc) => (
-                  <Card key={doc.id}>
+                </Card> :
+
+              documents.map((doc) =>
+              <Card key={doc.id}>
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
@@ -711,19 +739,19 @@ const AdminDashboard = () => {
                               <Badge className="text-xs">
                                 {doc.category}
                               </Badge>
-                              {doc.is_client_visible && (
-                                <Badge variant="outline" className="text-xs">
+                              {doc.is_client_visible &&
+                          <Badge variant="outline" className="text-xs">
                                   Client Visible
                                 </Badge>
-                              )}
+                          }
                             </div>
                           </div>
                           <p className="text-sm text-gray-600 mb-2">
                             Project ID: {doc.project_id} • Uploaded: {formatDate(doc.upload_date)}
                           </p>
-                          {doc.description && (
-                            <p className="text-sm text-gray-500">{doc.description}</p>
-                          )}
+                          {doc.description &&
+                      <p className="text-sm text-gray-500">{doc.description}</p>
+                      }
                         </div>
                         <div className="flex gap-1 ml-4">
                           <Button size="sm" variant="outline" onClick={() => handleEdit('document', doc)} title="Edit Document">
@@ -736,55 +764,55 @@ const AdminDashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))
-              )}
+              )
+              }
             </div>
           </TabsContent>
         </Tabs>
 
         {/* Form Modals */}
-        {showProjectForm && (
-          <ProjectForm
-            project={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        {showProjectForm &&
+        <ProjectForm
+          project={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
 
-        {showLogForm && (
-          <LogForm
-            log={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        }
 
-        {showPaymentForm && (
-          <PaymentForm
-            payment={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        {showLogForm &&
+        <LogForm
+          log={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
 
-        {showSubcontractorForm && (
-          <SubcontractorForm
-            subcontractor={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        }
 
-        {showDocumentForm && (
-          <DocumentForm
-            document={editingItem}
-            onClose={closeForm}
-            onSuccess={onFormSuccess}
-          />
-        )}
+        {showPaymentForm &&
+        <PaymentForm
+          payment={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
+
+        }
+
+        {showSubcontractorForm &&
+        <SubcontractorForm
+          subcontractor={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
+
+        }
+
+        {showDocumentForm &&
+        <DocumentForm
+          document={editingItem}
+          onClose={closeForm}
+          onSuccess={onFormSuccess} />
+
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default AdminDashboard;
