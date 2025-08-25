@@ -25,7 +25,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
       await login(email, password);
       onSuccess?.();
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -41,6 +41,24 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
+          <div className="mt-4 text-center space-y-3">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-sm text-blue-800 font-medium">
+                🎯 Demo Mode
+              </p>
+              <p className="text-xs text-blue-600 mt-1">
+                Use <strong>demo@siteboss.com</strong> with any password
+              </p>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+              <p className="text-sm text-green-800 font-medium">
+                🚀 Live Mode - Powered by Supabase
+              </p>
+              <p className="text-xs text-green-600 mt-1">
+                Register or login with real credentials
+              </p>
+            </div>
+          </div>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
             <Link

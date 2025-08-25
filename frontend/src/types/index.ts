@@ -16,6 +16,7 @@ export interface User {
   company_id: string;
   avatar_url?: string;
   last_login?: Date;
+  email_verified?: boolean;
 }
 
 export interface AuthResponse {

@@ -157,6 +157,16 @@ const TeamManagement: React.FC = () => {
     }
   };
 
+  const handleViewMember = (memberId: string) => {
+    // TODO: Navigate to member detail page
+    console.log('View member:', memberId);
+  };
+
+  const handleEditMember = (memberId: string) => {
+    // TODO: Open edit member modal
+    console.log('Edit member:', memberId);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -415,10 +425,16 @@ const TeamManagement: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center space-x-2">
-                          <button className="text-primary-600 hover:text-primary-900">
+                          <button 
+                            onClick={() => handleViewMember(member.id)}
+                            className="text-primary-600 hover:text-primary-900"
+                          >
                             <EyeIcon className="h-4 w-4" />
                           </button>
-                          <button className="text-gray-600 hover:text-gray-900">
+                          <button 
+                            onClick={() => handleEditMember(member.id)}
+                            className="text-gray-600 hover:text-gray-900"
+                          >
                             <PencilIcon className="h-4 w-4" />
                           </button>
                           <button 

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, RegisterRequest, UserRole } from '../types';
-import { authApi } from '../services/api';
+import { User, UserRole } from '../types';
+import { supabase, signInWithEmail, signUpWithEmail, signOut, getCurrentUser } from '../services/supabase';
+import logger from '../utils/logger';
 
 interface RegisterData {
   email: string;
@@ -42,76 +43,155 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = localStorage.getItem('siteboss_token');
+      // Check for stored demo user or Supabase session
       const storedUser = localStorage.getItem('siteboss_user');
-
-      if (token && storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-          const response = await authApi.getProfile();
-          if (response.success && response.data) {
-            setUser(response.data);
-            localStorage.setItem('siteboss_user', JSON.stringify(response.data));
-          }
-        } catch (error) {
-          console.error('Failed to fetch user profile:', error);
-          localStorage.removeItem('siteboss_token');
-          localStorage.removeItem('siteboss_user');
+      
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser.email === 'demo@siteboss.com') {
+          // Demo user - ensure email_verified is set
+          parsedUser.email_verified = true;
+          setUser(parsedUser);
+          localStorage.setItem('siteboss_user', JSON.stringify(parsedUser));
+          setIsLoading(false);
+          return;
         }
       }
+
+      // Check Supabase session
+      try {
+        const { user: supabaseUser, error } = await getCurrentUser();
+        
+        if (supabaseUser && !error) {
+          const userData: User = {
+            id: supabaseUser.id,
+            email: supabaseUser.email || '',
+            first_name: supabaseUser.user_metadata?.first_name || 'User',
+            last_name: supabaseUser.user_metadata?.last_name || '',
+            role: supabaseUser.user_metadata?.role || 'company_admin',
+            company_id: supabaseUser.user_metadata?.company_id || 'default-company',
+            phone: supabaseUser.user_metadata?.phone,
+            email_verified: true // If user has an active session, they are considered verified
+          };
+          
+          setUser(userData);
+          localStorage.setItem('siteboss_user', JSON.stringify(userData));
+        } else if (storedUser) {
+          // If we have a stored user but no Supabase session, try to use the stored user
+          // but assume email is verified for existing users (backward compatibility)
+          const parsedUser = JSON.parse(storedUser);
+          if (parsedUser.email_verified === undefined) {
+            parsedUser.email_verified = true; // Assume verified for existing users
+            localStorage.setItem('siteboss_user', JSON.stringify(parsedUser));
+          }
+          setUser(parsedUser);
+        }
+      } catch (error) {
+        logger.error('Failed to initialize auth', error);
+      }
+      
       setIsLoading(false);
     };
 
     initializeAuth();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === 'SIGNED_OUT' || !session) {
+          setUser(null);
+          localStorage.removeItem('siteboss_user');
+          localStorage.removeItem('siteboss_token');
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
+    // Demo mode - accept demo@siteboss.com with any password
+    if (email === 'demo@siteboss.com') {
+      const demoUser: User = {
+        id: 'demo-user-1',
+        email: 'demo@siteboss.com',
+        first_name: 'Demo',
+        last_name: 'User',
+        role: 'company_admin',
+        company_id: 'demo-company-1',
+        phone: '(555) 123-4567',
+        email_verified: true
+      };
+      
+      setUser(demoUser);
+      localStorage.setItem('siteboss_token', 'demo-token');
+      localStorage.setItem('siteboss_user', JSON.stringify(demoUser));
+      return;
+    }
+
     try {
-      const response = await authApi.login({ email, password });
-      if (response.success && response.data) {
-        const { user: userData, token } = response.data;
-        setUser(userData);
-        localStorage.setItem('siteboss_token', token);
-        localStorage.setItem('siteboss_user', JSON.stringify(userData));
-      } else {
-        throw new Error(response.error || 'Login failed');
+      const { data, error } = await signInWithEmail(email, password);
+      
+      if (error) {
+        throw new Error(error.message);
       }
-    } catch (error) {
-      throw error;
+
+      if (data.user) {
+        // Convert Supabase user to our User interface
+        const userData: User = {
+          id: data.user.id,
+          email: data.user.email || '',
+          first_name: data.user.user_metadata?.first_name || 'User',
+          last_name: data.user.user_metadata?.last_name || '',
+          role: data.user.user_metadata?.role || 'company_admin',
+          company_id: data.user.user_metadata?.company_id || 'default-company',
+          phone: data.user.user_metadata?.phone,
+          email_verified: true // If user can login successfully, they are considered verified
+        };
+
+        setUser(userData);
+        localStorage.setItem('siteboss_user', JSON.stringify(userData));
+      }
+    } catch (error: any) {
+      throw new Error(error.message || 'Login failed. Use demo@siteboss.com for demo access.');
     }
   };
 
   const register = async (data: RegisterData): Promise<void> => {
     try {
-      const registerRequest: RegisterRequest = {
-        email: data.email,
-        password: data.password,
+      const metadata = {
         first_name: data.first_name,
         last_name: data.last_name,
         phone: data.phone,
         role: data.role,
-        company_name: data.company_name
+        company_name: data.company_name,
+        company_id: `company-${Date.now()}`
       };
 
-      const response = await authApi.register(registerRequest);
-      if (response.success && response.data) {
-        const { user: userData, token } = response.data;
-        setUser(userData);
-        localStorage.setItem('siteboss_token', token);
-        localStorage.setItem('siteboss_user', JSON.stringify(userData));
-      } else {
-        throw new Error(response.error || 'Registration failed');
+      const { data: signUpData, error } = await signUpWithEmail(
+        data.email, 
+        data.password, 
+        metadata,
+        `${window.location.origin}/email-confirmation`
+      );
+      
+      if (error) {
+        throw new Error(error.message);
       }
-    } catch (error) {
-      throw error;
+
+      // Don't automatically log the user in - they need to confirm their email first
+      // The user will be redirected to the email confirmation page
+      
+    } catch (error: any) {
+      throw new Error(error.message || 'Registration failed');
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await signOut();
     setUser(null);
     localStorage.removeItem('siteboss_token');
     localStorage.removeItem('siteboss_user');
-    authApi.logout().catch(console.error);
   };
 
   const updateUser = (userData: Partial<User>) => {

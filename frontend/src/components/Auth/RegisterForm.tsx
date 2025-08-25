@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { UserRole } from '../../types';
@@ -9,6 +9,7 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -86,9 +87,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess }) => {
         role: formData.role,
         company_name: formData.company_name
       });
-      onSuccess?.();
+      
+      // Redirect to email confirmation page with email parameter
+      navigate(`/email-confirmation?email=${encodeURIComponent(formData.email)}`);
+      
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Registration failed. Please try again.');
+      setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

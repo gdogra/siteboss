@@ -11,7 +11,6 @@ import {
   MapPinIcon
 } from '@heroicons/react/24/outline';
 import { Project, ProjectStatus } from '../../types';
-import { api } from '../../services/api';
 import ProjectCard from './ProjectCard';
 import CreateProjectModal from './CreateProjectModal';
 import ProjectDetailsModal from './ProjectDetailsModal';
@@ -50,13 +49,87 @@ const ProjectManagement: React.FC = () => {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const [projectsResponse, statsResponse] = await Promise.all([
-        api.get<Project[]>('/projects'),
-        api.get<ProjectStats>('/projects/stats')
-      ]);
       
-      setProjects(Array.isArray(projectsResponse.data) ? projectsResponse.data : []);
-      setStats(statsResponse.data || null);
+      // Mock data for projects
+      const mockProjects: any[] = [
+        {
+          id: '1',
+          name: 'Downtown Office Complex',
+          description: 'Modern 20-story office building with retail space',
+          status: 'active' as ProjectStatus,
+          budget: 2500000,
+          spent_amount: 1200000,
+          start_date: '2024-01-15',
+          end_date: '2024-12-30',
+          client_name: 'ABC Corporation',
+          address: '123 Main St, Downtown',
+          project_manager: 'John Smith',
+          progress: 48,
+          created_at: '2024-01-01',
+          updated_at: '2024-01-15'
+        },
+        {
+          id: '2',
+          name: 'Residential Villa Project',
+          description: 'Luxury 5-bedroom villa with modern amenities',
+          status: 'planning' as ProjectStatus,
+          budget: 850000,
+          spent_amount: 50000,
+          start_date: '2024-03-01',
+          end_date: '2024-11-15',
+          client_name: 'Johnson Family',
+          address: '456 Oak Avenue, Suburbs',
+          project_manager: 'Sarah Wilson',
+          progress: 5,
+          created_at: '2024-02-01',
+          updated_at: '2024-02-10'
+        },
+        {
+          id: '3',
+          name: 'Shopping Mall Renovation',
+          description: 'Complete renovation of existing shopping center',
+          status: 'active' as ProjectStatus,
+          budget: 1200000,
+          spent_amount: 800000,
+          start_date: '2024-02-10',
+          end_date: '2024-09-20',
+          client_name: 'Metro Properties',
+          address: '789 Commerce Blvd, City Center',
+          project_manager: 'Mike Johnson',
+          progress: 67,
+          created_at: '2024-01-20',
+          updated_at: '2024-02-15'
+        },
+        {
+          id: '4',
+          name: 'Warehouse Construction',
+          description: 'Industrial warehouse for logistics company',
+          status: 'completed' as ProjectStatus,
+          budget: 900000,
+          spent_amount: 880000,
+          start_date: '2023-08-01',
+          end_date: '2024-01-31',
+          client_name: 'Logistics Plus',
+          address: '321 Industrial Way, Port District',
+          project_manager: 'Lisa Chen',
+          progress: 100,
+          created_at: '2023-07-15',
+          updated_at: '2024-02-01'
+        }
+      ];
+
+      // Mock stats
+      const mockStats: ProjectStats = {
+        totalProjects: 4,
+        activeProjects: 2,
+        completedProjects: 1,
+        totalValue: 5450000,
+        avgDuration: 8,
+        onTimeDelivery: 85
+      };
+      
+      setProjects(mockProjects);
+      setStats(mockStats);
     } catch (error) {
       console.error('Error fetching projects:', error);
     } finally {
@@ -123,7 +196,14 @@ const ProjectManagement: React.FC = () => {
   const handleProjectCreated = (project: Project) => {
     setProjects(prev => [...prev, project]);
     setIsCreateModalOpen(false);
-    fetchProjects(); // Refresh stats
+    // Update stats locally instead of refetching
+    if (stats) {
+      setStats(prev => prev ? {
+        ...prev,
+        totalProjects: prev.totalProjects + 1,
+        activeProjects: project.status === 'active' ? prev.activeProjects + 1 : prev.activeProjects
+      } : null);
+    }
   };
 
   const handleProjectUpdated = (updatedProject: Project) => {

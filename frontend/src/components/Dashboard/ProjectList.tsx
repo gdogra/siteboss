@@ -1,14 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { projectApi } from '../../services/api';
 import { format } from 'date-fns';
 
 const ProjectList: React.FC = () => {
-  const { data: projects, isLoading } = useQuery({
-    queryKey: ['projects', 'recent'],
-    queryFn: () => projectApi.getProjects(),
-  });
+  const [projects, setProjects] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Mock data for recent projects
+    const timer = setTimeout(() => {
+      setProjects([
+        {
+          id: '1',
+          name: 'Downtown Office Complex',
+          status: 'active',
+          budget: 2500000,
+          start_date: new Date('2024-01-15'),
+          end_date: new Date('2024-12-30'),
+          client_name: 'ABC Corporation'
+        },
+        {
+          id: '2', 
+          name: 'Residential Villa Project',
+          status: 'planning',
+          budget: 850000,
+          start_date: new Date('2024-03-01'),
+          end_date: new Date('2024-11-15'),
+          client_name: 'Johnson Family'
+        },
+        {
+          id: '3',
+          name: 'Shopping Mall Renovation',
+          status: 'active',
+          budget: 1200000,
+          start_date: new Date('2024-02-10'),
+          end_date: new Date('2024-09-20'),
+          client_name: 'Metro Properties'
+        }
+      ]);
+      setIsLoading(false);
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -31,7 +65,7 @@ const ProjectList: React.FC = () => {
     );
   }
 
-  const recentProjects = projects?.data?.slice(0, 5) || [];
+  const recentProjects = projects.slice(0, 5);
 
   if (recentProjects.length === 0) {
     return (

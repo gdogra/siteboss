@@ -2,7 +2,6 @@ import React, { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CalendarIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import { Project, ProjectStatus } from '../../types';
-import { api } from '../../services/api';
 
 interface CreateProjectModalProps {
   isOpen: boolean;
@@ -84,24 +83,32 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
     setError(null);
 
     try {
-      const projectData = {
+      // Mock project creation - use partial type to match what we actually need
+      const newProject: any = {
+        id: `project-${Date.now()}`,
         name: formData.name,
-        description: formData.description || null,
+        description: formData.description || '',
         address: formData.address,
-        start_date: formData.start_date || null,
-        end_date: formData.end_date || null,
-        estimated_duration: formData.estimated_duration ? parseInt(formData.estimated_duration) : null,
-        total_budget: formData.total_budget ? parseFloat(formData.total_budget) : null,
-        contract_value: formData.contract_value ? parseFloat(formData.contract_value) : null,
-        profit_margin: formData.profit_margin ? parseFloat(formData.profit_margin) : null,
-        status: formData.status
+        start_date: formData.start_date || '',
+        end_date: formData.end_date || '',
+        status: formData.status,
+        budget: formData.total_budget ? parseFloat(formData.total_budget) : 0,
+        spent_amount: 0,
+        client_name: 'New Client',
+        project_manager: 'Current User',
+        progress: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       };
 
-      const response = await api.post<Project>('/projects', projectData);
-      onProjectCreated(response.data);
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      onProjectCreated(newProject);
       setFormData(initialFormData);
+      onClose();
     } catch (error: any) {
-      setError(error.response?.data?.error || 'Failed to create project');
+      setError('Failed to create project');
     } finally {
       setLoading(false);
     }

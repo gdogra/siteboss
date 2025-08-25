@@ -1,6 +1,4 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { projectApi, taskApi, budgetApi } from '../../services/api';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import StatsCard from './StatsCard';
 import TaskList from './TaskList';
@@ -15,32 +13,31 @@ import {
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-
-  const { data: projectStats } = useQuery({
-    queryKey: ['projectStats'],
-    queryFn: () => projectApi.getProjectStats(),
+  const [mockData, setMockData] = useState({
+    projectStats: { active_projects: 5 },
+    myTasks: Array(8).fill(null),
+    overdueTasks: Array(2).fill(null),
+    pendingExpenses: Array(3).fill(null)
   });
 
-  const { data: myTasks } = useQuery({
-    queryKey: ['myTasks'],
-    queryFn: () => taskApi.getMyTasks(),
-  });
-
-  const { data: overdueTasks } = useQuery({
-    queryKey: ['overdueTasks'],
-    queryFn: () => taskApi.getOverdueTasks(),
-  });
-
-  const { data: pendingExpenses } = useQuery({
-    queryKey: ['pendingExpenses'],
-    queryFn: () => budgetApi.getPendingExpenses(),
-    enabled: user?.role === 'company_admin' || user?.role === 'project_manager',
-  });
+  useEffect(() => {
+    // Simulate loading mock data
+    const timer = setTimeout(() => {
+      setMockData({
+        projectStats: { active_projects: 5 },
+        myTasks: Array(8).fill(null),
+        overdueTasks: Array(2).fill(null),
+        pendingExpenses: Array(3).fill(null)
+      });
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const stats = [
     {
       name: 'Active Projects',
-      value: projectStats?.data?.active_projects || 0,
+      value: mockData.projectStats.active_projects,
       icon: FolderOpenIcon,
       color: 'blue' as const,
       change: '+12%',
@@ -48,7 +45,7 @@ const Dashboard: React.FC = () => {
     },
     {
       name: 'My Tasks',
-      value: myTasks?.data?.length || 0,
+      value: mockData.myTasks.length,
       icon: CheckCircleIcon,
       color: 'green' as const,
       change: '+4.75%',
@@ -64,7 +61,7 @@ const Dashboard: React.FC = () => {
     },
     {
       name: 'Overdue Tasks',
-      value: overdueTasks?.data?.length || 0,
+      value: mockData.overdueTasks.length,
       icon: ExclamationTriangleIcon,
       color: 'red' as const,
       change: '-2.02%',
@@ -112,7 +109,7 @@ const Dashboard: React.FC = () => {
               View all
             </a>
           </div>
-          <TaskList tasks={myTasks?.data?.slice(0, 5) || []} />
+          <TaskList tasks={[]} />
         </div>
 
         {/* Recent Projects */}
@@ -153,7 +150,7 @@ const Dashboard: React.FC = () => {
             </a>
           </div>
           <div className="text-sm text-gray-600">
-            {pendingExpenses?.data?.length || 0} expenses waiting for approval
+            {mockData.pendingExpenses.length} expenses waiting for approval
           </div>
         </div>
       )}
