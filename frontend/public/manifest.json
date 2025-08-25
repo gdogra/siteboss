@@ -1,0 +1,12 @@
+{
+  "short_name": "SiteBoss",
+  "name": "SiteBoss Construction Management", 
+  "description": "State-of-the-art construction project management platform",
+  "icons": [],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "categories": ["business", "productivity"],
+  "orientation": "portrait-primary"
+}
