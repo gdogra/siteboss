@@ -70,7 +70,7 @@ const EmailConfirmation: React.FC = () => {
         type: 'signup',
         email: email,
         options: {
-          emailRedirectTo: `${window.location.origin}/email-confirmation`
+          emailRedirectTo: `http://localhost:3000/email-confirmation`
         }
       });
 
@@ -138,6 +138,22 @@ const EmailConfirmation: React.FC = () => {
               </div>
             </div>
 
+            {/* Demo Notice */}
+            <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-yellow-800">
+                    Demo Mode Available
+                  </h3>
+                  <div className="mt-2 text-sm text-yellow-700">
+                    <p>For testing purposes, you can use the demo account:</p>
+                    <p className="font-mono mt-1">email: demo@siteboss.com</p>
+                    <p className="font-mono">password: any password</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 onClick={handleResendConfirmation}
@@ -151,6 +167,13 @@ const EmailConfirmation: React.FC = () => {
                 )}
                 {resending ? 'Resending...' : 'Resend Email'}
               </button>
+              
+              <Link
+                to="/login"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Use Demo Account
+              </Link>
               
               <Link
                 to="/register"

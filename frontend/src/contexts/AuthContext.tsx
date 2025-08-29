@@ -172,7 +172,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         data.email, 
         data.password, 
         metadata,
-        `${window.location.origin}/email-confirmation`
+        `http://localhost:3000/email-confirmation`
       );
       
       if (error) {

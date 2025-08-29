@@ -14,7 +14,10 @@ import {
   WrenchScrewdriverIcon
 } from '@heroicons/react/24/outline';
 import { Project, ProjectStatus } from '../../types';
-import { api } from '../../services/api';
+import TaskManagementTab from './TaskManagementTab';
+import BudgetTrackingTab from './BudgetTrackingTab';
+import TeamManagementTab from './TeamManagementTab';
+import DocumentManagementTab from './DocumentManagementTab';
 
 interface ProjectDetailsModalProps {
   project: Project;
@@ -104,11 +107,23 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
     setError(null);
 
     try {
-      const response = await api.put<Project>(`/projects/${project.id}`, editData);
-      onProjectUpdated(response.data);
+      // Mock API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Create updated project object with the changes
+      const updatedProject: Project = {
+        ...project,
+        ...editData,
+        // Convert string dates to Date objects if they exist
+        start_date: editData.start_date ? new Date(editData.start_date) : project.start_date,
+        end_date: editData.end_date ? new Date(editData.end_date) : project.end_date,
+        updated_at: new Date()
+      };
+      
+      onProjectUpdated(updatedProject);
       setIsEditing(false);
     } catch (error: any) {
-      setError(error.response?.data?.error || 'Failed to update project');
+      setError('Failed to update project');
     } finally {
       setLoading(false);
     }
@@ -123,10 +138,11 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
     setError(null);
 
     try {
-      await api.delete(`/projects/${project.id}`);
+      // Mock API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
       onProjectDeleted(project.id);
     } catch (error: any) {
-      setError(error.response?.data?.error || 'Failed to delete project');
+      setError('Failed to delete project');
       setLoading(false);
     }
   };
@@ -425,45 +441,24 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
                           </div>
                         </Tab.Panel>
 
-                        {/* Other Tabs - Placeholders */}
+                        {/* Task Management Tab */}
                         <Tab.Panel>
-                          <div className="text-center py-12">
-                            <ClipboardDocumentListIcon className="mx-auto h-12 w-12 text-gray-400" />
-                            <h3 className="mt-2 text-sm font-medium text-gray-900">Task Management</h3>
-                            <p className="mt-1 text-sm text-gray-500">
-                              Task management features coming soon...
-                            </p>
-                          </div>
+                          <TaskManagementTab projectId={project.id} />
                         </Tab.Panel>
 
                         <Tab.Panel>
-                          <div className="text-center py-12">
-                            <CurrencyDollarIcon className="mx-auto h-12 w-12 text-gray-400" />
-                            <h3 className="mt-2 text-sm font-medium text-gray-900">Budget Tracking</h3>
-                            <p className="mt-1 text-sm text-gray-500">
-                              Budget tracking features coming soon...
-                            </p>
-                          </div>
+                          <BudgetTrackingTab 
+                            projectId={project.id} 
+                            totalBudget={project.total_budget || 0} 
+                          />
                         </Tab.Panel>
 
                         <Tab.Panel>
-                          <div className="text-center py-12">
-                            <UserGroupIcon className="mx-auto h-12 w-12 text-gray-400" />
-                            <h3 className="mt-2 text-sm font-medium text-gray-900">Team Management</h3>
-                            <p className="mt-1 text-sm text-gray-500">
-                              Team management features coming soon...
-                            </p>
-                          </div>
+                          <TeamManagementTab projectId={project.id} />
                         </Tab.Panel>
 
                         <Tab.Panel>
-                          <div className="text-center py-12">
-                            <DocumentIcon className="mx-auto h-12 w-12 text-gray-400" />
-                            <h3 className="mt-2 text-sm font-medium text-gray-900">Document Management</h3>
-                            <p className="mt-1 text-sm text-gray-500">
-                              Document management features coming soon...
-                            </p>
-                          </div>
+                          <DocumentManagementTab projectId={project.id} />
                         </Tab.Panel>
 
                         <Tab.Panel>

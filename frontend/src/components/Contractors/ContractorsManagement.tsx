@@ -267,6 +267,16 @@ const ContractorsManagement: React.FC = () => {
     setIsPerformanceModalOpen(true);
   };
 
+  const handleMessageContractor = (contractor: Contractor) => {
+    const subject = `Project Discussion - ${contractor.company_name}`;
+    const body = `Hi ${contractor.contact_name},\n\nI hope this message finds you well. I would like to discuss a potential project opportunity.\n\nBest regards`;
+    window.open(`mailto:${contractor.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
+  };
+
+  const handleCallContractor = (contractor: Contractor) => {
+    window.open(`tel:${contractor.phone}`, '_self');
+  };
+
   const filteredContractors = contractors.filter(contractor => {
     const matchesSearch = contractor.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          contractor.contact_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -532,7 +542,9 @@ const ContractorsManagement: React.FC = () => {
                   >
                     Performance
                   </button>
-                  <button className="bg-gray-100 text-gray-700 text-xs font-medium py-2 px-2 rounded-md hover:bg-gray-200">
+                  <button 
+                    onClick={() => handleMessageContractor(contractor)}
+                    className="bg-gray-100 text-gray-700 text-xs font-medium py-2 px-2 rounded-md hover:bg-gray-200">
                     Message
                   </button>
                 </div>
@@ -611,7 +623,9 @@ const ContractorsManagement: React.FC = () => {
                     >
                       View
                     </button>
-                    <button className="text-primary-600 hover:text-primary-900">
+                    <button 
+                      onClick={() => handleMessageContractor(contractor)}
+                      className="text-primary-600 hover:text-primary-900">
                       Message
                     </button>
                   </td>

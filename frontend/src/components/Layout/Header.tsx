@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
                   <UserCircleIcon className="h-8 w-8" />
                 )}
                 <span className="text-sm font-medium">
-                  {user?.first_name} {user?.last_name}
+                  {user?.first_name} {user?.last_name} {!user?.first_name && 'User'}
                 </span>
                 <ChevronDownIcon className="h-4 w-4" />
               </Menu.Button>

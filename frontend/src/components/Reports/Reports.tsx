@@ -91,9 +91,231 @@ const Reports: React.FC = () => {
     { id: 'team', name: 'Team Productivity', icon: UsersIcon }
   ];
 
-  const handleExportReport = () => {
-    // In a real app, this would generate and download the report
-    alert('Report export functionality would be implemented here');
+  const handleExportReport = (format: 'pdf' | 'csv' | 'excel' = 'pdf') => {
+    if (!reportData) return;
+    
+    try {
+      // Generate report data based on selected report type
+      const reportName = reportTypes.find(r => r.id === selectedReport)?.name || 'Overview';
+      const fileName = `${reportName}_Report_${new Date().toISOString().split('T')[0]}`;
+      
+      if (format === 'csv') {
+        // Generate CSV data
+        const csvData = generateCSVReport();
+        downloadFile(csvData, `${fileName}.csv`, 'text/csv');
+      } else if (format === 'excel') {
+        // Generate Excel-like data (simplified as CSV with tabs)
+        const excelData = generateExcelReport();
+        downloadFile(excelData, `${fileName}.xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      } else {
+        // Generate PDF-like data (HTML for demo)
+        const pdfData = generatePDFReport();
+        downloadFile(pdfData, `${fileName}.html`, 'text/html');
+      }
+      
+      alert(`${reportName} report exported successfully as ${format.toUpperCase()}!`);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Failed to export report. Please try again.');
+    }
+  };
+
+  const generateCSVReport = () => {
+    if (!reportData) return '';
+    
+    let csv = `Report Type,${reportTypes.find(r => r.id === selectedReport)?.name || 'Overview'}\n`;
+    csv += `Period,Last ${selectedPeriod} days\n`;
+    csv += `Generated,${new Date().toLocaleString()}\n\n`;
+    
+    if (selectedReport === 'overview' || selectedReport === 'projects') {
+      csv += `Project Metrics\n`;
+      csv += `Total Projects,${reportData.projects.total}\n`;
+      csv += `Active Projects,${reportData.projects.active}\n`;
+      csv += `Completed Projects,${reportData.projects.completed}\n`;
+      csv += `On Time,${reportData.projects.onTime}\n`;
+      csv += `Delayed,${reportData.projects.delayed}\n\n`;
+    }
+    
+    if (selectedReport === 'overview' || selectedReport === 'budget') {
+      csv += `Budget Metrics\n`;
+      csv += `Total Budget,$${reportData.budget.totalBudget.toLocaleString()}\n`;
+      csv += `Total Spent,$${reportData.budget.totalSpent.toLocaleString()}\n`;
+      csv += `Savings,$${reportData.budget.savings.toLocaleString()}\n`;
+      csv += `Over Budget Projects,${reportData.budget.overBudget}\n\n`;
+    }
+    
+    if (selectedReport === 'overview' || selectedReport === 'time') {
+      csv += `Time Tracking Metrics\n`;
+      csv += `Total Hours,${reportData.time.totalHours}\n`;
+      csv += `Billable Hours,${reportData.time.billableHours}\n`;
+      csv += `Avg Hours per Project,${reportData.time.avgHoursPerProject}\n\n`;
+    }
+    
+    if (selectedReport === 'overview' || selectedReport === 'team') {
+      csv += `Team Metrics\n`;
+      csv += `Total Users,${reportData.team.totalUsers}\n`;
+      csv += `Active Users,${reportData.team.activeUsers}\n`;
+      csv += `Productivity,${reportData.team.productivity}%\n`;
+    }
+    
+    return csv;
+  };
+
+  const generateExcelReport = () => {
+    // For demo purposes, generate tab-separated values (TSV) which Excel can open
+    return generateCSVReport().replace(/,/g, '\t');
+  };
+
+  const generatePDFReport = () => {
+    if (!reportData) return '';
+    
+    const reportName = reportTypes.find(r => r.id === selectedReport)?.name || 'Overview';
+    
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${reportName} Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .section { margin-bottom: 30px; }
+        .metric-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .metric-card { border: 1px solid #ccc; padding: 15px; border-radius: 5px; }
+        .metric-title { font-weight: bold; color: #374151; }
+        .metric-value { font-size: 24px; font-weight: bold; color: #1f2937; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>${reportName} Report</h1>
+        <p>Period: Last ${selectedPeriod} days</p>
+        <p>Generated: ${new Date().toLocaleString()}</p>
+    </div>
+    
+    ${selectedReport === 'overview' || selectedReport === 'projects' ? `
+    <div class="section">
+        <h2>Project Metrics</h2>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Projects</div>
+                <div class="metric-value">${reportData.projects.total}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Active Projects</div>
+                <div class="metric-value">${reportData.projects.active}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Completed Projects</div>
+                <div class="metric-value">${reportData.projects.completed}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">On Time / Delayed</div>
+                <div class="metric-value">${reportData.projects.onTime} / ${reportData.projects.delayed}</div>
+            </div>
+        </div>
+    </div>
+    ` : ''}
+    
+    ${selectedReport === 'overview' || selectedReport === 'budget' ? `
+    <div class="section">
+        <h2>Budget Analysis</h2>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Budget</div>
+                <div class="metric-value">${formatCurrency(reportData.budget.totalBudget)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Total Spent</div>
+                <div class="metric-value">${formatCurrency(reportData.budget.totalSpent)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Savings</div>
+                <div class="metric-value">${formatCurrency(reportData.budget.savings)}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Budget Utilization</div>
+                <div class="metric-value">${Math.round((reportData.budget.totalSpent / reportData.budget.totalBudget) * 100)}%</div>
+            </div>
+        </div>
+    </div>
+    ` : ''}
+    
+    ${selectedReport === 'overview' || selectedReport === 'time' ? `
+    <div class="section">
+        <h2>Time Tracking</h2>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Hours</div>
+                <div class="metric-value">${reportData.time.totalHours.toLocaleString()}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Billable Hours</div>
+                <div class="metric-value">${reportData.time.billableHours.toLocaleString()}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Avg Hours per Project</div>
+                <div class="metric-value">${reportData.time.avgHoursPerProject}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Billable Percentage</div>
+                <div class="metric-value">${Math.round((reportData.time.billableHours / reportData.time.totalHours) * 100)}%</div>
+            </div>
+        </div>
+    </div>
+    ` : ''}
+    
+    ${selectedReport === 'overview' || selectedReport === 'team' ? `
+    <div class="section">
+        <h2>Team Performance</h2>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Users</div>
+                <div class="metric-value">${reportData.team.totalUsers}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Active Users</div>
+                <div class="metric-value">${reportData.team.activeUsers}</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Team Productivity</div>
+                <div class="metric-value">${reportData.team.productivity}%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">User Activity Rate</div>
+                <div class="metric-value">${Math.round((reportData.team.activeUsers / reportData.team.totalUsers) * 100)}%</div>
+            </div>
+        </div>
+    </div>
+    ` : ''}
+</body>
+</html>`;
+  };
+
+  const downloadFile = (data: string, filename: string, type: string) => {
+    const blob = new Blob([data], { type });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handleExportWithFormat = () => {
+    const format = window.prompt('Select export format:\n1. PDF (HTML)\n2. CSV\n3. Excel\n\nEnter number (1-3):');
+    
+    if (format === '1') {
+      handleExportReport('pdf');
+    } else if (format === '2') {
+      handleExportReport('csv');
+    } else if (format === '3') {
+      handleExportReport('excel');
+    } else if (format !== null) {
+      alert('Invalid format selected. Please choose 1, 2, or 3.');
+    }
   };
 
   if (loading) {
@@ -126,7 +348,7 @@ const Reports: React.FC = () => {
             <option value="365">Last year</option>
           </select>
           <button
-            onClick={handleExportReport}
+            onClick={handleExportWithFormat}
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
           >
             <DocumentArrowDownIcon className="-ml-1 mr-2 h-5 w-5" />
@@ -292,7 +514,7 @@ const Reports: React.FC = () => {
               </p>
               <div className="mt-6">
                 <button
-                  onClick={handleExportReport}
+                  onClick={handleExportWithFormat}
                   className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
                 >
                   <DocumentArrowDownIcon className="-ml-1 mr-2 h-5 w-5" />

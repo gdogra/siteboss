@@ -63,17 +63,119 @@ const TaskManagement: React.FC = () => {
   const fetchInitialData = async () => {
     try {
       setLoading(true);
-      const [tasksRes, projectsRes, usersRes, statsRes] = await Promise.all([
-        api.get<Task[]>('/tasks'),
-        api.get('/projects'),
-        api.get('/users'),
-        api.get<TaskStats>('/tasks/stats')
-      ]);
       
-      setTasks(Array.isArray(tasksRes.data) ? tasksRes.data : []);
-      setProjects(projectsRes.data);
-      setUsers(usersRes.data);
-      setStats(statsRes.data || null);
+      // Mock task data
+      const mockTasks: Task[] = [
+        {
+          id: '1',
+          title: 'Review project blueprints',
+          description: 'Review and approve the architectural blueprints for the new office building',
+          status: 'in_progress',
+          priority: 'high',
+          assigned_to: 'John Smith',
+          project_id: '1',
+          due_date: new Date('2024-02-15'),
+          created_at: new Date('2024-01-10'),
+          updated_at: new Date('2024-01-15'),
+          estimated_hours: 8,
+          actual_hours: 4,
+          completion_percentage: 50
+        },
+        {
+          id: '2',
+          title: 'Site inspection preparation',
+          description: 'Prepare documentation and schedule for weekly site inspection',
+          status: 'not_started',
+          priority: 'medium',
+          assigned_to: 'Sarah Wilson',
+          project_id: '2',
+          due_date: new Date('2024-02-10'),
+          created_at: new Date('2024-01-08'),
+          updated_at: new Date('2024-01-08'),
+          estimated_hours: 4,
+          actual_hours: 0,
+          completion_percentage: 0
+        },
+        {
+          id: '3',
+          title: 'Update project timeline',
+          description: 'Update project timeline based on latest progress reports',
+          status: 'completed',
+          priority: 'low',
+          assigned_to: 'Mike Johnson',
+          project_id: '1',
+          due_date: new Date('2024-01-30'),
+          created_at: new Date('2024-01-05'),
+          updated_at: new Date('2024-01-25'),
+          estimated_hours: 2,
+          actual_hours: 3,
+          completion_percentage: 100
+        },
+        {
+          id: '4',
+          title: 'Material procurement',
+          description: 'Coordinate with suppliers for construction materials delivery',
+          status: 'in_progress',
+          priority: 'critical',
+          assigned_to: 'Lisa Chen',
+          project_id: '3',
+          due_date: new Date('2024-02-08'),
+          created_at: new Date('2024-01-12'),
+          updated_at: new Date('2024-01-18'),
+          estimated_hours: 12,
+          actual_hours: 8,
+          completion_percentage: 75
+        },
+        {
+          id: '5',
+          title: 'Safety inspection',
+          description: 'Conduct monthly safety inspection of construction site',
+          status: 'on_hold',
+          priority: 'critical',
+          assigned_to: 'David Brown',
+          project_id: '2',
+          due_date: new Date('2024-01-25'),
+          created_at: new Date('2024-01-01'),
+          updated_at: new Date('2024-01-20'),
+          estimated_hours: 6,
+          actual_hours: 0,
+          completion_percentage: 0
+        }
+      ];
+
+      // Mock projects
+      const mockProjects = [
+        { id: '1', name: 'Downtown Office Complex' },
+        { id: '2', name: 'Residential Villa Project' },
+        { id: '3', name: 'Shopping Mall Renovation' }
+      ];
+
+      // Mock users
+      const mockUsers = [
+        { id: '1', name: 'John Smith' },
+        { id: '2', name: 'Sarah Wilson' },
+        { id: '3', name: 'Mike Johnson' },
+        { id: '4', name: 'Lisa Chen' },
+        { id: '5', name: 'David Brown' }
+      ];
+
+      // Mock stats
+      const mockStats: TaskStats = {
+        totalTasks: mockTasks.length,
+        completedTasks: mockTasks.filter(t => t.status === 'completed').length,
+        overdueTasks: mockTasks.filter(t => t.due_date && new Date(t.due_date) < new Date() && t.status !== 'completed').length,
+        inProgressTasks: mockTasks.filter(t => t.status === 'in_progress').length,
+        avgCompletionTime: 5.2,
+        onTimeDelivery: 78
+      };
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      setTasks(mockTasks);
+      setProjects(mockProjects);
+      setUsers(mockUsers);
+      setStats(mockStats);
     } catch (error) {
       console.error('Error fetching task data:', error);
     } finally {

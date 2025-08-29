@@ -215,8 +215,75 @@ const CommunicationHub: React.FC = () => {
   };
 
   const handleCommunicationAction = (communicationId: string) => {
-    // TODO: Implement communication actions (reply, forward, etc.)
-    console.log('Communication action for:', communicationId);
+    const communication = communications.find(c => c.id === communicationId);
+    if (communication) {
+      const actions = ['Reply', 'Forward', 'Mark as Read', 'Archive', 'Delete'];
+      const choice = window.prompt(`Actions for ${communication.contact_name}:\n${actions.join('\n')}\n\nEnter action number (1-${actions.length}):`);
+      
+      if (choice && parseInt(choice) >= 1 && parseInt(choice) <= actions.length) {
+        const selectedAction = actions[parseInt(choice) - 1];
+        console.log(`${selectedAction} action for:`, communicationId);
+        alert(`${selectedAction} action initiated for ${communication.contact_name}`);
+        
+        if (selectedAction === 'Mark as Read') {
+          setCommunications(prev => 
+            prev.map(c => c.id === communicationId ? {...c, status: 'read'} : c)
+          );
+        }
+      }
+    }
+  };
+
+  const handleComposeEmail = () => {
+    const recipient = window.prompt('Enter recipient email:');
+    const subject = window.prompt('Enter email subject:');
+    const message = window.prompt('Enter email message:');
+    
+    if (recipient && subject && message) {
+      const newEmail: Communication = {
+        id: Date.now().toString(),
+        type: 'email',
+        direction: 'outbound',
+        subject,
+        content: message,
+        from: 'you@company.com',
+        to: recipient,
+        timestamp: new Date(),
+        status: 'sent',
+        contact_name: recipient.split('@')[0] || 'Unknown',
+        contact_email: recipient,
+        contact_phone: ''
+      };
+      
+      setCommunications(prev => [newEmail, ...prev]);
+      setIsComposingEmail(false);
+      alert('Email sent successfully!');
+    }
+  };
+
+  const handleComposeSMS = () => {
+    const recipient = window.prompt('Enter recipient phone number:');
+    const message = window.prompt('Enter SMS message:');
+    
+    if (recipient && message) {
+      const newSMS: Communication = {
+        id: Date.now().toString(),
+        type: 'sms',
+        direction: 'outbound',
+        content: message,
+        from: 'your-number',
+        to: recipient,
+        timestamp: new Date(),
+        status: 'sent',
+        contact_name: `Contact ${recipient}`,
+        contact_email: '',
+        contact_phone: recipient
+      };
+      
+      setCommunications(prev => [newSMS, ...prev]);
+      setIsComposingSMS(false);
+      alert('SMS sent successfully!');
+    }
   };
 
   const filteredCommunications = communications.filter(comm => {
@@ -267,14 +334,14 @@ const CommunicationHub: React.FC = () => {
         </div>
         <div className="flex space-x-3">
           <button 
-            onClick={() => setIsComposingEmail(true)}
+            onClick={handleComposeEmail}
             className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
           >
             <EnvelopeIcon className="h-5 w-5" />
             <span>New Email</span>
           </button>
           <button 
-            onClick={() => setIsComposingSMS(true)}
+            onClick={handleComposeSMS}
             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
           >
             <ChatBubbleLeftRightIcon className="h-5 w-5" />

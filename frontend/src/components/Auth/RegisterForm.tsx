@@ -309,6 +309,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess }) => {
           <div className="text-xs text-gray-500 text-center">
             By creating an account, you agree to our Terms of Service and Privacy Policy.
           </div>
+
+          {/* Demo Notice */}
+          <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div className="flex">
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-yellow-800">
+                  Demo Mode Available
+                </h3>
+                <div className="mt-1 text-xs text-yellow-700">
+                  <p>For quick testing, use: <span className="font-mono">demo@siteboss.com</span> with any password</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>

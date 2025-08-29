@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useAuth } from './AuthContext';
 
 export interface Tenant {
   id: string;
@@ -63,6 +64,7 @@ interface TenantProviderProps {
 export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
 
   // Extract tenant from subdomain or domain
   const getTenantFromDomain = (): string | null => {
@@ -204,6 +206,10 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
   };
 
   const getTenantFeature = (feature: keyof Tenant['settings']['features']): boolean => {
+    // Admin users have access to all features
+    if (user?.role === 'super_admin' || user?.role === 'company_admin') {
+      return true;
+    }
     return tenant?.settings.features[feature] || false;
   };
 
@@ -212,6 +218,10 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
   };
 
   const isWithinLimit = (resource: keyof Tenant['settings']['limits'], currentCount: number): boolean => {
+    // Admin users have unlimited access
+    if (user?.role === 'super_admin' || user?.role === 'company_admin') {
+      return true;
+    }
     const limit = getTenantLimit(resource);
     return limit === -1 || currentCount < limit; // -1 means unlimited
   };

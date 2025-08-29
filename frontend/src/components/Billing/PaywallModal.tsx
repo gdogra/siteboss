@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   XMarkIcon,
   StarIcon,
@@ -24,6 +25,7 @@ const PaywallModal: React.FC<PaywallModalProps> = ({
   description
 }) => {
   const { tenant } = useTenant();
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -72,7 +74,7 @@ const PaywallModal: React.FC<PaywallModalProps> = ({
 
   const handleUpgrade = () => {
     // In real implementation, this would redirect to billing page or open upgrade flow
-    window.location.href = '/subscription-plans';
+    navigate('/subscription-plans');
   };
 
   return (

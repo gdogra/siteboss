@@ -53,7 +53,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
             {getStatusIcon(task.status)}
             <div>
               <Link
-                to={`/projects/${task.project_id}/tasks/${task.id}`}
+                to="/tasks"
                 className="text-sm font-medium text-gray-900 hover:text-primary-600"
               >
                 {task.title}

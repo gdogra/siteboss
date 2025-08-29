@@ -46,6 +46,30 @@ const TimeTracking: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    // Load mock data for projects and tasks
+    const mockProjects = [
+      { id: '1', name: 'Downtown Office Complex' },
+      { id: '2', name: 'Residential Villa Project' },
+      { id: '3', name: 'Shopping Mall Renovation' },
+      { id: '4', name: 'Warehouse Construction' },
+      { id: '5', name: 'School Building Upgrade' }
+    ];
+
+    const mockTasks = [
+      { id: '1', title: 'Review project blueprints', project_id: '1' },
+      { id: '2', title: 'Site inspection preparation', project_id: '2' },
+      { id: '3', title: 'Update project timeline', project_id: '1' },
+      { id: '4', title: 'Material procurement', project_id: '3' },
+      { id: '5', title: 'Safety inspection', project_id: '2' },
+      { id: '6', title: 'Quality control check', project_id: '4' },
+      { id: '7', title: 'Client meeting preparation', project_id: '5' }
+    ];
+
+    setProjects(mockProjects);
+    setTasks(mockTasks);
+  }, []);
+
   const formatDuration = (startTime: Date, endTime?: Date) => {
     const end = endTime || currentTime;
     const duration = Math.floor((end.getTime() - startTime.getTime()) / 1000);
@@ -177,7 +201,10 @@ const TimeTracking: React.FC = () => {
                   </label>
                   <select
                     value={selectedProject}
-                    onChange={(e) => setSelectedProject(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedProject(e.target.value);
+                      setSelectedTask(''); // Clear selected task when project changes
+                    }}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
                   >
                     <option value="">Select a project</option>
@@ -200,7 +227,7 @@ const TimeTracking: React.FC = () => {
                     disabled={!selectedProject}
                   >
                     <option value="">Select a task</option>
-                    {tasks?.map(task => (
+                    {tasks?.filter(task => task.project_id === selectedProject).map(task => (
                       <option key={task.id} value={task.id}>
                         {task.title}
                       </option>

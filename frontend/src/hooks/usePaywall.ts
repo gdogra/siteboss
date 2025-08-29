@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTenant } from '../contexts/TenantContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export interface PaywallFeature {
   id: string;
@@ -85,11 +86,18 @@ export const PAYWALL_FEATURES: PaywallFeature[] = [
 
 export const usePaywall = () => {
   const { tenant, getTenantFeature } = useTenant();
+  const { user } = useAuth();
   const [activePaywall, setActivePaywall] = useState<PaywallFeature | null>(null);
 
   const currentPlan = tenant?.subscription.plan || 'starter';
+  
+  // Admin users (super_admin and company_admin) have access to all features
+  const isAdmin = user?.role === 'super_admin' || user?.role === 'company_admin';
 
   const hasFeatureAccess = (featureId: string): boolean => {
+    // Admin users always have access to all features
+    if (isAdmin) return true;
+    
     const feature = PAYWALL_FEATURES.find(f => f.id === featureId);
     if (!feature) return true; // If feature not found, allow access
 
@@ -101,11 +109,14 @@ export const usePaywall = () => {
   };
 
   const checkFeatureAccess = (featureId: string): boolean => {
+    // Admin users always have access - no paywall shown
+    if (isAdmin) return true;
+    
     if (hasFeatureAccess(featureId)) {
       return true;
     }
 
-    // Show paywall
+    // Show paywall only for non-admin users
     const feature = PAYWALL_FEATURES.find(f => f.id === featureId);
     if (feature) {
       setActivePaywall(feature);

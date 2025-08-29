@@ -9,7 +9,15 @@ import {
   UserPlusIcon,
   PencilIcon,
   TrashIcon,
-  EyeIcon
+  EyeIcon,
+  CogIcon,
+  ShieldCheckIcon,
+  ClockIcon,
+  BellIcon,
+  KeyIcon,
+  ExclamationTriangleIcon,
+  CheckCircleIcon,
+  CalendarDaysIcon
 } from '@heroicons/react/24/outline';
 import { User, UserRole } from '../../types';
 
@@ -27,6 +35,37 @@ const TeamManagement: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'members' | 'settings'>('members');
+  const [teamSettings, setTeamSettings] = useState({
+    autoApproveInvites: false,
+    allowSelfRegistration: true,
+    defaultRole: 'worker' as UserRole,
+    requirePhoneVerification: false,
+    sessionTimeout: 8, // hours
+    twoFactorRequired: false,
+    allowRoleEscalation: false,
+    projectAccessLevel: 'assigned_only' as 'all' | 'assigned_only' | 'department_only',
+    emailNotifications: {
+      newMemberJoined: true,
+      roleChanged: true,
+      memberDeactivated: false,
+      weeklyReport: true,
+    },
+    workingHours: {
+      enabled: true,
+      start: '08:00',
+      end: '17:00',
+      timezone: 'America/New_York',
+      workingDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as string[],
+    },
+    permissions: {
+      canCreateProjects: ['company_admin', 'project_manager'] as UserRole[],
+      canDeleteTasks: ['company_admin', 'project_manager', 'foreman'] as UserRole[],
+      canViewReports: ['company_admin', 'project_manager'] as UserRole[],
+      canManageBudgets: ['company_admin'] as UserRole[],
+      canInviteMembers: ['company_admin', 'project_manager'] as UserRole[],
+    }
+  });
 
   // Mock data
   useEffect(() => {
@@ -167,6 +206,42 @@ const TeamManagement: React.FC = () => {
     console.log('Edit member:', memberId);
   };
 
+  const handleSettingsUpdate = (settingKey: string, value: any) => {
+    setTeamSettings(prev => ({
+      ...prev,
+      [settingKey]: value
+    }));
+    
+    // Show success message
+    const successMessage = document.createElement('div');
+    successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg z-50';
+    successMessage.textContent = 'Settings updated successfully!';
+    document.body.appendChild(successMessage);
+    setTimeout(() => {
+      document.body.removeChild(successMessage);
+    }, 3000);
+  };
+
+  const handleNestedSettingsUpdate = (parentKey: string, childKey: string, value: any) => {
+    setTeamSettings(prev => ({
+      ...prev,
+      [parentKey]: {
+        ...prev[parentKey as keyof typeof prev] as any,
+        [childKey]: value
+      }
+    }));
+  };
+
+  const handlePermissionUpdate = (permission: string, roles: UserRole[]) => {
+    setTeamSettings(prev => ({
+      ...prev,
+      permissions: {
+        ...prev.permissions,
+        [permission]: roles
+      }
+    }));
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -186,39 +261,72 @@ const TeamManagement: React.FC = () => {
           </p>
         </div>
         <div className="mt-4 sm:mt-0">
-          <button
-            onClick={handleInviteMember}
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
-          >
-            <UserPlusIcon className="-ml-1 mr-2 h-5 w-5" />
-            Invite Member
-          </button>
+          {activeTab === 'members' && (
+            <button
+              onClick={handleInviteMember}
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
+            >
+              <UserPlusIcon className="-ml-1 mr-2 h-5 w-5" />
+              Invite Member
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <UsersIcon className="h-6 w-6 text-gray-400" />
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Members
-                  </dt>
-                  <dd className="text-lg font-medium text-gray-900">
-                    {teamMembers.length}
-                  </dd>
-                </dl>
+      {/* Navigation Tabs */}
+      <div className="border-b border-gray-200">
+        <nav className="-mb-px flex space-x-8">
+          <button
+            onClick={() => setActiveTab('members')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'members'
+                ? 'border-primary-500 text-primary-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <UsersIcon className="h-5 w-5 inline-block mr-2" />
+            Team Members
+          </button>
+          <button
+            onClick={() => setActiveTab('settings')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'settings'
+                ? 'border-primary-500 text-primary-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <CogIcon className="h-5 w-5 inline-block mr-2" />
+            Team Settings
+          </button>
+        </nav>
+      </div>
+
+      {/* Content based on active tab */}
+      {activeTab === 'members' ? (
+        <>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <UsersIcon className="h-6 w-6 text-gray-400" />
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 truncate">
+                        Total Members
+                      </dt>
+                      <dd className="text-lg font-medium text-gray-900">
+                        {teamMembers.length}
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -513,6 +621,343 @@ const TeamManagement: React.FC = () => {
                 >
                   Cancel
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+        </>
+      ) : (
+        /* Team Settings */
+        <div className="space-y-6">
+          {/* General Settings */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg font-medium leading-6 text-gray-900 flex items-center mb-4">
+                <CogIcon className="h-5 w-5 mr-2" />
+                General Settings
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">Auto-approve Invitations</label>
+                    <p className="text-sm text-gray-500">Automatically approve team member invitations</p>
+                  </div>
+                  <button
+                    onClick={() => handleSettingsUpdate('autoApproveInvites', !teamSettings.autoApproveInvites)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      teamSettings.autoApproveInvites ? 'bg-primary-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out ${
+                      teamSettings.autoApproveInvites ? 'translate-x-5' : 'translate-x-0'
+                    }`} />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">Allow Self Registration</label>
+                    <p className="text-sm text-gray-500">Allow users to register themselves with a company code</p>
+                  </div>
+                  <button
+                    onClick={() => handleSettingsUpdate('allowSelfRegistration', !teamSettings.allowSelfRegistration)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      teamSettings.allowSelfRegistration ? 'bg-primary-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out ${
+                      teamSettings.allowSelfRegistration ? 'translate-x-5' : 'translate-x-0'
+                    }`} />
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Default Role for New Members</label>
+                  <select
+                    value={teamSettings.defaultRole}
+                    onChange={(e) => handleSettingsUpdate('defaultRole', e.target.value as UserRole)}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  >
+                    <option value="worker">Worker</option>
+                    <option value="foreman">Foreman</option>
+                    <option value="project_manager">Project Manager</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Project Access Level</label>
+                  <select
+                    value={teamSettings.projectAccessLevel}
+                    onChange={(e) => handleSettingsUpdate('projectAccessLevel', e.target.value)}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  >
+                    <option value="all">All Projects</option>
+                    <option value="assigned_only">Assigned Projects Only</option>
+                    <option value="department_only">Department Projects Only</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Session Timeout (Hours)</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="24"
+                    value={teamSettings.sessionTimeout}
+                    onChange={(e) => handleSettingsUpdate('sessionTimeout', parseInt(e.target.value))}
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Security Settings */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg font-medium leading-6 text-gray-900 flex items-center mb-4">
+                <ShieldCheckIcon className="h-5 w-5 mr-2" />
+                Security Settings
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">Require Phone Verification</label>
+                    <p className="text-sm text-gray-500">Require phone number verification for new members</p>
+                  </div>
+                  <button
+                    onClick={() => handleSettingsUpdate('requirePhoneVerification', !teamSettings.requirePhoneVerification)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      teamSettings.requirePhoneVerification ? 'bg-primary-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out ${
+                      teamSettings.requirePhoneVerification ? 'translate-x-5' : 'translate-x-0'
+                    }`} />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">Two-Factor Authentication Required</label>
+                    <p className="text-sm text-gray-500">Require 2FA for all team members</p>
+                  </div>
+                  <button
+                    onClick={() => handleSettingsUpdate('twoFactorRequired', !teamSettings.twoFactorRequired)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      teamSettings.twoFactorRequired ? 'bg-primary-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out ${
+                      teamSettings.twoFactorRequired ? 'translate-x-5' : 'translate-x-0'
+                    }`} />
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">Allow Role Escalation</label>
+                    <p className="text-sm text-gray-500">Allow users to request higher role permissions</p>
+                  </div>
+                  <button
+                    onClick={() => handleSettingsUpdate('allowRoleEscalation', !teamSettings.allowRoleEscalation)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      teamSettings.allowRoleEscalation ? 'bg-primary-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out ${
+                      teamSettings.allowRoleEscalation ? 'translate-x-5' : 'translate-x-0'
+                    }`} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Working Hours Settings */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg font-medium leading-6 text-gray-900 flex items-center mb-4">
+                <ClockIcon className="h-5 w-5 mr-2" />
+                Working Hours
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">Enable Working Hours</label>
+                    <p className="text-sm text-gray-500">Track and enforce working hours for team members</p>
+                  </div>
+                  <button
+                    onClick={() => handleNestedSettingsUpdate('workingHours', 'enabled', !teamSettings.workingHours.enabled)}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                      teamSettings.workingHours.enabled ? 'bg-primary-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out ${
+                      teamSettings.workingHours.enabled ? 'translate-x-5' : 'translate-x-0'
+                    }`} />
+                  </button>
+                </div>
+
+                {teamSettings.workingHours.enabled && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Start Time</label>
+                      <input
+                        type="time"
+                        value={teamSettings.workingHours.start}
+                        onChange={(e) => handleNestedSettingsUpdate('workingHours', 'start', e.target.value)}
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">End Time</label>
+                      <input
+                        type="time"
+                        value={teamSettings.workingHours.end}
+                        onChange={(e) => handleNestedSettingsUpdate('workingHours', 'end', e.target.value)}
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700">Timezone</label>
+                      <select
+                        value={teamSettings.workingHours.timezone}
+                        onChange={(e) => handleNestedSettingsUpdate('workingHours', 'timezone', e.target.value)}
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      >
+                        <option value="America/New_York">Eastern Time (EST/EDT)</option>
+                        <option value="America/Chicago">Central Time (CST/CDT)</option>
+                        <option value="America/Denver">Mountain Time (MST/MDT)</option>
+                        <option value="America/Los_Angeles">Pacific Time (PST/PDT)</option>
+                      </select>
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Working Days</label>
+                      <div className="flex flex-wrap gap-2">
+                        {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => (
+                          <button
+                            key={day}
+                            onClick={() => {
+                              const workingDays = teamSettings.workingHours.workingDays.includes(day)
+                                ? teamSettings.workingHours.workingDays.filter(d => d !== day)
+                                : [...teamSettings.workingHours.workingDays, day];
+                              handleNestedSettingsUpdate('workingHours', 'workingDays', workingDays);
+                            }}
+                            className={`px-3 py-1 text-sm rounded-md border ${
+                              teamSettings.workingHours.workingDays.includes(day)
+                                ? 'bg-primary-100 border-primary-300 text-primary-700'
+                                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            {day.charAt(0).toUpperCase() + day.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Email Notifications */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg font-medium leading-6 text-gray-900 flex items-center mb-4">
+                <BellIcon className="h-5 w-5 mr-2" />
+                Email Notifications
+              </h3>
+              
+              <div className="space-y-4">
+                {Object.entries({
+                  newMemberJoined: 'New Member Joined',
+                  roleChanged: 'Role Changed',
+                  memberDeactivated: 'Member Deactivated',
+                  weeklyReport: 'Weekly Team Report'
+                }).map(([key, label]) => (
+                  <div key={key} className="flex items-center justify-between">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700">{label}</label>
+                      <p className="text-sm text-gray-500">Send email notifications for {label.toLowerCase()}</p>
+                    </div>
+                    <button
+                      onClick={() => handleNestedSettingsUpdate('emailNotifications', key, !(teamSettings.emailNotifications as any)[key])}
+                      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                        (teamSettings.emailNotifications as any)[key] ? 'bg-primary-600' : 'bg-gray-200'
+                      }`}
+                    >
+                      <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition duration-200 ease-in-out ${
+                        (teamSettings.emailNotifications as any)[key] ? 'translate-x-5' : 'translate-x-0'
+                      }`} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Role Permissions */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg font-medium leading-6 text-gray-900 flex items-center mb-4">
+                <KeyIcon className="h-5 w-5 mr-2" />
+                Role Permissions
+              </h3>
+              
+              <div className="space-y-6">
+                {Object.entries({
+                  canCreateProjects: 'Can Create Projects',
+                  canDeleteTasks: 'Can Delete Tasks',
+                  canViewReports: 'Can View Reports',
+                  canManageBudgets: 'Can Manage Budgets',
+                  canInviteMembers: 'Can Invite Members'
+                }).map(([permission, label]) => (
+                  <div key={permission}>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
+                    <div className="flex flex-wrap gap-2">
+                      {['super_admin', 'company_admin', 'project_manager', 'foreman', 'worker', 'client'].map(role => (
+                        <button
+                          key={role}
+                          onClick={() => {
+                            const currentRoles = (teamSettings.permissions as any)[permission] as UserRole[];
+                            const newRoles = currentRoles.includes(role as UserRole)
+                              ? currentRoles.filter(r => r !== role)
+                              : [...currentRoles, role as UserRole];
+                            handlePermissionUpdate(permission, newRoles);
+                          }}
+                          className={`px-3 py-1 text-sm rounded-md border ${
+                            ((teamSettings.permissions as any)[permission] as UserRole[]).includes(role as UserRole)
+                              ? 'bg-primary-100 border-primary-300 text-primary-700'
+                              : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          {role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Save Settings Button */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900">Save Changes</h3>
+                  <p className="text-sm text-gray-500">Your changes are automatically saved when you make them.</p>
+                </div>
+                <div className="flex items-center text-green-600">
+                  <CheckCircleIcon className="h-5 w-5 mr-2" />
+                  <span className="text-sm font-medium">All changes saved</span>
+                </div>
               </div>
             </div>
           </div>

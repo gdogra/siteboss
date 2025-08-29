@@ -22,7 +22,7 @@ import RegisterForm from './components/Auth/RegisterForm';
 import EmailConfirmation from './components/Auth/EmailConfirmation';
 import LeadManagement from './components/CRM/LeadManagement';
 import SalesPipeline from './components/CRM/SalesPipeline';
-import CommunicationHub from './components/Communication/CommunicationHub';
+import ContactsAndCommunications from './components/CRM/ContactsAndCommunications';
 import AnalyticsDashboard from './components/Analytics/AnalyticsDashboard';
 import TenantSettings from './components/Tenant/TenantSettings';
 import SubscriptionPlans from './components/Billing/SubscriptionPlans';
@@ -248,11 +248,11 @@ const AppContent: React.FC = () => {
           }
         />
         <Route
-          path="/communications"
+          path="/contacts"
           element={
             <AuthProtectedRoute>
               <Layout>
-                <CommunicationHub />
+                <ContactsAndCommunications />
               </Layout>
             </AuthProtectedRoute>
           }
@@ -313,17 +313,17 @@ const AppContent: React.FC = () => {
 function App() {
   return (
     <ErrorBoundary>
-      <TenantProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <TenantProvider>
             <RBACProvider>
               <AIProvider>
                 <AppContent />
               </AIProvider>
             </RBACProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </TenantProvider>
+          </TenantProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

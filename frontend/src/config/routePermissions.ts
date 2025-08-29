@@ -9,7 +9,7 @@ export const ROUTE_PERMISSIONS: Record<string, Permission[]> = {
   '/projects/:id': [Permission.PROJECT_VIEW],
   '/projects/:id/edit': [Permission.PROJECT_EDIT],
   
-  '/tasks': [Permission.TASK_VIEW],
+  '/tasks': [], // Available to all authenticated users
   '/tasks/create': [Permission.TASK_CREATE],
   '/tasks/:id': [Permission.TASK_VIEW],
   '/tasks/:id/edit': [Permission.TASK_EDIT],

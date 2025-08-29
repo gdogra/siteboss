@@ -112,13 +112,47 @@ const Documents: React.FC = () => {
   };
 
   const handleDownload = (document: Document) => {
-    // In a real app, this would trigger the actual download
+    const link = window.document.createElement('a');
+    link.href = document.url || '#';
+    link.download = document.name;
+    link.click();
     console.log('Downloading:', document.name);
+  };
+
+  const handleView = (document: Document) => {
+    window.open(document.url || '#', '_blank');
+    console.log('Viewing:', document.name);
   };
 
   const handleDelete = (documentId: string) => {
     if (window.confirm('Are you sure you want to delete this document?')) {
       setDocuments(prev => prev.filter(doc => doc.id !== documentId));
+      alert('Document deleted successfully');
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        alert('File size must be less than 10MB');
+        return;
+      }
+      
+      const newDocument: Document = {
+        id: Date.now().toString(),
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        uploaded_by: 'Current User',
+        uploaded_at: new Date(),
+        url: URL.createObjectURL(file),
+        description: ''
+      };
+      
+      setDocuments(prev => [newDocument, ...prev]);
+      setIsUploadModalOpen(false);
+      alert(`Document "${file.name}" uploaded successfully!`);
     }
   };
 
@@ -265,6 +299,7 @@ const Documents: React.FC = () => {
                       <ArrowDownTrayIcon className="h-4 w-4" />
                     </button>
                     <button
+                      onClick={() => handleView(document)}
                       className="p-1 text-gray-400 hover:text-gray-600"
                       title="View"
                     >
@@ -305,11 +340,7 @@ const Documents: React.FC = () => {
                       <div className="flex text-sm text-gray-600">
                         <label className="relative cursor-pointer bg-white rounded-md font-medium text-primary-600 hover:text-primary-500">
                           <span>Upload a file</span>
-                          <input type="file" className="sr-only" onChange={(e) => {
-                            if (e.target.files?.[0]) {
-                              alert(`Selected file: ${e.target.files[0].name}`);
-                            }
-                          }} />
+                          <input type="file" className="sr-only" onChange={handleFileUpload} accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" />
                         </label>
                         <p className="pl-1">or drag and drop</p>
                       </div>

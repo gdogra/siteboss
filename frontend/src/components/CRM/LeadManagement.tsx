@@ -11,6 +11,8 @@ import {
   MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
+import CreateLeadModal from './CreateLeadModal';
+import LeadDetailModal from './LeadDetailModal';
 
 interface Lead {
   id: string;
@@ -47,7 +49,9 @@ const LeadManagement: React.FC = () => {
     score_min: 0
   });
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Mock data - in production, this would come from API
@@ -221,6 +225,68 @@ const LeadManagement: React.FC = () => {
 
   const stats = getLeadStats();
 
+  // CRUD Operations
+  const handleCreateLead = (leadData: Partial<Lead>) => {
+    const newLead: Lead = {
+      id: Date.now().toString(),
+      created_at: new Date(),
+      last_activity: new Date(),
+      ...leadData as Omit<Lead, 'id' | 'created_at' | 'last_activity'>
+    };
+    
+    setLeads(prev => [...prev, newLead]);
+    setIsCreateModalOpen(false);
+  };
+
+  const handleEditLead = (leadData: Partial<Lead>) => {
+    if (!editingLead) return;
+    
+    setLeads(prev => prev.map(lead => 
+      lead.id === editingLead.id 
+        ? { ...lead, ...leadData, last_activity: new Date() }
+        : lead
+    ));
+    
+    setEditingLead(null);
+    setIsCreateModalOpen(false);
+  };
+
+  const handleDeleteLead = (leadId: string) => {
+    if (window.confirm('Are you sure you want to delete this lead?')) {
+      setLeads(prev => prev.filter(lead => lead.id !== leadId));
+      if (selectedLead?.id === leadId) {
+        setSelectedLead(null);
+        setIsDetailModalOpen(false);
+      }
+    }
+  };
+
+  const handleViewLead = (lead: Lead) => {
+    setSelectedLead(lead);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleEditClick = (lead?: Lead) => {
+    if (lead) {
+      setEditingLead(lead);
+      setSelectedLead(null);
+      setIsDetailModalOpen(false);
+    } else {
+      setEditingLead(null);
+    }
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCallLead = (lead: Lead) => {
+    // TODO: Integrate with communication system
+    console.log('Calling lead:', lead.name);
+  };
+
+  const handleEmailLead = (lead: Lead) => {
+    // TODO: Integrate with communication system
+    console.log('Emailing lead:', lead.email);
+  };
+
   if (loading) {
     return (
       <div className="p-8">
@@ -246,7 +312,7 @@ const LeadManagement: React.FC = () => {
           <p className="text-gray-600 mt-1">Track and manage your sales opportunities</p>
         </div>
         <button
-          onClick={() => setIsCreateModalOpen(true)}
+          onClick={() => handleEditClick()}
           className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
@@ -435,19 +501,29 @@ const LeadManagement: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {lead.assigned_to}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                    <button className="text-primary-600 hover:text-primary-900">
-                      <PhoneIcon className="h-4 w-4" />
-                    </button>
-                    <button className="text-primary-600 hover:text-primary-900">
-                      <EnvelopeIcon className="h-4 w-4" />
-                    </button>
-                    <button 
-                      onClick={() => setSelectedLead(lead)}
-                      className="text-primary-600 hover:text-primary-900"
-                    >
-                      View
-                    </button>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        onClick={() => handleCallLead(lead)}
+                        className="text-primary-600 hover:text-primary-900 p-1"
+                        title="Call Lead"
+                      >
+                        <PhoneIcon className="h-4 w-4" />
+                      </button>
+                      <button 
+                        onClick={() => handleEmailLead(lead)}
+                        className="text-primary-600 hover:text-primary-900 p-1"
+                        title="Email Lead"
+                      >
+                        <EnvelopeIcon className="h-4 w-4" />
+                      </button>
+                      <button 
+                        onClick={() => handleViewLead(lead)}
+                        className="text-primary-600 hover:text-primary-900 px-2 py-1 text-xs border border-primary-200 rounded"
+                      >
+                        View
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -465,6 +541,32 @@ const LeadManagement: React.FC = () => {
           </p>
         </div>
       )}
+
+      {/* Modals */}
+      <CreateLeadModal
+        isOpen={isCreateModalOpen}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+          setEditingLead(null);
+        }}
+        onSubmit={editingLead ? handleEditLead : handleCreateLead}
+        editLead={editingLead}
+      />
+
+      <LeadDetailModal
+        lead={selectedLead}
+        isOpen={isDetailModalOpen}
+        onClose={() => {
+          setIsDetailModalOpen(false);
+          setSelectedLead(null);
+        }}
+        onEdit={() => handleEditClick(selectedLead!)}
+        onDelete={() => {
+          if (selectedLead) {
+            handleDeleteLead(selectedLead.id);
+          }
+        }}
+      />
     </div>
   );
 };

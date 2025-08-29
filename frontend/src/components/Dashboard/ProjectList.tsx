@@ -84,7 +84,7 @@ const ProjectList: React.FC = () => {
         >
           <div>
             <Link
-              to={`/projects/${project.id}`}
+              to="/projects"
               className="text-sm font-medium text-gray-900 hover:text-primary-600"
             >
               {project.name}

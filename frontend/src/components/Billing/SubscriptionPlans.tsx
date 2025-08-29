@@ -41,110 +41,60 @@ interface Plan {
 
 const plans: Plan[] = [
   {
-    id: 'starter',
-    name: 'Starter',
-    description: 'Perfect for small teams just getting started',
+    id: 'professional',
+    name: 'Professional',
+    description: 'Perfect for growing construction businesses',
     price: {
-      monthly: 29,
-      yearly: 290
+      monthly: 199,
+      yearly: 1791
     },
     popular: false,
+    firstMonthFree: true,
     features: [
-      { name: 'Lead Management', included: true },
-      { name: 'Basic Pipeline', included: true },
-      { name: 'Email Integration', included: true },
-      { name: 'Basic Reports', included: true },
+      { name: 'Project Management', included: true },
+      { name: 'Lead & CRM Management', included: true },
+      { name: 'Email & SMS Integration', included: true },
+      { name: 'Time Tracking', included: true },
+      { name: 'Budget Management', included: true },
+      { name: 'Basic Reports & Analytics', included: true },
+      { name: 'Team Collaboration', included: true },
+      { name: 'Document Management', included: true },
       { name: 'AI Assistant', included: false },
       { name: 'Advanced Analytics', included: false },
-      { name: 'Custom Reports', included: false },
       { name: 'API Access', included: false },
       { name: 'White Labeling', included: false },
       { name: 'Priority Support', included: false }
     ],
     limits: {
-      users: 5,
-      leads: 1000,
-      deals: 100,
-      storage: 5
-    }
-  },
-  {
-    id: 'professional',
-    name: 'Professional',
-    description: 'For growing teams that need more power',
-    price: {
-      monthly: 79,
-      yearly: 790
-    },
-    popular: true,
-    firstMonthFree: true,
-    features: [
-      { name: 'Lead Management', included: true },
-      { name: 'Advanced Pipeline', included: true },
-      { name: 'Email & SMS Integration', included: true },
-      { name: 'Advanced Reports', included: true },
-      { name: 'AI Assistant', included: true },
-      { name: 'Advanced Analytics', included: true },
-      { name: 'Custom Reports', included: false },
-      { name: 'API Access', included: true },
-      { name: 'White Labeling', included: false },
-      { name: 'Priority Support', included: true }
-    ],
-    limits: {
       users: 25,
-      leads: 10000,
-      deals: 1000,
+      leads: 5000,
+      deals: 500,
       storage: 50
-    }
-  },
-  {
-    id: 'premium',
-    name: 'Premium',
-    description: 'Advanced features with premium integrations',
-    price: {
-      monthly: 199,
-      yearly: 1990
-    },
-    popular: false,
-    features: [
-      { name: 'Everything in Professional', included: true },
-      { name: 'Advanced AI Insights & Predictions', included: true },
-      { name: 'Custom Workflow Automation', included: true },
-      { name: 'Premium Integrations (Salesforce, HubSpot)', included: true },
-      { name: 'Advanced Lead Scoring & Attribution', included: true },
-      { name: 'Custom Dashboard Builder', included: true },
-      { name: 'Video Call Integration', included: true },
-      { name: 'Advanced Team Analytics', included: true },
-      { name: 'Priority Support', included: true },
-      { name: 'Custom Branding', included: true }
-    ],
-    limits: {
-      users: 50,
-      leads: 50000,
-      deals: 5000,
-      storage: 200
     }
   },
   {
     id: 'enterprise',
     name: 'Enterprise',
-    description: 'Ultimate solution with all premium features',
+    description: 'Complete solution for large construction companies',
     price: {
       monthly: 299,
-      yearly: 2990
+      yearly: 2691
     },
-    popular: false,
+    popular: true,
+    firstMonthFree: true,
     features: [
-      { name: 'Everything in Premium', included: true },
-      { name: 'Enterprise AI & Machine Learning', included: true },
-      { name: 'Custom Data Warehouse Integration', included: true },
-      { name: 'Advanced Security & Compliance (SOC2, GDPR)', included: true },
-      { name: 'Multi-tenant White-label Solution', included: true },
-      { name: 'Custom Mobile App Development', included: true },
+      { name: 'Everything in Professional', included: true },
+      { name: 'Advanced AI Assistant & Insights', included: true },
+      { name: 'Advanced Analytics & Reporting', included: true },
+      { name: 'Custom Workflow Automation', included: true },
+      { name: 'API Access & Integrations', included: true },
+      { name: 'Advanced Team Management', included: true },
+      { name: 'Multi-project Dashboard', included: true },
+      { name: 'Advanced Security & Compliance', included: true },
+      { name: 'White Labeling Options', included: true },
+      { name: 'Priority Support & Training', included: true },
       { name: 'Dedicated Account Manager', included: true },
-      { name: 'Custom SLA & Support', included: true },
-      { name: 'On-premise Deployment Options', included: true },
-      { name: 'Advanced Backup & Disaster Recovery', included: true }
+      { name: 'Custom Integrations', included: true }
     ],
     limits: {
       users: -1, // Unlimited
@@ -173,26 +123,80 @@ const SubscriptionPlans: React.FC = () => {
   };
 
   const getYearlySavings = (plan: Plan): number => {
-    const monthlyTotal = plan.price.monthly * 12;
-    const yearlyPrice = plan.price.yearly;
-    return ((monthlyTotal - yearlyPrice) / monthlyTotal) * 100;
+    // Fixed 25% discount for annual plans
+    return 25;
+  };
+
+  const isPlanUpgrade = (planId: string): boolean => {
+    const planHierarchy = ['starter', 'professional', 'enterprise'];
+    const currentPlanIndex = planHierarchy.indexOf(currentPlan || 'starter');
+    const selectedPlanIndex = planHierarchy.indexOf(planId);
+    return selectedPlanIndex > currentPlanIndex;
+  };
+
+  const isPlanDowngrade = (planId: string): boolean => {
+    const planHierarchy = ['starter', 'professional', 'enterprise'];
+    const currentPlanIndex = planHierarchy.indexOf(currentPlan || 'starter');
+    const selectedPlanIndex = planHierarchy.indexOf(planId);
+    return selectedPlanIndex < currentPlanIndex;
   };
 
   const handlePlanSelect = async (planId: string) => {
     try {
       setIsLoading(planId);
       
-      // In a real implementation, this would integrate with Stripe, Paddle, etc.
-      console.log(`Upgrading to ${planId} plan with ${billingCycle} billing`);
+      const selectedPlan = plans.find(p => p.id === planId);
+      const price = billingCycle === 'monthly' ? selectedPlan?.price.monthly : selectedPlan?.price.yearly;
       
-      // Simulate API call
+      console.log(`Upgrading to ${planId} plan with ${billingCycle} billing - $${price}`);
+      
+      // Simulate API call to payment processor
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Redirect to payment processor or show success
-      alert(`Plan upgrade initiated for ${planId}!`);
+      // In a real app, this would redirect to Stripe checkout or similar
+      const isUpgrade = isPlanUpgrade(planId);
+      const isDowngrade = isPlanDowngrade(planId);
+      const actionText = isUpgrade ? 'upgrade' : isDowngrade ? 'downgrade' : 'switch';
+      
+      const confirmAction = window.confirm(
+        `Ready to ${actionText} to ${selectedPlan?.name} plan?\n` +
+        `Price: $${price}/${billingCycle === 'monthly' ? 'month' : 'year'}\n` +
+        (isDowngrade ? '\n⚠️  Note: This is a downgrade - you may lose access to some features.\n' : '') +
+        (selectedPlan?.firstMonthFree && billingCycle === 'monthly' ? '🎁 First month free!\n' : '') +
+        `\nClick OK to proceed to payment.`
+      );
+      
+      if (confirmAction) {
+        // Simulate successful plan change
+        const successIcon = isUpgrade ? '🎉' : isDowngrade ? '⚠️' : '✅';
+        alert(`${successIcon} Successfully ${actionText}d to ${selectedPlan?.name} plan!\n\nYou now have access to all ${selectedPlan?.name} features.`);
+        
+        // In a real app, you would update the tenant context here
+        // updateTenantSubscription(planId, billingCycle);
+      }
     } catch (error) {
-      console.error('Failed to upgrade plan:', error);
-      alert('Failed to upgrade plan. Please try again.');
+      console.error('Failed to change plan:', error);
+      alert('❌ Failed to change plan. Please try again or contact support.');
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
+  const handleStartTrial = async (planId: string) => {
+    try {
+      setIsLoading(`trial-${planId}`);
+      
+      const selectedPlan = plans.find(p => p.id === planId);
+      console.log(`Starting free trial for ${planId} plan`);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      alert(`🚀 Your 14-day free trial of ${selectedPlan?.name} has started!\n\nEnjoy all premium features with no commitments.`);
+      
+    } catch (error) {
+      console.error('Failed to start trial:', error);
+      alert('❌ Failed to start trial. Please try again.');
     } finally {
       setIsLoading(null);
     }
@@ -206,8 +210,8 @@ const SubscriptionPlans: React.FC = () => {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Plan</h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Scale your CRM with plans designed for teams of every size. 
-          All plans include our core features with advanced capabilities as you grow.
+          Simple pricing for construction businesses of all sizes. 
+          Start with Professional features or unlock everything with Enterprise.
         </p>
       </div>
 
@@ -237,13 +241,13 @@ const SubscriptionPlans: React.FC = () => {
         </div>
         {billingCycle === 'yearly' && (
           <div className="ml-4 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-            Save up to 17%
+            Save 25% annually
           </div>
         )}
       </div>
 
       {/* Plans Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         {plans.map((plan) => {
           const isCurrentPlan = currentPlan === plan.id;
           const price = billingCycle === 'monthly' ? plan.price.monthly : plan.price.yearly;
@@ -289,6 +293,13 @@ const SubscriptionPlans: React.FC = () => {
                     <span className="text-4xl font-bold text-gray-900">{formatPrice(price)}</span>
                     <span className="text-gray-600 ml-2">/{billingCycle === 'monthly' ? 'month' : 'year'}</span>
                   </div>
+                  
+                  {plan.firstMonthFree && billingCycle === 'monthly' && (
+                    <div className="mt-2 flex items-center justify-center space-x-1">
+                      <GiftIcon className="h-4 w-4 text-green-600" />
+                      <span className="text-sm font-medium text-green-600">First Month Free!</span>
+                    </div>
+                  )}
                   
                   {billingCycle === 'yearly' && savings > 0 && (
                     <p className="text-sm text-green-600 mt-2">
@@ -340,29 +351,56 @@ const SubscriptionPlans: React.FC = () => {
                   </ul>
                 </div>
 
-                {/* CTA Button */}
-                <button
-                  onClick={() => handlePlanSelect(plan.id)}
-                  disabled={isCurrentPlan || isLoading === plan.id}
-                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                    isCurrentPlan
-                      ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                      : plan.popular
-                      ? 'bg-primary-600 hover:bg-primary-700 text-white'
-                      : 'bg-gray-900 hover:bg-gray-800 text-white'
-                  } ${isLoading === plan.id ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  {isLoading === plan.id ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      <span>Processing...</span>
-                    </div>
-                  ) : isCurrentPlan ? (
-                    'Current Plan'
-                  ) : (
-                    `Get Started with ${plan.name}`
+                {/* CTA Buttons */}
+                <div className="space-y-3">
+                  <button
+                    onClick={() => handlePlanSelect(plan.id)}
+                    disabled={isCurrentPlan || isLoading === plan.id}
+                    className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
+                      isCurrentPlan
+                        ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                        : plan.popular
+                        ? 'bg-primary-600 hover:bg-primary-700 text-white'
+                        : 'bg-gray-900 hover:bg-gray-800 text-white'
+                    } ${isLoading === plan.id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {isLoading === plan.id ? (
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Processing...</span>
+                      </div>
+                    ) : isCurrentPlan ? (
+                      'Current Plan'
+                    ) : isPlanUpgrade(plan.id) ? (
+                      `Upgrade to ${plan.name}`
+                    ) : isPlanDowngrade(plan.id) ? (
+                      `Downgrade to ${plan.name}`
+                    ) : (
+                      `Switch to ${plan.name}`
+                    )}
+                  </button>
+                  
+                  {!isCurrentPlan && (
+                    <button
+                      onClick={() => handleStartTrial(plan.id)}
+                      disabled={isLoading === `trial-${plan.id}`}
+                      className={`w-full py-2 px-4 rounded-lg font-medium border-2 transition-colors ${
+                        plan.popular
+                          ? 'border-primary-600 text-primary-600 hover:bg-primary-50'
+                          : 'border-gray-900 text-gray-900 hover:bg-gray-50'
+                      } ${isLoading === `trial-${plan.id}` ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      {isLoading === `trial-${plan.id}` ? (
+                        <div className="flex items-center justify-center space-x-2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                          <span>Starting Trial...</span>
+                        </div>
+                      ) : (
+                        'Start 14-Day Free Trial'
+                      )}
+                    </button>
                   )}
-                </button>
+                </div>
               </div>
             </div>
           );
@@ -406,14 +444,33 @@ const SubscriptionPlans: React.FC = () => {
 
       {/* Enterprise CTA */}
       <div className="max-w-4xl mx-auto mt-12 bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-center text-white">
-        <h2 className="text-2xl font-bold mb-4">Need something more?</h2>
+        <h2 className="text-2xl font-bold mb-4">Need Custom Solutions?</h2>
         <p className="mb-6 opacity-90">
-          Our Enterprise plan includes everything you need to scale your business, 
-          plus dedicated support and custom integrations.
+          Looking for custom integrations, volume pricing, or specialized features? 
+          Our team can create a tailored solution for your construction business.
         </p>
-        <button className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-          Contact Sales
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button 
+            onClick={() => {
+              const subject = encodeURIComponent('Custom Enterprise Solution Inquiry');
+              const body = encodeURIComponent('Hi,\n\nI\'m interested in discussing custom solutions for my construction business.\n\nCompany: \nTeam Size: \nSpecific Needs: \n\nBest time to contact: \n\nThanks!');
+              window.open(`mailto:sales@siteboss.com?subject=${subject}&body=${body}`, '_blank');
+            }}
+            className="bg-white text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+            📧 Contact Sales Team
+          </button>
+          <button 
+            onClick={() => {
+              const phoneNumber = '+1-555-123-4567';
+              const confirmCall = window.confirm(`Call our sales team at ${phoneNumber}?\n\nWe're available Monday-Friday, 9 AM - 6 PM EST.`);
+              if (confirmCall) {
+                window.open(`tel:${phoneNumber}`, '_self');
+              }
+            }}
+            className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-primary-600 transition-colors">
+            📞 Call (555) 123-4567
+          </button>
+        </div>
       </div>
     </div>
   );
