@@ -85,7 +85,7 @@ export const PAYWALL_FEATURES: PaywallFeature[] = [
 ];
 
 export const usePaywall = () => {
-  const { tenant, getTenantFeature } = useTenant();
+  const { tenant } = useTenant();
   const { user } = useAuth();
   const [activePaywall, setActivePaywall] = useState<PaywallFeature | null>(null);
 
