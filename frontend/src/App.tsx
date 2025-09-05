@@ -15,6 +15,8 @@ import Reports from './components/Reports/Reports';
 import Settings from './components/Settings/Settings';
 import TeamManagement from './components/Team/TeamManagement';
 import ContractorsManagement from './components/Contractors/ContractorsManagement';
+import SubcontractorsAdmin from './components/Contractors/SubcontractorsAdmin';
+import ResourceManagement from './components/ResourceManagement/ResourceManagement';
 import AdminPanel from './components/Admin/AdminPanel';
 import UserProfile from './components/Profile/UserProfile';
 import LoginForm from './components/Auth/LoginForm';
@@ -163,6 +165,26 @@ const AppContent: React.FC = () => {
             <AuthProtectedRoute>
               <Layout>
                 <ContractorsManagement />
+              </Layout>
+            </AuthProtectedRoute>
+          }
+        />
+        <Route
+          path="/contractors/create"
+          element={
+            <AuthProtectedRoute>
+              <Layout>
+                <SubcontractorsAdmin />
+              </Layout>
+            </AuthProtectedRoute>
+          }
+        />
+        <Route
+          path="/resources"
+          element={
+            <AuthProtectedRoute>
+              <Layout>
+                <ResourceManagement />
               </Layout>
             </AuthProtectedRoute>
           }

@@ -75,6 +75,11 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
       return 'demo-tenant'; // Default tenant for development
     }
     
+    // For Netlify deployment
+    if (hostname.includes('netlify.app') || hostname.includes('siteboss-construction-management')) {
+      return 'demo-tenant'; // Use demo tenant for Netlify
+    }
+    
     // Check if it's a subdomain (e.g., acme.siteboss.com)
     const parts = hostname.split('.');
     if (parts.length >= 3 && parts[1] === 'siteboss') {
@@ -87,7 +92,7 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
       'buildtech.app': 'buildtech'
     };
     
-    return customDomainMapping[hostname] || null;
+    return customDomainMapping[hostname] || 'demo-tenant'; // Default to demo-tenant if no mapping found
   };
 
   // Load tenant data
@@ -146,8 +151,43 @@ export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
         setTenant(mockTenant);
       } catch (error) {
         console.error('Failed to load tenant:', error);
-        // Redirect to tenant selection or error page
-        window.location.href = '/tenant-not-found';
+        // Set a default tenant instead of redirecting
+        const defaultTenant: Tenant = {
+          id: 'demo-tenant',
+          name: 'SiteBoss Demo',
+          domain: window.location.hostname,
+          subdomain: 'demo-tenant',
+          settings: {
+            branding: {
+              primaryColor: '#3B82F6',
+              secondaryColor: '#1E40AF',
+              companyName: 'SiteBoss Construction Management',
+              logo: undefined
+            },
+            features: {
+              aiAssistant: true,
+              advancedAnalytics: true,
+              customReports: true,
+              apiAccess: true,
+              whiteLabeling: true
+            },
+            limits: {
+              maxUsers: 100,
+              maxLeads: -1,
+              maxDeals: -1,
+              storageGB: 500
+            }
+          },
+          subscription: {
+            plan: 'enterprise',
+            status: 'active',
+            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            billingCycle: 'monthly'
+          },
+          createdAt: new Date('2024-01-01'),
+          updatedAt: new Date()
+        };
+        setTenant(defaultTenant);
       } finally {
         setIsLoading(false);
       }

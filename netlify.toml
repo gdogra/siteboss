@@ -1,0 +1,27 @@
+[build]
+  base = "frontend"
+  publish = "build"
+  command = "npm run build"
+
+[[redirects]]
+  from = "/api/billing/*"
+  to = "/.netlify/functions/billing-settings"
+  status = 200
+
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+  REACT_APP_API_URL = "/api"
+

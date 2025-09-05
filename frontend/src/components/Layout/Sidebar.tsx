@@ -18,7 +18,8 @@ import {
   FunnelIcon,
   ChatBubbleLeftEllipsisIcon,
   BuildingStorefrontIcon,
-  CreditCardIcon
+  CreditCardIcon,
+  WrenchScrewdriverIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRBAC } from '../../contexts/RBACContext';
@@ -45,6 +46,7 @@ const navigation: NavItem[] = [
   { name: 'Time Tracking', href: '/time-tracking', icon: ClockIcon, permissions: [Permission.TIME_VIEW, Permission.TIME_TRACK] },
   { name: 'Budget & Expenses', href: '/budget', icon: CurrencyDollarIcon, permissions: [Permission.BUDGET_VIEW] },
   { name: 'Contractors', href: '/contractors', icon: BuildingOfficeIcon, permissions: [Permission.CONTRACTOR_VIEW] },
+  { name: 'Resources', href: '/resources', icon: WrenchScrewdriverIcon, permissions: [Permission.PROJECT_VIEW] },
   { name: 'Team', href: '/team', icon: UsersIcon, permissions: [Permission.TEAM_VIEW] },
   { name: 'Documents', href: '/documents', icon: DocumentTextIcon, permissions: [Permission.DOCUMENT_VIEW] },
   { name: 'Reports', href: '/reports', icon: ChartBarIcon, permissions: [Permission.REPORT_VIEW] },

@@ -91,16 +91,16 @@ const ResourceManagement: React.FC = () => {
     try {
       setLoading(true);
       const [resourcesRes, assignmentsRes, statsRes, projectsRes] = await Promise.all([
-        api.get<Resource[]>('/resources'),
-        api.get<ResourceAssignment[]>('/resources/assignments'),
-        api.get<ResourceStats>('/resources/stats'),
-        api.get<any[]>('/projects')
+        api.get('/resources'),
+        api.get('/resources/assignments'),
+        api.get('/resources/stats'),
+        api.get('/projects')
       ]);
       
-      setResources(resourcesRes.data);
-      setAssignments(assignmentsRes.data);
-      setStats(statsRes.data);
-      setProjects(projectsRes.data);
+      setResources(resourcesRes.data.data || []);
+      setAssignments(assignmentsRes.data.data || []);
+      setStats(statsRes.data.data || null);
+      setProjects(projectsRes.data.data || []);
     } catch (error) {
       console.error('Error fetching resource data:', error);
     } finally {

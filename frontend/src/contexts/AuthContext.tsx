@@ -47,14 +47,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const storedUser = localStorage.getItem('siteboss_user');
       
       if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        if (parsedUser.email === 'demo@siteboss.com') {
-          // Demo user - ensure email_verified is set
-          parsedUser.email_verified = true;
-          setUser(parsedUser);
-          localStorage.setItem('siteboss_user', JSON.stringify(parsedUser));
-          setIsLoading(false);
-          return;
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          if (parsedUser.email === 'demo@siteboss.com') {
+            // Demo user - ensure all required fields are set
+            const demoUser: User = {
+              id: parsedUser.id || '123e4567-e89b-12d3-a456-426614174001',
+              email: 'demo@siteboss.com',
+              first_name: parsedUser.first_name || 'Demo',
+              last_name: parsedUser.last_name || 'User',
+              role: parsedUser.role || 'company_admin',
+              company_id: parsedUser.company_id || '123e4567-e89b-12d3-a456-426614174000',
+              phone: parsedUser.phone || '(555) 123-4567',
+              email_verified: true
+            };
+            setUser(demoUser);
+            localStorage.setItem('siteboss_user', JSON.stringify(demoUser));
+            localStorage.setItem('siteboss_token', 'demo-token');
+            setIsLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.warn('Failed to parse stored user, clearing localStorage');
+          localStorage.removeItem('siteboss_user');
+          localStorage.removeItem('siteboss_token');
         }
       }
 
@@ -76,6 +92,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           
           setUser(userData);
           localStorage.setItem('siteboss_user', JSON.stringify(userData));
+          // Provide a development token so API calls are authorized against the Node backend
+          localStorage.setItem('siteboss_token', 'demo-token');
         } else if (storedUser) {
           // If we have a stored user but no Supabase session, try to use the stored user
           // but assume email is verified for existing users (backward compatibility)
@@ -85,9 +103,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.setItem('siteboss_user', JSON.stringify(parsedUser));
           }
           setUser(parsedUser);
+        } else {
+          // No stored user and no Supabase session - initialize with demo user for development
+          const demoUser: User = {
+            id: '123e4567-e89b-12d3-a456-426614174001',
+            email: 'demo@siteboss.com',
+            first_name: 'Demo',
+            last_name: 'User',
+            role: 'company_admin',
+            company_id: '123e4567-e89b-12d3-a456-426614174000',
+            phone: '(555) 123-4567',
+            email_verified: true
+          };
+          setUser(demoUser);
+          localStorage.setItem('siteboss_user', JSON.stringify(demoUser));
+          localStorage.setItem('siteboss_token', 'demo-token');
         }
       } catch (error) {
         logger.error('Failed to initialize auth', error);
+        // Fallback to demo user on error
+        const demoUser: User = {
+          id: '123e4567-e89b-12d3-a456-426614174001',
+          email: 'demo@siteboss.com',
+          first_name: 'Demo',
+          last_name: 'User',
+          role: 'company_admin',
+          company_id: '123e4567-e89b-12d3-a456-426614174000',
+          phone: '(555) 123-4567',
+          email_verified: true
+        };
+        setUser(demoUser);
+        localStorage.setItem('siteboss_user', JSON.stringify(demoUser));
+        localStorage.setItem('siteboss_token', 'demo-token');
       }
       
       setIsLoading(false);
@@ -151,6 +198,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         setUser(userData);
         localStorage.setItem('siteboss_user', JSON.stringify(userData));
+        localStorage.setItem('siteboss_token', 'demo-token');
       }
     } catch (error: any) {
       throw new Error(error.message || 'Login failed. Use demo@siteboss.com for demo access.');

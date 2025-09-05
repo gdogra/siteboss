@@ -2,6 +2,8 @@ import React, { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CalendarIcon, CurrencyDollarIcon, UserIcon, DocumentTextIcon, CogIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { Project, ProjectStatus } from '../../types';
+import { useAuth } from '../../contexts/AuthContext';
+import { projectApi } from '../../services/api';
 
 interface CreateProjectModalProps {
   isOpen: boolean;
@@ -96,6 +98,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   onClose,
   onProjectCreated
 }) => {
+  const { updateUser } = useAuth();
   const [formData, setFormData] = useState<ProjectFormData>(initialFormData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -182,47 +185,56 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
     setError(null);
 
     try {
-      // Mock project creation - use partial type to match what we actually need
-      const newProject: any = {
-        id: `project-${Date.now()}`,
-        name: formData.name,
-        description: formData.description || '',
-        address: formData.address,
-        start_date: formData.start_date || '',
-        end_date: formData.end_date || '',
-        status: formData.status,
-        budget: formData.total_budget ? parseFloat(formData.total_budget) : 0,
-        spent_amount: 0,
-        client_name: formData.client_name || 'N/A',
-        project_manager: formData.project_manager || 'Unassigned',
-        progress: 0,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        // Add additional fields from form data
-        client_email: formData.client_email,
-        client_phone: formData.client_phone,
-        project_type: formData.project_type,
-        priority: formData.priority,
-        estimated_duration: formData.estimated_duration,
-        contract_value: formData.contract_value ? parseFloat(formData.contract_value) : 0,
-        profit_margin: formData.profit_margin ? parseFloat(formData.profit_margin) : 0,
-        supervisor: formData.supervisor,
-        team_members: formData.team_members,
-        required_permits: formData.required_permits,
-        safety_requirements: formData.safety_requirements,
-        special_requirements: formData.special_requirements,
-        visibility: formData.visibility,
-        notifications: formData.notifications
+      // Simple client-side validation to avoid avoidable 400s
+      const name = (formData.name || '').trim();
+      const address = (formData.address || '').trim();
+      if (!name) {
+        setError('Project name is required');
+        return;
+      }
+      if (!address) {
+        setError('Project address is required');
+        return;
+      }
+
+      // Map form to API payload
+      const payload = {
+        name,
+        description: formData.description || undefined,
+        address,
+        start_date: formData.start_date || undefined,
+        end_date: formData.end_date || undefined,
+        estimated_duration: formData.estimated_duration ? Number(formData.estimated_duration) : undefined,
+        total_budget: formData.total_budget ? Number(formData.total_budget) : undefined,
+        contract_value: formData.contract_value ? Number(formData.contract_value) : undefined,
+        // client_id and project_manager_id could be wired later
       };
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      onProjectCreated(newProject);
+      const res: any = await projectApi.createProject(payload);
+      const created = res?.data as Project;
+      // Align FE company_id with the created project so subsequent GETs are authorized
+      if ((created as any)?.company_id) {
+        updateUser({ company_id: (created as any).company_id });
+      }
+      onProjectCreated(created as any);
       setFormData(initialFormData);
       onClose();
     } catch (error: any) {
-      setError('Failed to create project');
+      // eslint-disable-next-line no-console
+      console.error('Create project failed:', error);
+      const status = error?.response?.status;
+      const details = error?.response?.data?.details;
+      if (status === 403) {
+        setError('Insufficient permissions: only company admin or project manager can create projects.');
+      } else if (status === 401) {
+        setError('Session expired. Please sign in again.');
+      } else if (Array.isArray(details) && details.length > 0) {
+        setError(details[0].message || 'Validation error');
+      } else if (error?.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Failed to create project');
+      }
     } finally {
       setLoading(false);
     }

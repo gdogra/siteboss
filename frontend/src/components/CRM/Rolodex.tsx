@@ -21,6 +21,8 @@ import {
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import { useAuth } from '../../contexts/AuthContext';
 import { UserRole } from '../../types';
+import EmailModal from './EmailModal';
+import SMSModal from './SMSModal';
 
 interface Contact {
   id: string;
@@ -65,6 +67,9 @@ const Rolodex: React.FC<RolodexProps> = () => {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [showContactModal, setShowContactModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [showSMSModal, setShowSMSModal] = useState(false);
+  const [contactForCommunication, setContactForCommunication] = useState<Contact | null>(null);
 
   // Mock data with role-based access
   useEffect(() => {
@@ -661,7 +666,8 @@ const Rolodex: React.FC<RolodexProps> = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    // TODO: Open email modal
+                    setContactForCommunication(contact);
+                    setShowEmailModal(true);
                   }}
                   className="text-xs text-blue-600 hover:text-blue-800"
                   title="Send Email"
@@ -671,7 +677,8 @@ const Rolodex: React.FC<RolodexProps> = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    // TODO: Open SMS modal
+                    setContactForCommunication(contact);
+                    setShowSMSModal(true);
                   }}
                   className="text-xs text-green-600 hover:text-green-800"
                   title="Send SMS"
@@ -757,6 +764,60 @@ const Rolodex: React.FC<RolodexProps> = () => {
             )}
           </div>
         </div>
+      )}
+
+      {/* Email Modal */}
+      {showEmailModal && contactForCommunication && (
+        <EmailModal
+          isOpen={showEmailModal}
+          onClose={() => {
+            setShowEmailModal(false);
+            setContactForCommunication(null);
+          }}
+          contact={{
+            id: contactForCommunication.id,
+            firstName: contactForCommunication.firstName,
+            lastName: contactForCommunication.lastName,
+            company: contactForCommunication.company,
+            title: contactForCommunication.title,
+            email: contactForCommunication.email,
+            phone: contactForCommunication.phone,
+            type: contactForCommunication.type
+          }}
+          onSend={(emailData) => {
+            console.log('Sending email:', emailData);
+            // TODO: Integrate with email service
+            setShowEmailModal(false);
+            setContactForCommunication(null);
+          }}
+        />
+      )}
+
+      {/* SMS Modal */}
+      {showSMSModal && contactForCommunication && (
+        <SMSModal
+          isOpen={showSMSModal}
+          onClose={() => {
+            setShowSMSModal(false);
+            setContactForCommunication(null);
+          }}
+          contact={{
+            id: contactForCommunication.id,
+            firstName: contactForCommunication.firstName,
+            lastName: contactForCommunication.lastName,
+            company: contactForCommunication.company,
+            title: contactForCommunication.title,
+            email: contactForCommunication.email,
+            phone: contactForCommunication.phone || contactForCommunication.mobile,
+            type: contactForCommunication.type
+          }}
+          onSend={(smsData) => {
+            console.log('Sending SMS:', smsData);
+            // TODO: Integrate with SMS service
+            setShowSMSModal(false);
+            setContactForCommunication(null);
+          }}
+        />
       )}
     </div>
   );

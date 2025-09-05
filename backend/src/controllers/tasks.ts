@@ -86,7 +86,11 @@ export class TaskController {
       }
 
       const taskData: CreateTaskRequest = req.body;
-      const task = await TaskModel.create(taskData, req.user.userId);
+      
+      // For demo users (identified by demo token), create without foreign key constraints by setting created_by to undefined
+      const authToken = req.headers.authorization?.substring(7); // Remove 'Bearer ' prefix
+      const createdBy = authToken === 'demo-token' ? undefined : req.user.userId;
+      const task = await TaskModel.create(taskData, createdBy);
 
       const response: ApiResponse = {
         success: true,
@@ -96,10 +100,38 @@ export class TaskController {
 
       res.status(201).json(response);
     } catch (error) {
+      // Provide clearer DB error messages in dev for easier debugging
+      // Common Postgres error codes: 22P02 (invalid_text_representation),
+      // 23503 (foreign_key_violation), 23514 (check_violation)
+      // eslint-disable-next-line no-console
       console.error('Create task error:', error);
+      const err: any = error as any;
+      const code = err?.code as string | undefined;
+      const detail = err?.detail as string | undefined;
+
+      if (code === '22P02') {
+        res.status(400).json({ success: false, error: 'Invalid input syntax', details: [{ message: detail || 'One or more fields have invalid format' }] });
+        return;
+      }
+      if (code === '23503') {
+        // Foreign key violation: identify which field failed
+        const constraint = (err?.constraint as string | undefined) || '';
+        let message = 'Related record not found';
+        if (constraint.includes('tasks_project_id')) message = 'Invalid project_id (project not found)';
+        else if (constraint.includes('tasks_assigned_to')) message = 'Invalid assigned_to (user not found)';
+        else if (constraint.includes('tasks_phase_id')) message = 'Invalid phase_id (phase not found)';
+        else if (constraint.includes('tasks_parent_task_id')) message = 'Invalid parent_task_id (task not found)';
+        res.status(400).json({ success: false, error: 'Validation error', details: [{ message }] });
+        return;
+      }
+      if (code === '23514') {
+        res.status(400).json({ success: false, error: 'Constraint violation', details: [{ message: detail || 'One or more values violate constraints' }] });
+        return;
+      }
+
       res.status(500).json({
         success: false,
-        error: 'Internal server error'
+        error: process.env.NODE_ENV === 'development' ? (err?.message || 'Internal server error') : 'Internal server error'
       });
     }
   }

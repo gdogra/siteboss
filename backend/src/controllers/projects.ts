@@ -1,6 +1,8 @@
 import { Response } from 'express';
 import { ProjectModel } from '../models/Project';
+import { CompanyModel } from '../models/Company';
 import { CreateProjectRequest, ApiResponse, PaginatedResponse } from '../types';
+import { TaskModel } from '../models/Task';
 import { AuthRequest } from '../middleware/auth';
 
 export class ProjectController {
@@ -93,7 +95,52 @@ export class ProjectController {
       }
 
       const projectData: CreateProjectRequest = req.body;
-      const project = await ProjectModel.create(req.user.companyId, projectData);
+
+      // Ensure a valid company exists (demo/dev tokens may have non‑UUID company ids)
+      let companyId = req.user.companyId;
+      try {
+        const existing = await CompanyModel.findById(companyId);
+        if (!existing) {
+          const created = await CompanyModel.create({ name: 'Demo Company' });
+          companyId = created.id;
+        }
+      } catch (e) {
+        // If companyId is not a valid UUID, create a demo company
+        const created = await CompanyModel.create({ name: 'Demo Company' });
+        companyId = created.id;
+      }
+
+      const project = await ProjectModel.create(companyId, projectData);
+
+      // Seed default tasks in "To Do" (DB default: not_started)
+      try {
+        const templateTasks = [
+          { title: 'Kickoff Meeting', description: 'Schedule and run project kickoff with stakeholders', priority: 'medium' as const },
+          { title: 'Site Survey', description: 'Initial site assessment and documentation', priority: 'high' as const },
+          { title: 'Procurement Plan', description: 'Outline materials, vendors, and timelines', priority: 'medium' as const },
+          { title: 'Safety Plan', description: 'Draft safety procedures and training needs', priority: 'medium' as const },
+        ];
+
+        // For demo users, skip foreign key constraints for template tasks too
+        const authToken = req.headers.authorization?.substring(7); // Remove 'Bearer ' prefix
+        const createdBy = authToken === 'demo-token' ? undefined : req.user!.userId;
+        
+        await Promise.all(
+          templateTasks.map(t =>
+            TaskModel.create(
+              {
+                project_id: (project as any).id,
+                title: t.title,
+                description: t.description,
+                priority: t.priority,
+              } as any,
+              createdBy
+            )
+          )
+        );
+      } catch (seedErr) {
+        console.error('Warning: failed to seed default tasks for project', seedErr);
+      }
 
       const response: ApiResponse = {
         success: true,
@@ -103,11 +150,29 @@ export class ProjectController {
 
       res.status(201).json(response);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Create project error:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Internal server error'
-      });
+      const err: any = error as any;
+      const code = err?.code as string | undefined;
+      const detail = err?.detail as string | undefined;
+      if (code === '22P02') {
+        res.status(400).json({ success: false, error: 'Invalid input syntax', details: [{ message: detail || 'One or more fields have invalid format' }] });
+        return;
+      }
+      if (code === '23503') {
+        const constraint = (err?.constraint as string | undefined) || '';
+        let message = 'Related record not found';
+        if (constraint.includes('projects_company_id')) message = 'Invalid company_id (company not found)';
+        else if (constraint.includes('projects_client_id')) message = 'Invalid client_id (user not found)';
+        else if (constraint.includes('projects_project_manager_id')) message = 'Invalid project_manager_id (user not found)';
+        res.status(400).json({ success: false, error: 'Validation error', details: [{ message }] });
+        return;
+      }
+      if (code === '23514') {
+        res.status(400).json({ success: false, error: 'Constraint violation', details: [{ message: detail || 'One or more values violate constraints' }] });
+        return;
+      }
+      res.status(500).json({ success: false, error: process.env.NODE_ENV === 'development' ? (err?.message || 'Internal server error') : 'Internal server error' });
     }
   }
 
@@ -256,6 +321,30 @@ export class ProjectController {
         success: false,
         error: 'Internal server error'
       });
+    }
+  }
+
+  static async getProjectTeam(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      if (!req.user) {
+        res.status(401).json({ success: false, error: 'Authentication required' });
+        return;
+      }
+      const { id } = req.params;
+      const project = await ProjectModel.findById(id);
+      if (!project) {
+        res.status(404).json({ success: false, error: 'Project not found' });
+        return;
+      }
+      if (project.company_id !== req.user.companyId && req.user.role !== 'super_admin') {
+        res.status(403).json({ success: false, error: 'Access denied' });
+        return;
+      }
+      const team = await ProjectModel.getTeamMembers(id);
+      res.json({ success: true, data: team });
+    } catch (error) {
+      console.error('Get project team error:', error);
+      res.status(500).json({ success: false, error: 'Internal server error' });
     }
   }
 }

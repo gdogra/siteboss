@@ -9,6 +9,7 @@ router.get('/', authenticate, ProjectController.getProjects);
 router.get('/stats', authenticate, ProjectController.getProjectStats);
 router.get('/my-projects', authenticate, ProjectController.getMyProjects);
 router.get('/:id', authenticate, ProjectController.getProject);
+router.get('/:id/team', authenticate, ProjectController.getProjectTeam);
 
 router.post('/', 
   authenticate, 

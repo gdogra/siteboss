@@ -36,6 +36,9 @@ const TeamManagement: React.FC = () => {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'members' | 'settings'>('members');
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [showMemberDetailModal, setShowMemberDetailModal] = useState(false);
+  const [showEditMemberModal, setShowEditMemberModal] = useState(false);
   const [teamSettings, setTeamSettings] = useState({
     autoApproveInvites: false,
     allowSelfRegistration: true,
@@ -197,13 +200,19 @@ const TeamManagement: React.FC = () => {
   };
 
   const handleViewMember = (memberId: string) => {
-    // TODO: Navigate to member detail page
-    console.log('View member:', memberId);
+    const member = teamMembers.find(m => m.id === memberId);
+    if (member) {
+      setSelectedMember(member);
+      setShowMemberDetailModal(true);
+    }
   };
 
   const handleEditMember = (memberId: string) => {
-    // TODO: Open edit member modal
-    console.log('Edit member:', memberId);
+    const member = teamMembers.find(m => m.id === memberId);
+    if (member) {
+      setSelectedMember(member);
+      setShowEditMemberModal(true);
+    }
   };
 
   const handleSettingsUpdate = (settingKey: string, value: any) => {
@@ -958,6 +967,195 @@ const TeamManagement: React.FC = () => {
                   <CheckCircleIcon className="h-5 w-5 mr-2" />
                   <span className="text-sm font-medium">All changes saved</span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Member Detail Modal */}
+      {showMemberDetailModal && selectedMember && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-2xl shadow-lg rounded-md bg-white">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-medium text-gray-900">Team Member Details</h3>
+              <button
+                onClick={() => {
+                  setShowMemberDetailModal(false);
+                  setSelectedMember(null);
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="flex items-center space-x-4">
+                <img
+                  src={selectedMember.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedMember.first_name + ' ' + selectedMember.last_name)}&background=3B82F6&color=fff`}
+                  alt={`${selectedMember.first_name} ${selectedMember.last_name}`}
+                  className="w-16 h-16 rounded-full"
+                />
+                <div>
+                  <h4 className="text-xl font-semibold text-gray-900">{selectedMember.first_name} {selectedMember.last_name}</h4>
+                  <p className="text-gray-600">{selectedMember.role.replace('_', ' ')}</p>
+                  <p className="text-gray-500">{selectedMember.email}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Phone</label>
+                  <p className="mt-1 text-sm text-gray-900">{selectedMember.phone || 'Not provided'}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Status</label>
+                  <p className="mt-1 text-sm text-gray-900 capitalize">{selectedMember.status}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Projects</label>
+                  <p className="mt-1 text-sm text-gray-900">{selectedMember.project_count || 0}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Active Tasks</label>
+                  <p className="mt-1 text-sm text-gray-900">{selectedMember.task_count || 0}</p>
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700">Last Active</label>
+                  <p className="mt-1 text-sm text-gray-900">
+                    {selectedMember.last_active ? selectedMember.last_active.toLocaleDateString() : 'Never'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => {
+                    setShowMemberDetailModal(false);
+                    setShowEditMemberModal(true);
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Edit Member
+                </button>
+                <button
+                  onClick={() => {
+                    setShowMemberDetailModal(false);
+                    setSelectedMember(null);
+                  }}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Member Modal */}
+      {showEditMemberModal && selectedMember && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-2xl shadow-lg rounded-md bg-white">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-medium text-gray-900">Edit Team Member</h3>
+              <button
+                onClick={() => {
+                  setShowEditMemberModal(false);
+                  setSelectedMember(null);
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">First Name</label>
+                  <input
+                    type="text"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    defaultValue={selectedMember.first_name}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                  <input
+                    type="text"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    defaultValue={selectedMember.last_name}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <input
+                  type="email"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue={selectedMember.email}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Phone</label>
+                <input
+                  type="tel"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue={selectedMember.phone || ''}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Role</label>
+                <select
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue={selectedMember.role}
+                >
+                  <option value="super_admin">Super Admin</option>
+                  <option value="company_admin">Company Admin</option>
+                  <option value="project_manager">Project Manager</option>
+                  <option value="foreman">Foreman</option>
+                  <option value="worker">Worker</option>
+                  <option value="guest">Guest</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Status</label>
+                <select
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  defaultValue={selectedMember.status}
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => {
+                    // TODO: Save member changes
+                    setShowEditMemberModal(false);
+                    setSelectedMember(null);
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Save Changes
+                </button>
+                <button
+                  onClick={() => {
+                    setShowEditMemberModal(false);
+                    setSelectedMember(null);
+                  }}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>

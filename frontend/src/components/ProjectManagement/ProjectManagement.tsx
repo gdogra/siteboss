@@ -193,7 +193,7 @@ const ProjectManagement: React.FC = () => {
     return result;
   }, [projects, filters]);
 
-  const handleProjectCreated = (project: Project) => {
+  const handleProjectCreated = async (project: Project) => {
     setProjects(prev => [...prev, project]);
     setIsCreateModalOpen(false);
     // Update stats locally instead of refetching
@@ -204,6 +204,16 @@ const ProjectManagement: React.FC = () => {
         activeProjects: project.status === 'active' ? prev.activeProjects + 1 : prev.activeProjects
       } : null);
     }
+    // Open details modal focused on Tasks to show seeded To Do tasks
+    try {
+      const { projectApi } = await import('../../services/api');
+      const fresh: any = await projectApi.getProject(project.id);
+      const proj = fresh?.data || project;
+      setSelectedProject(proj);
+    } catch {
+      setSelectedProject(project);
+    }
+    setIsDetailsModalOpen(true);
   };
 
   const handleProjectUpdated = (updatedProject: Project) => {
@@ -489,6 +499,7 @@ const ProjectManagement: React.FC = () => {
           }}
           onProjectUpdated={handleProjectUpdated}
           onProjectDeleted={handleProjectDeleted}
+          initialTabName="Tasks"
         />
       )}
     </div>

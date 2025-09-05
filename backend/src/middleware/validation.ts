@@ -3,8 +3,12 @@ import Joi from 'joi';
 
 export const validate = (schema: Joi.ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    const { error } = schema.validate(req.body);
-    
+    const { error, value } = schema.validate(req.body, {
+      abortEarly: false,
+      stripUnknown: true,
+      convert: true,
+    });
+
     if (error) {
       res.status(400).json({
         success: false,
@@ -16,7 +20,9 @@ export const validate = (schema: Joi.ObjectSchema) => {
       });
       return;
     }
-    
+
+    // Use Joi-parsed value so defaults and coercions apply
+    req.body = value;
     next();
   };
 };
@@ -95,4 +101,28 @@ export const updateTaskSchema = Joi.object({
   status: Joi.string().valid('not_started', 'in_progress', 'completed', 'on_hold', 'cancelled').optional(),
   priority: Joi.string().valid('low', 'medium', 'high', 'critical').optional(),
   completion_percentage: Joi.number().min(0).max(100).optional()
+});
+
+export const createSubcontractorAssignmentSchema = Joi.object({
+  subcontractor_id: Joi.string().uuid().optional(),
+  business_name: Joi.string().when('subcontractor_id', { is: Joi.exist(), then: Joi.optional(), otherwise: Joi.required() }),
+  project_id: Joi.string().uuid().optional(),
+  project_name: Joi.string().when('project_id', { is: Joi.exist(), then: Joi.optional(), otherwise: Joi.required() }),
+  start_date: Joi.date().optional(),
+  end_date: Joi.date().optional(),
+  contract_amount: Joi.number().min(0).optional(),
+  work_description: Joi.string().optional(),
+  payment_terms: Joi.string().optional()
+});
+
+export const createSubcontractorSchema = Joi.object({
+  business_name: Joi.string().min(2).max(255).required(),
+  contact_name: Joi.string().optional(),
+  email: Joi.string().email().optional(),
+  phone: Joi.string().optional(),
+  address: Joi.string().optional(),
+  license_number: Joi.string().optional(),
+  specialty: Joi.string().optional(),
+  hourly_rate: Joi.number().min(0).optional(),
+  insurance_expires: Joi.date().optional()
 });

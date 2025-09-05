@@ -25,6 +25,7 @@ interface ProjectDetailsModalProps {
   onClose: () => void;
   onProjectUpdated: (project: Project) => void;
   onProjectDeleted: (projectId: string) => void;
+  initialTabName?: 'Overview' | 'Tasks' | 'Budget' | 'Team' | 'Documents' | 'Resources';
 }
 
 interface UpdateProjectData {
@@ -42,7 +43,8 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
   isOpen,
   onClose,
   onProjectUpdated,
-  onProjectDeleted
+  onProjectDeleted,
+  initialTabName
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -164,6 +166,10 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
 
   const progress = calculateProgress();
   const isOverdue = project.end_date && new Date() > new Date(project.end_date) && project.status !== 'completed';
+
+  const initialIndex = Math.max(0, [
+    'Overview','Tasks','Budget','Team','Documents','Resources'
+  ].indexOf(initialTabName || 'Overview'));
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -352,7 +358,7 @@ const ProjectDetailsModal: React.FC<ProjectDetailsModalProps> = ({
 
                   {/* Main Content */}
                   <div className="flex-1">
-                    <Tab.Group>
+                    <Tab.Group defaultIndex={initialIndex}>
                       <Tab.List className="flex space-x-1 border-b border-gray-200">
                         {tabs.map((tab) => (
                           <Tab

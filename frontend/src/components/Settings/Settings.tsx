@@ -11,6 +11,9 @@ import {
   ClockIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../contexts/AuthContext';
+import { billingApi } from '../../services/api';
+import { billingStore } from '../../services/billingSupabase';
+import { useEffect } from 'react';
 
 interface SettingsTab {
   id: string;
@@ -101,6 +104,36 @@ const Settings: React.FC = () => {
     security: {
       two_factor: false,
       session_timeout: '30'
+    },
+    billing: {
+      provider: 'stripe',
+      defaultPlan: 'starter',
+      billingCycle: 'monthly',
+      currency: 'USD',
+      taxRate: 0,
+      trialDays: 0,
+      proration: true,
+      invoicePrefix: 'SB',
+      netTerms: 30,
+      billingEmail: user?.email || '',
+      stripe: {
+        publishableKey: '',
+        priceIds: {
+          starterMonthly: '',
+          starterYearly: '',
+          proMonthly: '',
+          proYearly: '',
+          enterpriseMonthly: '',
+          enterpriseYearly: ''
+        },
+        customerPortalUrl: ''
+      },
+      dunning: {
+        enabled: true,
+        retries: 3,
+        retryIntervalDays: 3,
+        sendEmails: true
+      }
     },
     teamSettings: {
       autoApproveInvites: false,
@@ -216,6 +249,45 @@ const Settings: React.FC = () => {
           : value
       }
     }));
+  };
+
+  const handleBillingChange = (path: string, value: any) => {
+    // path examples: 'provider', 'currency', 'stripe.publishableKey', 'stripe.priceIds.proMonthly'
+    setFormData(prev => {
+      const clone: any = { ...prev };
+      const parts = path.split('.');
+      let node: any = clone.billing;
+      for (let i = 0; i < parts.length - 1; i++) {
+        const k = parts[i];
+        node[k] = { ...(node?.[k] || {}) };
+        node = node[k];
+      }
+      node[parts[parts.length - 1]] = value;
+      return { ...clone, billing: clone.billing };
+    });
+  };
+
+  const handleSaveBilling = async () => {
+    try {
+      // Try backend API first
+      try {
+        const res = await billingApi.updateSettings(formData.billing);
+        if (res?.success) {
+          alert('Billing settings saved successfully!');
+          return;
+        }
+      } catch {}
+
+      // Fallback: Supabase direct (requires tenant_configurations table + permissive RLS)
+      const u = localStorage.getItem('siteboss_user');
+      const companyId = u ? (JSON.parse(u).company_id || '123e4567-e89b-12d3-a456-426614174000') : '123e4567-e89b-12d3-a456-426614174000';
+      await billingStore.upsert(companyId, formData.billing);
+      alert('Billing settings saved (Supabase)');
+    } catch (error) {
+      // Final fallback: localStorage
+      localStorage.setItem('sb_billing_settings', JSON.stringify(formData.billing));
+      alert('Saved locally (no API available)');
+    }
   };
 
   const handleDirectCompanyChange = (field: string, value: any) => {
@@ -1402,6 +1474,305 @@ const Settings: React.FC = () => {
     </div>
   );
 
+  const renderBillingSettings = () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg leading-6 font-medium text-gray-900">Billing Configuration</h3>
+        <p className="mt-1 text-sm text-gray-500">
+          Manage subscription plans, provider settings, invoicing, and taxes.
+        </p>
+      </div>
+
+      {/* Provider & Plan Defaults */}
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <h4 className="text-md font-medium text-gray-900 mb-4">Provider & Plan Defaults</h4>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Payment Provider</label>
+            <select
+              value={formData.billing.provider}
+              onChange={(e) => handleBillingChange('provider', e.target.value)}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="stripe">Stripe</option>
+              <option value="manual">Manual (Invoice only)</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Default Plan</label>
+            <select
+              value={formData.billing.defaultPlan}
+              onChange={(e) => handleBillingChange('defaultPlan', e.target.value)}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="starter">Starter</option>
+              <option value="pro">Pro</option>
+              <option value="enterprise">Enterprise</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Default Billing Cycle</label>
+            <select
+              value={formData.billing.billingCycle}
+              onChange={(e) => handleBillingChange('billingCycle', e.target.value)}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Stripe Settings */}
+      {formData.billing.provider === 'stripe' && (
+        <div className="bg-white border border-gray-200 rounded-lg p-6">
+          <h4 className="text-md font-medium text-gray-900 mb-4">Stripe Settings</h4>
+          <p className="text-xs text-gray-500 mb-4">Do not store secret keys in the frontend. Use publishable key only.</p>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700">Publishable Key</label>
+              <input
+                type="text"
+                value={formData.billing.stripe.publishableKey}
+                onChange={(e) => handleBillingChange('stripe.publishableKey', e.target.value)}
+                placeholder="pk_live_xxx or pk_test_xxx"
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Starter Monthly Price ID</label>
+              <input
+                type="text"
+                value={formData.billing.stripe.priceIds.starterMonthly}
+                onChange={(e) => handleBillingChange('stripe.priceIds.starterMonthly', e.target.value)}
+                placeholder="price_..."
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Starter Yearly Price ID</label>
+              <input
+                type="text"
+                value={formData.billing.stripe.priceIds.starterYearly}
+                onChange={(e) => handleBillingChange('stripe.priceIds.starterYearly', e.target.value)}
+                placeholder="price_..."
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Pro Monthly Price ID</label>
+              <input
+                type="text"
+                value={formData.billing.stripe.priceIds.proMonthly}
+                onChange={(e) => handleBillingChange('stripe.priceIds.proMonthly', e.target.value)}
+                placeholder="price_..."
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Pro Yearly Price ID</label>
+              <input
+                type="text"
+                value={formData.billing.stripe.priceIds.proYearly}
+                onChange={(e) => handleBillingChange('stripe.priceIds.proYearly', e.target.value)}
+                placeholder="price_..."
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Enterprise Monthly Price ID</label>
+              <input
+                type="text"
+                value={formData.billing.stripe.priceIds.enterpriseMonthly}
+                onChange={(e) => handleBillingChange('stripe.priceIds.enterpriseMonthly', e.target.value)}
+                placeholder="price_..."
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Enterprise Yearly Price ID</label>
+              <input
+                type="text"
+                value={formData.billing.stripe.priceIds.enterpriseYearly}
+                onChange={(e) => handleBillingChange('stripe.priceIds.enterpriseYearly', e.target.value)}
+                placeholder="price_..."
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700">Customer Portal URL</label>
+              <input
+                type="url"
+                value={formData.billing.stripe.customerPortalUrl}
+                onChange={(e) => handleBillingChange('stripe.customerPortalUrl', e.target.value)}
+                placeholder="https://billing.yourdomain.com/session..."
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Invoicing & Taxes */}
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <h4 className="text-md font-medium text-gray-900 mb-4">Invoicing & Taxes</h4>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Currency</label>
+            <select
+              value={formData.billing.currency}
+              onChange={(e) => handleBillingChange('currency', e.target.value)}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="USD">USD ($)</option>
+              <option value="CAD">CAD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Tax Rate (%)</label>
+            <input
+              type="number"
+              min="0"
+              max="50"
+              step="0.01"
+              value={formData.billing.taxRate}
+              onChange={(e) => handleBillingChange('taxRate', parseFloat(e.target.value || '0'))}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Invoice Prefix</label>
+            <input
+              type="text"
+              value={formData.billing.invoicePrefix}
+              onChange={(e) => handleBillingChange('invoicePrefix', e.target.value.toUpperCase())}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Net Terms (days)</label>
+            <input
+              type="number"
+              min="0"
+              max="120"
+              value={formData.billing.netTerms}
+              onChange={(e) => handleBillingChange('netTerms', parseInt(e.target.value || '0'))}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">Billing Email</label>
+            <input
+              type="email"
+              value={formData.billing.billingEmail}
+              onChange={(e) => handleBillingChange('billingEmail', e.target.value)}
+              placeholder="billing@yourcompany.com"
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Trials, Proration & Dunning */}
+      <div className="bg-white border border-gray-200 rounded-lg p-6">
+        <h4 className="text-md font-medium text-gray-900 mb-4">Trials, Proration & Dunning</h4>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Trial Days</label>
+            <input
+              type="number"
+              min="0"
+              max="60"
+              value={formData.billing.trialDays}
+              onChange={(e) => handleBillingChange('trialDays', parseInt(e.target.value || '0'))}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Proration</label>
+            <div className="mt-2">
+              <button
+                onClick={() => handleBillingChange('proration', !formData.billing.proration)}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
+                  formData.billing.proration ? 'bg-primary-600' : 'bg-gray-200'
+                }`}
+                aria-pressed={formData.billing.proration}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    formData.billing.proration ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Dunning Retries</label>
+            <input
+              type="number"
+              min="0"
+              max="10"
+              value={formData.billing.dunning.retries}
+              onChange={(e) => handleBillingChange('dunning.retries', parseInt(e.target.value || '0'))}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Retry Interval (days)</label>
+            <input
+              type="number"
+              min="1"
+              max="30"
+              value={formData.billing.dunning.retryIntervalDays}
+              onChange={(e) => handleBillingChange('dunning.retryIntervalDays', parseInt(e.target.value || '1'))}
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+
+          <div className="sm:col-span-2 flex items-center mt-2">
+            <input
+              id="dunningEmails"
+              type="checkbox"
+              checked={formData.billing.dunning.sendEmails}
+              onChange={(e) => handleBillingChange('dunning.sendEmails', e.target.checked)}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <label htmlFor="dunningEmails" className="ml-2 text-sm text-gray-700">Send dunning emails on failed payments</label>
+          </div>
+        </div>
+      </div>
+
+      <div className="pt-2">
+        <button
+          onClick={handleSaveBilling}
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        >
+          Save Billing Settings
+        </button>
+      </div>
+    </div>
+  );
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'profile':
@@ -1415,13 +1786,79 @@ const Settings: React.FC = () => {
       case 'team':
         return renderTeamManagementSettings();
       case 'billing':
-        return renderPlaceholderTab('Billing');
+        return renderBillingSettings();
       case 'integrations':
         return renderPlaceholderTab('Integrations');
       default:
         return renderProfileSettings();
     }
   };
+
+  // Prefetch billing settings when visiting the Billing tab
+  useEffect(() => {
+    const loadBilling = async () => {
+      try {
+        // Prefer backend API
+        try {
+          const res = await billingApi.getSettings();
+          const data = res?.data;
+          if (data) {
+            setFormData(prev => ({
+              ...prev,
+              billing: {
+                ...prev.billing,
+                ...data,
+                stripe: {
+                  ...(prev.billing as any)?.stripe,
+                  ...(data?.stripe || {})
+                },
+                dunning: {
+                  ...(prev.billing as any)?.dunning,
+                  ...(data?.dunning || {})
+                }
+              }
+            }));
+            return;
+          }
+        } catch {}
+
+        // Fallback: Supabase direct
+        try {
+          const u = localStorage.getItem('siteboss_user');
+          const companyId = u ? (JSON.parse(u).company_id || '123e4567-e89b-12d3-a456-426614174000') : '123e4567-e89b-12d3-a456-426614174000';
+          const data = await billingStore.get(companyId);
+          if (data) {
+            setFormData(prev => ({
+              ...prev,
+              billing: {
+                ...prev.billing,
+                ...data,
+                stripe: {
+                  ...(prev.billing as any)?.stripe,
+                  ...(data?.stripe || {})
+                },
+                dunning: {
+                  ...(prev.billing as any)?.dunning,
+                  ...(data?.dunning || {})
+                }
+              }
+            }));
+            return;
+          }
+        } catch {}
+
+        // Final fallback: localStorage stub
+        try {
+          const raw = localStorage.getItem('sb_billing_settings');
+          if (raw) {
+            const data = JSON.parse(raw);
+            setFormData(prev => ({ ...prev, billing: { ...prev.billing, ...data } }));
+          }
+        } catch {}
+      } catch {}
+    };
+    if (activeTab === 'billing') loadBilling();
+  }, [activeTab]);
 
   return (
     <div className="space-y-6">

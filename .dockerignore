@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+.git
+.gitignore
+.DS_Store
+*.log
+frontend/build
+backend/dist
+.netlify
+__easysite_nodejs__
+
+.env

@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
 import bcrypt from 'bcryptjs';
 import { AuthPayload } from '../types';
-
-const JWT_SECRET: string = process.env.JWT_SECRET || 'your-secret-key';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+import { env } from '../config/env';
 
 export const hashPassword = async (password: string): Promise<string> => {
   const saltRounds = 12;
@@ -15,17 +13,17 @@ export const comparePassword = async (password: string, hash: string): Promise<b
 };
 
 export const generateToken = (payload: AuthPayload): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
 };
 
 export const verifyToken = (token: string): AuthPayload => {
   try {
-    return jwt.verify(token, JWT_SECRET) as AuthPayload;
+    return jwt.verify(token, env.JWT_SECRET) as AuthPayload;
   } catch (error) {
     throw new Error('Invalid token');
   }
 };
 
 export const generateRefreshToken = (userId: string): string => {
-  return jwt.sign({ userId, type: 'refresh' }, JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign({ userId, type: 'refresh' }, env.JWT_SECRET, { expiresIn: '30d' });
 };

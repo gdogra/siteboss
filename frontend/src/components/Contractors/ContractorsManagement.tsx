@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   UserGroupIcon,
   BuildingOfficeIcon,
@@ -20,6 +21,7 @@ import {
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import ContractorOnboarding from './ContractorOnboarding';
 import ContractorPerformance from './ContractorPerformance';
+import { contractorApi } from '../../services/api';
 
 interface Contractor {
   id: string;
@@ -69,6 +71,12 @@ const ContractorsManagement: React.FC = () => {
   const [selectedContractor, setSelectedContractor] = useState<Contractor | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isPerformanceModalOpen, setIsPerformanceModalOpen] = useState(false);
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [assignProjectId, setAssignProjectId] = useState<string>("");
+  const [assignStartDate, setAssignStartDate] = useState<string>("");
+  const [assignContractValue, setAssignContractValue] = useState<string>("");
+
+  // Available projects loaded from API for assignment
 
   useEffect(() => {
     fetchContractors();
@@ -77,8 +85,37 @@ const ContractorsManagement: React.FC = () => {
   const fetchContractors = async () => {
     try {
       setLoading(true);
-      
-      // Mock contractors data
+      // Try backend first
+      let apiContractors: Contractor[] = [];
+      try {
+        const res: any = await contractorApi.getSubcontractors();
+        const rows: any[] = res?.data || [];
+        apiContractors = rows.map((r: any) => ({
+          id: r.id,
+          company_name: r.business_name,
+          contact_name: r.contact_name || '—',
+          email: r.email || '—',
+          phone: r.phone || '—',
+          address: r.address || '—',
+          license_number: r.license_number || '—',
+          specialties: r.specialty ? [r.specialty] : [],
+          rating: Number(r.rating || 4.5),
+          reviews_count: 0,
+          projects_completed: 0,
+          status: r.is_active ? 'active' : 'inactive',
+          insurance_expiry: r.insurance_expires ? new Date(r.insurance_expires) : new Date(),
+          license_expiry: new Date(),
+          hourly_rate: r.hourly_rate ? Number(r.hourly_rate) : undefined,
+          joined_date: new Date(r.created_at || Date.now()),
+          last_project_date: undefined,
+          total_earnings: 0,
+          certifications: [],
+          availability_status: 'available'
+        }));
+      } catch (e) {
+        // ignore and fall back to mock
+      }
+
       const mockContractors: Contractor[] = [
         {
           id: '1',
@@ -226,7 +263,7 @@ const ContractorsManagement: React.FC = () => {
         }
       ];
       
-      setContractors(mockContractors);
+      setContractors(apiContractors.length ? apiContractors : mockContractors);
       setContractorProjects(mockProjects);
     } catch (error) {
       console.error('Error fetching contractors:', error);
@@ -260,6 +297,28 @@ const ContractorsManagement: React.FC = () => {
   const handleViewDetails = (contractor: Contractor) => {
     setSelectedContractor(contractor);
     setIsDetailsModalOpen(true);
+    // Fetch assignments from API
+    contractorApi.getAssignmentsByBusinessName(contractor.company_name)
+      .then((res: any) => {
+        const items = (res.data || []).map((row: any) => ({
+          id: row.id,
+          contractor_id: contractor.id,
+          project_name: row.project_name,
+          start_date: row.start_date ? new Date(row.start_date) : new Date(),
+          end_date: row.end_date ? new Date(row.end_date) : undefined,
+          status: (row.status || 'active') as any,
+          contract_value: Number(row.contract_amount || 0),
+          completion_percentage: 0
+        }));
+        setContractorProjects(prev => {
+          // Replace existing entries for this contractor with API data
+          const others = prev.filter(p => p.contractor_id !== contractor.id);
+          return [...items, ...others];
+        });
+      })
+      .catch(() => {
+        // Ignore API errors for now; UI will show local/mock data
+      });
   };
 
   const handleViewPerformance = (contractor: Contractor) => {
@@ -323,6 +382,21 @@ const ContractorsManagement: React.FC = () => {
 
   const specialties = ['General Construction', 'Electrical', 'Plumbing', 'HVAC', 'Roofing', 'Masonry', 'Painting', 'Flooring'];
 
+  // Real projects for assignment
+  const [availableProjects, setAvailableProjects] = useState<{ id: string; name: string }[]>([]);
+  const loadProjects = async (): Promise<{ id: string; name: string }[]> => {
+    try {
+      const res: any = await (await import('../../services/api')).projectApi.getProjects();
+      const rows = res?.data || [];
+      const opts = rows.map((p: any) => ({ id: p.id, name: p.name }));
+      setAvailableProjects(opts);
+      return opts;
+    } catch (e) {
+      setAvailableProjects([]);
+      return [];
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -339,24 +413,31 @@ const ContractorsManagement: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Contractors</h1>
           <p className="text-gray-600 mt-1">Manage your contractor network and relationships</p>
         </div>
-        <div className="flex items-center space-x-3">
-          <div className="flex space-x-3">
-            <button
-              onClick={handleStartOnboarding}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-            >
-              <PlusIcon className="-ml-1 mr-2 h-5 w-5" />
-              New Contractor
-            </button>
-            <button
-              onClick={handleInviteContractor}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            >
-              <EnvelopeIcon className="-ml-1 mr-2 h-5 w-5" />
-              Invite Existing
-            </button>
+          <div className="flex items-center space-x-3">
+            <div className="flex space-x-3">
+              <button
+                onClick={handleStartOnboarding}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                <PlusIcon className="-ml-1 mr-2 h-5 w-5" />
+                New Contractor
+              </button>
+              <button
+                onClick={handleInviteContractor}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              >
+                <EnvelopeIcon className="-ml-1 mr-2 h-5 w-5" />
+                Invite Existing
+              </button>
+              <Link
+                to="/contractors/create"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              >
+                <DocumentTextIcon className="-ml-1 mr-2 h-5 w-5" />
+                Manage Directory
+              </Link>
+            </div>
           </div>
-        </div>
       </div>
 
       {/* Stats Cards */}
@@ -829,12 +910,46 @@ const ContractorsManagement: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
+                {/* Assigned Projects */}
+                <div className="mt-6">
+                  <h4 className="text-lg font-medium text-gray-900 mb-3">Assigned Projects</h4>
+                  <div className="space-y-2">
+                    {contractorProjects.filter(p => p.contractor_id === selectedContractor.id).length === 0 ? (
+                      <p className="text-sm text-gray-500">No current assignments.</p>
+                    ) : (
+                      contractorProjects
+                        .filter(p => p.contractor_id === selectedContractor.id)
+                        .map(p => (
+                          <div key={p.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">{p.project_name}</p>
+                              <p className="text-xs text-gray-500">Start: {new Date(p.start_date).toLocaleDateString()} • Status: {p.status}</p>
+                            </div>
+                            <span className="text-xs text-gray-600">${p.contract_value.toLocaleString()}</span>
+                          </div>
+                        ))
+                    )}
+                  </div>
+                </div>
+
                 <div className="mt-8 flex justify-end space-x-3">
-                  <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200">
+                  <button 
+                    onClick={() => handleMessageContractor(selectedContractor)}
+                    className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200"
+                  >
                     Send Message
                   </button>
-                  <button className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700">
+                  <button
+                    onClick={async () => {
+                      const opts = await loadProjects();
+                      setAssignProjectId(prev => prev || (opts[0]?.id || ""));
+                      setAssignStartDate(new Date().toISOString().slice(0,10));
+                      setAssignContractValue("");
+                      setIsAssignModalOpen(true);
+                    }}
+                    className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+                  >
                     Assign to Project
                   </button>
                 </div>
@@ -868,6 +983,112 @@ const ContractorsManagement: React.FC = () => {
               contractorId={selectedContractor.id}
               contractorName={selectedContractor.company_name}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Assign to Project Modal */}
+      {isAssignModalOpen && selectedContractor && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-lg shadow-lg rounded-md bg-white">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium text-gray-900">Assign {selectedContractor.company_name} to Project</h3>
+              <button
+                onClick={() => setIsAssignModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Project</label>
+                <select
+                  className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 rounded-md"
+                  value={assignProjectId}
+                  onChange={(e) => setAssignProjectId(e.target.value)}
+                >
+                  {availableProjects.map(p => (
+                    <option key={p.id} value={p.id}>{p.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                <input
+                  type="date"
+                  className="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  value={assignStartDate}
+                  onChange={(e) => setAssignStartDate(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Contract Value (optional)</label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="e.g., 25000"
+                  className="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  value={assignContractValue}
+                  onChange={(e) => setAssignContractValue(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end space-x-3">
+              <button
+                onClick={() => setIsAssignModalOpen(false)}
+                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  if (!assignProjectId) return;
+                  const project = availableProjects.find(p => p.id === assignProjectId);
+                  if (!project) return;
+                  // Try to resolve subcontractor_id
+                  let subcontractor_id: string | undefined = undefined;
+                  try {
+                    const list: any = await contractorApi.getSubcontractors(selectedContractor.company_name);
+                    const match = (list?.data || []).find((s: any) => (s.business_name || '').toLowerCase() === selectedContractor.company_name.toLowerCase());
+                    subcontractor_id = match?.id;
+                  } catch {}
+                  try {
+                    await contractorApi.assignToProject({
+                      subcontractor_id,
+                      business_name: subcontractor_id ? undefined : selectedContractor.company_name,
+                      project_id: project.id,
+                      start_date: assignStartDate || undefined,
+                      contract_amount: assignContractValue ? Number(assignContractValue) : undefined,
+                    });
+                  } catch (e) {
+                    // fall back to local optimistic update on failure
+                  }
+                  const newAssignment: ContractorProject = {
+                    id: `assign-${Date.now()}`,
+                    contractor_id: selectedContractor.id,
+                    project_name: project.name,
+                    start_date: assignStartDate ? new Date(assignStartDate) : new Date(),
+                    status: 'active',
+                    contract_value: assignContractValue ? Number(assignContractValue) : 0,
+                    completion_percentage: 0
+                  };
+                  setContractorProjects(prev => [newAssignment, ...prev.filter(p => p.contractor_id === selectedContractor.id ? true : true)]);
+                  setContractors(prev => prev.map(c => c.id === selectedContractor.id ? ({
+                    ...c,
+                    availability_status: c.availability_status === 'available' ? 'busy' : c.availability_status,
+                    last_project_date: new Date()
+                  }) : c));
+                  setIsAssignModalOpen(false);
+                }}
+                className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-primary-700"
+              >
+                Assign
+              </button>
+            </div>
           </div>
         </div>
       )}

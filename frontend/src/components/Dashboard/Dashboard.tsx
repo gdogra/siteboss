@@ -141,10 +141,10 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 px-2 sm:px-0 sm:space-y-6">
       {/* Welcome Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+      <div className="text-center sm:text-left">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
           Welcome back, {user?.first_name}!
         </h1>
         <p className="mt-1 text-sm text-gray-600">
@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
         {loading ? (
           // Loading skeleton for stats
           [1, 2, 3, 4].map((i) => (
@@ -187,45 +187,45 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <h2 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <button
             onClick={() => navigate('/projects')}
-            className="flex flex-col items-center p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
+            className="flex flex-col items-center p-3 sm:p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
           >
-            <FolderOpenIcon className="h-8 w-8 text-gray-400 group-hover:text-primary-600 mb-2" />
-            <span className="text-sm font-medium text-gray-700 group-hover:text-primary-600">
+            <FolderOpenIcon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 group-hover:text-primary-600 mb-1 sm:mb-2" />
+            <span className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-primary-600">
               New Project
             </span>
           </button>
           
           <button
             onClick={() => navigate('/tasks')}
-            className="flex flex-col items-center p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
+            className="flex flex-col items-center p-3 sm:p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
           >
-            <CheckCircleIcon className="h-8 w-8 text-gray-400 group-hover:text-primary-600 mb-2" />
-            <span className="text-sm font-medium text-gray-700 group-hover:text-primary-600">
+            <CheckCircleIcon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 group-hover:text-primary-600 mb-1 sm:mb-2" />
+            <span className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-primary-600">
               Add Task
             </span>
           </button>
           
           <button
             onClick={() => navigate('/budget')}
-            className="flex flex-col items-center p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
+            className="flex flex-col items-center p-3 sm:p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
           >
-            <CurrencyDollarIcon className="h-8 w-8 text-gray-400 group-hover:text-primary-600 mb-2" />
-            <span className="text-sm font-medium text-gray-700 group-hover:text-primary-600">
+            <CurrencyDollarIcon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 group-hover:text-primary-600 mb-1 sm:mb-2" />
+            <span className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-primary-600">
               Log Expense
             </span>
           </button>
           
           <button
             onClick={() => navigate('/contacts')}
-            className="flex flex-col items-center p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
+            className="flex flex-col items-center p-3 sm:p-4 text-center border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors group"
           >
-            <ExclamationTriangleIcon className="h-8 w-8 text-gray-400 group-hover:text-primary-600 mb-2" />
-            <span className="text-sm font-medium text-gray-700 group-hover:text-primary-600">
+            <ExclamationTriangleIcon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 group-hover:text-primary-600 mb-1 sm:mb-2" />
+            <span className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-primary-600">
               Add Contact
             </span>
           </button>
@@ -233,14 +233,14 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* My Tasks */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium text-gray-900">My Tasks</h2>
+            <h2 className="text-base sm:text-lg font-medium text-gray-900">My Tasks</h2>
             <Link
               to="/tasks"
-              className="text-sm text-primary-600 hover:text-primary-500"
+              className="text-xs sm:text-sm text-primary-600 hover:text-primary-500"
             >
               View all
             </Link>
@@ -259,12 +259,12 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Projects */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium text-gray-900">Recent Projects</h2>
+            <h2 className="text-base sm:text-lg font-medium text-gray-900">Recent Projects</h2>
             <Link
               to="/projects"
-              className="text-sm text-primary-600 hover:text-primary-500"
+              className="text-xs sm:text-sm text-primary-600 hover:text-primary-500"
             >
               View all
             </Link>
@@ -275,22 +275,22 @@ const Dashboard: React.FC = () => {
 
       {/* Recent Activity */}
       <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-medium text-gray-900">Recent Activity</h2>
+        <div className="p-4 sm:p-6 border-b border-gray-200">
+          <h2 className="text-base sm:text-lg font-medium text-gray-900">Recent Activity</h2>
         </div>
         <RecentActivity />
       </div>
 
       {/* Pending Approvals (for managers) */}
       {(user?.role === 'company_admin' || user?.role === 'project_manager') && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium text-gray-900">
+            <h2 className="text-base sm:text-lg font-medium text-gray-900">
               Pending Expense Approvals
             </h2>
             <Link
               to="/budget"
-              className="text-sm text-primary-600 hover:text-primary-500"
+              className="text-xs sm:text-sm text-primary-600 hover:text-primary-500"
             >
               View all
             </Link>

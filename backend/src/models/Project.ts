@@ -150,4 +150,24 @@ export class ProjectModel {
     const result = await pool.query(query, [projectManagerId]);
     return result.rows;
   }
+
+  static async getTeamMembers(projectId: string): Promise<any[]> {
+    const query = `
+      WITH pm AS (
+        SELECT project_manager_id AS uid, company_id
+        FROM projects WHERE id = $1
+      )
+      SELECT DISTINCT u.id, u.first_name, u.last_name, u.email
+      FROM users u
+      JOIN pm ON u.company_id = pm.company_id
+      WHERE u.id = pm.uid
+      UNION
+      SELECT DISTINCT u.id, u.first_name, u.last_name, u.email
+      FROM tasks t
+      JOIN users u ON t.assigned_to = u.id
+      WHERE t.project_id = $1`;
+
+    const result = await pool.query(query, [projectId]);
+    return result.rows;
+  }
 }

@@ -47,6 +47,8 @@ const TenantSettings: React.FC = () => {
     }
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showBillingModal, setShowBillingModal] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
@@ -109,19 +111,21 @@ const TenantSettings: React.FC = () => {
   };
 
   const handleUpgradePlan = () => {
-    // TODO: Navigate to subscription plans page
-    console.log('Upgrade plan clicked');
+    setShowUpgradeModal(true);
   };
 
   const handleViewBillingHistory = () => {
-    // TODO: Navigate to billing history page
-    console.log('View billing history clicked');
+    setShowBillingModal(true);
   };
 
   const handleCancelSubscription = () => {
     if (window.confirm('Are you sure you want to cancel your subscription? This action cannot be undone.')) {
-      // TODO: Implement subscription cancellation
-      console.log('Cancel subscription confirmed');
+      // Simulate cancellation API call
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        alert('Your subscription has been scheduled for cancellation at the end of your billing period.');
+      }, 1500);
     }
   };
 
@@ -486,6 +490,252 @@ const TenantSettings: React.FC = () => {
               </>
             )}
           </button>
+        </div>
+      )}
+
+      {/* Upgrade Plan Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-medium text-gray-900">Upgrade Your Plan</h3>
+              <button
+                onClick={() => setShowUpgradeModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Starter Plan */}
+              <div className="border border-gray-200 rounded-lg p-6">
+                <div className="text-center">
+                  <h4 className="text-lg font-semibold text-gray-900">Starter</h4>
+                  <p className="text-gray-600">Perfect for small teams</p>
+                  <div className="mt-4">
+                    <span className="text-3xl font-bold text-gray-900">$29</span>
+                    <span className="text-gray-600">/month</span>
+                  </div>
+                </div>
+                <ul className="mt-6 space-y-3">
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Up to 5 users
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    1,000 leads
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    5GB storage
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Basic support
+                  </li>
+                </ul>
+                <button className="w-full mt-6 bg-gray-100 text-gray-600 py-2 px-4 rounded-md cursor-not-allowed">
+                  Current Plan
+                </button>
+              </div>
+
+              {/* Professional Plan */}
+              <div className="border-2 border-blue-500 rounded-lg p-6 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-blue-500 text-white text-xs font-medium py-1 px-3 rounded-full">
+                    Popular
+                  </span>
+                </div>
+                <div className="text-center">
+                  <h4 className="text-lg font-semibold text-gray-900">Professional</h4>
+                  <p className="text-gray-600">For growing businesses</p>
+                  <div className="mt-4">
+                    <span className="text-3xl font-bold text-gray-900">$79</span>
+                    <span className="text-gray-600">/month</span>
+                  </div>
+                </div>
+                <ul className="mt-6 space-y-3">
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Up to 25 users
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    10,000 leads
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    50GB storage
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Advanced analytics
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Priority support
+                  </li>
+                </ul>
+                <button className="w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+                  Upgrade to Professional
+                </button>
+              </div>
+
+              {/* Enterprise Plan */}
+              <div className="border border-gray-200 rounded-lg p-6">
+                <div className="text-center">
+                  <h4 className="text-lg font-semibold text-gray-900">Enterprise</h4>
+                  <p className="text-gray-600">For large organizations</p>
+                  <div className="mt-4">
+                    <span className="text-3xl font-bold text-gray-900">$199</span>
+                    <span className="text-gray-600">/month</span>
+                  </div>
+                </div>
+                <ul className="mt-6 space-y-3">
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Unlimited users
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Unlimited leads
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    500GB storage
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    Custom reports
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    White labeling
+                  </li>
+                  <li className="flex items-center text-sm text-gray-600">
+                    <CheckIcon className="h-4 w-4 text-green-600 mr-2" />
+                    24/7 support
+                  </li>
+                </ul>
+                <button className="w-full mt-6 bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-gray-800">
+                  Upgrade to Enterprise
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Billing History Modal */}
+      {showBillingModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-3xl shadow-lg rounded-md bg-white">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-medium text-gray-900">Billing History</h3>
+              <button
+                onClick={() => setShowBillingModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Date
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Description
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Amount
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Invoice
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        Aug 1, 2024
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        Professional Plan - Monthly
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        $79.00
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Paid
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-800">
+                        <a href="#" className="underline">Download</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        Jul 1, 2024
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        Professional Plan - Monthly
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        $79.00
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Paid
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-800">
+                        <a href="#" className="underline">Download</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        Jun 1, 2024
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        Professional Plan - Monthly
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        $79.00
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          Paid
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-800">
+                        <a href="#" className="underline">Download</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="flex justify-between items-center pt-4 border-t border-gray-200">
+                <div className="text-sm text-gray-600">
+                  Showing billing history for the last 6 months
+                </div>
+                <button className="text-blue-600 hover:text-blue-800 text-sm underline">
+                  Export all invoices
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

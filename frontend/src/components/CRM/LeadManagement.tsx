@@ -13,6 +13,7 @@ import {
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import CreateLeadModal from './CreateLeadModal';
 import LeadDetailModal from './LeadDetailModal';
+import EmailModal from './EmailModal';
 
 interface Lead {
   id: string;
@@ -53,6 +54,8 @@ const LeadManagement: React.FC = () => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [leadForEmail, setLeadForEmail] = useState<Lead | null>(null);
 
   // Mock data - in production, this would come from API
   useEffect(() => {
@@ -283,8 +286,8 @@ const LeadManagement: React.FC = () => {
   };
 
   const handleEmailLead = (lead: Lead) => {
-    // TODO: Integrate with communication system
-    console.log('Emailing lead:', lead.email);
+    setLeadForEmail(lead);
+    setShowEmailModal(true);
   };
 
   if (loading) {
@@ -304,16 +307,16 @@ const LeadManagement: React.FC = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Lead Management</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Lead Management</h1>
           <p className="text-gray-600 mt-1">Track and manage your sales opportunities</p>
         </div>
         <button
           onClick={() => handleEditClick()}
-          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-colors w-full sm:w-auto"
         >
           <PlusIcon className="h-5 w-5" />
           <span>Add Lead</span>
@@ -321,7 +324,7 @@ const LeadManagement: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <div className="bg-white rounded-lg p-4 shadow border">
           <div className="flex items-center">
             <div className="p-2 bg-blue-100 rounded-lg">
@@ -567,6 +570,33 @@ const LeadManagement: React.FC = () => {
           }
         }}
       />
+
+      {/* Email Modal */}
+      {showEmailModal && leadForEmail && (
+        <EmailModal
+          isOpen={showEmailModal}
+          onClose={() => {
+            setShowEmailModal(false);
+            setLeadForEmail(null);
+          }}
+          contact={{
+            id: leadForEmail.id,
+            firstName: leadForEmail.name.split(' ')[0] || leadForEmail.name,
+            lastName: leadForEmail.name.split(' ').slice(1).join(' ') || '',
+            company: leadForEmail.company,
+            title: 'Lead', // Default title for leads
+            email: leadForEmail.email,
+            phone: leadForEmail.phone,
+            type: 'lead' as const
+          }}
+          onSend={(emailData) => {
+            console.log('Sending email:', emailData);
+            // TODO: Integrate with email service
+            setShowEmailModal(false);
+            setLeadForEmail(null);
+          }}
+        />
+      )}
     </div>
   );
 };

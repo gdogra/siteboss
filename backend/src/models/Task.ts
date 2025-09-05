@@ -37,7 +37,7 @@ export class TaskModel {
     return result.rows[0] || null;
   }
 
-  static async create(taskData: CreateTaskRequest, createdBy: string): Promise<Task> {
+  static async create(taskData: CreateTaskRequest, createdBy?: string): Promise<Task> {
     const query = `
       INSERT INTO tasks (
         project_id, phase_id, parent_task_id, assigned_to, title, description,
@@ -49,16 +49,16 @@ export class TaskModel {
     
     const values = [
       taskData.project_id,
-      taskData.phase_id,
-      taskData.parent_task_id,
-      taskData.assigned_to,
+      taskData.phase_id || null,
+      taskData.parent_task_id || null,
+      taskData.assigned_to || null,
       taskData.title,
       taskData.description,
-      taskData.start_date,
-      taskData.due_date,
-      taskData.estimated_hours,
+      taskData.start_date || null,
+      taskData.due_date || null,
+      taskData.estimated_hours || null,
       taskData.priority,
-      createdBy
+      createdBy || null
     ];
     
     const result = await pool.query(query, values);
