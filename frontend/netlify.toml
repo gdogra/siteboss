@@ -1,6 +1,6 @@
 [build]
   publish = "build"
-  command = "npm run build"
+  command = "CI=false npm run build"
 
 [[redirects]]
   from = "/api/billing/*"
@@ -19,6 +19,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  CI = "false"
   REACT_APP_API_URL = "/api"
 
 [functions]
