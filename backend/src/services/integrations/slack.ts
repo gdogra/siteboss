@@ -10,7 +10,7 @@ export class SlackIntegration {
     this.config = config;
   }
 
-  private async makeRequest(endpoint: string, method: 'GET' | 'POST' = 'POST', data?: any) {
+  private async makeRequest(endpoint: string, method: 'GET' | 'POST' = 'POST', data?: any): Promise<any> {
     try {
       const response = await axios({
         method,
@@ -442,9 +442,9 @@ export class SlackIntegration {
             },
             url: `${process.env.FRONTEND_URL}/dashboard`,
             action_id: 'open_dashboard'
-          }
+          } as any
         ]
-      });
+      } as any);
 
       await this.makeRequest('chat.postMessage', 'POST', slackMessage);
       console.log('Daily project summary sent to Slack');
@@ -460,7 +460,10 @@ export class SlackIntegration {
         case '/siteboss-status':
           return await this.handleStatusCommand(text, userId);
         case '/siteboss-create-task':
-          return await this.handleCreateTaskCommand(text, userId);
+          return {
+            response_type: 'ephemeral',
+            text: 'Task creation feature is coming soon!'
+          };
         case '/siteboss-projects':
           return await this.handleProjectsCommand(userId);
         default:

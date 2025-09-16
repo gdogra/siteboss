@@ -53,6 +53,11 @@ const envSchema = Joi.object({
   UPLOAD_PATH: Joi.string().default('./uploads'),
   MAX_FILE_SIZE: Joi.number().integer().default(10 * 1024 * 1024), // 10MB
   
+  // Supabase (Storage)
+  SUPABASE_URL: Joi.string().uri().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: Joi.string().optional(),
+  SUPABASE_BUCKET: Joi.string().default('documents'),
+  
   // Monitoring
   LOG_LEVEL: Joi.string().valid('error', 'warn', 'info', 'debug').default('info'),
   ENABLE_REQUEST_LOGGING: Joi.boolean().default(true),

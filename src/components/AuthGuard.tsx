@@ -1,35 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AuthGuardProps {
   children: React.ReactNode;
 }
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    try {
-      const response = await window.ezsite.apis.getUserInfo();
-      if (response.error) {
-        setIsAuthenticated(false);
-        navigate('/admin-login');
-      } else {
-        setIsAuthenticated(true);
-      }
-    } catch (error) {
-      setIsAuthenticated(false);
+    if (!isLoading && !isAuthenticated) {
       navigate('/admin-login');
     }
-  };
+  }, [isAuthenticated, isLoading, navigate]);
 
-  if (isAuthenticated === null) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

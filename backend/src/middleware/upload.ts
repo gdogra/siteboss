@@ -39,3 +39,15 @@ export const upload = multer({
 
 export const uploadSingle = upload.single('file');
 export const uploadMultiple = upload.array('files', 10);
+
+// Memory storage variant for cloud uploads (e.g., Supabase Storage)
+const memoryStorage = multer({
+  storage: multer.memoryStorage(),
+  fileFilter,
+  limits: {
+    fileSize: parseInt(process.env.MAX_FILE_SIZE || '10485760')
+  }
+});
+
+export const uploadSingleMemory = memoryStorage.single('file');
+export const uploadReceiptSingleMemory = memoryStorage.single('receipt');

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="72" height="72" fill="#0f172a" rx="10.799999999999999"/>
+  
+  <!-- Hard hat icon -->
+  <g transform="translate(14.4, 18)">
+    <!-- Hat body -->
+    <ellipse cx="21.599999999999998" cy="25.2" rx="18" ry="14.4" fill="#fbbf24"/>
+    <!-- Hat rim -->
+    <rect x="3.6" y="32.4" width="36" height="5.76" rx="1.44" fill="#f59e0b"/>
+    <!-- Highlight -->
+    <ellipse cx="18" cy="21.599999999999998" rx="5.76" ry="3.6" fill="#fde047"/>
+  </g>
+  
+  <!-- Building/Construction icon -->
+  <g transform="translate(10.799999999999999, 43.199999999999996)">
+    <!-- Building blocks -->
+    <rect x="0" y="0" width="10.799999999999999" height="14.4" fill="#64748b"/>
+    <rect x="12.959999999999999" y="-3.6" width="10.799999999999999" height="18" fill="#475569"/>
+    <rect x="25.919999999999998" y="2.16" width="10.799999999999999" height="12.24" fill="#64748b"/>
+    <rect x="38.88" y="-1.44" width="10.799999999999999" height="15.84" fill="#475569"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="36" y="64.8" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="5.76" font-weight="bold">SITEBOSS</text>
+</svg>

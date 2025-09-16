@@ -9,7 +9,6 @@ export const createRateLimiter = (options: {
   windowMs: number;
   max: number;
   message?: string;
-  keyGenerator?: (req: Request) => string;
 }) => {
   return rateLimit({
     windowMs: options.windowMs,
@@ -18,13 +17,16 @@ export const createRateLimiter = (options: {
       success: false,
       error: options.message || 'Too many requests from this IP, please try again later'
     },
-    keyGenerator: options.keyGenerator || ((req) => req.ip || 'anonymous'),
-    onLimitReached: (req: Request) => {
+    handler: (req: Request, res: Response) => {
       logger.warn('Rate limit exceeded', {
         ip: req.ip,
         userAgent: req.get('User-Agent'),
         url: req.originalUrl,
         method: req.method
+      });
+      res.status(429).json({
+        success: false,
+        error: options.message || 'Too many requests from this IP, please try again later'
       });
     },
     standardHeaders: true,
@@ -65,8 +67,8 @@ export const helmetConfig = helmet({
     }
   },
   crossOriginEmbedderPolicy: env.NODE_ENV === 'production',
-  crossOriginOpenerPolicy: { policy: 'cross-origin' },
-  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+  crossOriginResourcePolicy: { policy: 'same-site' },
   dnsPrefetchControl: { allow: false },
   frameguard: { action: 'deny' },
   hidePoweredBy: true,

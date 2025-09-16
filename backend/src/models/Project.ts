@@ -36,10 +36,11 @@ export class ProjectModel {
   static async create(companyId: string, projectData: CreateProjectRequest): Promise<Project> {
     const query = `
       INSERT INTO projects (
-        company_id, name, description, address, start_date, end_date, 
-        estimated_duration, total_budget, contract_value, client_id, project_manager_id
+        company_id, name, description, address, start_date, end_date,
+        estimated_duration, total_budget, contract_value, client_id, project_manager_id,
+        street_address, city, state, postal_code, country
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
       RETURNING *
     `;
     
@@ -54,7 +55,12 @@ export class ProjectModel {
       projectData.total_budget,
       projectData.contract_value,
       projectData.client_id,
-      projectData.project_manager_id
+      projectData.project_manager_id,
+      (projectData as any).street_address || null,
+      (projectData as any).city || null,
+      (projectData as any).state || null,
+      (projectData as any).postal_code || null,
+      (projectData as any).country || null
     ];
     
     const result = await pool.query(query, values);
@@ -65,7 +71,8 @@ export class ProjectModel {
     const allowedFields = [
       'name', 'description', 'address', 'start_date', 'end_date', 
       'estimated_duration', 'status', 'total_budget', 'contract_value', 
-      'profit_margin', 'project_manager_id', 'client_id'
+      'profit_margin', 'project_manager_id', 'client_id',
+      'street_address', 'city', 'state', 'postal_code', 'country'
     ];
     
     const setFields = [];

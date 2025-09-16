@@ -3,6 +3,7 @@ import { ProjectModel } from '../models/Project';
 import { CompanyModel } from '../models/Company';
 import { CreateProjectRequest, ApiResponse, PaginatedResponse } from '../types';
 import { TaskModel } from '../models/Task';
+import pool from '../database/connection';
 import { AuthRequest } from '../middleware/auth';
 
 export class ProjectController {
@@ -140,6 +141,24 @@ export class ProjectController {
         );
       } catch (seedErr) {
         console.error('Warning: failed to seed default tasks for project', seedErr);
+      }
+
+      // Create default job site if coordinates provided; include structured address if present
+      try {
+        const lat = (req.body as any)?.latitude;
+        const lng = (req.body as any)?.longitude;
+        if (lat !== undefined && lng !== undefined) {
+          const supervisor = projectData.project_manager_id || req.user.userId;
+          const b = req.body as any;
+          await pool.query(
+            `INSERT INTO job_sites (project_id, name, address, latitude, longitude, site_supervisor_id, street_address, city, state, postal_code, country)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+            [ (project as any).id, 'Primary Site', projectData.address, lat, lng, supervisor || null, b.street_address || null, b.city || null, b.state || null, b.postal_code || null, b.country || null ]
+          );
+        }
+      } catch (siteErr) {
+        // Non-fatal
+        console.error('Warning: failed to create default job site', siteErr);
       }
 
       const response: ApiResponse = {

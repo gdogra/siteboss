@@ -188,7 +188,7 @@ const Header: React.FC = () => {
           
           <ThemeToggle />
           {/* Notifications */}
-          <Button variant="ghost" size="icon" className="relative">
+          <Button variant="ghost" size="icon" className="relative" title="Notifications" data-tooltip="Notifications">
             <Bell className="w-5 h-5" />
             {notifications > 0 &&
             <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 text-xs bg-red-500 text-white">
@@ -214,7 +214,9 @@ const Header: React.FC = () => {
               variant="ghost"
               size="icon"
               onClick={handleLogout}
-              className="text-slate-600 hover:text-slate-900">
+              className="text-slate-600 hover:text-slate-900"
+              title="Log out"
+              data-tooltip="Log out">
 
                 <LogOut className="w-4 h-4" />
               </Button>

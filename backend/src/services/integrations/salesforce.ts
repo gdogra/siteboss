@@ -9,7 +9,7 @@ export class SalesforceIntegration {
     this.config = config;
   }
 
-  private async makeRequest(endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET', data?: any) {
+  private async makeRequest(endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET', data?: any): Promise<any> {
     try {
       const response = await axios({
         method,

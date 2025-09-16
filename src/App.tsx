@@ -1,164 +1,101 @@
-import React from "react";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import ErrorBoundary from "@/components/ErrorBoundary";
-import { TenantProvider } from "@/contexts/TenantContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import SubscriptionProvider from "@/components/SubscriptionProvider";
-import HomePage from "./pages/HomePage";
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
-import InvoiceSubmissionPage from "./pages/InvoiceSubmissionPage";
-import LeadManagementPage from "./pages/LeadManagementPage";
-import LeadIntakePage from "./pages/LeadIntakePage";
-import PaymentsPage from "./pages/PaymentsPage";
-import OnAuthSuccess from "./pages/OnAuthSuccess";
-import ResetPassword from "./pages/ResetPassword";
-import NotFound from "./pages/NotFound";
-// Import client portal pages
-import ClientLogin from "./pages/ClientLogin";
-import ClientDashboard from "./pages/ClientDashboard";
-import ClientProjects from "./pages/ClientProjects";
-import ClientInvoices from "./pages/ClientInvoices";
-import ClientDocuments from "./pages/ClientDocuments";
-import ClientMessages from "./pages/ClientMessages";
-import CustomerPortalDashboard from "./pages/CustomerPortalDashboard";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import CustomerPortal from "./pages/CustomerPortal";
-
-const PlatformAdminDashboard = React.lazy(() => import("./pages/PlatformAdminDashboard"));
-const InventoryManagementPage = React.lazy(() => import("./pages/InventoryManagementPage"));
-const ProposalManagementPage = React.lazy(() => import("./pages/ProposalManagementPage"));
-const ProposalViewPage = React.lazy(() => import("./pages/ProposalViewPage"));
-const AdvancedTimeTrackingPage = React.lazy(() => import("./pages/AdvancedTimeTrackingPage"));
-const SubscriptionManagementPage = React.lazy(() => import("./pages/SubscriptionManagementPage"));
-const PermitManagementPage = React.lazy(() => import("./pages/PermitManagementPage"));
-import ClientAuthGuard from "./components/ClientAuthGuard";
-import FloatingChatWidget from "./components/FloatingChatWidget";
-import TrialSignup from "./pages/TrialSignup";
-import OnboardingWizard from "./components/OnboardingWizard";
-import TenantManagementPage from "./pages/TenantManagementPage";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { TenantProvider as SbTenantProvider } from '@/contexts/TenantContext';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { ProjectsProvider } from '@/contexts/ProjectsContext';
+import { TasksProvider } from '@/contexts/TasksContext';
+import { FinancialsProvider } from '@/contexts/FinancialsContext';
+import { DocumentsProvider } from '@/contexts/DocumentsContext';
+import { LeadsProvider } from '@/contexts/LeadsContext';
+import { FeedbackProvider } from '@/contexts/FeedbackContext';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import HomePage from './pages/HomePage';
+import ProjectsPage from './pages/ProjectsPage';
+import NewProjectPage from './pages/NewProjectPage';
+import EditProjectPage from './pages/EditProjectPage';
+import ProjectSettingsPage from './pages/ProjectSettingsPage';
+import TrialSignupPage from './pages/TrialSignupPage';
+import GetQuotePage from './pages/GetQuotePage';
+import AdminLoginPage from './pages/AdminLoginPage';
+import EnterpriseProjectDashboard from './pages/EnterpriseProjectDashboard';
+import PaymentsPage from './pages/PaymentsPage';
+import LeadsPage from './pages/LeadsPage';
+import FeedbackPage from './pages/FeedbackPage';
+import TicketsPage from './pages/TicketsPage';
+import PlaceholderPage from './components/PlaceholderPage';
+import AITaskWizardPage from './pages/AITaskWizardPage';
+import GlobalTooltipLayer from './components/GlobalTooltipLayer';
 
 const queryClient = new QueryClient();
 
-const App = () =>
-<ErrorBoundary>
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <ThemeProvider>
-        <TenantProvider>
-          <SubscriptionProvider>
-            <Toaster />
-        <BrowserRouter>
-          <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/invoice-submission" element={<InvoiceSubmissionPage />} />
-          <Route path="/leads" element={<LeadManagementPage />} />
-          <Route path="/get-quote" element={<LeadIntakePage />} />
-          <Route path="/payments" element={<PaymentsPage />} />
-          <Route path="/onauthsuccess" element={<OnAuthSuccess />} />
-          <Route path="/resetpassword" element={<ResetPassword />} />
-          <Route path="/signup" element={<TrialSignup />} />
-          <Route path="/trial-signup" element={<TrialSignup />} />
-          <Route path="/onboarding" element={<OnboardingWizard />} />
-          
-          {/* Client Portal Routes */}
-          <Route path="/client/login" element={<ClientLogin />} />
-          <Route path="/client-login" element={<Navigate to="/client/login" replace />} />
-          <Route path="/client/dashboard" element={
-                <ClientAuthGuard>
-              <ClientDashboard />
-            </ClientAuthGuard>
+const App = () => {
+  return (
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <TooltipProvider>
+            <AuthProvider>
+              <SbTenantProvider>
+                <FeedbackProvider>
+                  <LeadsProvider>
+                    <ProjectsProvider>
+                    <TasksProvider>
+                      <FinancialsProvider>
+                        <DocumentsProvider>
+                          <BrowserRouter>
+                            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/projects/new" element={<NewProjectPage />} />
+                <Route path="/projects/:projectId/edit" element={<EditProjectPage />} />
+                <Route path="/projects/:projectId/settings" element={<ProjectSettingsPage />} />
+                <Route path="/trial-signup" element={<TrialSignupPage />} />
+                <Route path="/get-quote" element={<GetQuotePage />} />
+                <Route path="/admin-login" element={<AdminLoginPage />} />
+                <Route path="/leads" element={<LeadsPage />} />
+                <Route path="/payments" element={<PaymentsPage />} />
+                <Route path="/project/:projectId/dashboard" element={<EnterpriseProjectDashboard />} />
+                <Route path="/projects/:projectId/ai-wizard" element={<AITaskWizardPage />} />
+                <Route path="/feedback" element={<FeedbackPage />} />
+                <Route path="/tickets" element={<TicketsPage />} />
+                
+                {/* Placeholder pages for footer and other links */}
+                <Route path="/features" element={<PlaceholderPage title="Features" description="Comprehensive construction management features" />} />
+                <Route path="/about" element={<PlaceholderPage title="About Us" description="Learn more about SiteBoss and our mission" />} />
+                <Route path="/contact" element={<PlaceholderPage title="Contact Us" description="Get in touch with our team" />} />
+                <Route path="/careers" element={<PlaceholderPage title="Careers" description="Join the SiteBoss team" />} />
+                <Route path="/blog" element={<PlaceholderPage title="Blog" description="Construction industry insights and news" />} />
+                <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" description="How we protect your data" />} />
+                <Route path="/terms" element={<PlaceholderPage title="Terms of Service" description="Terms and conditions" />} />
+                <Route path="/security" element={<PlaceholderPage title="Security" description="How we keep your data secure" />} />
+                
+                <Route path="*" element={
+                  <div className="min-h-screen flex items-center justify-center">
+                    <div className="text-center">
+                      <h1 className="text-4xl font-bold text-gray-900 mb-4">Page Not Found</h1>
+                      <p className="text-gray-600">The page you're looking for doesn't exist.</p>
+                    </div>
+                  </div>
                 } />
-          <Route path="/client-dashboard" element={<Navigate to="/client/dashboard" replace />} />
-          <Route path="/client/projects" element={
-                <ClientAuthGuard>
-              <ClientProjects />
-            </ClientAuthGuard>
-                } />
-          <Route path="/client-projects" element={<Navigate to="/client/projects" replace />} />
-          <Route path="/client/invoices" element={
-                <ClientAuthGuard>
-              <ClientInvoices />
-            </ClientAuthGuard>
-                } />
-          <Route path="/client-invoices" element={<Navigate to="/client/invoices" replace />} />
-          <Route path="/client/documents" element={
-                <ClientAuthGuard>
-              <ClientDocuments />
-            </ClientAuthGuard>
-                } />
-          <Route path="/client-documents" element={<Navigate to="/client/documents" replace />} />
-          <Route path="/client/messages" element={
-                <ClientAuthGuard>
-              <ClientMessages />
-            </ClientAuthGuard>
-                } />
-          <Route path="/customer-portal" element={
-                <ClientAuthGuard>
-              <CustomerPortalDashboard />
-            </ClientAuthGuard>
-                } />
-          <Route path="/platform-admin" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
-              <PlatformAdminDashboard />
-            </React.Suspense>
-                } />
-          <Route path="/inventory" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
-              <InventoryManagementPage />
-            </React.Suspense>
-                } />
-          <Route path="/proposals" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div></div>}>
-              <ProposalManagementPage />
-            </React.Suspense>
-                } />
-          <Route path="/proposal/:id/view" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div></div>}>
-              <ProposalViewPage />
-            </React.Suspense>
-                } />
-          <Route path="/permit-management" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div></div>}>
-              <PermitManagementPage />
-            </React.Suspense>
-                } />
-          <Route path="/time-tracking" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div></div>}>
-              <AdvancedTimeTrackingPage />
-            </React.Suspense>
-                } />
-          <Route path="/advanced-time-tracking" element={<AdvancedTimeTrackingPage />} />
-          <Route path="/permits" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div></div>}>
-              <PermitManagementPage />
-            </React.Suspense>
-                } />
-          <Route path="/subscriptions" element={
-                <React.Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div></div>}>
-              <SubscriptionManagementPage />
-            </React.Suspense>
-                } />
-          <Route path="/subscription-management" element={<SubscriptionManagementPage />} />
-          <Route path="/tenant-management" element={<TenantManagementPage />} />
-          <Route path="/customer-portal-new" element={<CustomerPortal />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/client-messages" element={<Navigate to="/client/messages" replace />} />
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-            <FloatingChatWidget />
-          </SubscriptionProvider>
-        </TenantProvider>
-      </ThemeProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-</ErrorBoundary>;
+                            </Routes>
+                          </BrowserRouter>
+                          <GlobalTooltipLayer />
+                        </DocumentsProvider>
+                      </FinancialsProvider>
+                      </TasksProvider>
+                    </ProjectsProvider>
+                  </LeadsProvider>
+                </FeedbackProvider>
+              </SbTenantProvider>
+            </AuthProvider>
+          </TooltipProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
+  );
+};
 
 export default App;

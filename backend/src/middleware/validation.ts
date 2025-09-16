@@ -46,6 +46,13 @@ export const createProjectSchema = Joi.object({
   name: Joi.string().required(),
   description: Joi.string().optional(),
   address: Joi.string().required(),
+  latitude: Joi.number().min(-90).max(90).optional(),
+  longitude: Joi.number().min(-180).max(180).optional(),
+  street_address: Joi.string().optional(),
+  city: Joi.string().optional(),
+  state: Joi.string().optional(),
+  postal_code: Joi.string().optional(),
+  country: Joi.string().optional(),
   start_date: Joi.date().optional(),
   end_date: Joi.date().optional(),
   estimated_duration: Joi.number().positive().optional(),
@@ -87,7 +94,12 @@ export const updateProjectSchema = Joi.object({
   status: Joi.string().valid('planning', 'active', 'on_hold', 'completed', 'cancelled').optional(),
   total_budget: Joi.number().positive().optional(),
   contract_value: Joi.number().positive().optional(),
-  profit_margin: Joi.number().optional()
+  profit_margin: Joi.number().optional(),
+  street_address: Joi.string().optional(),
+  city: Joi.string().optional(),
+  state: Joi.string().optional(),
+  postal_code: Joi.string().optional(),
+  country: Joi.string().optional()
 });
 
 export const updateTaskSchema = Joi.object({
@@ -125,4 +137,35 @@ export const createSubcontractorSchema = Joi.object({
   specialty: Joi.string().optional(),
   hourly_rate: Joi.number().min(0).optional(),
   insurance_expires: Joi.date().optional()
+});
+
+// Job sites
+export const createJobSiteSchema = Joi.object({
+  name: Joi.string().min(2).max(255).required(),
+  address: Joi.string().allow('').optional(),
+  latitude: Joi.number().min(-90).max(90).optional(),
+  longitude: Joi.number().min(-180).max(180).optional(),
+  site_supervisor_id: Joi.string().uuid().optional(),
+  safety_requirements: Joi.string().allow('').optional(),
+  access_instructions: Joi.string().allow('').optional(),
+  street_address: Joi.string().optional(),
+  city: Joi.string().optional(),
+  state: Joi.string().optional(),
+  postal_code: Joi.string().optional(),
+  country: Joi.string().optional(),
+});
+
+export const updateJobSiteSchema = Joi.object({
+  name: Joi.string().min(2).max(255).optional(),
+  address: Joi.string().allow('').optional(),
+  latitude: Joi.number().min(-90).max(90).optional(),
+  longitude: Joi.number().min(-180).max(180).optional(),
+  site_supervisor_id: Joi.string().uuid().optional(),
+  safety_requirements: Joi.string().allow('').optional(),
+  access_instructions: Joi.string().allow('').optional(),
+  street_address: Joi.string().optional(),
+  city: Joi.string().optional(),
+  state: Joi.string().optional(),
+  postal_code: Joi.string().optional(),
+  country: Joi.string().optional(),
 });

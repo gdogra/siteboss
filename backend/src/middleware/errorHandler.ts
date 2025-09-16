@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { logger } from '../config/logger';
 import { env } from '../config/env';
+import { AuthRequest } from './auth';
 
 export class AppError extends Error {
   public statusCode: number;
@@ -28,7 +29,7 @@ export const asyncHandler = (fn: Function) => {
 
 export const errorHandler = (
   error: any,
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ): void => {

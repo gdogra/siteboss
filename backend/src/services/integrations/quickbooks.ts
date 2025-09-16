@@ -11,7 +11,7 @@ export class QuickBooksIntegration {
     this.baseURL = 'https://sandbox-quickbooks.api.intuit.com'; // Use production URL for live
   }
 
-  private async makeRequest(endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', data?: any) {
+  private async makeRequest(endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', data?: any): Promise<any> {
     try {
       const response = await axios({
         method,
@@ -469,7 +469,7 @@ export class IntegrationService {
         SELECT id, 'scheduled', 'failed', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $2::jsonb
         FROM integration_configurations 
         WHERE company_id = $1 AND is_active = true
-      `, [companyId, JSON.stringify({ error: error.message })]);
+      `, [companyId, JSON.stringify({ error: (error as Error).message })]);
     }
   }
 }

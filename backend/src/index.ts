@@ -29,6 +29,8 @@ import subcontractorRoutes from './routes/subcontractors';
 import usersRoutes from './routes/users';
 import resourceRoutes from './routes/resources';
 import billingRoutes from './routes/billing';
+import uploadsRoutes from './routes/uploads';
+import documentRoutes from './routes/documents';
 
 const app = express();
 const PORT = env.PORT;
@@ -103,6 +105,8 @@ app.use('/api/subcontractors', subcontractorRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/billing', billingRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/upload', uploadsRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

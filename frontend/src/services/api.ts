@@ -104,6 +104,14 @@ export const projectApi = {
 
   getProjectTeam: (projectId: string): Promise<ApiResponse> =>
     api.get(`/projects/${projectId}/team`).then(res => res.data),
+  getProjectSites: (projectId: string): Promise<ApiResponse> =>
+    api.get(`/projects/${projectId}/sites`).then(res => res.data),
+  createProjectSite: (projectId: string, site: any): Promise<ApiResponse> =>
+    api.post(`/projects/${projectId}/sites`, site).then(res => res.data),
+  updateProjectSite: (projectId: string, siteId: string, site: any): Promise<ApiResponse> =>
+    api.put(`/projects/${projectId}/sites/${siteId}`, site).then(res => res.data),
+  deleteProjectSite: (projectId: string, siteId: string): Promise<ApiResponse> =>
+    api.delete(`/projects/${projectId}/sites/${siteId}`).then(res => res.data),
 };
 
 export const taskApi = {
@@ -168,6 +176,14 @@ export const budgetApi = {
     
   getMyExpenses: (): Promise<ApiResponse> =>
     api.get('/budget/expenses/my-expenses').then(res => res.data),
+};
+
+export const documentApi = {
+  listByProject: (projectId: string): Promise<ApiResponse> =>
+    api.get(`/documents/project/${projectId}`).then(res => res.data),
+  get: (id: string): Promise<ApiResponse> =>
+    api.get(`/documents/${id}`).then(res => res.data),
+  downloadUrl: (id: string): string => `/api/documents/${id}/download`,
 };
 
 export const contractorApi = {

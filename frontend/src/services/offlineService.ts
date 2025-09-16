@@ -496,8 +496,14 @@ class OfflineService {
 
   private async syncProject(action: OfflineAction): Promise<void> {
     switch (action.type) {
+      case 'CREATE':
+        await api.post('/projects', action.data, { headers: { 'X-Skip-Auth-Redirect': 'true' } });
+        break;
       case 'UPDATE':
         await api.put(`/projects/${action.entityId}`, action.data);
+        break;
+      case 'DELETE':
+        if (action.entityId) await api.delete(`/projects/${action.entityId}`);
         break;
     }
   }

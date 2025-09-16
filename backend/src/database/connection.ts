@@ -2,7 +2,17 @@ import { Pool, PoolConfig } from 'pg';
 import { env } from '../config/env';
 import { logger } from '../config/logger';
 
-const dbConfig: PoolConfig = {
+const dbConfig: PoolConfig = process.env.DATABASE_URL ? {
+  connectionString: process.env.DATABASE_URL,
+  max: env.DB_MAX_CONNECTIONS,
+  connectionTimeoutMillis: env.NODE_ENV === 'production' ? 5000 : 2000,
+  idleTimeoutMillis: 30000,
+  query_timeout: 30000,
+  ssl: {
+    rejectUnauthorized: false
+  },
+  application_name: 'siteboss-api',
+} : {
   host: env.DB_HOST,
   port: env.DB_PORT,
   database: env.DB_NAME,
@@ -15,7 +25,6 @@ const dbConfig: PoolConfig = {
   ssl: env.DB_SSL ? {
     rejectUnauthorized: false
   } : false,
-  // Connection pool events
   application_name: 'siteboss-api',
 };
 

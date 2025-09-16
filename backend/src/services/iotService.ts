@@ -35,7 +35,7 @@ export class IoTService extends EventEmitter {
 
       this.mqttClient.on('message', this.handleMqttMessage.bind(this));
 
-      this.mqttClient.on('error', (error) => {
+      this.mqttClient.on('error', (error: Error) => {
         console.error('❌ MQTT connection error:', error);
         this.isConnected = false;
         this.emit('error', error);
@@ -65,7 +65,7 @@ export class IoTService extends EventEmitter {
     ];
 
     topics.forEach(topic => {
-      this.mqttClient!.subscribe(topic, (error) => {
+      this.mqttClient!.subscribe(topic, (error?: Error) => {
         if (error) {
           console.error(`Failed to subscribe to ${topic}:`, error);
         } else {
@@ -551,7 +551,7 @@ export class IoTService extends EventEmitter {
     });
 
     return new Promise((resolve, reject) => {
-      this.mqttClient!.publish(topic, payload, (error) => {
+      this.mqttClient!.publish(topic, payload, (error?: Error) => {
         if (error) {
           reject(error);
         } else {
