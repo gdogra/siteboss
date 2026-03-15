@@ -54,10 +54,15 @@ export const getCurrentUser = async () => {
 };
 
 export const signInWithGoogle = async () => {
+  // Use production URL for redirect
+  const redirectTo = window.location.hostname === 'localhost' 
+    ? `${window.location.origin}/auth/callback`
+    : 'https://siteboss-construction-management.netlify.app/auth/callback';
+    
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
