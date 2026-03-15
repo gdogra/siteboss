@@ -22,6 +22,7 @@ import UserProfile from './components/Profile/UserProfile';
 import LoginForm from './components/Auth/LoginForm';
 import RegisterForm from './components/Auth/RegisterForm';
 import EmailConfirmation from './components/Auth/EmailConfirmation';
+import AuthCallback from './components/Auth/AuthCallback';
 import LeadManagement from './components/CRM/LeadManagement';
 import SalesPipeline from './components/CRM/SalesPipeline';
 import ContactsAndCommunications from './components/CRM/ContactsAndCommunications';
@@ -108,6 +109,10 @@ const AppContent: React.FC = () => {
         <Route
           path="/email-confirmation"
           element={<EmailConfirmation />}
+        />
+        <Route
+          path="/auth/callback"
+          element={<AuthCallback />}
         />
         <Route
           path="/dashboard"

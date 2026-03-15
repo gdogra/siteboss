@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole } from '../types';
-import { supabase, signInWithEmail, signUpWithEmail, signOut, getCurrentUser } from '../services/supabase';
+import { supabase, signInWithEmail, signUpWithEmail, signOut, getCurrentUser, signInWithGoogle } from '../services/supabase';
 import logger from '../utils/logger';
 
 interface RegisterData {
@@ -18,6 +18,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
@@ -242,6 +243,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('siteboss_user');
   };
 
+  const loginWithGoogle = async (): Promise<void> => {
+    try {
+      const { data, error } = await signInWithGoogle();
+      
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      // The redirect will handle the rest of the auth flow
+      // No need to set user here as it will be handled in the auth state change listener
+      
+    } catch (error: any) {
+      throw new Error(error.message || 'Google sign-in failed');
+    }
+  };
+
   const updateUser = (userData: Partial<User>) => {
     if (user) {
       const updatedUser = { ...user, ...userData };
@@ -255,6 +272,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAuthenticated: !!user,
     isLoading,
     login,
+    loginWithGoogle,
     register,
     logout,
     updateUser,
