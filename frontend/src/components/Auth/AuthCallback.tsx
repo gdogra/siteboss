@@ -1,18 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../services/supabase';
 import { User } from '../../types';
 
 const AuthCallback: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { updateUser } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const hasExecuted = useRef(false);
 
   useEffect(() => {
+    // Only proceed if we're actually on the callback route
+    if (location.pathname !== '/auth/callback') {
+      return;
+    }
+
+    // Prevent multiple executions (React Strict Mode protection)
+    if (hasExecuted.current) {
+      return;
+    }
+    hasExecuted.current = true;
+    setIsLoading(true);
+
     const handleAuthCallback = async () => {
       try {
+        // Check for OAuth errors in URL parameters first
+        const urlParams = new URLSearchParams(location.search);
+        const oauthError = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+        
+        if (oauthError) {
+          const errorMessage = errorDescription ? 
+            decodeURIComponent(errorDescription) : 
+            `OAuth error: ${oauthError}`;
+          throw new Error(errorMessage);
+        }
+
         const { data, error } = await supabase.auth.getSession();
         
         if (error) {
@@ -47,7 +73,7 @@ const AuthCallback: React.FC = () => {
             try {
               // Create a company record for the new user
               const companyName = `${firstName} ${lastName}'s Company`;
-              const { data: companyData, error: companyError } = await supabase
+              const { error: companyError } = await supabase
                 .from('companies')
                 .insert({
                   id: userData.company_id,
@@ -108,7 +134,12 @@ const AuthCallback: React.FC = () => {
     };
 
     handleAuthCallback();
-  }, [navigate, updateUser]);
+  }, [navigate, updateUser, location.pathname]);
+
+  // Early return if not on callback route (after hooks)
+  if (location.pathname !== '/auth/callback') {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   if (error) {
     return (

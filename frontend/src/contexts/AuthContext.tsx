@@ -217,11 +217,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         company_id: `company-${Date.now()}`
       };
 
+      // Determine the correct redirect URL based on environment
+      const isProduction = window.location.hostname === 'siteboss-construction-management.netlify.app';
+      const emailRedirectTo = isProduction 
+        ? 'https://siteboss-construction-management.netlify.app/email-confirmation'
+        : `${window.location.origin}/email-confirmation`;
+
       const { data: signUpData, error } = await signUpWithEmail(
         data.email, 
         data.password, 
         metadata,
-        `http://localhost:3000/email-confirmation`
+        emailRedirectTo
       );
       
       if (error) {
@@ -237,10 +243,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = async () => {
-    await signOut();
-    setUser(null);
-    localStorage.removeItem('siteboss_token');
-    localStorage.removeItem('siteboss_user');
+    try {
+      // Clear user state first
+      setUser(null);
+      localStorage.removeItem('siteboss_token');
+      localStorage.removeItem('siteboss_user');
+      
+      // Sign out from Supabase
+      const { error } = await signOut();
+      if (error) {
+        console.warn('Supabase sign out error:', error);
+        // Don't throw error here - we've already cleared local state
+      }
+      
+      // Force redirect to login page
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Even if there's an error, ensure we redirect to login
+      window.location.href = '/login';
+    }
   };
 
   const loginWithGoogle = async (): Promise<void> => {

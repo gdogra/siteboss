@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileMenuToggle }) => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    // logout() now handles the redirect internally
   };
 
   return (

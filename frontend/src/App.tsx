@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -22,7 +22,6 @@ import UserProfile from './components/Profile/UserProfile';
 import LoginForm from './components/Auth/LoginForm';
 import RegisterForm from './components/Auth/RegisterForm';
 import EmailConfirmation from './components/Auth/EmailConfirmation';
-import AuthCallback from './components/Auth/AuthCallback';
 import LeadManagement from './components/CRM/LeadManagement';
 import SalesPipeline from './components/CRM/SalesPipeline';
 import ContactsAndCommunications from './components/CRM/ContactsAndCommunications';
@@ -35,6 +34,9 @@ import AIAssistant from './components/AI/AIAssistant';
 import { AIProvider } from './contexts/AIContext';
 import { TenantProvider } from './contexts/TenantContext';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+
+// Lazy load AuthCallback to prevent execution on wrong routes
+const AuthCallback = lazy(() => import('./components/Auth/AuthCallback'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -112,7 +114,15 @@ const AppContent: React.FC = () => {
         />
         <Route
           path="/auth/callback"
-          element={<AuthCallback />}
+          element={
+            <Suspense fallback={
+              <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+              </div>
+            }>
+              <AuthCallback />
+            </Suspense>
+          }
         />
         <Route
           path="/dashboard"
