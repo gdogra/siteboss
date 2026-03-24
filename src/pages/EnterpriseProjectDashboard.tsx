@@ -15,6 +15,7 @@ import ChangeOrdersManagement from '@/components/enterprise/ChangeOrdersManageme
 import DocumentsManagement from '@/components/enterprise/DocumentsManagement';
 import TeamManagement from '@/components/enterprise/TeamManagement';
 import ReportsAnalytics from '@/components/enterprise/ReportsAnalytics';
+import AIPredictionDashboard from '@/components/AIPredictionDashboard';
 import ProjectFilterDialog, { ProjectFilters } from '@/components/ProjectFilterDialog';
 import InfoTooltip, { MetricTooltip, CalculationTooltip, HelpTooltip } from '@/components/InfoTooltip';
 import {
@@ -727,6 +728,10 @@ const EnterpriseProjectDashboard: React.FC = () => {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="ai-intelligence" className="bg-gradient-to-r from-blue-50 to-purple-50">
+              <Sparkles className="w-4 h-4 mr-1" />
+              AI Intelligence
+            </TabsTrigger>
             <TabsTrigger value="phases">Phases</TabsTrigger>
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="financials">Financials</TabsTrigger>
@@ -1078,6 +1083,10 @@ const EnterpriseProjectDashboard: React.FC = () => {
             <TeamManagement projectId={projectId || ''} />
           </TabsContent>
 
+          <TabsContent value="ai-intelligence">
+            <AIPredictionDashboard projectId={projectId} />
+          </TabsContent>
+          
           <TabsContent value="reports">
             <ReportsAnalytics />
           </TabsContent>
